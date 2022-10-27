@@ -1,0 +1,17 @@
+Cliente:
+- perfil
+	-> username (?)
+	-> objetivo (?)
+
+Plano treino e nutricao:
+??
+
+Ginasio:
+-> historico total controlo fluxo
+	> capacidade atual (número saidas - numero entradas)
+	> quantidade de saidas e entradas no dia atual
+
+-> Ver clientes e editar informação
+-> Registar clientes
+
+-> Classificacao (nota + comentario)
