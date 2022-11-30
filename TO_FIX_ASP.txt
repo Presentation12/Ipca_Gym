@@ -1,11 +1,11 @@
-Indice colocar indices DONE
-Atualizar titulos e datas DONE
-Remover "Conteudo" de Indice DONE
-Gralha CdU 1.4 DONE
+Indice colocar indices 								DONE
+Atualizar titulos e datas 							DONE
+Remover "Conteudo" de Indice 							DONE
+Gralha CdU 1.4 									DONE
 
-Parte de Diagramas mais formalizado (colocar introduções)
-Colocar Conclusão 
-Cronograma Diagrama de Gantt colocar no Word DONE (por meter no word)
-Colocar Atas no Relatorio
-Fazer Rubricas no Relatório
-Utilizar referencias de Sites (bibliografia)
+Parte de Diagramas mais formalizado (colocar introduções)		TO DO
+Colocar Conclusão 								TO DO
+Cronograma Diagrama de Gantt colocar no Word				DONE
+Colocar Atas no Relatorio							DONE
+Fazer Rubricas no Relatório							TO DO
+Utilizar referencias de Sites (bibliografia)				TO DO
