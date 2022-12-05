@@ -3,11 +3,11 @@ Atualizar titulos e datas 							DONE
 Remover "Conteudo" de Indice 							DONE
 Gralha CdU 1.4 									DONE
 
-Parte de Diagramas mais formalizado (colocar introduções)		TO DO
+Parte de Diagramas mais formalizado (colocar introduções)		DONE
 Colocar Conclusão 								DONE
 Cronograma Diagrama de Gantt colocar no Word				DONE
 Colocar Atas no Relatorio							DONE
-Diagramas de atividades (no relatorio)					TO DO
-Mockups (no relat´rio)								TO DO
+Diagramas de atividades (no relatorio)					DONE
+Mockups (no relatório)								DONE
 Fazer Rubricas no Relatório							TO DO
-Utilizar referencias de Sites (bibliografia)				TO DO
+Utilizar referencias de Sites (bibliografia)				DONE
