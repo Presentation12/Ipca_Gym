@@ -1,0 +1,4 @@
+Base de Dados para mudar NO DIAGR:
+	Dia da semana no horario
+	adicionar id_plano_nutricional no Cliente
+	
