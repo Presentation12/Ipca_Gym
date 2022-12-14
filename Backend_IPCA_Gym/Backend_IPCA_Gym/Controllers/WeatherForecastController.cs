@@ -1,3 +1,5 @@
+using Backend_IPCA_Gym.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend_IPCA_Gym.Controllers
@@ -18,6 +20,7 @@ namespace Backend_IPCA_Gym.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {

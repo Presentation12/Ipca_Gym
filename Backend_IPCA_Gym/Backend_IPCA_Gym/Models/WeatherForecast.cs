@@ -1,4 +1,4 @@
-namespace Backend_IPCA_Gym
+namespace Backend_IPCA_Gym.Models
 {
     public class WeatherForecast
     {

@@ -30,3 +30,10 @@ C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym
 C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.pdb
 C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.genruntimeconfig.cache
 C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\ref\Backend_IPCA_Gym.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
