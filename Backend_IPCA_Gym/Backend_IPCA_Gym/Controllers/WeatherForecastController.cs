@@ -1,4 +1,3 @@
-using Backend_IPCA_Gym.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

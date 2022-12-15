@@ -1,0 +1,157 @@
+create table Ginasio(
+	id_ginasio int identity(1,1) PRIMARY KEY,
+	instituicao varchar(80) not null,
+	contacto int,
+	foto_ginasio varchar(100),
+	estado varchar(50) not null
+);
+	
+create table Plano_Nutricional(
+    id_plano_nutricional int identity(1,1) PRIMARY KEY,
+    id_ginasio int not null,
+    tipo varchar(MAX) not null,
+    calorias int not null,
+
+    constraint fk_plano_nutricional_id_ginasio foreign key (id_ginasio) references Ginasio(id_ginasio)
+);
+
+create table Cliente(
+	id_cliente int identity(1,1) PRIMARY KEY,
+	id_ginasio int not null,
+	id_plano_nutricional int,
+	nome varchar(50) not null,
+	mail varchar(100) not null,
+	telemovel int not null,
+	pass_salt varchar(MAX),
+	pass_hash varchar(MAX),
+	peso float,
+	altura float,
+	gordura float,
+	foto_perfil varchar(MAX),
+	estado varchar(50) not null,
+						
+	CONSTRAINT fk_cliente_id_ginasio foreign key (id_ginasio) REFERENCES Ginasio(id_ginasio),
+	CONSTRAINT fk_cliente_id_plano_nutricional FOREIGN KEY (id_plano_nutricional) REFERENCES Plano_Nutricional(id_plano_nutricional)
+);
+
+create table Atividade(
+	id_atividade int identity(1,1) PRIMARY KEY,
+	id_ginasio int not null,
+	id_cliente int not null,
+	data_entrada datetime not null,
+	data_saida datetime,
+	
+	CONSTRAINT fk_atividade_id_ginasio FOREIGN KEY (id_ginasio) REFERENCES Ginasio(id_ginasio),
+	CONSTRAINT fk_atividade_id_cliente FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente)
+);
+	
+create table Pedido(
+	id_pedido int identity(1,1) PRIMARY KEY,
+	id_cliente int not null,
+	estado varchar(80) not null,
+	data_pedido datetime not null,
+	
+	CONSTRAINT fk_pedido_id_cliente FOREIGN KEY(id_cliente) REFERENCES Cliente(id_cliente)	
+);
+
+	
+create table Loja(
+	id_produto int identity(1,1) PRIMARY KEY,
+	id_ginasio int not null,
+	nome varchar(MAX) not null,
+	tipo_produto varchar(40) not null,
+	preco float not null,
+	descricao varchar(MAX) not null,
+	estado varchar(40) not null,
+	foto_produto varchar(MAX),
+	quantidade int not null,
+	
+	CONSTRAINT fk_loja_id_ginasio FOREIGN KEY(id_ginasio) REFERENCES Ginasio(id_ginasio)
+);
+
+create table Pedido_Loja(
+	id_pedido int not null,
+	id_produto int not null,
+	quantidade int not null,
+	
+	CONSTRAINT pk_id_produto_and_id_pedido PRIMARY KEY (id_pedido, id_produto),
+	CONSTRAINT fk_pedido_loja_id_pedido FOREIGN KEY(id_pedido) REFERENCES Pedido(id_pedido),
+	CONSTRAINT fk_pedido_loja_id_produto FOREIGN KEY(id_produto) REFERENCES Loja(id_produto)
+);
+	
+create table Classificacao(
+	id_avaliacao int identity(1,1) PRIMARY KEY,
+	id_ginasio int not null,
+	id_cliente int not null,
+	avaliacao int not null,
+	comentario varchar(MAX) not null,
+	data_avaliacao datetime not null,
+	
+	CONSTRAINT fk_classificacao_id_ginasio FOREIGN KEY(id_ginasio) REFERENCES Ginasio(id_ginasio),
+	CONSTRAINT fk_classificacao_id_cliente FOREIGN KEY(id_cliente) REFERENCES Cliente(id_cliente)
+);
+
+create table Funcionario(
+    id_funcionario int identity(1,1) PRIMARY KEY,
+    id_ginasio int,
+	nome varchar(100) not null,
+    is_admin bit not null,
+    codigo int not null,
+    pass_salt varchar(MAX) not null,
+    pass_hash varchar(MAX) not null,
+    estado varchar(MAX) not null,
+
+    constraint fk_funcionario_id_ginasio foreign key (id_ginasio) references Ginasio(id_ginasio)
+);
+
+create table Horario_Funcionario(
+    id_funcionario_horario int identity(1,1) PRIMARY KEY,
+    id_funcionario int,
+    hora_entrada time not null,
+    hora_saida time not null,
+    dia_semana varchar(10) not null,
+
+    constraint fk_horario_funcionario_id_funcionario foreign key (id_funcionario) references Funcionario(id_funcionario)
+);
+
+create table Marcacao(
+    id_marcacao int identity(1,1) PRIMARY KEY,
+    id_funcionario int not null,
+    id_cliente int not null,
+    data_marcacao datetime not null,
+    descricao varchar(MAX) not null,
+    estado varchar(MAX) not null,
+
+    constraint fk_marcacao_id_funcionario foreign key (id_funcionario) references Funcionario(id_funcionario),
+    constraint fk_marcacao_id_cliente foreign key (id_cliente) references Cliente(id_cliente)
+);	
+
+create table Refeicao(
+    id_refeicao int identity(1,1) PRIMARY KEY,
+    id_plano_nutricional int not null,
+    descricao varchar(MAX) not null,
+    hora time not null,
+
+    constraint fk_refeicao_id_plano_nutricional foreign key (id_plano_nutricional) references Plano_Nutricional(id_plano_nutricional)
+);
+	
+create table Plano_Treino(
+    id_plano_treino int identity(1,1) PRIMARY KEY,
+    id_ginasio int not null,
+    tipo varchar(MAX) not null,
+
+    constraint fk_plano_treino_id_ginasio foreign key (id_ginasio) references Ginasio(id_ginasio)
+);
+	
+create table Exercicio(
+    id_exercicio int identity(1,1) PRIMARY KEY,
+    id_plano_treino int not null,
+    nome varchar(MAX) not null,
+    descricao varchar(MAX) not null,
+    tipo varchar(MAX) not null,
+    series int,
+    tempo time,
+    repeticoes int,
+
+    constraint fk_exercicio_id_plano_treino foreign key (id_plano_treino) references Plano_Treino(id_plano_treino)
+)
