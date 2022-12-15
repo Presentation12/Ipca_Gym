@@ -37,3 +37,4 @@ C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym
 C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
 C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Npgsql.dll

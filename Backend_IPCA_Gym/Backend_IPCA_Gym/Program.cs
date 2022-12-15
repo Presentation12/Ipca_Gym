@@ -12,6 +12,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// ATIVAÇÃO DE CORS
+builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
+{
+    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
+
 //------------------------------------------------------
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -40,6 +47,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//app CORS
+app.UseCors("corsapp");
 
 app.UseHttpsRedirection();
 
