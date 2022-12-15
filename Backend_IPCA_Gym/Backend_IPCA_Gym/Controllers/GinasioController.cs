@@ -16,7 +16,7 @@ namespace Backend_IPCA_Gym.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetAll()
+        public IActionResult GetAll()
         {
             string query = @"
                             select * from ginasio";

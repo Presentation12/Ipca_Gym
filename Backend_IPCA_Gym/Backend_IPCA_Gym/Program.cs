@@ -14,10 +14,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // ATIVAÇÃO DE CORS
-builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
+/*builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {
     builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
-}));
+}));*/
 
 //------------------------------------------------------
 
@@ -49,7 +49,7 @@ if (app.Environment.IsDevelopment())
 }
 
 //app CORS
-app.UseCors("corsapp");
+//app.UseCors("corsapp");
 
 app.UseHttpsRedirection();
 
@@ -58,3 +58,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
