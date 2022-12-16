@@ -2,5 +2,8 @@
 {
     public class PlanoTreino
     {
+        public int id_plano_treino { get; set; }
+        public int id_ginasio { get; set; }
+        public string tipo { get; set; }
     }
 }

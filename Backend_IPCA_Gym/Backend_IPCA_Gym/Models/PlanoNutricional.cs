@@ -2,5 +2,9 @@
 {
     public class PlanoNutricional
     {
+        public int id_plano_nutricional { get; set; }
+        public int id_ginasio { get; set; }
+        public string tipo { get; set; }
+        public int calorias { get; set; }
     }
 }
