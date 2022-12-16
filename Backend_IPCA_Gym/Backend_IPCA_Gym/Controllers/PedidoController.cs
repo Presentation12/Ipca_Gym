@@ -34,7 +34,7 @@ namespace Backend_IPCA_Gym.Controllers
                     {
                         Pedido pedido = new Pedido();
 
-                        pedido.id_pedido = Convert.ToInt32(dataReader["id_ginasio"]);
+                        pedido.id_pedido = Convert.ToInt32(dataReader["id_pedido"]);
                         pedido.id_cliente = Convert.ToInt32(dataReader["id_cliente"]);
                         pedido.data_pedido = Convert.ToDateTime(dataReader["data_pedido"]);
                         pedido.estado = dataReader["estado"].ToString();

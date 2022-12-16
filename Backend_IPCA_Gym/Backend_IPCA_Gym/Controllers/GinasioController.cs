@@ -41,7 +41,14 @@ namespace Backend_IPCA_Gym.Controllers
                         ginasio.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
                         ginasio.estado = dataReader["estado"].ToString();
                         ginasio.instituicao = dataReader["instituicao"].ToString();
-                        ginasio.foto_ginasio = dataReader["foto_ginasio"].ToString();
+                        if (!Convert.IsDBNull(dataReader["foto_ginasio"]))
+                        {
+                            ginasio.foto_ginasio = dataReader["foto_ginasio"].ToString();
+                        }
+                        else
+                        {
+                            ginasio.foto_ginasio = null;
+                        }
                         ginasio.contacto = Convert.ToInt32(dataReader["contacto"]);
 
                         ginasios.Add(ginasio);

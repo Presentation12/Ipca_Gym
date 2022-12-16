@@ -37,7 +37,16 @@ namespace Backend_IPCA_Gym.Controllers
                         refeicao.id_refeicao = Convert.ToInt32(dataReader["id_refeicao"]);
                         refeicao.id_plano_nutricional = Convert.ToInt32(dataReader["id_plano_nutricional"]);
                         refeicao.descricao = dataReader["descricao"].ToString();
-                        refeicao.hora = (TimeSpan)dataReader["hora_saida"];
+                        refeicao.hora = (TimeSpan)dataReader["hora"];
+                        if (!Convert.IsDBNull(dataReader["foto_refeicao"]))
+                        {
+                            refeicao.foto_refeicao = dataReader["foto_refeicao"].ToString();
+                        }
+                        else
+                        {
+                            refeicao.foto_refeicao = null;
+                        }
+
 
                         refeicoes.Add(refeicao);
                     }

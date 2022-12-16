@@ -23,7 +23,7 @@ namespace Backend_IPCA_Gym.Controllers
         public IActionResult GetAll()
         {
             string query = @"
-                            select * from dbo.Atividade";
+                            select * from dbo.Classificacao";
             List<Classificacao> classificacoes = new List<Classificacao>();
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");

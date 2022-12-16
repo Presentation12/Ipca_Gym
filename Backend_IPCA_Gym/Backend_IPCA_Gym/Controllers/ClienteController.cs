@@ -9,6 +9,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Numerics;
 using System.Runtime.Intrinsics.Arm;
+using System.Drawing;
 
 namespace Backend_IPCA_Gym.Controllers
 {
@@ -43,16 +44,51 @@ namespace Backend_IPCA_Gym.Controllers
 
                         cliente.id_cliente = Convert.ToInt32(dataReader["id_cliente"]);
                         cliente.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
-                        cliente.id_plano_nutricional = Convert.ToInt32(dataReader["id_plano_nutricional"]);
+                        if (!Convert.IsDBNull(dataReader["id_plano_nutricional"]))
+                        {
+                            cliente.id_plano_nutricional = Convert.ToInt32(dataReader["id_plano_nutricional"]);
+                        }
+                        else
+                        {
+                            cliente.id_plano_nutricional = null;
+                        }
                         cliente.nome = dataReader["nome"].ToString();
                         cliente.mail = dataReader["mail"].ToString();
                         cliente.telemovel = Convert.ToInt32(dataReader["telemovel"]);
                         cliente.pass_salt = dataReader["pass_salt"].ToString();
                         cliente.pass_hash = dataReader["pass_hash"].ToString();
-                        cliente.peso = Convert.ToDouble(dataReader["peso"]);
-                        cliente.altura = Convert.ToInt32(dataReader["altura"]);
-                        cliente.gordura = Convert.ToDouble(dataReader["gordura"]);
-                        cliente.foto_perfil = dataReader["foto_perfil"].ToString();
+                        if (!Convert.IsDBNull(dataReader["peso"]))
+                        {
+                            cliente.peso = Convert.ToDouble(dataReader["peso"]);
+                        }
+                        else
+                        {
+                            cliente.peso = null;
+                        }
+                        if (!Convert.IsDBNull(dataReader["altura"]))
+                        {
+                            cliente.altura = Convert.ToInt32(dataReader["altura"]);
+                        }
+                        else
+                        {
+                            cliente.altura = null;
+                        }
+                        if (!Convert.IsDBNull(dataReader["gordura"]))
+                        {
+                            cliente.gordura = Convert.ToDouble(dataReader["gordura"]);
+                        }
+                        else
+                        {
+                            cliente.gordura = null;
+                        }
+                        if (!Convert.IsDBNull(dataReader["foto_perfil"]))
+                        {
+                            cliente.foto_perfil = dataReader["foto_perfil"].ToString();
+                        }
+                        else
+                        {
+                            cliente.foto_perfil = null;
+                        }
                         cliente.estado = dataReader["estado"].ToString();
 
                         clientes.Add(cliente);

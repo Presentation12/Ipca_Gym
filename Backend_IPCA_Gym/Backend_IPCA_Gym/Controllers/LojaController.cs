@@ -45,7 +45,14 @@ namespace Backend_IPCA_Gym.Controllers
                         produto.preco = Convert.ToDouble(dataReader["preco"]);
                         produto.tipo_produto = dataReader["tipo_produto"].ToString();
                         produto.estado = dataReader["estado"].ToString();
-                        produto.foto_produto = dataReader["foto_produto"].ToString();
+                        if (!Convert.IsDBNull(dataReader["foto_produto"]))
+                        {
+                            produto.foto_produto = dataReader["foto_produto"].ToString();
+                        }
+                        else
+                        {
+                            produto.foto_produto = null;
+                        }
                         produto.quantidade = Convert.ToInt32(dataReader["quantidade"]);
 
                         produtos.Add(produto);

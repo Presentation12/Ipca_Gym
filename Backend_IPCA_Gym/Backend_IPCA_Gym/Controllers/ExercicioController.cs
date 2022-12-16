@@ -43,9 +43,30 @@ namespace Backend_IPCA_Gym.Controllers
                         exercicio.nome = dataReader["nome"].ToString();
                         exercicio.descricao = dataReader["descricao"].ToString();
                         exercicio.tipo = dataReader["tipo"].ToString();
-                        exercicio.series = Convert.ToInt32(dataReader["series"]);
-                        exercicio.tempo = (TimeSpan?)dataReader["tempo"];
-                        exercicio.repeticoes = Convert.ToInt32(dataReader["repeticoes"]);
+                        if (!Convert.IsDBNull(dataReader["series"]))
+                        {
+                            exercicio.series = Convert.ToInt32(dataReader["series"]);
+                        }
+                        else
+                        {
+                            exercicio.series = null;
+                        }
+                        if (!Convert.IsDBNull(dataReader["tempo"]))
+                        {
+                            exercicio.tempo = (TimeSpan?)dataReader["tempo"];
+                        }
+                        else
+                        {
+                            exercicio.tempo = null;
+                        }
+                        if (!Convert.IsDBNull(dataReader["repeticoes"]))
+                        {
+                            exercicio.repeticoes = Convert.ToInt32(dataReader["repeticoes"]);
+                        }
+                        else
+                        {
+                            exercicio.repeticoes = null;
+                        }
 
                         exercicios.Add(exercicio);
                     }
