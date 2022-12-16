@@ -1,0 +1,37 @@
+alter table funcionario add constraint codigo_uk unique (codigo);
+alter table ginasio add constraint contacto_uk unique (contacto);
+alter table cliente add constraint mail_uk unique (mail);
+alter table cliente add constraint telemovel_uk unique (telemovel);
+
+alter table funcionario add column nome varchar(65535) not null
+
+/* Impede que apareça mais de uma vez o mesmo funcionario num ginásio */
+create unique index funcionario_idx on funcionario (id_ginasio,nome,codigo);
+
+/* Impede que repita o mesmo dia da semana nop horario do funcionario */
+create unique index horario_funcionario_idx on horario_funcionario (id_funcionario,dia_semana);
+
+/* Impede que apareça mais de uma vez o mesmo funcionario para a mesma data marcada */
+create unique index marcacao_funcionario_idx on  marcacao (id_funcionario,data_marcacao);
+
+/* Impede que apareça mais de uma vez o mesmo cliente para a mesma data marcada */
+create unique index marcacao_cliente_idx on  marcacao (id_cliente,data_marcacao);
+
+/* Impede que repita um produto num ginásio */
+create unique index loja_idx on  loja (id_ginasio,nome,descricao);
+
+/* Impede que repita uma entrada numa determinada data e horario de entrada ou saida, de um cliente */
+create unique index atividade_entrada_idx on  atividade (id_cliente, data_entrada);
+create unique index atividade_saida_idx on  atividade (id_cliente, data_saida);
+
+/* Impede que repita uma refeicao para um tipo de plano numa determinada hora */
+create unique index refeicao_idx on  refeicao (id_plano_nutricional, descricao, hora);
+
+/* Impede que repita um tipo de plano nutricional num ginásio */
+create unique index plano_nutricional_idx on  plano_nutricional (id_ginasio, tipo);
+
+/* Impede que repita um tipo de plano de treino num ginásio */
+create unique index plano_treino_idx on  plano_treino (id_ginasio, tipo);
+
+/* Impede que repita um exercicio num plano de treino */
+create unique index exercicio_idx on  exercicio (id_plano_treino, nome);
