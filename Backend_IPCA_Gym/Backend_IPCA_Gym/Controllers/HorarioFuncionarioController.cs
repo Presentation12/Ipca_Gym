@@ -11,10 +11,10 @@ namespace Backend_IPCA_Gym.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LojaController : ControllerBase
+    public class HorarioFuncionarioController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public LojaController(IConfiguration configuration)
+        public HorarioFuncionarioController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -23,8 +23,8 @@ namespace Backend_IPCA_Gym.Controllers
         public IActionResult GetAll()
         {
             string query = @"
-                            select * from dbo.Loja";
-            List<Loja> produtos = new List<Loja>();
+                            select * from dbo.Horario_Funcionario";
+            List<HorarioFuncionario> horario = new List<HorarioFuncionario>();
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
@@ -36,19 +36,15 @@ namespace Backend_IPCA_Gym.Controllers
                     dataReader = myCommand.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        Loja produto = new Loja();
+                        HorarioFuncionario dia = new HorarioFuncionario();
 
-                        produto.id_produto = Convert.ToInt32(dataReader["id_produto"]);
-                        produto.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
-                        produto.nome = dataReader["nome"].ToString();
-                        produto.descricao = dataReader["descricao"].ToString();
-                        produto.preco = Convert.ToDouble(dataReader["preco"]);
-                        produto.tipo_produto = dataReader["tipo_produto"].ToString();
-                        produto.estado = dataReader["estado"].ToString();
-                        produto.foto_produto = dataReader["foto_produto"].ToString();
-                        produto.quantidade = Convert.ToInt32(dataReader["quantidade"]);
+                        dia.id_funcionario_horario = Convert.ToInt32(dataReader["id_funcionario_horario"]);
+                        dia.id_funcionario = Convert.ToInt32(dataReader["id_funcionario"]);
+                        dia.hora_entrada = (TimeSpan)dataReader["hora_entrada"];
+                        dia.hora_saida = (TimeSpan)dataReader["hora_saida"];
+                        dia.dia_semana = dataReader["dia_semana"].ToString();
 
-                        produtos.Add(produto);
+                        horario.Add(dia);
                     }
 
                     dataReader.Close();
@@ -56,7 +52,7 @@ namespace Backend_IPCA_Gym.Controllers
                 }
             }
 
-            return new JsonResult(produtos);
+            return new JsonResult(horario);
         }
     }
 }

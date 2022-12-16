@@ -1,6 +1,6 @@
 ﻿namespace Backend_IPCA_Gym.Models
 {
-    public class Classificao
+    public class Classificacao
     {
         public int id_avaliacao { get; set; }
         public int id_ginasio { get; set; }
