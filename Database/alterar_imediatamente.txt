@@ -1,0 +1,23 @@
+ALTER TABLE dbo.Atividade
+ALTER COLUMN data_saida datetime NOT NULL; 
+
+ALTER TABLE dbo.Funcionario
+ALTER COLUMN id_ginasio int NOT NULL; 
+
+ALTER TABLE dbo.Cliente
+ALTER COLUMN altura int;
+
+ALTER TABLE dbo.Cliente
+ALTER COLUMN pass_salt varchar(max) NOT NULL
+
+ALTER TABLE dbo.Cliente
+ALTER COLUMN pass_hash varchar(max) NOT NULL 
+
+ALTER TABLE dbo.Horario_Funcionario
+ALTER COLUMN id_funcionario int NOT NULL;
+
+ALTER TABLE Refeicao
+ADD foto_refeicao varchar(max) 
+
+ALTER TABLE dbo.Ginasio
+ALTER COLUMN contacto int NOT NULL;
