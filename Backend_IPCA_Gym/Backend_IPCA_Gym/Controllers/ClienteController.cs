@@ -7,5 +7,6 @@ namespace Backend_IPCA_Gym.Controllers
     [ApiController]
     public class ClienteController : ControllerBase
     {
+        //olaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     }
 }
