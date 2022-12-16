@@ -1,0 +1,77 @@
+NOTA: ALGUNS IDS USADOS PODEM SER DIFERENTES NAS VOSSAS BDS
+
+insert into dbo.Ginasio(instituicao, contacto, estado ) values('IPCA',211345667,'Ativo')
+
+insert into dbo.Funcionario(id_ginasio,is_admin,nome,codigo,pass_salt,pass_hash,estado ) values(5,0,'Frederico Botelho',123456789,'teste','teste','Ativo')
+insert into dbo.Funcionario(id_ginasio,is_admin,nome,codigo,pass_salt,pass_hash,estado ) values(5,0,'Joaquim Rodilhas',211322433,'teste','teste','Ativo')
+insert into dbo.Funcionario(id_ginasio,is_admin,nome,codigo,pass_salt,pass_hash,estado ) values(5,0,'Fernando Calhaus',989878766,'teste','teste','Ativo')
+insert into dbo.Funcionario(id_ginasio,is_admin,nome,codigo,pass_salt,pass_hash,estado ) values(5,1,'Juan Cavalo',233233233,'teste','teste','Ativo')
+insert into dbo.Funcionario(id_ginasio,is_admin,nome,codigo,pass_salt,pass_hash,estado ) values(5,1,'André Pollo',243245246,'teste','teste','Ativo')
+
+insert into dbo.Loja(id_ginasio ,nome,tipo_produto,preco,descricao,foto_produto,quantidade,estado ) values(5,'Barra de Bacalhau','Comida',2.6,'100gr','teste',50,'Ativo')
+insert into dbo.Loja(id_ginasio ,nome,tipo_produto,preco,descricao,foto_produto,quantidade,estado ) values(5,'T-Shirt','Roupa',12.6,'M','teste',50,'Ativo')
+insert into dbo.Loja(id_ginasio ,nome,tipo_produto,preco,descricao,foto_produto,quantidade,estado ) values(5,'T-shirt','Roupa',12.6,'XL','teste',50,'Ativo')
+insert into dbo.Loja(id_ginasio ,nome,tipo_produto,preco,descricao,foto_produto,quantidade,estado ) values(5,'Haltere','Material',15,'5kg','teste',50,'Ativo')
+insert into dbo.Loja(id_ginasio ,nome,tipo_produto,preco,descricao,foto_produto,quantidade,estado ) values(5,'Whey Protein','Comida',12.6,'1000gr','teste',50,'Ativo')
+
+insert into dbo.Horario_Funcionario(id_funcionario,hora_entrada,hora_saida,dia_semana) values(19,'09:00:00','17:00:00','Segunda')
+insert into dbo.Horario_Funcionario(id_funcionario,hora_entrada,hora_saida,dia_semana) values(19,'09:00:00','17:00:00','Terça')
+insert into dbo.Horario_Funcionario(id_funcionario,hora_entrada,hora_saida,dia_semana) values(19,'09:00:00','17:00:00','Quarta')
+insert into dbo.Horario_Funcionario(id_funcionario,hora_entrada,hora_saida,dia_semana) values(19,'09:00:00','17:00:00','Quinta')
+insert into dbo.Horario_Funcionario(id_funcionario,hora_entrada,hora_saida,dia_semana) values(19,'09:00:00','17:00:00','Sexta')
+insert into dbo.Horario_Funcionario(id_funcionario,hora_entrada,hora_saida,dia_semana) values(20,'10:00:00','18:00:00','Segunda')
+insert into dbo.Horario_Funcionario(id_funcionario,hora_entrada,hora_saida,dia_semana) values(20,'10:00:00','18:00:00','Terça')
+insert into dbo.Horario_Funcionario(id_funcionario,hora_entrada,hora_saida,dia_semana) values(20,'10:00:00','18:00:00','Quarta')
+insert into dbo.Horario_Funcionario(id_funcionario,hora_entrada,hora_saida,dia_semana) values(20,'10:00:00','18:00:00','Quinta')
+insert into dbo.Horario_Funcionario(id_funcionario,hora_entrada,hora_saida,dia_semana) values(20,'10:00:00','18:00:00','Sexta')
+insert into dbo.Horario_Funcionario(id_funcionario,hora_entrada,hora_saida,dia_semana) values(20,'09:00:00','13:00:00','Sabado')
+
+insert into dbo.Plano_Nutricional(id_ginasio,tipo,calorias) values(5,'Emagrecer',2000)
+insert into dbo.Plano_Nutricional(id_ginasio,tipo,calorias) values(5,'Definir',2500)
+insert into dbo.Plano_Nutricional(id_ginasio,tipo,calorias) values(5,'Engordar',3000)
+
+insert into dbo.Refeicao(id_plano_nutricional,descricao,hora,foto_refeicao) values(1,'1 Banana','09:00:00','teste')
+insert into dbo.Refeicao(id_plano_nutricional,descricao,hora,foto_refeicao) values(1,'1 Iogurte natural','09:00:00','teste')
+insert into dbo.Refeicao(id_plano_nutricional,descricao,hora,foto_refeicao) values(1,'Frango com arroz','12:00:00','teste')
+insert into dbo.Refeicao(id_plano_nutricional,descricao,hora,foto_refeicao) values(1,'3 Bolachas de arroz','18:00:00','teste')
+insert into dbo.Refeicao(id_plano_nutricional,descricao,hora,foto_refeicao) values(1,'Massa com linguiça','20:30:00','teste')
+insert into dbo.Refeicao(id_plano_nutricional,descricao,hora,foto_refeicao) values(2,'Aveia','10:00:00','teste')
+insert into dbo.Refeicao(id_plano_nutricional,descricao,hora,foto_refeicao) values(2,'Salmão com arroz','13:00:00','teste')
+insert into dbo.Refeicao(id_plano_nutricional,descricao,hora,foto_refeicao) values(2,'Salada de atum','20:30:00','teste')
+
+insert into dbo.Plano_Treino(id_ginasio,tipo) values(5,'Emagrecer')
+insert into dbo.Plano_Treino(id_ginasio,tipo) values(5,'Cardio')
+insert into dbo.Plano_Treino(id_ginasio,tipo) values(5,'Karate')
+insert into dbo.Plano_Treino(id_ginasio,tipo) values(5,'Braços')
+
+insert into dbo.Exercicio(id_plano_treino,nome,descricao,tipo,series,repeticoes) values(1,'Flexões','Voce deverá refletir os braços para melhor execução','Bicep',4,10)
+insert into dbo.Exercicio(id_plano_treino,nome,descricao,tipo,series,repeticoes) values(1,'Abdominais','Voce deverá sentir o abdominal trabalhar','Abdomen',4,10)
+insert into dbo.Exercicio(id_plano_treino,nome,descricao,tipo,series,repeticoes) values(1,'Agachamentos','Voce deverá refletir os joelhos até realizar 90 graus','Quadriceps',10,4)
+insert into dbo.Exercicio(id_plano_treino,nome,descricao,tipo,tempo) values(2,'Passadeira','Tente manter a respiração no mesmo ritmo','Cardio','00:30:00')
+
+insert into dbo.Cliente(id_ginasio,nome,mail,telemovel,pass_salt,pass_hash,estado) values(5,'John Gillman','homelenderisbetter@vought.com',922345543,'teste','teste','Ativo')
+insert into dbo.Cliente(id_ginasio,nome,mail,telemovel,pass_salt,pass_hash,estado) values(5,'William Butcher','theboys@gmail.com',923365547,'teste','teste','Ativo')
+insert into dbo.Cliente(id_ginasio,nome,mail,telemovel,pass_salt,pass_hash,estado) values(5,'Tony Stark','starkindustry@hotmail.com',211345345,'teste','teste','Ativo')
+insert into dbo.Cliente(id_ginasio,nome,mail,telemovel,pass_salt,pass_hash,estado) values(5,'Henry Cavill','dcexsuperman@gmail.com',211211211,'teste','teste','Ativo')
+insert into dbo.Cliente(id_ginasio,nome,mail,telemovel,pass_salt,pass_hash,estado) values(5,'James Gunn','dc@outlook.com',922345543,'teste','teste','Ativo')
+
+insert into dbo.Atividade(id_ginasio,id_cliente,data_entrada,data_saida) values(5,1,'2022-12-16 09:11:30','2022-12-16 10:17:45')
+insert into dbo.Atividade(id_ginasio,id_cliente,data_entrada,data_saida) values(5,2,'2022-12-16 12:13:10','2022-12-16 13:17:45')
+insert into dbo.Atividade(id_ginasio,id_cliente,data_entrada,data_saida) values(5,3,'2022-12-16 14:46:40','2022-12-16 15:37:35')
+
+insert into dbo.Classificacao(id_ginasio,id_cliente,avaliacao,comentario,data_avaliacao) values(5,1,5,'Perfeito','2022-12-16 15:37:35')
+insert into dbo.Classificacao(id_ginasio,id_cliente,avaliacao,comentario,data_avaliacao) values(5,2,4,'É bom','2022-12-16 17:37:35')
+insert into dbo.Classificacao(id_ginasio,id_cliente,avaliacao,comentario,data_avaliacao) values(5,3,3,'Razoavel, melhorava o atendimento','2022-12-16 20:37:35')
+
+insert into dbo.Marcacao(id_funcionario,id_cliente,data_marcacao,descricao,estado) values(19,1,'2022-12-16 15:37:35','Avaliação Fisica','Ativo')
+insert into dbo.Marcacao(id_funcionario,id_cliente,data_marcacao,descricao,estado) values(20,2,'2022-12-16 15:37:35','Avaliação Fisica','Ativo')
+insert into dbo.Marcacao(id_funcionario,id_cliente,data_marcacao,descricao,estado) values(21,3,'2022-12-16 15:37:35','Avaliação Nutricional','Ativo')
+
+insert into dbo.Pedido(id_cliente,estado,data_pedido) values(1,'Ativo','2022-12-16 15:37:35')
+insert into dbo.Pedido(id_cliente,estado,data_pedido) values(2,'Ativo','2022-12-16 18:37:35')
+
+insert into dbo.Pedido_Loja(id_pedido,id_produto,quantidade) values(1,1,2)
+insert into dbo.Pedido_Loja(id_pedido,id_produto,quantidade) values(1,2,1)
+insert into dbo.Pedido_Loja(id_pedido,id_produto,quantidade) values(1,5,1)
+insert into dbo.Pedido_Loja(id_pedido,id_produto,quantidade) values(2,3,2)
+insert into dbo.Pedido_Loja(id_pedido,id_produto,quantidade) values(2,1,1)
