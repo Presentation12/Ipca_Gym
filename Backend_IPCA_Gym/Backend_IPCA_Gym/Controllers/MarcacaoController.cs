@@ -7,5 +7,7 @@ namespace Backend_IPCA_Gym.Controllers
     [ApiController]
     public class MarcacaoController : ControllerBase
     {
+
+        //Comentario de teste para marcacao
     }
 }
