@@ -7,10 +7,10 @@ namespace Backend_IPCA_Gym.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Plano_NutricionalController : ControllerBase
+    public class PlanoTreinoController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public Plano_NutricionalController(IConfiguration configuration)
+        public PlanoTreinoController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -19,8 +19,8 @@ namespace Backend_IPCA_Gym.Controllers
         public IActionResult GetAll()
         {
             string query = @"
-                            select * from dbo.Plano_Nutricional";
-            List<PlanoNutricional> planosnutricionais = new List<PlanoNutricional>();
+                            select * from dbo.Plano_Treino";
+            List<PlanoTreino> planostreino = new List<PlanoTreino>();
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
@@ -32,14 +32,13 @@ namespace Backend_IPCA_Gym.Controllers
                     dataReader = myCommand.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        PlanoNutricional planoNutricional = new PlanoNutricional();
+                        PlanoTreino planotreino = new PlanoTreino();
 
-                        planoNutricional.id_plano_nutricional = Convert.ToInt32(dataReader["id_plano_nutricional"]);
-                        planoNutricional.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
-                        planoNutricional.tipo = dataReader["tipo"].ToString();
-                        planoNutricional.calorias = Convert.ToInt32(dataReader["calorias"]);
+                        planotreino.id_plano_treino = Convert.ToInt32(dataReader["id_plano_treino"]);
+                        planotreino.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
+                        planotreino.tipo = dataReader["tipo"].ToString();
 
-                        planosnutricionais.Add(planoNutricional);
+                        planostreino.Add(planotreino);
                     }
 
                     dataReader.Close();
@@ -47,7 +46,7 @@ namespace Backend_IPCA_Gym.Controllers
                 }
             }
 
-            return new JsonResult(planosnutricionais);
+            return new JsonResult(planostreino);
         }
     }
 }

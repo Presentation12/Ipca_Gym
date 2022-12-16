@@ -1,17 +1,16 @@
 ﻿using Backend_IPCA_Gym.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 
 namespace Backend_IPCA_Gym.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Pedido_LojaController : ControllerBase
+    public class PlanoNutricionalController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public Pedido_LojaController(IConfiguration configuration)
+        public PlanoNutricionalController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -20,8 +19,8 @@ namespace Backend_IPCA_Gym.Controllers
         public IActionResult GetAll()
         {
             string query = @"
-                            select * from dbo.Pedido_Loja";
-            List<PedidoLoja> pedidosloja = new List<PedidoLoja>();
+                            select * from dbo.Plano_Nutricional";
+            List<PlanoNutricional> planosnutricionais = new List<PlanoNutricional>();
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
@@ -33,13 +32,14 @@ namespace Backend_IPCA_Gym.Controllers
                     dataReader = myCommand.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        PedidoLoja pedidoloja = new PedidoLoja();
+                        PlanoNutricional planoNutricional = new PlanoNutricional();
 
-                        pedidoloja.id_pedido = Convert.ToInt32(dataReader["id_pedido"]);
-                        pedidoloja.id_produto = Convert.ToInt32(dataReader["id_produto"]);
-                        pedidoloja.quantidade = Convert.ToInt32(dataReader["quantidade"]);
+                        planoNutricional.id_plano_nutricional = Convert.ToInt32(dataReader["id_plano_nutricional"]);
+                        planoNutricional.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
+                        planoNutricional.tipo = dataReader["tipo"].ToString();
+                        planoNutricional.calorias = Convert.ToInt32(dataReader["calorias"]);
 
-                        pedidosloja.Add(pedidoloja);
+                        planosnutricionais.Add(planoNutricional);
                     }
 
                     dataReader.Close();
@@ -47,7 +47,7 @@ namespace Backend_IPCA_Gym.Controllers
                 }
             }
 
-            return new JsonResult(pedidosloja);
+            return new JsonResult(planosnutricionais);
         }
     }
 }

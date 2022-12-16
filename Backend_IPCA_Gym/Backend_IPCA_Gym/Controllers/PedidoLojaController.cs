@@ -1,16 +1,17 @@
 ﻿using Backend_IPCA_Gym.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 
 namespace Backend_IPCA_Gym.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Plano_TreinoController : ControllerBase
+    public class PedidoLojaController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public Plano_TreinoController(IConfiguration configuration)
+        public PedidoLojaController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -19,8 +20,8 @@ namespace Backend_IPCA_Gym.Controllers
         public IActionResult GetAll()
         {
             string query = @"
-                            select * from dbo.Plano_Treino";
-            List<PlanoTreino> planostreino = new List<PlanoTreino>();
+                            select * from dbo.Pedido_Loja";
+            List<PedidoLoja> pedidosloja = new List<PedidoLoja>();
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
@@ -32,13 +33,13 @@ namespace Backend_IPCA_Gym.Controllers
                     dataReader = myCommand.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        PlanoTreino planotreino = new PlanoTreino();
+                        PedidoLoja pedidoloja = new PedidoLoja();
 
-                        planotreino.id_plano_treino = Convert.ToInt32(dataReader["id_plano_treino"]);
-                        planotreino.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
-                        planotreino.tipo = dataReader["tipo"].ToString();
+                        pedidoloja.id_pedido = Convert.ToInt32(dataReader["id_pedido"]);
+                        pedidoloja.id_produto = Convert.ToInt32(dataReader["id_produto"]);
+                        pedidoloja.quantidade = Convert.ToInt32(dataReader["quantidade"]);
 
-                        planostreino.Add(planotreino);
+                        pedidosloja.Add(pedidoloja);
                     }
 
                     dataReader.Close();
@@ -46,7 +47,7 @@ namespace Backend_IPCA_Gym.Controllers
                 }
             }
 
-            return new JsonResult(planostreino);
+            return new JsonResult(pedidosloja);
         }
     }
 }
