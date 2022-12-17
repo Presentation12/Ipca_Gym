@@ -55,5 +55,132 @@ namespace Backend_IPCA_Gym.Controllers
 
             return new JsonResult(classificacoes);
         }
+
+        [HttpGet("{targetID}")]
+        public IActionResult GetByID(int targetID)
+        {
+            string query = @"
+                            select * from dbo.Classificacao where id_avaliacao = @id_avaliacao";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    Console.WriteLine(targetID);
+                    myCommand.Parameters.AddWithValue("id_avaliacao", targetID);
+
+                    using (SqlDataReader reader = myCommand.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        Classificacao targetClassificao = new Classificacao();
+                        targetClassificao.id_avaliacao = reader.GetInt32(0);
+                        targetClassificao.id_ginasio = reader.GetInt32(1);
+                        targetClassificao.id_cliente = reader.GetInt32(2);
+                        targetClassificao.avaliacao = reader.GetInt32(3);
+                        targetClassificao.comentario = reader.GetString(4);
+                        targetClassificao.data_avaliacao = reader.GetDateTime(5);
+
+                        reader.Close();
+                        databaseConnection.Close();
+
+                        return new JsonResult(targetClassificao);
+                    }
+                }
+            }
+
+            return new JsonResult("Erro");
+        }
+
+        [HttpPost]
+        public IActionResult Post(Classificacao newAtividade)
+        {
+            string query = @"
+                            insert into dbo.Classificacao (id_ginasio, id_cliente, avaliacao, comentario, data_avaliacao)
+                            values (@id_ginasio, @id_cliente, @avaliacao, @comentario, @data_avaliacao)";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            SqlDataReader dataReader;
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    myCommand.Parameters.AddWithValue("id_ginasio", newAtividade.id_ginasio);
+                    myCommand.Parameters.AddWithValue("id_cliente", newAtividade.id_cliente);
+                    myCommand.Parameters.AddWithValue("avaliacao", newAtividade.avaliacao);
+                    myCommand.Parameters.AddWithValue("comentario", newAtividade.comentario);
+                    myCommand.Parameters.AddWithValue("data_avaliacao", Convert.ToDateTime(newAtividade.data_avaliacao));
+                    dataReader = myCommand.ExecuteReader();
+
+                    dataReader.Close();
+                    databaseConnection.Close();
+                }
+            }
+
+            return new JsonResult("Classificação adicionada com sucesso");
+        }
+
+        [HttpPatch]
+        public IActionResult Update(Classificacao classificacao)
+        {
+            string query = @"
+                            update dbo.Classificacao 
+                            set id_ginasio = @id_ginasio, 
+                            id_cliente = @id_cliente, 
+                            avaliacao = @avaliacao, 
+                            comentario = @comentario,
+                            data_avaliacao = @data_avaliacao
+                            where id_avaliacao = @id_avaliacao";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            SqlDataReader dataReader;
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    myCommand.Parameters.AddWithValue("id_ginasio", classificacao.id_ginasio);
+                    myCommand.Parameters.AddWithValue("id_cliente", classificacao.id_cliente);
+                    myCommand.Parameters.AddWithValue("avaliacao", classificacao.avaliacao);
+                    myCommand.Parameters.AddWithValue("comentario", classificacao.comentario);
+                    myCommand.Parameters.AddWithValue("data_avaliacao", Convert.ToDateTime(classificacao.data_avaliacao));
+
+                    dataReader = myCommand.ExecuteReader();
+
+                    dataReader.Close();
+                    databaseConnection.Close();
+                }
+            }
+
+            return new JsonResult("Classificação atualizada com sucesso");
+        }
+
+        [HttpDelete("{targetID}")]
+        public IActionResult Delete(int targetID)
+        {
+            string query = @"
+                            delete from dbo.Classificacao 
+                            where id_avaliacao = @id_avaliacao";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            SqlDataReader dataReader;
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    myCommand.Parameters.AddWithValue("id_avaliacao", targetID);
+                    dataReader = myCommand.ExecuteReader();
+
+                    dataReader.Close();
+                    databaseConnection.Close();
+                }
+            }
+
+            return new JsonResult("Classificação apagada com sucesso");
+        }
     }
 }

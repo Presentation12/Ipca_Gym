@@ -125,7 +125,7 @@ namespace Backend_IPCA_Gym.Controllers
                     myCommand.Parameters.AddWithValue("instituicao", newGinasio.instituicao);
                     myCommand.Parameters.AddWithValue("contacto", newGinasio.contacto);
                     if (!string.IsNullOrEmpty(newGinasio.foto_ginasio)) myCommand.Parameters.AddWithValue("foto_ginasio", newGinasio.foto_ginasio);
-                    else myCommand.Parameters.AddWithValue("foto_ginasio", string.Empty);
+                    else myCommand.Parameters.AddWithValue("foto_ginasio", DBNull.Value);
                     myCommand.Parameters.AddWithValue("estado", newGinasio.estado);
                     dataReader = myCommand.ExecuteReader();
 
