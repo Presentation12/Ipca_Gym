@@ -61,5 +61,139 @@ namespace Backend_IPCA_Gym.Controllers
 
             return new JsonResult(ginasios);
         }
+
+        [HttpGet("{targetID}")]
+        public IActionResult GetByID(int targetID)
+        {
+            string query = @"
+                            select * from dbo.Ginasio where id_ginasio = @id_ginasio";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    Console.WriteLine(targetID);
+                    myCommand.Parameters.AddWithValue("id_ginasio", targetID);
+
+                    using (SqlDataReader reader = myCommand.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        Ginasio targetGinasio = new Ginasio();
+                        targetGinasio.id_ginasio = reader.GetInt32(0);
+                        targetGinasio.instituicao = reader.GetString(1);
+                        targetGinasio.contacto = reader.GetInt32(2);
+
+                        if (!Convert.IsDBNull(reader["foto_ginasio"]))
+                        {
+                            targetGinasio.foto_ginasio = reader.GetString(3);
+                        }
+                        else
+                        {
+                            targetGinasio.foto_ginasio = null;
+                        }
+
+                        targetGinasio.estado = reader.GetString(4);
+
+                        reader.Close();
+                        databaseConnection.Close();
+
+                        return new JsonResult(targetGinasio);
+                    }
+                }
+            }
+
+            return new JsonResult("Erro");
+        }
+
+        [HttpPost]
+        public IActionResult Post(Ginasio newGinasio)
+        {
+            string query = @"
+                            insert into dbo.Ginasio (instituicao, contacto, foto_ginasio, estado)
+                            values (@instituicao, @contacto, @foto_ginasio, @estado)";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            SqlDataReader dataReader;
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    myCommand.Parameters.AddWithValue("instituicao", newGinasio.instituicao);
+                    myCommand.Parameters.AddWithValue("contacto", newGinasio.contacto);
+                    if (!string.IsNullOrEmpty(newGinasio.foto_ginasio)) myCommand.Parameters.AddWithValue("foto_ginasio", newGinasio.foto_ginasio);
+                    else myCommand.Parameters.AddWithValue("foto_ginasio", string.Empty);
+                    myCommand.Parameters.AddWithValue("estado", newGinasio.estado);
+                    dataReader = myCommand.ExecuteReader();
+
+                    dataReader.Close();
+                    databaseConnection.Close();
+                }
+            }
+
+            return new JsonResult("Ginásio adicionado com sucesso");
+        }
+
+        [HttpPatch]
+        public IActionResult Update(Ginasio ginasio)
+        {
+            string query = @"
+                            update dbo.Ginasio 
+                            set instituicao = @instituicao, 
+                            contacto = @contacto, 
+                            foto_ginasio = @foto_ginasio, 
+                            estado = @estado
+                            where id_ginasio = @id_ginasio";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            SqlDataReader dataReader;
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    myCommand.Parameters.AddWithValue("id_ginasio", ginasio.id_ginasio);
+                    myCommand.Parameters.AddWithValue("instituicao", ginasio.instituicao);
+                    myCommand.Parameters.AddWithValue("contacto", ginasio.contacto);
+                    if (!string.IsNullOrEmpty(ginasio.foto_ginasio)) myCommand.Parameters.AddWithValue("foto_ginasio", ginasio.foto_ginasio);
+                    else myCommand.Parameters.AddWithValue("foto_ginasio", string.Empty);
+                    myCommand.Parameters.AddWithValue("estado", ginasio.estado);
+                    dataReader = myCommand.ExecuteReader();
+
+                    dataReader.Close();
+                    databaseConnection.Close();
+                }
+            }
+
+            return new JsonResult("Ginásio atualizado com sucesso");
+        }
+
+        [HttpDelete("{targetID}")]
+        public IActionResult Delete(int targetID)
+        {
+            string query = @"
+                            delete from dbo.Ginasio 
+                            where id_ginasio = @id_ginasio";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            SqlDataReader dataReader;
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    myCommand.Parameters.AddWithValue("id_ginasio", targetID);
+                    dataReader = myCommand.ExecuteReader();
+
+                    dataReader.Close();
+                    databaseConnection.Close();
+                }
+            }
+
+            return new JsonResult("Ginásio apagado com sucesso");
+        }
     }
 }
