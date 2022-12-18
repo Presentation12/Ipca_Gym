@@ -92,50 +92,50 @@ namespace Backend_IPCA_Gym.Controllers
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
                     Console.WriteLine(targetID);
-                    myCommand.Parameters.AddWithValue("id_cliente", targetID);
+                    myCommand.Parameters.AddWithValue("id_exercicio", targetID);
 
                     using (SqlDataReader reader = myCommand.ExecuteReader())
                     {
                         reader.Read();
 
-                        Exercicio targetExericio = new Exercicio();
-                        targetExericio.id_exercicio = reader.GetInt32(0);
-                        targetExericio.id_plano_treino = reader.GetInt32(1);
-                        targetExericio.nome = reader.GetString(2);
-                        targetExericio.descricao = reader.GetString(3);
-                        targetExericio.tipo = reader.GetString(4);
+                        Exercicio targetExercicio = new Exercicio();
+                        targetExercicio.id_exercicio = reader.GetInt32(0);
+                        targetExercicio.id_plano_treino = reader.GetInt32(1);
+                        targetExercicio.nome = reader.GetString(2);
+                        targetExercicio.descricao = reader.GetString(3);
+                        targetExercicio.tipo = reader.GetString(4);
 
                         if (!Convert.IsDBNull(reader["series"]))
                         {
-                            targetExericio.series = reader.GetInt32(5);
+                            targetExercicio.series = reader.GetInt32(5);
                         }
                         else
                         {
-                            targetExericio.series = null;
+                            targetExercicio.series = null;
                         }
 
                         if (!Convert.IsDBNull(reader["tempo"]))
                         {
-                            targetExericio.tempo = reader.GetTimeSpan(6);
+                            targetExercicio.tempo = reader.GetTimeSpan(6);
                         }
                         else
                         {
-                            targetExericio.tempo = null;
+                            targetExercicio.tempo = null;
                         }
 
                         if (!Convert.IsDBNull(reader["repeticoes"]))
                         {
-                            targetExericio.repeticoes = reader.GetInt32(7);
+                            targetExercicio.repeticoes = reader.GetInt32(7);
                         }
                         else
                         {
-                            targetExericio.repeticoes = null;
+                            targetExercicio.repeticoes = null;
                         }
 
                         reader.Close();
                         databaseConnection.Close();
 
-                        return new JsonResult(targetExericio);
+                        return new JsonResult(targetExercicio);
                     }
                 }
             }
@@ -147,8 +147,8 @@ namespace Backend_IPCA_Gym.Controllers
         public IActionResult Post(Exercicio newExercicio)
         {
             string query = @"
-                            insert into dbo.Exercicio (id_exercicio, id_plano_treino, nome, descricao, tipo, series, tempo, repeticoes)
-                            values (@id_exercicio, @id_plano_treino, @nome, @descricao, @tipo, @series, @tempo, @repeticoes)";
+                            insert into dbo.Exercicio (id_plano_treino, nome, descricao, tipo, series, tempo, repeticoes)
+                            values (@id_plano_treino, @nome, @descricao, @tipo, @series, @tempo, @repeticoes)";
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
@@ -157,7 +157,6 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
-                    myCommand.Parameters.AddWithValue("id_exercicio", newExercicio.id_exercicio);
                     myCommand.Parameters.AddWithValue("id_plano_treino", newExercicio.id_plano_treino);
                     myCommand.Parameters.AddWithValue("nome", newExercicio.nome);
                     myCommand.Parameters.AddWithValue("descricao", newExercicio.descricao);
@@ -186,7 +185,7 @@ namespace Backend_IPCA_Gym.Controllers
         public IActionResult Update(Exercicio exercicio)
         {
             string query = @"
-                            update dbo.Classificacao 
+                            update dbo.Exercicio 
                             set id_plano_treino = @id_plano_treino, 
                             nome = @nome, 
                             descricao = @descricao,

@@ -158,8 +158,8 @@ namespace Backend_IPCA_Gym.Controllers
         public IActionResult Post(Cliente newCliente)
         {
             string query = @"
-                            insert into dbo.Cliente (id_cliente, id_ginasio, id_plano_nutricional, nome, mail, telemovel, pass_salt, pass_hash, peso, altura, gordura, foto_perfil, estado)
-                            values (@id_cliente, @id_ginasio, @id_plano_nutricional, @nome, @mail, @telemovel, @pass_salt, @pass_hash, @peso, @altura, @gordura, @foto_perfil, @estado)";
+                            insert into dbo.Cliente (id_ginasio, id_plano_nutricional, nome, mail, telemovel, pass_salt, pass_hash, peso, altura, gordura, foto_perfil, estado)
+                            values (@id_ginasio, @id_plano_nutricional, @nome, @mail, @telemovel, @pass_salt, @pass_hash, @peso, @altura, @gordura, @foto_perfil, @estado)";
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
@@ -168,7 +168,6 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
-                    myCommand.Parameters.AddWithValue("id_cliente", newCliente.id_ginasio);
                     myCommand.Parameters.AddWithValue("id_ginasio", newCliente.id_cliente);
 
                     if (newCliente.id_plano_nutricional != null) myCommand.Parameters.AddWithValue("id_plano_nutricional", newCliente.id_plano_nutricional);
