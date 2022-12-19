@@ -19,6 +19,52 @@ namespace Backend_IPCA_Gym.Controllers
             _configuration = configuration;
         }
 
+        protected Loja GetLojaByID(int targetID)
+        {
+            string query = @"select * from dbo.Loja where id_produto = @id_produto";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    Console.WriteLine(targetID);
+                    myCommand.Parameters.AddWithValue("id_produto", targetID);
+
+                    using (SqlDataReader reader = myCommand.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        Loja targetLoja = new Loja();
+                        targetLoja.id_produto = reader.GetInt32(0);
+                        targetLoja.id_ginasio = reader.GetInt32(1);
+                        targetLoja.nome = reader.GetString(2);
+                        targetLoja.tipo_produto = reader.GetString(3);
+                        targetLoja.preco = reader.GetDouble(4);
+                        targetLoja.descricao = reader.GetString(5);
+                        targetLoja.estado = reader.GetString(6);
+
+                        if (!Convert.IsDBNull(reader["foto_produto"]))
+                        {
+                            targetLoja.foto_produto = reader.GetString(7);
+                        }
+                        else
+                        {
+                            targetLoja.foto_produto = null;
+                        }
+
+                        targetLoja.quantidade = reader.GetInt32(8);
+
+                        reader.Close();
+                        databaseConnection.Close();
+
+                        return targetLoja;
+                    }
+                }
+            }
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -93,7 +139,6 @@ namespace Backend_IPCA_Gym.Controllers
                         targetLoja.preco = reader.GetDouble(4);
                         targetLoja.descricao = reader.GetString(5);
                         targetLoja.estado = reader.GetString(6);
-                        targetLoja.foto_produto = reader.GetString(7);
 
                         if (!Convert.IsDBNull(reader["foto_produto"]))
                         {
@@ -153,8 +198,8 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult("Produto adicionado com sucesso");
         }
 
-        [HttpPatch]
-        public IActionResult Update(Loja produto)
+        [HttpPatch("{targetID}")]
+        public IActionResult Update(Loja produto, int targetID)
         {
             string query = @"
                             update dbo.Loja 
@@ -168,6 +213,8 @@ namespace Backend_IPCA_Gym.Controllers
                             quantidade = @quantidade
                             where id_produto = @id_produto";
 
+            Loja produtoAtual = GetLojaByID(targetID);
+
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
             using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
@@ -175,18 +222,32 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
-                    myCommand.Parameters.AddWithValue("id_produto", produto.id_produto);
-                    myCommand.Parameters.AddWithValue("id_ginasio", produto.id_ginasio);
-                    myCommand.Parameters.AddWithValue("nome", produto.nome);
-                    myCommand.Parameters.AddWithValue("tipo_produto", produto.tipo_produto);
-                    myCommand.Parameters.AddWithValue("preco", produto.preco);
-                    myCommand.Parameters.AddWithValue("descricao", produto.descricao);
-                    myCommand.Parameters.AddWithValue("estado", produto.estado);
+                    if (produto.id_produto != null) myCommand.Parameters.AddWithValue("id_produto", produto.id_produto);
+                    else myCommand.Parameters.AddWithValue("id_produto", produtoAtual.id_produto);
+
+                    if (produto.id_ginasio != null) myCommand.Parameters.AddWithValue("id_ginasio", produto.id_ginasio);
+                    else myCommand.Parameters.AddWithValue("id_ginasio", produtoAtual.id_ginasio);
+
+                    if (!string.IsNullOrEmpty(produto.nome)) myCommand.Parameters.AddWithValue("nome", produto.nome);
+                    else myCommand.Parameters.AddWithValue("nome", produtoAtual.nome);
+
+                    if (!string.IsNullOrEmpty(produto.tipo_produto)) myCommand.Parameters.AddWithValue("tipo_produto", produto.tipo_produto);
+                    else myCommand.Parameters.AddWithValue("tipo_produto", produtoAtual.tipo_produto);
+
+                    if (produto.preco != null) myCommand.Parameters.AddWithValue("preco", produto.preco);
+                    else myCommand.Parameters.AddWithValue("preco", produtoAtual.preco);
+
+                    if (!string.IsNullOrEmpty(produto.descricao)) myCommand.Parameters.AddWithValue("descricao", produto.descricao);
+                    else myCommand.Parameters.AddWithValue("descricao", produtoAtual.descricao);
+
+                    if (!string.IsNullOrEmpty(produto.estado)) myCommand.Parameters.AddWithValue("estado", produto.estado);
+                    else myCommand.Parameters.AddWithValue("estado", produtoAtual.estado);
 
                     if (!string.IsNullOrEmpty(produto.foto_produto)) myCommand.Parameters.AddWithValue("foto_produto", produto.foto_produto);
-                    else myCommand.Parameters.AddWithValue("foto_produto", DBNull.Value);
+                    else myCommand.Parameters.AddWithValue("foto_produto", produtoAtual.foto_produto);
 
-                    myCommand.Parameters.AddWithValue("quantidade", produto.quantidade);
+                    if (produto.quantidade != null) myCommand.Parameters.AddWithValue("quantidade", produto.quantidade);
+                    else myCommand.Parameters.AddWithValue("quantidade", produtoAtual.quantidade);
 
                     dataReader = myCommand.ExecuteReader();
 

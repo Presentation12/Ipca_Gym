@@ -19,6 +19,40 @@ namespace Backend_IPCA_Gym.Controllers
             _configuration = configuration;
         }
 
+        protected Classificacao GetClassificacaoByID(int targetID)
+        {
+            string query = @"select * from dbo.Classificacao where id_avaliacao = @id_avaliacao";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    Console.WriteLine(targetID);
+                    myCommand.Parameters.AddWithValue("id_avaliacao", targetID);
+
+                    using (SqlDataReader reader = myCommand.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        Classificacao targetClassificacao = new Classificacao();
+                        targetClassificacao.id_avaliacao = reader.GetInt32(0);
+                        targetClassificacao.id_ginasio = reader.GetInt32(1);
+                        targetClassificacao.id_cliente = reader.GetInt32(2);
+                        targetClassificacao.avaliacao = reader.GetInt32(3);
+                        targetClassificacao.comentario = reader.GetString(4);
+                        targetClassificacao.data_avaliacao = reader.GetDateTime(5);
+
+                        reader.Close();
+                        databaseConnection.Close();
+
+                        return targetClassificacao;
+                    }
+                }
+            }
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -123,8 +157,8 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult("Classificação adicionada com sucesso");
         }
 
-        [HttpPatch]
-        public IActionResult Update(Classificacao classificacao)
+        [HttpPatch("{targetID}")]
+        public IActionResult Update(Classificacao classificacao, int targetID)
         {
             string query = @"
                             update dbo.Classificacao 
@@ -135,6 +169,8 @@ namespace Backend_IPCA_Gym.Controllers
                             data_avaliacao = @data_avaliacao
                             where id_avaliacao = @id_avaliacao";
 
+            Classificacao classificacaoAtual = GetClassificacaoByID(targetID);
+
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
             using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
@@ -142,12 +178,23 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
-                    myCommand.Parameters.AddWithValue("id_avaliacao", classificacao.id_avaliacao);
-                    myCommand.Parameters.AddWithValue("id_ginasio", classificacao.id_ginasio);
-                    myCommand.Parameters.AddWithValue("id_cliente", classificacao.id_cliente);
-                    myCommand.Parameters.AddWithValue("avaliacao", classificacao.avaliacao);
-                    myCommand.Parameters.AddWithValue("comentario", classificacao.comentario);
-                    myCommand.Parameters.AddWithValue("data_avaliacao", Convert.ToDateTime(classificacao.data_avaliacao));
+                    if (classificacao.id_avaliacao != null) myCommand.Parameters.AddWithValue("id_avaliacao", classificacao.id_avaliacao);
+                    else myCommand.Parameters.AddWithValue("id_avaliacao", classificacaoAtual.id_avaliacao);
+
+                    if (classificacao.id_ginasio != null) myCommand.Parameters.AddWithValue("id_ginasio", classificacao.id_ginasio);
+                    else myCommand.Parameters.AddWithValue("id_ginasio", classificacaoAtual.id_ginasio);
+
+                    if (classificacao.id_cliente != null) myCommand.Parameters.AddWithValue("id_cliente", classificacao.id_cliente);
+                    else myCommand.Parameters.AddWithValue("id_cliente", classificacaoAtual.id_cliente);
+
+                    if (classificacao.avaliacao != null) myCommand.Parameters.AddWithValue("avaliacao", classificacao.avaliacao);
+                    else myCommand.Parameters.AddWithValue("avaliacao", classificacaoAtual.avaliacao);
+
+                    if (!string.IsNullOrEmpty(classificacao.comentario)) myCommand.Parameters.AddWithValue("comentario", classificacao.comentario);
+                    else myCommand.Parameters.AddWithValue("comentario", classificacaoAtual.comentario);
+
+                    if (classificacao.data_avaliacao != null) myCommand.Parameters.AddWithValue("data_avaliacao", Convert.ToDateTime(classificacao.data_avaliacao));
+                    else myCommand.Parameters.AddWithValue("data_avaliacao", Convert.ToDateTime(classificacaoAtual.data_avaliacao));
 
                     dataReader = myCommand.ExecuteReader();
 

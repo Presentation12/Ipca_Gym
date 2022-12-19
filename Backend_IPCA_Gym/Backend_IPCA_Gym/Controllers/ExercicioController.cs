@@ -19,6 +19,74 @@ namespace Backend_IPCA_Gym.Controllers
             _configuration = configuration;
         }
 
+        protected Exercicio GetExercicioByID(int targetID)
+        {
+            string query = @"select * from dbo.Exercicio where id_exercicio = @id_exercicio";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    Console.WriteLine(targetID);
+                    myCommand.Parameters.AddWithValue("id_exercicio", targetID);
+
+                    using (SqlDataReader reader = myCommand.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        Exercicio targetExercicio = new Exercicio();
+                        targetExercicio.id_exercicio = reader.GetInt32(0);
+                        targetExercicio.id_plano_treino = reader.GetInt32(1);
+                        targetExercicio.nome = reader.GetString(2);
+                        targetExercicio.descricao = reader.GetString(3);
+                        targetExercicio.tipo = reader.GetString(4);
+
+                        if (!Convert.IsDBNull(reader["series"]))
+                        {
+                            targetExercicio.series = reader.GetInt32(5);
+                        }
+                        else
+                        {
+                            targetExercicio.series = null;
+                        }
+
+                        if (!Convert.IsDBNull(reader["tempo"]))
+                        {
+                            targetExercicio.tempo = reader.GetTimeSpan(6);
+                        }
+                        else
+                        {
+                            targetExercicio.tempo = null;
+                        }
+
+                        if (!Convert.IsDBNull(reader["repeticoes"]))
+                        {
+                            targetExercicio.repeticoes = reader.GetInt32(7);
+                        }
+                        else
+                        {
+                            targetExercicio.repeticoes = null;
+                        }
+                        if (!Convert.IsDBNull(reader["foto_exercicio"]))
+                        {
+                            targetExercicio.foto_exercicio = reader.GetString(8);
+                        }
+                        else
+                        {
+                            targetExercicio.foto_exercicio = null;
+                        }
+
+                        reader.Close();
+                        databaseConnection.Close();
+
+                        return targetExercicio;
+                    }
+                }
+            }
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -201,8 +269,8 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult("Exercicio adicionado com sucesso");
         }
 
-        [HttpPatch]
-        public IActionResult Update(Exercicio exercicio)
+        [HttpPatch("{targetID}")]
+        public IActionResult Update(Exercicio exercicio, int targetID)
         {
             string query = @"
                             update dbo.Exercicio 
@@ -216,6 +284,8 @@ namespace Backend_IPCA_Gym.Controllers
                             foto_exercicio = @foto_exercicio
                             where id_exercicio = @id_exercicio";
 
+            Exercicio exercicioAtual = GetExercicioByID(targetID);
+
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
             using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
@@ -223,23 +293,32 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
-                    myCommand.Parameters.AddWithValue("id_exercicio", exercicio.id_exercicio);
-                    myCommand.Parameters.AddWithValue("id_plano_treino", exercicio.id_plano_treino);
-                    myCommand.Parameters.AddWithValue("nome", exercicio.nome);
-                    myCommand.Parameters.AddWithValue("descricao", exercicio.descricao);
-                    myCommand.Parameters.AddWithValue("tipo", exercicio.tipo);
+                    if (exercicio.id_exercicio != null) myCommand.Parameters.AddWithValue("id_exercicio", exercicio.id_exercicio);
+                    else myCommand.Parameters.AddWithValue("id_exercicio", exercicioAtual.id_exercicio);
+
+                    if (exercicio.id_plano_treino != null) myCommand.Parameters.AddWithValue("id_plano_treino", exercicio.id_plano_treino);
+                    else myCommand.Parameters.AddWithValue("id_plano_treino", exercicioAtual.id_plano_treino);
+
+                    if (!string.IsNullOrEmpty(exercicio.nome)) myCommand.Parameters.AddWithValue("nome", exercicio.nome);
+                    else myCommand.Parameters.AddWithValue("nome", exercicioAtual.nome);
+
+                    if (!string.IsNullOrEmpty(exercicio.descricao)) myCommand.Parameters.AddWithValue("descricao", exercicio.descricao);
+                    else myCommand.Parameters.AddWithValue("descricao", exercicioAtual.descricao);
+
+                    if (!string.IsNullOrEmpty(exercicio.tipo)) myCommand.Parameters.AddWithValue("tipo", exercicio.tipo);
+                    else myCommand.Parameters.AddWithValue("tipo", exercicioAtual.tipo);
 
                     if (exercicio.series != null) myCommand.Parameters.AddWithValue("series", exercicio.series);
-                    else myCommand.Parameters.AddWithValue("series", DBNull.Value);
+                    else myCommand.Parameters.AddWithValue("series", exercicioAtual.series);
 
                     if (exercicio.tempo != null) myCommand.Parameters.AddWithValue("tempo", exercicio.tempo);
-                    else myCommand.Parameters.AddWithValue("tempo", DBNull.Value);
+                    else myCommand.Parameters.AddWithValue("tempo", exercicioAtual.tempo);
 
                     if (exercicio.repeticoes != null) myCommand.Parameters.AddWithValue("repeticoes", exercicio.repeticoes);
-                    else myCommand.Parameters.AddWithValue("repeticoes", DBNull.Value);
+                    else myCommand.Parameters.AddWithValue("repeticoes", exercicioAtual.repeticoes);
 
                     if (!string.IsNullOrEmpty(exercicio.foto_exercicio)) myCommand.Parameters.AddWithValue("foto_exercicio", exercicio.foto_exercicio);
-                    else myCommand.Parameters.AddWithValue("foto_exercicio", DBNull.Value);
+                    else myCommand.Parameters.AddWithValue("foto_exercicio", exercicioAtual.foto_exercicio);
 
                     dataReader = myCommand.ExecuteReader();
 

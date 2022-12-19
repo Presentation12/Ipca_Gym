@@ -19,6 +19,39 @@ namespace Backend_IPCA_Gym.Controllers
             _configuration = configuration;
         }
 
+        protected HorarioFuncionario GetHorarioFuncionarioByID(int targetID)
+        {
+            string query = @"select * from dbo.Horario_Funcionario where id_horario_funcionario = @id_horario_funcionario";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    Console.WriteLine(targetID);
+                    myCommand.Parameters.AddWithValue("id_horario_funcionario", targetID);
+
+                    using (SqlDataReader reader = myCommand.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        HorarioFuncionario targetHorarioFuncionario = new HorarioFuncionario();
+                        targetHorarioFuncionario.id_funcionario_horario = reader.GetInt32(0);
+                        targetHorarioFuncionario.id_funcionario = reader.GetInt32(1);
+                        targetHorarioFuncionario.hora_entrada = reader.GetTimeSpan(2);
+                        targetHorarioFuncionario.hora_saida = reader.GetTimeSpan(3);
+                        targetHorarioFuncionario.dia_semana = reader.GetString(4);
+
+                        reader.Close();
+                        databaseConnection.Close();
+
+                        return targetHorarioFuncionario;
+                    }
+                }
+            }
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -121,8 +154,8 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult("Horário (dia) adicionado com sucesso");
         }
 
-        [HttpPatch]
-        public IActionResult Update(HorarioFuncionario exercicio)
+        [HttpPatch("{targetID}")]
+        public IActionResult Update(HorarioFuncionario horarioFuncionario, int targetID)
         {
             string query = @"
                             update dbo.Horario_Funcionario 
@@ -132,6 +165,8 @@ namespace Backend_IPCA_Gym.Controllers
                             dia_semana = @dia_semana
                             where id_funcionario_horario = @id_funcionario_horario";
 
+            HorarioFuncionario horarioFuncionarioAtual = GetHorarioFuncionarioByID(targetID);
+
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
             using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
@@ -139,11 +174,20 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
-                    myCommand.Parameters.AddWithValue("id_funcionario_horario", exercicio.id_funcionario_horario);
-                    myCommand.Parameters.AddWithValue("id_funcionario", exercicio.id_funcionario);
-                    myCommand.Parameters.AddWithValue("hora_entrada", exercicio.hora_entrada);
-                    myCommand.Parameters.AddWithValue("hora_saida", exercicio.hora_saida);
-                    myCommand.Parameters.AddWithValue("dia_semana", exercicio.dia_semana);
+                    if (horarioFuncionario.id_funcionario_horario != null) myCommand.Parameters.AddWithValue("id_funcionario_horario", horarioFuncionario.id_funcionario_horario);
+                    else myCommand.Parameters.AddWithValue("id_funcionario_horario", horarioFuncionarioAtual.id_funcionario_horario);
+
+                    if (horarioFuncionario.id_funcionario != null) myCommand.Parameters.AddWithValue("id_funcionario", horarioFuncionario.id_funcionario);
+                    else myCommand.Parameters.AddWithValue("id_funcionario", horarioFuncionarioAtual.id_funcionario);
+
+                    if (horarioFuncionario.hora_entrada != null) myCommand.Parameters.AddWithValue("hora_entrada", horarioFuncionario.hora_entrada);
+                    else myCommand.Parameters.AddWithValue("hora_entrada", horarioFuncionarioAtual.hora_entrada);
+
+                    if (horarioFuncionario.hora_saida != null) myCommand.Parameters.AddWithValue("hora_saida", horarioFuncionario.hora_saida);
+                    else myCommand.Parameters.AddWithValue("hora_saida", horarioFuncionarioAtual.hora_saida);
+
+                    if (!string.IsNullOrEmpty(horarioFuncionario.dia_semana)) myCommand.Parameters.AddWithValue("dia_semana", horarioFuncionario.dia_semana);
+                    else myCommand.Parameters.AddWithValue("dia_semana", horarioFuncionarioAtual.dia_semana);
 
                     dataReader = myCommand.ExecuteReader();
 

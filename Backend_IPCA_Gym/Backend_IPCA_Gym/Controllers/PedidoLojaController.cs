@@ -16,6 +16,37 @@ namespace Backend_IPCA_Gym.Controllers
             _configuration = configuration;
         }
 
+        protected PedidoLoja GetPedidoLojaByID(int targetID1, int targetID2)
+        {
+            string query = @"select * from dbo.Pedido_Loja where id_pedido = @id_pedido and id_produto = @id_produto";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    myCommand.Parameters.AddWithValue("id_pedido", targetID1);
+                    myCommand.Parameters.AddWithValue("id_produto", targetID2);
+
+                    using (SqlDataReader reader = myCommand.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        PedidoLoja targetPedidoLoja = new PedidoLoja();
+                        targetPedidoLoja.id_pedido = reader.GetInt32(0);
+                        targetPedidoLoja.id_produto = reader.GetInt32(1);
+                        targetPedidoLoja.quantidade = reader.GetInt32(2);
+
+                        reader.Close();
+                        databaseConnection.Close();
+
+                        return targetPedidoLoja;
+                    }
+                }
+            }
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -113,13 +144,15 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult("Pedido Loja adicionado com sucesso");
         }
 
-        [HttpPatch]
-        public IActionResult Update(PedidoLoja pedidoLoja)
+        [HttpPatch("{targetID}")]
+        public IActionResult Update(PedidoLoja pedidoLoja, int targetID1, int targetID2)
         {
             string query = @"
                             update dbo.Pedido_Loja 
                             set quantidade = @quantidade
                             where id_pedido = @id_pedido and id_produto = @id_produto";
+
+            PedidoLoja pedidoLojaAtual = GetPedidoLojaByID(targetID1, targetID2);
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
@@ -128,9 +161,14 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
-                    myCommand.Parameters.AddWithValue("id_pedido", pedidoLoja.id_pedido);
-                    myCommand.Parameters.AddWithValue("id_produto", pedidoLoja.id_produto);
-                    myCommand.Parameters.AddWithValue("quantidade", pedidoLoja.quantidade);
+                    if (pedidoLoja.id_pedido != null) myCommand.Parameters.AddWithValue("id_pedido", pedidoLoja.id_pedido);
+                    else myCommand.Parameters.AddWithValue("id_pedido", pedidoLojaAtual.id_pedido);
+
+                    if (pedidoLoja.id_produto != null) myCommand.Parameters.AddWithValue("id_produto", pedidoLoja.id_produto);
+                    else myCommand.Parameters.AddWithValue("id_produto", pedidoLojaAtual.id_produto);
+
+                    if (pedidoLoja.quantidade != null) myCommand.Parameters.AddWithValue("quantidade", pedidoLoja.quantidade);
+                    else myCommand.Parameters.AddWithValue("quantidade", pedidoLojaAtual.quantidade);
 
                     dataReader = myCommand.ExecuteReader();
 

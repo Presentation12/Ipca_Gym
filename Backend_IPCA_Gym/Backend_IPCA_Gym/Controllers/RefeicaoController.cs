@@ -197,11 +197,18 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
-                    myCommand.Parameters.AddWithValue("id_refeicao", refeicao.id_refeicao);
-                    myCommand.Parameters.AddWithValue("id_plano_nutricional", refeicao.id_plano_nutricional);
-                    myCommand.Parameters.AddWithValue("descricao", refeicao.descricao);
-                    myCommand.Parameters.AddWithValue("hora", refeicao.hora);
-                    
+                    if (refeicao.id_refeicao != null) myCommand.Parameters.AddWithValue("id_refeicao", refeicao.id_refeicao);
+                    else myCommand.Parameters.AddWithValue("id_refeicao", refeicaoAtual.id_refeicao);
+
+                    if (refeicao.id_plano_nutricional != null) myCommand.Parameters.AddWithValue("id_plano_nutricional", refeicao.id_plano_nutricional);
+                    else myCommand.Parameters.AddWithValue("id_plano_nutricional", refeicaoAtual.id_plano_nutricional);
+
+                    if (!string.IsNullOrEmpty(refeicao.descricao)) myCommand.Parameters.AddWithValue("descricao", refeicao.descricao);
+                    else myCommand.Parameters.AddWithValue("descricao", refeicaoAtual.descricao);
+
+                    if (refeicao.hora != null) myCommand.Parameters.AddWithValue("hora", refeicao.hora);
+                    else myCommand.Parameters.AddWithValue("hora", refeicaoAtual.hora);
+
                     if (!string.IsNullOrEmpty(refeicao.foto_refeicao)) myCommand.Parameters.AddWithValue("foto_refeicao", refeicao.foto_refeicao);
                     else myCommand.Parameters.AddWithValue("foto_refeicao", refeicaoAtual.foto_refeicao);
 

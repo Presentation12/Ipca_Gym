@@ -19,6 +19,42 @@ namespace Backend_IPCA_Gym.Controllers
             _configuration = configuration;
         }
 
+        protected Funcionario GetFuncionarioByID(int targetID)
+        {
+            string query = @"select * from dbo.Funcionario where id_funcionario = @id_funcionario";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    Console.WriteLine(targetID);
+                    myCommand.Parameters.AddWithValue("id_funcionario", targetID);
+
+                    using (SqlDataReader reader = myCommand.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        Funcionario targetFuncionario = new Funcionario();
+                        targetFuncionario.id_funcionario = reader.GetInt32(0);
+                        targetFuncionario.id_ginasio = reader.GetInt32(1);
+                        targetFuncionario.nome = reader.GetString(2);
+                        targetFuncionario.is_admin = reader.GetBoolean(3);
+                        targetFuncionario.codigo = reader.GetInt32(4);
+                        targetFuncionario.pass_salt = reader.GetString(5);
+                        targetFuncionario.pass_hash = reader.GetString(6);
+                        targetFuncionario.estado = reader.GetString(7);
+
+                        reader.Close();
+                        databaseConnection.Close();
+
+                        return targetFuncionario;
+                    }
+                }
+            }
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -130,8 +166,8 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult("Funcionário adicionado com sucesso");
         }
 
-        [HttpPatch]
-        public IActionResult Update(Funcionario funcionario)
+        [HttpPatch("{targetID}")]
+        public IActionResult Update(Funcionario funcionario, int targetID)
         {
             string query = @"
                             update dbo.Funcionario 
@@ -144,6 +180,8 @@ namespace Backend_IPCA_Gym.Controllers
                             estado = @estado
                             where id_funcionario = @id_funcionario";
 
+            Funcionario funcionarioAtual = GetFuncionarioByID(targetID);
+
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
             using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
@@ -151,14 +189,29 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
-                    myCommand.Parameters.AddWithValue("id_funcionario", funcionario.id_funcionario);
-                    myCommand.Parameters.AddWithValue("id_ginasio", funcionario.id_ginasio);
-                    myCommand.Parameters.AddWithValue("nome", funcionario.nome);
-                    myCommand.Parameters.AddWithValue("is_admin", funcionario.is_admin);
-                    myCommand.Parameters.AddWithValue("codigo", funcionario.codigo);
-                    myCommand.Parameters.AddWithValue("pass_salt", funcionario.pass_salt);
-                    myCommand.Parameters.AddWithValue("pass_hash", funcionario.pass_hash);
-                    myCommand.Parameters.AddWithValue("estado", funcionario.estado);
+                    if (funcionario.id_funcionario != null) myCommand.Parameters.AddWithValue("id_funcionario", funcionario.id_funcionario);
+                    else myCommand.Parameters.AddWithValue("id_funcionario", funcionarioAtual.id_funcionario);
+
+                    if (funcionario.id_ginasio != null) myCommand.Parameters.AddWithValue("id_ginasio", funcionario.id_ginasio);
+                    else myCommand.Parameters.AddWithValue("id_ginasio", funcionarioAtual.id_ginasio);
+
+                    if (!string.IsNullOrEmpty(funcionario.nome)) myCommand.Parameters.AddWithValue("nome", funcionario.nome);
+                    else myCommand.Parameters.AddWithValue("nome", funcionarioAtual.nome);
+
+                    if (funcionario.is_admin != null) myCommand.Parameters.AddWithValue("is_admin", funcionario.is_admin);
+                    else myCommand.Parameters.AddWithValue("is_admin", funcionarioAtual.is_admin);
+
+                    if (funcionario.codigo != null) myCommand.Parameters.AddWithValue("codigo", funcionario.codigo);
+                    else myCommand.Parameters.AddWithValue("codigo", funcionarioAtual.codigo);
+
+                    if (!string.IsNullOrEmpty(funcionario.pass_salt)) myCommand.Parameters.AddWithValue("pass_salt", funcionario.pass_salt);
+                    else myCommand.Parameters.AddWithValue("pass_salt", funcionarioAtual.pass_salt);
+
+                    if (!string.IsNullOrEmpty(funcionario.pass_hash)) myCommand.Parameters.AddWithValue("pass_hash", funcionario.pass_hash);
+                    else myCommand.Parameters.AddWithValue("pass_hash", funcionarioAtual.pass_hash);
+
+                    if (!string.IsNullOrEmpty(funcionario.estado)) myCommand.Parameters.AddWithValue("estado", funcionario.estado);
+                    else myCommand.Parameters.AddWithValue("estado", funcionarioAtual.estado);
 
                     dataReader = myCommand.ExecuteReader();
 

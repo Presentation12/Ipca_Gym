@@ -23,6 +23,86 @@ namespace Backend_IPCA_Gym.Controllers
             _configuration = configuration;
         }
 
+        protected Cliente GetClienteByID(int targetID)
+        {
+            string query = @"select * from dbo.Cliente where id_cliente = @id_cliente";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    Console.WriteLine(targetID);
+                    myCommand.Parameters.AddWithValue("id_cliente", targetID);
+
+                    using (SqlDataReader reader = myCommand.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        Cliente targetCliente = new Cliente();
+                        targetCliente.id_cliente = reader.GetInt32(0);
+                        targetCliente.id_ginasio = reader.GetInt32(1);
+                        if (!Convert.IsDBNull(reader["id_plano_nutricional"]))
+                        {
+                            targetCliente.id_plano_nutricional = reader.GetInt32(2);
+                        }
+                        else
+                        {
+                            targetCliente.id_plano_nutricional = null;
+                        }
+                        targetCliente.nome = reader.GetString(3);
+                        targetCliente.mail = reader.GetString(4);
+                        targetCliente.telemovel = reader.GetInt32(5);
+                        targetCliente.pass_salt = reader.GetString(6);
+                        targetCliente.pass_hash = reader.GetString(7);
+
+                        if (!Convert.IsDBNull(reader["peso"]))
+                        {
+                            targetCliente.peso = reader.GetDouble(8);
+                        }
+                        else
+                        {
+                            targetCliente.peso = null;
+                        }
+
+                        if (!Convert.IsDBNull(reader["altura"]))
+                        {
+                            targetCliente.altura = reader.GetInt32(9);
+                        }
+                        else
+                        {
+                            targetCliente.altura = null;
+                        }
+
+                        if (!Convert.IsDBNull(reader["gordura"]))
+                        {
+                            targetCliente.gordura = reader.GetInt32(10);
+                        }
+                        else
+                        {
+                            targetCliente.gordura = null;
+                        }
+
+                        if (!Convert.IsDBNull(reader["foto_perfil"]))
+                        {
+                            targetCliente.foto_perfil = reader.GetString(11);
+                        }
+                        else
+                        {
+                            targetCliente.foto_perfil = null;
+                        }
+                        targetCliente.estado = reader.GetString(12);
+
+                        reader.Close();
+                        databaseConnection.Close();
+
+                        return targetCliente;
+                    }
+                }
+            }
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -234,8 +314,8 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult("Cliente adicionado com sucesso");
         }
 
-        [HttpPatch]
-        public IActionResult Update(Cliente cliente)
+        [HttpPatch("{targetID}")]
+        public IActionResult Update(Cliente cliente, int targetID)
         {
             string query = @"
                             update dbo.Classificacao 
@@ -253,6 +333,8 @@ namespace Backend_IPCA_Gym.Controllers
                             estado = @estado,
                             where id_cliente = @id_cliente";
 
+            Cliente clienteAtual = GetClienteByID(targetID);
+
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
             using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
@@ -260,31 +342,44 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
-                    myCommand.Parameters.AddWithValue("id_cliente", cliente.id_cliente);
-                    myCommand.Parameters.AddWithValue("id_ginasio", cliente.id_ginasio);
+                    if (cliente.id_cliente != null) myCommand.Parameters.AddWithValue("id_cliente", cliente.id_cliente);
+                    else myCommand.Parameters.AddWithValue("id_cliente", clienteAtual.id_cliente);
+
+                    if (cliente.id_ginasio != null) myCommand.Parameters.AddWithValue("id_ginasio", cliente.id_ginasio);
+                    else myCommand.Parameters.AddWithValue("id_ginasio", clienteAtual.id_ginasio);
 
                     if (cliente.id_plano_nutricional != null) myCommand.Parameters.AddWithValue("id_plano_nutricional", cliente.id_plano_nutricional);
-                    else myCommand.Parameters.AddWithValue("id_plano_nutricional", DBNull.Value);
+                    else myCommand.Parameters.AddWithValue("id_plano_nutricional", clienteAtual.id_plano_nutricional);
 
-                    myCommand.Parameters.AddWithValue("nome", cliente.nome);
-                    myCommand.Parameters.AddWithValue("mail", cliente.mail);
-                    myCommand.Parameters.AddWithValue("telemovel", cliente.telemovel);
-                    myCommand.Parameters.AddWithValue("pass_salt", cliente.pass_salt);
-                    myCommand.Parameters.AddWithValue("pass_hash", cliente.pass_hash);
+                    if (!string.IsNullOrEmpty(cliente.nome)) myCommand.Parameters.AddWithValue("nome", cliente.nome);
+                    else myCommand.Parameters.AddWithValue("nome", clienteAtual.nome);
+
+                    if (!string.IsNullOrEmpty(cliente.mail)) myCommand.Parameters.AddWithValue("mail", cliente.mail);
+                    else myCommand.Parameters.AddWithValue("mail", clienteAtual.mail);
+
+                    if (cliente.telemovel != null) myCommand.Parameters.AddWithValue("telemovel", cliente.telemovel);
+                    else myCommand.Parameters.AddWithValue("telemovel", clienteAtual.telemovel);
+
+                    if (!string.IsNullOrEmpty(cliente.pass_salt)) myCommand.Parameters.AddWithValue("pass_salt", cliente.pass_salt);
+                    else myCommand.Parameters.AddWithValue("pass_salt", clienteAtual.pass_salt);
+
+                    if (!string.IsNullOrEmpty(cliente.pass_hash)) myCommand.Parameters.AddWithValue("pass_hash", cliente.pass_hash);
+                    else myCommand.Parameters.AddWithValue("pass_hash", clienteAtual.pass_hash);
 
                     if (cliente.peso != null) myCommand.Parameters.AddWithValue("peso", cliente.peso);
-                    else myCommand.Parameters.AddWithValue("peso", DBNull.Value);
+                    else myCommand.Parameters.AddWithValue("peso", clienteAtual.peso);
 
                     if (cliente.altura != null) myCommand.Parameters.AddWithValue("altura", cliente.altura);
-                    else myCommand.Parameters.AddWithValue("altura", DBNull.Value);
+                    else myCommand.Parameters.AddWithValue("altura", clienteAtual.altura);
 
                     if (cliente.gordura != null) myCommand.Parameters.AddWithValue("gordura", cliente.gordura);
-                    else myCommand.Parameters.AddWithValue("gordura", DBNull.Value);
+                    else myCommand.Parameters.AddWithValue("gordura", clienteAtual.gordura);
 
                     if (!string.IsNullOrEmpty(cliente.foto_perfil)) myCommand.Parameters.AddWithValue("foto_perfil", cliente.foto_perfil);
-                    else myCommand.Parameters.AddWithValue("foto_perfil", DBNull.Value);
+                    else myCommand.Parameters.AddWithValue("foto_perfil", clienteAtual.foto_perfil);
 
-                    myCommand.Parameters.AddWithValue("estado", cliente.estado);
+                    if (!string.IsNullOrEmpty(cliente.estado)) myCommand.Parameters.AddWithValue("estado", cliente.estado);
+                    else myCommand.Parameters.AddWithValue("estado", clienteAtual.estado);
 
                     dataReader = myCommand.ExecuteReader();
 

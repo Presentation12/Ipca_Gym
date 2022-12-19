@@ -19,6 +19,39 @@ namespace Backend_IPCA_Gym.Controllers
             _configuration = configuration;
         }
 
+        protected Atividade GetAtividadeByID(int targetID)
+        {
+            string query = @"select * from dbo.Atividade where id_atividade = @id_atividade";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    Console.WriteLine(targetID);
+                    myCommand.Parameters.AddWithValue("id_atividade", targetID);
+
+                    using (SqlDataReader reader = myCommand.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        Atividade targetAtividade = new Atividade();
+                        targetAtividade.id_atividade = reader.GetInt32(0);
+                        targetAtividade.id_ginasio = reader.GetInt32(1);
+                        targetAtividade.id_cliente = reader.GetInt32(2);
+                        targetAtividade.data_entrada = reader.GetDateTime(3);
+                        targetAtividade.data_saida = reader.GetDateTime(4);
+
+                        reader.Close();
+                        databaseConnection.Close();
+
+                        return targetAtividade;
+                    }
+                }
+            }
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -120,8 +153,8 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult("Atividade adicionada com sucesso");
         }
 
-        [HttpPatch]
-        public IActionResult Update(Atividade atividade)
+        [HttpPatch("{targetID}")]
+        public IActionResult Update(Atividade atividade, int targetID)
         {
             string query = @"
                             update dbo.Atividade 
@@ -131,6 +164,8 @@ namespace Backend_IPCA_Gym.Controllers
                             data_saida = @data_saida
                             where id_atividade = @id_atividade";
 
+            Atividade atividadeAtual = GetAtividadeByID(targetID);
+
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
             using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
@@ -138,11 +173,20 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
-                    myCommand.Parameters.AddWithValue("id_atividade", atividade.id_atividade);
-                    myCommand.Parameters.AddWithValue("id_ginasio", atividade.id_ginasio);
-                    myCommand.Parameters.AddWithValue("id_cliente", atividade.id_cliente);
-                    myCommand.Parameters.AddWithValue("data_entrada", Convert.ToDateTime(atividade.data_entrada));
-                    myCommand.Parameters.AddWithValue("data_saida", Convert.ToDateTime(atividade.data_saida));
+                    if (atividade.id_atividade != null) myCommand.Parameters.AddWithValue("id_atividade", atividade.id_atividade);
+                    else myCommand.Parameters.AddWithValue("id_atividade", atividadeAtual.id_atividade);
+
+                    if (atividade.id_ginasio != null) myCommand.Parameters.AddWithValue("id_ginasio", atividade.id_ginasio);
+                    else myCommand.Parameters.AddWithValue("id_ginasio", atividadeAtual.id_ginasio);
+
+                    if (atividade.id_cliente != null) myCommand.Parameters.AddWithValue("id_cliente", atividade.id_cliente);
+                    else myCommand.Parameters.AddWithValue("id_cliente", atividadeAtual.id_cliente);
+
+                    if (atividade.data_entrada != null) myCommand.Parameters.AddWithValue("data_entrada", Convert.ToDateTime(atividade.data_entrada));
+                    else myCommand.Parameters.AddWithValue("data_entrada", Convert.ToDateTime(atividadeAtual.data_entrada));
+
+                    if (atividade.data_saida != null) myCommand.Parameters.AddWithValue("data_saida", Convert.ToDateTime(atividade.data_saida));
+                    else myCommand.Parameters.AddWithValue("data_saida", Convert.ToDateTime(atividadeAtual.data_saida));
 
                     dataReader = myCommand.ExecuteReader();
 
