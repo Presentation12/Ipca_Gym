@@ -1,0 +1,15 @@
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerDAL\bin\Debug\net6.0\LayerDAL.deps.json
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerDAL\bin\Debug\net6.0\LayerDAL.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerDAL\bin\Debug\net6.0\LayerDAL.pdb
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerDAL\bin\Debug\net6.0\LayerBOL.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerDAL\bin\Debug\net6.0\LayerBOL.pdb
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.csproj.AssemblyReference.cache
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.AssemblyInfoInputs.cache
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.AssemblyInfo.cs
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.csproj.CoreCompileInputs.cache
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.csproj.CopyComplete
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\refint\LayerDAL.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.pdb
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\ref\LayerDAL.dll

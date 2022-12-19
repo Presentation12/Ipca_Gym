@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "LayerDAL/1.0.0": {
+        "dependencies": {
+          "LayerBOL": "1.0.0"
+        },
+        "runtime": {
+          "LayerDAL.dll": {}
+        }
+      },
+      "LayerBOL/1.0.0": {
+        "runtime": {
+          "LayerBOL.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "LayerDAL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LayerBOL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

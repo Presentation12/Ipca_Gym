@@ -1,0 +1,93 @@
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\appsettings.Development.json
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\appsettings.json
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Backend_IPCA_Gym.exe
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Backend_IPCA_Gym.deps.json
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Backend_IPCA_Gym.runtimeconfig.json
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Backend_IPCA_Gym.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Backend_IPCA_Gym.pdb
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.csproj.AssemblyReference.cache
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.GeneratedMSBuildEditorConfig.editorconfig
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.AssemblyInfoInputs.cache
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.AssemblyInfo.cs
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.csproj.CoreCompileInputs.cache
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.MvcApplicationPartsAssemblyInfo.cs
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.MvcApplicationPartsAssemblyInfo.cache
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\staticwebassets\msbuild.Backend_IPCA_Gym.Microsoft.AspNetCore.StaticWebAssets.props
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\staticwebassets\msbuild.build.Backend_IPCA_Gym.props
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.Backend_IPCA_Gym.props
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.Backend_IPCA_Gym.props
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\staticwebassets.pack.json
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\staticwebassets.build.json
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\staticwebassets.development.json
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\scopedcss\bundle\Backend_IPCA_Gym.styles.css
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.csproj.CopyComplete
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\refint\Backend_IPCA_Gym.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.pdb
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.genruntimeconfig.cache
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\ref\Backend_IPCA_Gym.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Npgsql.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\appsettings.json
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Backend_IPCA_Gym.exe
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Backend_IPCA_Gym.deps.json
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Backend_IPCA_Gym.runtimeconfig.json
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Backend_IPCA_Gym.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Backend_IPCA_Gym.pdb
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Npgsql.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.csproj.AssemblyReference.cache
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.AssemblyInfoInputs.cache
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.AssemblyInfo.cs
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.csproj.CoreCompileInputs.cache
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\scopedcss\bundle\Backend_IPCA_Gym.styles.css
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.csproj.CopyComplete
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\refint\Backend_IPCA_Gym.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.pdb
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.genruntimeconfig.cache
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\ref\Backend_IPCA_Gym.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\LayerBLL.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\LayerBOL.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\LayerDAL.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\LayerBLL.pdb
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\LayerBOL.pdb
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\LayerDAL.pdb

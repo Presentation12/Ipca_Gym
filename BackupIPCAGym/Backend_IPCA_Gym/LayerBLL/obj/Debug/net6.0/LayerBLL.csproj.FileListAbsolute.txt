@@ -1,0 +1,17 @@
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\bin\Debug\net6.0\LayerBLL.deps.json
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\bin\Debug\net6.0\LayerBLL.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\bin\Debug\net6.0\LayerBLL.pdb
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\bin\Debug\net6.0\LayerBOL.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\bin\Debug\net6.0\LayerDAL.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\bin\Debug\net6.0\LayerBOL.pdb
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\bin\Debug\net6.0\LayerDAL.pdb
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.csproj.AssemblyReference.cache
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.GeneratedMSBuildEditorConfig.editorconfig
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.AssemblyInfoInputs.cache
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.AssemblyInfo.cs
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.csproj.CoreCompileInputs.cache
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.csproj.CopyComplete
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\refint\LayerBLL.dll
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.pdb
+C:\TrabalhosPraticos\Projeto_Aplicado\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\ref\LayerBLL.dll
