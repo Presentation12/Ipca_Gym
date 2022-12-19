@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net6.0": {}
+    "net6.0": {
+      "LayerBOL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/LayerBOL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/LayerBOL.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "LayerBOL/1.0.0": {
+      "type": "project",
+      "path": "../LayerBOL/LayerBOL.csproj",
+      "msbuildProject": "../LayerBOL/LayerBOL.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net6.0": []
+    "net6.0": [
+      "LayerBOL >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Asus\\.nuget\\packages\\": {},
@@ -39,7 +58,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\TrabalhosPraticos\\Projeto_Aplicado\\ipca_gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj": {
+              "projectPath": "C:\\TrabalhosPraticos\\Projeto_Aplicado\\ipca_gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
