@@ -50,11 +50,11 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(pedidosloja);
         }
 
-        [HttpGet("{targetID}")]
-        public IActionResult GetByID(int targetID)
+        [HttpGet("search")]
+        public IActionResult GetByID(int targetID1, int targetID2)
         {
             string query = @"
-                            select * from dbo.Pedido_Loja where id_pedido_loja = @id_pedido_loja";
+                            select * from dbo.Pedido_Loja where id_pedido = @id_pedido and id_produto = @id_produto";
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
@@ -62,18 +62,17 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
-                    Console.WriteLine(targetID);
-                    myCommand.Parameters.AddWithValue("id_pedido_loja", targetID);
+                    myCommand.Parameters.AddWithValue("id_pedido", targetID1);
+                    myCommand.Parameters.AddWithValue("id_produto", targetID2);
 
                     using (SqlDataReader reader = myCommand.ExecuteReader())
                     {
                         reader.Read();
 
                         PedidoLoja targetPedidoLoja = new PedidoLoja();
-
-                        targetPedidoLoja.id_pedido = reader.GetInt32(1);
-                        targetPedidoLoja.id_produto = reader.GetInt32(3);
-                        targetPedidoLoja.quantidade = reader.GetInt32(4);
+                        targetPedidoLoja.id_pedido = reader.GetInt32(0);
+                        targetPedidoLoja.id_produto = reader.GetInt32(1);
+                        targetPedidoLoja.quantidade = reader.GetInt32(2);
 
                         reader.Close();
                         databaseConnection.Close();
@@ -119,10 +118,8 @@ namespace Backend_IPCA_Gym.Controllers
         {
             string query = @"
                             update dbo.Pedido_Loja 
-                            set id_pedido = @id_pedido, 
-                            id_produto = @id_produto,
-                            quantidade = @quantidade
-                            where id_pedido_loja = @id_pedido_loja";
+                            set quantidade = @quantidade
+                            where id_pedido = @id_pedido and id_produto = @id_produto";
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
@@ -131,7 +128,6 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
-                    myCommand.Parameters.AddWithValue("id_pedido_loja", pedidoLoja.id_pedido_loja);
                     myCommand.Parameters.AddWithValue("id_pedido", pedidoLoja.id_pedido);
                     myCommand.Parameters.AddWithValue("id_produto", pedidoLoja.id_produto);
                     myCommand.Parameters.AddWithValue("quantidade", pedidoLoja.quantidade);
@@ -146,12 +142,12 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult("Pedido Loja atualizado com sucesso");
         }
 
-        [HttpDelete("{targetID}")]
-        public IActionResult Delete(int targetID)
+        [HttpDelete("search")]
+        public IActionResult Delete(int targetID1, int targetID2)
         {
             string query = @"
                             delete from dbo.Pedido_Loja 
-                            where id_pedido_loja = @id_pedido_loja";
+                            where id_pedido = @id_pedido and id_produto = @id_produto";
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
@@ -160,7 +156,8 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
-                    myCommand.Parameters.AddWithValue("id_pedido_loja", targetID);
+                    myCommand.Parameters.AddWithValue("id_pedido", targetID1);
+                    myCommand.Parameters.AddWithValue("id_produto", targetID2);
                     dataReader = myCommand.ExecuteReader();
 
                     dataReader.Close();

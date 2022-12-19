@@ -124,15 +124,47 @@ namespace Backend_IPCA_Gym.Controllers
                         Cliente targetCliente = new Cliente();
                         targetCliente.id_cliente = reader.GetInt32(0);
                         targetCliente.id_ginasio = reader.GetInt32(1);
-                        targetCliente.id_plano_nutricional = reader.GetInt32(2);
+                        if (!Convert.IsDBNull(reader["id_plano_nutricional"]))
+                        {
+                            targetCliente.id_plano_nutricional = reader.GetInt32(2);
+                        }
+                        else
+                        {
+                            targetCliente.id_plano_nutricional = null;
+                        }
                         targetCliente.nome = reader.GetString(3);
                         targetCliente.mail = reader.GetString(4);
                         targetCliente.telemovel = reader.GetInt32(5);
                         targetCliente.pass_salt = reader.GetString(6);
                         targetCliente.pass_hash = reader.GetString(7);
-                        targetCliente.peso = reader.GetDouble(8);
-                        targetCliente.altura = reader.GetInt32(9);
-                        targetCliente.gordura = reader.GetInt32(10);
+                        
+                        if (!Convert.IsDBNull(reader["peso"]))
+                        {
+                            targetCliente.peso = reader.GetDouble(8);
+                        }
+                        else
+                        {
+                            targetCliente.peso = null;
+                        }
+
+                        if (!Convert.IsDBNull(reader["altura"]))
+                        {
+                            targetCliente.altura = reader.GetInt32(9);
+                        }
+                        else
+                        {
+                            targetCliente.altura = null;
+                        }
+                        
+                        if (!Convert.IsDBNull(reader["gordura"]))
+                        {
+                            targetCliente.gordura = reader.GetInt32(10);
+                        }
+                        else
+                        {
+                            targetCliente.gordura = null;
+                        }
+                        
                         if (!Convert.IsDBNull(reader["foto_perfil"]))
                         {
                             targetCliente.foto_perfil = reader.GetString(11);
@@ -168,7 +200,7 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
-                    myCommand.Parameters.AddWithValue("id_ginasio", newCliente.id_cliente);
+                    myCommand.Parameters.AddWithValue("id_ginasio", newCliente.id_ginasio);
 
                     if (newCliente.id_plano_nutricional != null) myCommand.Parameters.AddWithValue("id_plano_nutricional", newCliente.id_plano_nutricional);
                     else myCommand.Parameters.AddWithValue("id_plano_nutricional", DBNull.Value);

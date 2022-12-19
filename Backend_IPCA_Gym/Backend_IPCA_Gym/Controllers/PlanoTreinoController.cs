@@ -37,6 +37,16 @@ namespace Backend_IPCA_Gym.Controllers
                         planotreino.id_plano_treino = Convert.ToInt32(dataReader["id_plano_treino"]);
                         planotreino.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
                         planotreino.tipo = dataReader["tipo"].ToString();
+                        
+                        if (!Convert.IsDBNull(dataReader["foto_plano_treino"]))
+                        {
+                            planotreino.foto_plano_treino = dataReader["foto_plano_treino"].ToString();
+
+                        }
+                        else
+                        {
+                            planotreino.foto_plano_treino = null;
+                        }
 
                         planostreino.Add(planotreino);
                     }
@@ -71,7 +81,16 @@ namespace Backend_IPCA_Gym.Controllers
                         PlanoTreino targetPlanoTreino = new PlanoTreino();
                         targetPlanoTreino.id_plano_treino = reader.GetInt32(0);
                         targetPlanoTreino.id_ginasio = reader.GetInt32(1);
-                        targetPlanoTreino.tipo = reader.GetString(3);
+                        targetPlanoTreino.tipo = reader.GetString(2);
+
+                        if (!Convert.IsDBNull(reader["foto_plano_treino"]))
+                        {
+                            targetPlanoTreino.foto_plano_treino = reader.GetString(3);
+                        }
+                        else
+                        {
+                            targetPlanoTreino.foto_plano_treino = null;
+                        }
 
                         reader.Close();
                         databaseConnection.Close();
@@ -88,8 +107,8 @@ namespace Backend_IPCA_Gym.Controllers
         public IActionResult Post(PlanoTreino newPlanoTreino)
         {
             string query = @"
-                            insert into dbo.Plano_Treino (id_ginasio, tipo)
-                            values (@id_ginasio, @tipo)";
+                            insert into dbo.Plano_Treino (id_ginasio, tipo, foto_plano_treino)
+                            values (@id_ginasio, @tipo, @foto_plano_treino)";
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
@@ -100,6 +119,8 @@ namespace Backend_IPCA_Gym.Controllers
                 {
                     myCommand.Parameters.AddWithValue("id_ginasio", newPlanoTreino.id_ginasio);
                     myCommand.Parameters.AddWithValue("tipo", newPlanoTreino.tipo);
+                    if (!string.IsNullOrEmpty(newPlanoTreino.foto_plano_treino)) myCommand.Parameters.AddWithValue("foto_plano_treino", newPlanoTreino.foto_plano_treino);
+                    else myCommand.Parameters.AddWithValue("foto_plano_treino", DBNull.Value);
 
                     dataReader = myCommand.ExecuteReader();
 
@@ -117,7 +138,8 @@ namespace Backend_IPCA_Gym.Controllers
             string query = @"
                             update dbo.Plano_Treino 
                             set id_ginasio = @id_ginasio, 
-                            tipo = @tipo
+                            tipo = @tipo,
+                            foto_plano_treino = @foto_plano_treino
                             where id_plano_treino = @id_plano_treino";
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -130,6 +152,8 @@ namespace Backend_IPCA_Gym.Controllers
                     myCommand.Parameters.AddWithValue("id_plano_treino", planoTreino.id_plano_treino);
                     myCommand.Parameters.AddWithValue("id_ginasio", planoTreino.id_ginasio);
                     myCommand.Parameters.AddWithValue("tipo", planoTreino.tipo);
+                    if (!string.IsNullOrEmpty(planoTreino.foto_plano_treino)) myCommand.Parameters.AddWithValue("foto_plano_treino", planoTreino.foto_plano_treino);
+                    else myCommand.Parameters.AddWithValue("foto_plano_treino", DBNull.Value);
 
                     dataReader = myCommand.ExecuteReader();
 

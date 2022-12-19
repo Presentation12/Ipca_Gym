@@ -72,9 +72,9 @@ namespace Backend_IPCA_Gym.Controllers
                         Pedido targetPedido = new Pedido();
                         targetPedido.id_pedido = reader.GetInt32(0);
                         targetPedido.id_cliente = reader.GetInt32(1);
+                        targetPedido.estado = reader.GetString(2);
                         targetPedido.data_pedido = reader.GetDateTime(3);
-                        targetPedido.estado = reader.GetString(4);
-
+                        
                         reader.Close();
                         databaseConnection.Close();
 

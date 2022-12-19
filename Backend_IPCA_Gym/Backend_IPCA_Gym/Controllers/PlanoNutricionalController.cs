@@ -39,6 +39,15 @@ namespace Backend_IPCA_Gym.Controllers
                         planoNutricional.tipo = dataReader["tipo"].ToString();
                         planoNutricional.calorias = Convert.ToInt32(dataReader["calorias"]);
 
+                        if (!Convert.IsDBNull(dataReader["foto_plano_nutricional"]))
+                        {
+                            planoNutricional.foto_plano_nutricional = dataReader["foto_plano_nutricional"].ToString();
+                        }
+                        else
+                        {
+                            planoNutricional.foto_plano_nutricional = null;
+                        }
+
                         planosnutricionais.Add(planoNutricional);
                     }
 
@@ -72,9 +81,16 @@ namespace Backend_IPCA_Gym.Controllers
                         PlanoNutricional targetPlanoNutricional = new PlanoNutricional();
                         targetPlanoNutricional.id_plano_nutricional = reader.GetInt32(0);
                         targetPlanoNutricional.id_ginasio = reader.GetInt32(1);
-                        targetPlanoNutricional.tipo = reader.GetString(3);
-                        targetPlanoNutricional.calorias = reader.GetInt32(4);
-
+                        targetPlanoNutricional.tipo = reader.GetString(2);
+                        targetPlanoNutricional.calorias = reader.GetInt32(3);
+                        if (!Convert.IsDBNull(reader["foto_plano_nutricional"]))
+                        {
+                            targetPlanoNutricional.foto_plano_nutricional = reader.GetString(4);
+                        }
+                        else
+                        {
+                            targetPlanoNutricional.foto_plano_nutricional = null;
+                        }
                         reader.Close();
                         databaseConnection.Close();
 
@@ -90,8 +106,8 @@ namespace Backend_IPCA_Gym.Controllers
         public IActionResult Post(PlanoNutricional newPlanoNutricional)
         {
             string query = @"
-                            insert into dbo.Plano_Nutricional (id_ginasio, tipo, calorias)
-                            values (@id_ginasio, @tipo, @calorias)";
+                            insert into dbo.Plano_Nutricional (id_ginasio, tipo, calorias, foto_plano_nutricional)
+                            values (@id_ginasio, @tipo, @calorias, @foto_plano_nutricional)";
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
@@ -103,6 +119,9 @@ namespace Backend_IPCA_Gym.Controllers
                     myCommand.Parameters.AddWithValue("id_ginasio", newPlanoNutricional.id_ginasio);
                     myCommand.Parameters.AddWithValue("tipo", newPlanoNutricional.tipo);
                     myCommand.Parameters.AddWithValue("calorias", newPlanoNutricional.calorias);
+                    
+                    if (!string.IsNullOrEmpty(newPlanoNutricional.foto_plano_nutricional)) myCommand.Parameters.AddWithValue("foto_plano_nutricional", newPlanoNutricional.foto_plano_nutricional);
+                    else myCommand.Parameters.AddWithValue("foto_plano_nutricional", DBNull.Value);
 
                     dataReader = myCommand.ExecuteReader();
 
@@ -121,7 +140,8 @@ namespace Backend_IPCA_Gym.Controllers
                             update dbo.Plano_Nutricional 
                             set id_ginasio = @id_ginasio, 
                             tipo = @tipo,
-                            calorias = @calorias
+                            calorias = @calorias,
+                            foto_plano_nutricional = @foto_plano_nutricional
                             where id_plano_nutricional = @id_plano_nutricional";
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -135,6 +155,9 @@ namespace Backend_IPCA_Gym.Controllers
                     myCommand.Parameters.AddWithValue("id_ginasio", planoNutricional.id_ginasio);
                     myCommand.Parameters.AddWithValue("tipo", planoNutricional.tipo);
                     myCommand.Parameters.AddWithValue("calorias", planoNutricional.calorias);
+
+                    if (!string.IsNullOrEmpty(planoNutricional.foto_plano_nutricional)) myCommand.Parameters.AddWithValue("foto_plano_nutricional", planoNutricional.foto_plano_nutricional);
+                    else myCommand.Parameters.AddWithValue("foto_plano_nutricional", DBNull.Value);
 
                     dataReader = myCommand.ExecuteReader();
 

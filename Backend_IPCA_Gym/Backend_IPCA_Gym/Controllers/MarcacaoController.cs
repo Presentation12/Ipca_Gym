@@ -78,8 +78,7 @@ namespace Backend_IPCA_Gym.Controllers
                         targetMarcacao.id_cliente = reader.GetInt32(2);
                         targetMarcacao.data_marcacao = reader.GetDateTime(3);
                         targetMarcacao.descricao = reader.GetString(4);
-                        targetMarcacao.descricao = reader.GetString(5);
-                        targetMarcacao.estado = reader.GetString(6);
+                        targetMarcacao.estado = reader.GetString(5);
 
                         reader.Close();
                         databaseConnection.Close();

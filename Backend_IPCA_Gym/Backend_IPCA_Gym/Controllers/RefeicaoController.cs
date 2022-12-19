@@ -1,6 +1,7 @@
 ﻿using Backend_IPCA_Gym.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using System.Data.SqlClient;
 
 namespace Backend_IPCA_Gym.Controllers
@@ -13,6 +14,47 @@ namespace Backend_IPCA_Gym.Controllers
         public RefeicaoController(IConfiguration configuration)
         {
             _configuration = configuration;
+        }
+        
+        protected Refeicao GetRefeicaoByID(int targetID)
+        {
+            string query = @"select * from dbo.Refeicao where id_refeicao = @id_refeicao";
+
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            {
+                databaseConnection.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                {
+                    Console.WriteLine(targetID);
+                    myCommand.Parameters.AddWithValue("id_refeicao", targetID);
+
+                    using (SqlDataReader reader = myCommand.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        Refeicao targetRefeicao = new Refeicao();
+                        targetRefeicao.id_refeicao = reader.GetInt32(0);
+                        targetRefeicao.id_plano_nutricional = reader.GetInt32(1);
+                        targetRefeicao.descricao = reader.GetString(2);
+                        targetRefeicao.hora = reader.GetTimeSpan(3);
+
+                        if (!Convert.IsDBNull(reader["foto_refeicao"]))
+                        {
+                            targetRefeicao.foto_refeicao = reader.GetString(4);
+                        }
+                        else
+                        {
+                            targetRefeicao.foto_refeicao = null;
+                        }
+
+                        reader.Close();
+                        databaseConnection.Close();
+
+                        return targetRefeicao;
+                    }
+                }
+            }
         }
 
         [HttpGet]
@@ -82,11 +124,11 @@ namespace Backend_IPCA_Gym.Controllers
                         targetRefeicao.id_refeicao = reader.GetInt32(0);
                         targetRefeicao.id_plano_nutricional = reader.GetInt32(1);
                         targetRefeicao.descricao = reader.GetString(2);
-                        targetRefeicao.hora = reader.GetTimeSpan(4);
+                        targetRefeicao.hora = reader.GetTimeSpan(3);
                         
                         if (!Convert.IsDBNull(reader["foto_refeicao"]))
                         {
-                            targetRefeicao.foto_refeicao = reader.GetString(5);
+                            targetRefeicao.foto_refeicao = reader.GetString(4);
                         }
                         else
                         {
@@ -135,8 +177,8 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult("Refeição adicionado com sucesso");
         }
 
-        [HttpPatch]
-        public IActionResult Update(Refeicao refeicao)
+        [HttpPatch("{targetID}")]
+        public IActionResult Update(Refeicao refeicao, int targetID)
         {
             string query = @"
                             update dbo.Refeicao 
@@ -145,6 +187,8 @@ namespace Backend_IPCA_Gym.Controllers
                             hora = @hora,
                             foto_refeicao = @foto_refeicao
                             where id_refeicao = @id_refeicao";
+
+            Refeicao refeicaoAtual = GetRefeicaoByID(targetID);
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
@@ -156,10 +200,10 @@ namespace Backend_IPCA_Gym.Controllers
                     myCommand.Parameters.AddWithValue("id_refeicao", refeicao.id_refeicao);
                     myCommand.Parameters.AddWithValue("id_plano_nutricional", refeicao.id_plano_nutricional);
                     myCommand.Parameters.AddWithValue("descricao", refeicao.descricao);
-                    myCommand.Parameters.AddWithValue("hora", refeicao.id_plano_nutricional);
+                    myCommand.Parameters.AddWithValue("hora", refeicao.hora);
                     
                     if (!string.IsNullOrEmpty(refeicao.foto_refeicao)) myCommand.Parameters.AddWithValue("foto_refeicao", refeicao.foto_refeicao);
-                    else myCommand.Parameters.AddWithValue("foto_refeicao", string.Empty);
+                    else myCommand.Parameters.AddWithValue("foto_refeicao", refeicaoAtual.foto_refeicao);
 
                     dataReader = myCommand.ExecuteReader();
 

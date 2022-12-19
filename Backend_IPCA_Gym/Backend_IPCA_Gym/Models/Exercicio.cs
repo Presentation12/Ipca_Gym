@@ -10,5 +10,6 @@
         public int? series { get; set; }
         public TimeSpan? tempo { get; set; }
         public int? repeticoes { get; set; }
+        public string? foto_exercicio { get; set; }
     }
 }

@@ -41,7 +41,7 @@ namespace Backend_IPCA_Gym.Controllers
                         funcionario.id_funcionario = Convert.ToInt32(dataReader["id_funcionario"]);
                         funcionario.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
                         funcionario.nome = dataReader["nome"].ToString();
-                        funcionario.is_admin = Convert.ToByte(dataReader["is_admin"]);
+                        funcionario.is_admin = Convert.ToBoolean(dataReader["is_admin"]);
                         funcionario.codigo = Convert.ToInt32(dataReader["codigo"]);
                         funcionario.pass_salt = dataReader["pass_salt"].ToString();
                         funcionario.pass_hash = dataReader["pass_hash"].ToString();
@@ -81,7 +81,7 @@ namespace Backend_IPCA_Gym.Controllers
                         targetFuncionario.id_funcionario = reader.GetInt32(0);
                         targetFuncionario.id_ginasio = reader.GetInt32(1);
                         targetFuncionario.nome = reader.GetString(2);
-                        targetFuncionario.is_admin = reader.GetByte(3);
+                        targetFuncionario.is_admin = reader.GetBoolean(3);
                         targetFuncionario.codigo = reader.GetInt32(4);
                         targetFuncionario.pass_salt = reader.GetString(5);
                         targetFuncionario.pass_hash = reader.GetString(6);

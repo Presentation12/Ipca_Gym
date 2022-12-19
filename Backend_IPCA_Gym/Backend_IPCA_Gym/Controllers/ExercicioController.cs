@@ -67,6 +67,15 @@ namespace Backend_IPCA_Gym.Controllers
                         {
                             exercicio.repeticoes = null;
                         }
+                        if (!Convert.IsDBNull(dataReader["foto_exercicio"]))
+                        {
+                            exercicio.foto_exercicio = dataReader["foto_exercicio"].ToString();
+                        }
+                        else
+                        {
+                            exercicio.foto_exercicio = null;
+                        }
+
 
                         exercicios.Add(exercicio);
                     }
@@ -131,6 +140,14 @@ namespace Backend_IPCA_Gym.Controllers
                         {
                             targetExercicio.repeticoes = null;
                         }
+                        if (!Convert.IsDBNull(reader["foto_exercicio"]))
+                        {
+                            targetExercicio.foto_exercicio = reader.GetString(8);
+                        }
+                        else
+                        {
+                            targetExercicio.foto_exercicio = null;
+                        }
 
                         reader.Close();
                         databaseConnection.Close();
@@ -147,8 +164,8 @@ namespace Backend_IPCA_Gym.Controllers
         public IActionResult Post(Exercicio newExercicio)
         {
             string query = @"
-                            insert into dbo.Exercicio (id_plano_treino, nome, descricao, tipo, series, tempo, repeticoes)
-                            values (@id_plano_treino, @nome, @descricao, @tipo, @series, @tempo, @repeticoes)";
+                            insert into dbo.Exercicio (id_plano_treino, nome, descricao, tipo, series, tempo, repeticoes, foto_exercicio)
+                            values (@id_plano_treino, @nome, @descricao, @tipo, @series, @tempo, @repeticoes, @foto_exercicio)";
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             SqlDataReader dataReader;
@@ -171,6 +188,9 @@ namespace Backend_IPCA_Gym.Controllers
                     if (newExercicio.repeticoes != null) myCommand.Parameters.AddWithValue("repeticoes", newExercicio.repeticoes);
                     else myCommand.Parameters.AddWithValue("repeticoes", DBNull.Value);
 
+                    if (!string.IsNullOrEmpty(newExercicio.foto_exercicio)) myCommand.Parameters.AddWithValue("foto_exercicio", newExercicio.foto_exercicio);
+                    else myCommand.Parameters.AddWithValue("foto_exercicio", DBNull.Value);
+
                     dataReader = myCommand.ExecuteReader();
 
                     dataReader.Close();
@@ -192,7 +212,8 @@ namespace Backend_IPCA_Gym.Controllers
                             tipo = @tipo,
                             series = @series,
                             tempo = @tempo,
-                            repeticoes = @repeticoes
+                            repeticoes = @repeticoes,
+                            foto_exercicio = @foto_exercicio
                             where id_exercicio = @id_exercicio";
 
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -211,11 +232,14 @@ namespace Backend_IPCA_Gym.Controllers
                     if (exercicio.series != null) myCommand.Parameters.AddWithValue("series", exercicio.series);
                     else myCommand.Parameters.AddWithValue("series", DBNull.Value);
 
-                    if (exercicio.tempo != null) myCommand.Parameters.AddWithValue("altura", exercicio.tempo);
-                    else myCommand.Parameters.AddWithValue("altura", DBNull.Value);
+                    if (exercicio.tempo != null) myCommand.Parameters.AddWithValue("tempo", exercicio.tempo);
+                    else myCommand.Parameters.AddWithValue("tempo", DBNull.Value);
 
                     if (exercicio.repeticoes != null) myCommand.Parameters.AddWithValue("repeticoes", exercicio.repeticoes);
                     else myCommand.Parameters.AddWithValue("repeticoes", DBNull.Value);
+
+                    if (!string.IsNullOrEmpty(exercicio.foto_exercicio)) myCommand.Parameters.AddWithValue("foto_exercicio", exercicio.foto_exercicio);
+                    else myCommand.Parameters.AddWithValue("foto_exercicio", DBNull.Value);
 
                     dataReader = myCommand.ExecuteReader();
 
