@@ -138,6 +138,7 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
+                    myCommand.Parameters.AddWithValue("id_atividade", atividade.id_atividade);
                     myCommand.Parameters.AddWithValue("id_ginasio", atividade.id_ginasio);
                     myCommand.Parameters.AddWithValue("id_cliente", atividade.id_cliente);
                     myCommand.Parameters.AddWithValue("data_entrada", Convert.ToDateTime(atividade.data_entrada));

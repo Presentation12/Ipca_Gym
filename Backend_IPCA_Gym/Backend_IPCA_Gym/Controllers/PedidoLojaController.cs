@@ -35,7 +35,6 @@ namespace Backend_IPCA_Gym.Controllers
                     {
                         PedidoLoja pedidoloja = new PedidoLoja();
 
-                        pedidoloja.id_pedido_loja = Convert.ToInt32(dataReader["id_pedido_loja"]);
                         pedidoloja.id_pedido = Convert.ToInt32(dataReader["id_pedido"]);
                         pedidoloja.id_produto = Convert.ToInt32(dataReader["id_produto"]);
                         pedidoloja.quantidade = Convert.ToInt32(dataReader["quantidade"]);
@@ -71,7 +70,7 @@ namespace Backend_IPCA_Gym.Controllers
                         reader.Read();
 
                         PedidoLoja targetPedidoLoja = new PedidoLoja();
-                        targetPedidoLoja.id_pedido_loja = reader.GetInt32(0);
+
                         targetPedidoLoja.id_pedido = reader.GetInt32(1);
                         targetPedidoLoja.id_produto = reader.GetInt32(3);
                         targetPedidoLoja.quantidade = reader.GetInt32(4);
@@ -132,6 +131,7 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
+                    myCommand.Parameters.AddWithValue("id_pedido_loja", pedidoLoja.id_pedido_loja);
                     myCommand.Parameters.AddWithValue("id_pedido", pedidoLoja.id_pedido);
                     myCommand.Parameters.AddWithValue("id_produto", pedidoLoja.id_produto);
                     myCommand.Parameters.AddWithValue("quantidade", pedidoLoja.quantidade);

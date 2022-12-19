@@ -142,6 +142,7 @@ namespace Backend_IPCA_Gym.Controllers
                 databaseConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                 {
+                    myCommand.Parameters.AddWithValue("id_avaliacao", classificacao.id_avaliacao);
                     myCommand.Parameters.AddWithValue("id_ginasio", classificacao.id_ginasio);
                     myCommand.Parameters.AddWithValue("id_cliente", classificacao.id_cliente);
                     myCommand.Parameters.AddWithValue("avaliacao", classificacao.avaliacao);
