@@ -1,0 +1,15 @@
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.csproj.AssemblyReference.cache
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.AssemblyInfoInputs.cache
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.AssemblyInfo.cs
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.csproj.CoreCompileInputs.cache
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerDAL\bin\Debug\net6.0\LayerDAL.deps.json
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerDAL\bin\Debug\net6.0\LayerDAL.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerDAL\bin\Debug\net6.0\LayerDAL.pdb
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerDAL\bin\Debug\net6.0\LayerBOL.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerDAL\bin\Debug\net6.0\LayerBOL.pdb
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.csproj.CopyComplete
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\refint\LayerDAL.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\LayerDAL.pdb
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerDAL\obj\Debug\net6.0\ref\LayerDAL.dll

@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LayerBOL\LayerBOL.csproj" />
-    <ProjectReference Include="..\LayerDAL\LayerDAL.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Logic\" />
+    <ProjectReference Include="..\LayerBOL\LayerBOL.csproj" />
+    <ProjectReference Include="..\LayerDAL\LayerDAL.csproj" />
   </ItemGroup>
 
 </Project>

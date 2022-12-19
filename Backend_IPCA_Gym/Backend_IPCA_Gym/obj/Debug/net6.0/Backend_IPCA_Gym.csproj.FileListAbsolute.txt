@@ -85,3 +85,14 @@ C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_I
 C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.pdb
 C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\Backend_IPCA_Gym.genruntimeconfig.cache
 C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\obj\Debug\net6.0\ref\Backend_IPCA_Gym.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\LayerBLL.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\LayerBOL.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\LayerDAL.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\LayerBLL.pdb
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\LayerBOL.pdb
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\LayerDAL.pdb
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\Backend_IPCA_Gym\bin\Debug\net6.0\Swashbuckle.AspNetCore.Annotations.dll

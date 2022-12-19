@@ -1,0 +1,12 @@
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBOL\bin\Debug\net6.0\LayerBOL.deps.json
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBOL\bin\Debug\net6.0\LayerBOL.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBOL\bin\Debug\net6.0\LayerBOL.pdb
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBOL\obj\Debug\net6.0\LayerBOL.csproj.AssemblyReference.cache
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBOL\obj\Debug\net6.0\LayerBOL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBOL\obj\Debug\net6.0\LayerBOL.AssemblyInfoInputs.cache
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBOL\obj\Debug\net6.0\LayerBOL.AssemblyInfo.cs
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBOL\obj\Debug\net6.0\LayerBOL.csproj.CoreCompileInputs.cache
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBOL\obj\Debug\net6.0\LayerBOL.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBOL\obj\Debug\net6.0\refint\LayerBOL.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBOL\obj\Debug\net6.0\LayerBOL.pdb
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBOL\obj\Debug\net6.0\ref\LayerBOL.dll

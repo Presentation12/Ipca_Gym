@@ -1,0 +1,17 @@
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\bin\Debug\net6.0\LayerBLL.deps.json
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\bin\Debug\net6.0\LayerBLL.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\bin\Debug\net6.0\LayerBLL.pdb
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\bin\Debug\net6.0\LayerBOL.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\bin\Debug\net6.0\LayerDAL.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\bin\Debug\net6.0\LayerBOL.pdb
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\bin\Debug\net6.0\LayerDAL.pdb
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.csproj.AssemblyReference.cache
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.AssemblyInfoInputs.cache
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.AssemblyInfo.cs
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.csproj.CoreCompileInputs.cache
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.csproj.CopyComplete
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\refint\LayerBLL.dll
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\LayerBLL.pdb
+C:\Users\joaoc\OneDrive\Ambiente de Trabalho\ipca_gym\Backend_IPCA_Gym\LayerBLL\obj\Debug\net6.0\ref\LayerBLL.dll
