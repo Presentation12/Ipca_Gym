@@ -16,7 +16,7 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetLojaLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<Loja> lojaList = await LojaService.GetProdutosService(sqlDataSource);
+            List<Loja> lojaList = await LojaService.GetAllService(sqlDataSource);
 
             if (lojaList.Count != 0)
             {

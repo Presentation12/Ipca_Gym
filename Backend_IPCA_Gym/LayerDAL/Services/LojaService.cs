@@ -6,7 +6,7 @@ namespace LayerDAL.Services
 {
     public class LojaService
     {
-        public static async Task<List<Loja>> GetProdutosService(string sqlDataSource)
+        public static async Task<List<Loja>> GetAllService(string sqlDataSource)
         {
             string query = @"select * from dbo.Loja";
             List<Loja> produtos = new List<Loja>();

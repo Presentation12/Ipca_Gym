@@ -16,7 +16,7 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetPlanoTreinosLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<PlanoTreino> planotreinoList = await PlanoTreinoService.GetPlanoTreinosService(sqlDataSource);
+            List<PlanoTreino> planotreinoList = await PlanoTreinoService.GetAllService(sqlDataSource);
 
             if (planotreinoList.Count != 0)
             {

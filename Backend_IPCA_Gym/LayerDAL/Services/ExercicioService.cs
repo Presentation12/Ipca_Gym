@@ -7,7 +7,7 @@ namespace LayerDAL.Services
 {
     public class ExercicioService
     {
-        public static async Task<List<Exercicio>> GetExerciciosService(string sqlDataSource)
+        public static async Task<List<Exercicio>> GetAllService(string sqlDataSource)
         {
             string query = @"select * from dbo.Exercicio";
             List<Exercicio> exercicios = new List<Exercicio>();

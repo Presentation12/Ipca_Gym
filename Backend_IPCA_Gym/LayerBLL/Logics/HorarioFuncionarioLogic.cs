@@ -16,7 +16,7 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetHorarioFuncionarioLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<HorarioFuncionario> horarioFuncionarioList = await HorarioFuncionarioService.GetHorarioFuncionariosService(sqlDataSource);
+            List<HorarioFuncionario> horarioFuncionarioList = await HorarioFuncionarioService.GetAllService(sqlDataSource);
             
             if (horarioFuncionarioList.Count != 0)
             {

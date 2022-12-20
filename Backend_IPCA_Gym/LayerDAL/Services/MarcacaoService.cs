@@ -6,7 +6,7 @@ namespace LayerDAL.Services
 {
     public class MarcacaoService
     {
-        public static async Task<List<Marcacao>> GetMarcacoesService(string sqlDataSource)
+        public static async Task<List<Marcacao>> GetAllService(string sqlDataSource)
         {
             string query = @"select * from dbo.Marcacao";
             List<Marcacao> marcacoes = new List<Marcacao>();

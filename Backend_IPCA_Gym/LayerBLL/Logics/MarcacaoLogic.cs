@@ -16,7 +16,7 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetMarcacoesLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<Marcacao> marcacaoList = await MarcacaoService.GetMarcacoesService(sqlDataSource);
+            List<Marcacao> marcacaoList = await MarcacaoService.GetAllService(sqlDataSource);
 
             if (marcacaoList.Count != 0)
             {

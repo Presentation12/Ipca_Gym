@@ -7,7 +7,7 @@ namespace LayerDAL.Services
 {
     public class PlanoNutricionalService
     {
-        public static async Task<List<PlanoNutricional>> GetPlanoNutricionaisService(string sqlDataSource)
+        public static async Task<List<PlanoNutricional>> GetAllService(string sqlDataSource)
         {
             string query = @"select * from dbo.Plano_Nutricional";
             List<PlanoNutricional> planosnutricionais = new List<PlanoNutricional>();

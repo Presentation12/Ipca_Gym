@@ -6,7 +6,7 @@ namespace LayerDAL.Services
 {
     public class HorarioFuncionarioService
     {
-        public static async Task<List<HorarioFuncionario>> GetHorarioFuncionariosService(string sqlDataSource)
+        public static async Task<List<HorarioFuncionario>> GetAllService(string sqlDataSource)
         {
             string query = @"select * from dbo.Horario_Funcionario";
             List<HorarioFuncionario> horarios = new List<HorarioFuncionario>();

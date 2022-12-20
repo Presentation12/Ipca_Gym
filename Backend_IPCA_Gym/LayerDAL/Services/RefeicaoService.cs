@@ -7,7 +7,7 @@ namespace LayerDAL.Services
 {
     public class RefeicaoService
     {
-        public static async Task<List<Refeicao>> GetRefeicoesService(string sqlDataSource)
+        public static async Task<List<Refeicao>> GetAllService(string sqlDataSource)
         {
             string query = @"select * from dbo.Refeicao";
             List<Refeicao> refeicoes = new List<Refeicao>();

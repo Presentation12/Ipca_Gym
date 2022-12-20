@@ -6,7 +6,7 @@ namespace LayerDAL.Services
 {
     public class PlanoTreinoService
     {
-        public static async Task<List<PlanoTreino>> GetPlanoTreinosService(string sqlDataSource)
+        public static async Task<List<PlanoTreino>> GetAllService(string sqlDataSource)
         {
             string query = @"select * from dbo.Plano_Treino";
             List<PlanoTreino> planostreino = new List<PlanoTreino>();

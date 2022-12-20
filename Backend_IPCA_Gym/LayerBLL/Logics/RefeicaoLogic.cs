@@ -16,7 +16,7 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetRefeicoesLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<Refeicao> refeicaoList = await RefeicaoService.GetRefeicoesService(sqlDataSource);
+            List<Refeicao> refeicaoList = await RefeicaoService.GetAllService(sqlDataSource);
 
             if (refeicaoList.Count != 0)
             {

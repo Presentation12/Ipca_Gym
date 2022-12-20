@@ -16,7 +16,7 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetFuncionariosLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<Funcionario> funcionarioList = await FuncionarioService.GetFuncionariosService(sqlDataSource);
+            List<Funcionario> funcionarioList = await FuncionarioService.GetAllService(sqlDataSource);
 
             if (funcionarioList.Count != 0)
             {

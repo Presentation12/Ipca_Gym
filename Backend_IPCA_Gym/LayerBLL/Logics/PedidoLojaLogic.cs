@@ -16,7 +16,7 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetPedidoLojasLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<PedidoLoja> pedidolojaList = await PedidoLojaService.GetPedidoLojasService(sqlDataSource);
+            List<PedidoLoja> pedidolojaList = await PedidoLojaService.GetAllService(sqlDataSource);
 
             if (pedidolojaList.Count != 0)
             {

@@ -6,7 +6,7 @@ namespace LayerDAL.Services
 {
     public class FuncionarioService
     {
-        public static async Task<List<Funcionario>> GetFuncionariosService(string sqlDataSource)
+        public static async Task<List<Funcionario>> GetAllService(string sqlDataSource)
         {
             string query = @"select * from dbo.Funcionario";
             List<Funcionario> funcionarios = new List<Funcionario>();

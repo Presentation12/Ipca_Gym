@@ -16,7 +16,7 @@ namespace LayerBLL.Logics
         public static async Task<Response> PlanoNutricionaisLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<PlanoNutricional> planonutricionalList = await PlanoNutricionalService.GetPlanoNutricionaisService(sqlDataSource);
+            List<PlanoNutricional> planonutricionalList = await PlanoNutricionalService.GetAllService(sqlDataSource);
             
             if (planonutricionalList.Count != 0)
             {
