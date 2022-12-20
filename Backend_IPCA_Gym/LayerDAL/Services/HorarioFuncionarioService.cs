@@ -2,7 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 
-namespace LayerDAL
+namespace LayerDAL.Services
 {
     public class HorarioFuncionarioService
     {

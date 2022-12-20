@@ -2,16 +2,16 @@
 using System.Data;
 using System.Data.SqlClient;
 
-namespace LayerDAL
+namespace LayerDAL.Services
 {
     public class FuncionarioService
-    { 
-        public static async Task<List<Funcionario>> GetFuncionariosService(string sqlDataSource)
     {
-        string query = @"select * from dbo.Funcionario";
-        List<Funcionario> funcionarios = new List<Funcionario>();
+        public static async Task<List<Funcionario>> GetFuncionariosService(string sqlDataSource)
+        {
+            string query = @"select * from dbo.Funcionario";
+            List<Funcionario> funcionarios = new List<Funcionario>();
 
-        SqlDataReader dataReader;
+            SqlDataReader dataReader;
             using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
             {
                 databaseConnection.Open();

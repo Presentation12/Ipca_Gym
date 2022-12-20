@@ -3,16 +3,16 @@ using System.Data;
 using System.Data.SqlClient;
 
 
-namespace LayerDAL
+namespace LayerDAL.Services
 {
     public class ExercicioService
-    { 
-        public static async Task<List<Exercicio>> GetExerciciosService(string sqlDataSource)
     {
-        string query = @"select * from dbo.Exercicio";
-        List<Exercicio> exercicios = new List<Exercicio>();
+        public static async Task<List<Exercicio>> GetExerciciosService(string sqlDataSource)
+        {
+            string query = @"select * from dbo.Exercicio";
+            List<Exercicio> exercicios = new List<Exercicio>();
 
-        SqlDataReader dataReader;
+            SqlDataReader dataReader;
             using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
             {
                 databaseConnection.Open();

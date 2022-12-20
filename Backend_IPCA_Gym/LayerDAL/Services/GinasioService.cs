@@ -2,7 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 
-namespace LayerDAL
+namespace LayerDAL.Services
 {
     public class GinasioService
     {
@@ -11,39 +11,47 @@ namespace LayerDAL
             string query = @"select * from dbo.Ginasio";
             List<Ginasio> ginasios = new List<Ginasio>();
 
-            SqlDataReader dataReader;
-            using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+            try
             {
-                databaseConnection.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                SqlDataReader dataReader;
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
                 {
-                    dataReader = myCommand.ExecuteReader();
-                    while (dataReader.Read())
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        Ginasio ginasio = new Ginasio();
-
-                        ginasio.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
-                        ginasio.estado = dataReader["estado"].ToString();
-                        ginasio.instituicao = dataReader["instituicao"].ToString();
-                        if (!Convert.IsDBNull(dataReader["foto_ginasio"]))
+                        dataReader = myCommand.ExecuteReader();
+                        while (dataReader.Read())
                         {
-                            ginasio.foto_ginasio = dataReader["foto_ginasio"].ToString();
-                        }
-                        else
-                        {
-                            ginasio.foto_ginasio = null;
-                        }
-                        ginasio.contacto = Convert.ToInt32(dataReader["contacto"]);
+                            Ginasio ginasio = new Ginasio();
 
-                        ginasios.Add(ginasio);
+                            ginasio.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
+                            ginasio.estado = dataReader["estado"].ToString();
+                            ginasio.instituicao = dataReader["instituicao"].ToString();
+                            if (!Convert.IsDBNull(dataReader["foto_ginasio"]))
+                            {
+                                ginasio.foto_ginasio = dataReader["foto_ginasio"].ToString();
+                            }
+                            else
+                            {
+                                ginasio.foto_ginasio = null;
+                            }
+                            ginasio.contacto = Convert.ToInt32(dataReader["contacto"]);
+
+                            ginasios.Add(ginasio);
+                        }
+
+                        dataReader.Close();
+                        databaseConnection.Close();
                     }
-
-                    dataReader.Close();
-                    databaseConnection.Close();
                 }
-            }
 
-            return ginasios;
+                return ginasios;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         public static async Task<Ginasio> GetByIDService(string sqlDataSource, int targetID)
@@ -98,11 +106,10 @@ namespace LayerDAL
         {
             string query = @"insert into dbo.Ginasio (instituicao, contacto, foto_ginasio, estado)
                             values (@instituicao, @contacto, @foto_ginasio, @estado)";
-            
-            SqlDataReader dataReader;
 
             try
             {
+                SqlDataReader dataReader;
                 using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
                 {
                     databaseConnection.Open();
@@ -139,11 +146,11 @@ namespace LayerDAL
                             estado = @estado
                             where id_ginasio = @id_ginasio";
 
-            Ginasio ginasioAtual = await GetByIDService(sqlDataSource, targetID);
-            SqlDataReader dataReader;
-
             try
             {
+                Ginasio ginasioAtual = await GetByIDService(sqlDataSource, targetID);
+                SqlDataReader dataReader;
+            
                 using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
                 {
                     databaseConnection.Open();
@@ -174,7 +181,7 @@ namespace LayerDAL
                 return true;
             }
             catch (Exception ex)
-            { 
+            {
                 Console.WriteLine(ex.ToString());
                 return false;
             }
@@ -184,10 +191,11 @@ namespace LayerDAL
         {
             string query = @"delete from dbo.Ginasio 
                             where id_ginasio = @id_ginasio";
-            SqlDataReader dataReader;
 
             try
             {
+                SqlDataReader dataReader;
+
                 using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
                 {
                     databaseConnection.Open();
@@ -203,7 +211,7 @@ namespace LayerDAL
 
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 return false;

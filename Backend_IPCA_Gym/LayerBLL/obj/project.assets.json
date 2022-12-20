@@ -4019,23 +4019,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Gonçalo Cunha\\.nuget\\packages\\": {},
+    "C:\\Users\\joaoc\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Gonçalo Cunha\\Desktop\\Universidade\\ipca_gym\\ipca_gym\\Backend_IPCA_Gym\\LayerBLL\\LayerBLL.csproj",
+      "projectUniqueName": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerBLL\\LayerBLL.csproj",
       "projectName": "LayerBLL",
-      "projectPath": "C:\\Users\\Gonçalo Cunha\\Desktop\\Universidade\\ipca_gym\\ipca_gym\\Backend_IPCA_Gym\\LayerBLL\\LayerBLL.csproj",
-      "packagesPath": "C:\\Users\\Gonçalo Cunha\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Gonçalo Cunha\\Desktop\\Universidade\\ipca_gym\\ipca_gym\\Backend_IPCA_Gym\\LayerBLL\\obj\\",
+      "projectPath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerBLL\\LayerBLL.csproj",
+      "packagesPath": "C:\\Users\\joaoc\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerBLL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Gonçalo Cunha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\joaoc\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4045,17 +4045,18 @@
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://packagesource": {}
       },
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Gonçalo Cunha\\Desktop\\Universidade\\ipca_gym\\ipca_gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj": {
-              "projectPath": "C:\\Users\\Gonçalo Cunha\\Desktop\\Universidade\\ipca_gym\\ipca_gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj"
+            "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj": {
+              "projectPath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj"
             },
-            "C:\\Users\\Gonçalo Cunha\\Desktop\\Universidade\\ipca_gym\\ipca_gym\\Backend_IPCA_Gym\\LayerDAL\\LayerDAL.csproj": {
-              "projectPath": "C:\\Users\\Gonçalo Cunha\\Desktop\\Universidade\\ipca_gym\\ipca_gym\\Backend_IPCA_Gym\\LayerDAL\\LayerDAL.csproj"
+            "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerDAL\\LayerDAL.csproj": {
+              "projectPath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerDAL\\LayerDAL.csproj"
             }
           }
         }
@@ -4091,7 +4092,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }
