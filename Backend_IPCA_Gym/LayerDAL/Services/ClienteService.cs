@@ -86,7 +86,7 @@ namespace LayerDAL.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                return false;
+                return null;
             }
         }
 
