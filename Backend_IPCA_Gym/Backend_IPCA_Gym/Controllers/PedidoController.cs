@@ -29,10 +29,9 @@ namespace Backend_IPCA_Gym.Controllers
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             Response response = await PedidoLogic.GetPedidosLogic(sqlDataSource);
-            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS)
-            {
-                return StatusCode((int)response.StatusCode);
-            }
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
             return new JsonResult(response);
         }
     }

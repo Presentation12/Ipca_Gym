@@ -17,13 +17,15 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetClientesLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<Cliente> clienteList = await LayerDAL.ClienteService.GetClientesService(sqlDataSource);
+            List<Cliente> clienteList = await ClienteService.GetClientesService(sqlDataSource);
+
             if (clienteList.Count != 0)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Sucesso na obtenção dos dados";
+                response.Message = "Success!";
                 response.Data = new JsonResult(clienteList);
             }
+
             return response;
         }
     }

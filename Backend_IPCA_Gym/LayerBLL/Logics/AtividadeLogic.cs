@@ -16,13 +16,15 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetAtividadesLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<Atividade> atividadeList = await LayerDAL.AtividadeService.GetAtividadesService(sqlDataSource);
+            List<Atividade> atividadeList = await AtividadeService.GetAtividadesService(sqlDataSource);
+
             if (atividadeList.Count != 0)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Sucesso na obtenção dos dados";
+                response.Message = "Success!";
                 response.Data = new JsonResult(atividadeList);
             }
+
             return response;
         }
     }

@@ -16,13 +16,15 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetMarcacoesLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<Marcacao> marcacaoList = await LayerDAL.MarcacaoService.GetMarcacoesService(sqlDataSource);
+            List<Marcacao> marcacaoList = await MarcacaoService.GetMarcacoesService(sqlDataSource);
+
             if (marcacaoList.Count != 0)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Sucesso na obtenção dos dados";
+                response.Message = "Success!";
                 response.Data = new JsonResult(marcacaoList);
             }
+
             return response;
         }
     }

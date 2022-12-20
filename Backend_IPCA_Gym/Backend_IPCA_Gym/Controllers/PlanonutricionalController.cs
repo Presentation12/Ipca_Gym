@@ -15,10 +15,10 @@ namespace Backend_IPCA_Gym.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PlanonutricionalController : Controller
+    public class PlanoNutricionalController : Controller
     {
         private readonly IConfiguration _configuration;
-        public PlanonutricionalController(IConfiguration configuration)
+        public PlanoNutricionalController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -27,11 +27,10 @@ namespace Backend_IPCA_Gym.Controllers
         public async Task<IActionResult> GetAll()
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
-            Response response = await PlanonutricionalLogic.PlanonutricionaisLogic(sqlDataSource);
-            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS)
-            {
-                return StatusCode((int)response.StatusCode);
-            }
+            Response response = await PlanoNutricionalLogic.PlanoNutricionaisLogic(sqlDataSource);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
             return new JsonResult(response);
         }
     }

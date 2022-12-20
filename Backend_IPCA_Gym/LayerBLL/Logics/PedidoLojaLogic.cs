@@ -17,13 +17,15 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetPedidoLojasLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<PedidoLoja> pedidolojaList = await LayerDAL.PedidoLojaService.GetPedidoLojasService(sqlDataSource);
+            List<PedidoLoja> pedidolojaList = await PedidoLojaService.GetPedidoLojasService(sqlDataSource);
+
             if (pedidolojaList.Count != 0)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Sucesso na obtenção dos dados";
+                response.Message = "Success!";
                 response.Data = new JsonResult(pedidolojaList);
             }
+
             return response;
         }
     }

@@ -16,13 +16,15 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetHorarioFuncionarioLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<HorarioFuncionario> horarioFuncionarioList = await LayerDAL.HorarioFuncionarioService.GetHorarioFuncionariosService(sqlDataSource);
+            List<HorarioFuncionario> horarioFuncionarioList = await HorarioFuncionarioService.GetHorarioFuncionariosService(sqlDataSource);
+            
             if (horarioFuncionarioList.Count != 0)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Sucesso na obtenção dos dados";
+                response.Message = "Success!";
                 response.Data = new JsonResult(horarioFuncionarioList);
             }
+            
             return response;
         }
     }

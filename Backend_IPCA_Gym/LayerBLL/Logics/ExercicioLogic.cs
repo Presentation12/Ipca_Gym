@@ -17,13 +17,15 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetExerciciosLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<Exercicio> exercicioList = await LayerDAL.ExercicioService.GetExerciciosService(sqlDataSource);
+            List<Exercicio> exercicioList = await ExercicioService.GetExerciciosService(sqlDataSource);
+
             if (exercicioList.Count != 0)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Sucesso na obtenção dos dados";
+                response.Message = "Success!";
                 response.Data = new JsonResult(exercicioList);
             }
+
             return response;
         }
     }

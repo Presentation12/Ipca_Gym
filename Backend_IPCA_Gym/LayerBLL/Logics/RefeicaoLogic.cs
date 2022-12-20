@@ -16,13 +16,15 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetRefeicoesLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<Refeicao> refeicaoList = await LayerDAL.RefeicaoService.GetRefeicoesService(sqlDataSource);
+            List<Refeicao> refeicaoList = await RefeicaoService.GetRefeicoesService(sqlDataSource);
+
             if (refeicaoList.Count != 0)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Sucesso na obtenção dos dados";
+                response.Message = "Success!";
                 response.Data = new JsonResult(refeicaoList);
             }
+
             return response;
         }
     }

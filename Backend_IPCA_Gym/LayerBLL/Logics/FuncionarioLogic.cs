@@ -15,13 +15,15 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetFuncionariosLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<Funcionario> funcionarioList = await LayerDAL.FuncionarioService.GetFuncionariosService(sqlDataSource);
+            List<Funcionario> funcionarioList = await FuncionarioService.GetFuncionariosService(sqlDataSource);
+
             if (funcionarioList.Count != 0)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Sucesso na obtenção dos dados";
+                response.Message = "Success!";
                 response.Data = new JsonResult(funcionarioList);
             }
+
             return response;
         }
     }

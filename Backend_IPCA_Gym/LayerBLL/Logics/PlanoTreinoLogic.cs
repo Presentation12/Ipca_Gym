@@ -16,13 +16,15 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetPlanoTreinosLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<PlanoTreino> planotreinoList = await LayerDAL.PlanoTreinoService.GetPlanoTreinosService(sqlDataSource);
+            List<PlanoTreino> planotreinoList = await PlanoTreinoService.GetPlanoTreinosService(sqlDataSource);
+
             if (planotreinoList.Count != 0)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Sucesso na obtenção dos dados";
+                response.Message = "Success!";
                 response.Data = new JsonResult(planotreinoList);
             }
+
             return response;
         }
     }

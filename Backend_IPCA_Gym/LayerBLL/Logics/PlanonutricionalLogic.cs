@@ -11,18 +11,20 @@ using System.Threading.Tasks;
 
 namespace LayerBLL.Logics
 {
-    public class PlanonutricionalLogic
+    public class PlanoNutricionalLogic
     {
-        public static async Task<Response> PlanonutricionaisLogic(string sqlDataSource)
+        public static async Task<Response> PlanoNutricionaisLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<PlanoNutricional> planonutricionalList = await LayerDAL.PlanonutricionalService.GetPlanoNutricionaisService(sqlDataSource);
+            List<PlanoNutricional> planonutricionalList = await PlanoNutricionalService.GetPlanoNutricionaisService(sqlDataSource);
+            
             if (planonutricionalList.Count != 0)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Sucesso na obtenção dos dados";
+                response.Message = "Success!";
                 response.Data = new JsonResult(planonutricionalList);
             }
+
             return response;
         }
     }

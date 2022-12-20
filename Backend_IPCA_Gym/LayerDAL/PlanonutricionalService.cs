@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace LayerDAL
 {
-    public class PlanonutricionalService
+    public class PlanoNutricionalService
     {
         public static async Task<List<PlanoNutricional>> GetPlanoNutricionaisService(string sqlDataSource)
         {
