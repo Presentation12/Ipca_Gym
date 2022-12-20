@@ -78,9 +78,9 @@ namespace LayerBLL.Logics
         public static async Task<Response> DeleteLogic(string sqlDataSource, int targetID)
         {
             Response response = new Response();
-            bool creationResult = await GinasioService.DeleteService(sqlDataSource, targetID);
+            bool deleteResult = await GinasioService.DeleteService(sqlDataSource, targetID);
 
-            if (creationResult)
+            if (deleteResult)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
                 response.Message = "Success!";

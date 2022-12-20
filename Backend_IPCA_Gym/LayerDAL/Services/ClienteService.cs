@@ -231,6 +231,88 @@ namespace LayerDAL.Services
             }
         }
 
+        public static async Task<bool> PatchService(string sqlDataSource, Cliente cliente, int targetID)
+        {
+            string query = @"
+                            update dbo.Classificacao 
+                            set id_ginasio = @id_ginasio, 
+                            id_plano_nutricional = @id_plano_nutricional, 
+                            nome = @nome,
+                            mail = @mail,
+                            telemovel = @telemovel,
+                            pass_salt = @pass_salt,
+                            pass_hash = @pass_hash,
+                            peso = @peso,
+                            altura = @altura,
+                            gordura = @gordura,
+                            foto_perfil = @foto_perfil,
+                            estado = @estado,
+                            where id_cliente = @id_cliente";
+            try
+            {
+                Cliente clienteAtual = await GetByIDService(sqlDataSource, targetID);
+                SqlDataReader dataReader;
+
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        if (cliente.id_cliente != null) myCommand.Parameters.AddWithValue("id_cliente", cliente.id_cliente);
+                        else myCommand.Parameters.AddWithValue("id_cliente", clienteAtual.id_cliente);
+
+                        if (cliente.id_ginasio != null) myCommand.Parameters.AddWithValue("id_ginasio", cliente.id_ginasio);
+                        else myCommand.Parameters.AddWithValue("id_ginasio", clienteAtual.id_ginasio);
+
+                        if (cliente.id_plano_nutricional != null) myCommand.Parameters.AddWithValue("id_plano_nutricional", cliente.id_plano_nutricional);
+                        else myCommand.Parameters.AddWithValue("id_plano_nutricional", clienteAtual.id_plano_nutricional);
+
+                        if (!string.IsNullOrEmpty(cliente.nome)) myCommand.Parameters.AddWithValue("nome", cliente.nome);
+                        else myCommand.Parameters.AddWithValue("nome", clienteAtual.nome);
+
+                        if (!string.IsNullOrEmpty(cliente.mail)) myCommand.Parameters.AddWithValue("mail", cliente.mail);
+                        else myCommand.Parameters.AddWithValue("mail", clienteAtual.mail);
+
+                        if (cliente.telemovel != null) myCommand.Parameters.AddWithValue("telemovel", cliente.telemovel);
+                        else myCommand.Parameters.AddWithValue("telemovel", clienteAtual.telemovel);
+
+                        if (!string.IsNullOrEmpty(cliente.pass_salt)) myCommand.Parameters.AddWithValue("pass_salt", cliente.pass_salt);
+                        else myCommand.Parameters.AddWithValue("pass_salt", clienteAtual.pass_salt);
+
+                        if (!string.IsNullOrEmpty(cliente.pass_hash)) myCommand.Parameters.AddWithValue("pass_hash", cliente.pass_hash);
+                        else myCommand.Parameters.AddWithValue("pass_hash", clienteAtual.pass_hash);
+
+                        if (cliente.peso != null) myCommand.Parameters.AddWithValue("peso", cliente.peso);
+                        else myCommand.Parameters.AddWithValue("peso", clienteAtual.peso);
+
+                        if (cliente.altura != null) myCommand.Parameters.AddWithValue("altura", cliente.altura);
+                        else myCommand.Parameters.AddWithValue("altura", clienteAtual.altura);
+
+                        if (cliente.gordura != null) myCommand.Parameters.AddWithValue("gordura", cliente.gordura);
+                        else myCommand.Parameters.AddWithValue("gordura", clienteAtual.gordura);
+
+                        if (!string.IsNullOrEmpty(cliente.foto_perfil)) myCommand.Parameters.AddWithValue("foto_perfil", cliente.foto_perfil);
+                        else myCommand.Parameters.AddWithValue("foto_perfil", clienteAtual.foto_perfil);
+
+                        if (!string.IsNullOrEmpty(cliente.estado)) myCommand.Parameters.AddWithValue("estado", cliente.estado);
+                        else myCommand.Parameters.AddWithValue("estado", clienteAtual.estado);
+
+                        dataReader = myCommand.ExecuteReader();
+
+                        dataReader.Close();
+                        databaseConnection.Close();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
         public static async Task<bool> DeleteService(string sqlDataSource, int targetID)
         {
             string query = @"
