@@ -27,7 +27,7 @@ namespace Backend_IPCA_Gym.Controllers
         public async Task<IActionResult> GetAll()
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
-            Response response = await PlanoNutricionalLogic.PlanoAllLogic(sqlDataSource);
+            Response response = await PlanoNutricionalLogic.GetAllLogic(sqlDataSource);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
 

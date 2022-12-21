@@ -13,7 +13,7 @@ namespace LayerBLL.Logics
 {
     public class PlanoNutricionalLogic
     {
-        public static async Task<Response> GetAllService(string sqlDataSource)
+        public static async Task<Response> GetAllLogic(string sqlDataSource)
         {
             Response response = new Response();
             List<PlanoNutricional> planonutricionalList = await PlanoNutricionalService.GetAllService(sqlDataSource);
