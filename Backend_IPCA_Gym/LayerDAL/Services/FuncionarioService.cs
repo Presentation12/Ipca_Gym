@@ -153,29 +153,14 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        if (funcionario.id_funcionario != null) myCommand.Parameters.AddWithValue("id_funcionario", funcionario.id_funcionario);
-                        else myCommand.Parameters.AddWithValue("id_funcionario", funcionarioAtual.id_funcionario);
-
-                        if (funcionario.id_ginasio != null) myCommand.Parameters.AddWithValue("id_ginasio", funcionario.id_ginasio);
-                        else myCommand.Parameters.AddWithValue("id_ginasio", funcionarioAtual.id_ginasio);
-
-                        if (!string.IsNullOrEmpty(funcionario.nome)) myCommand.Parameters.AddWithValue("nome", funcionario.nome);
-                        else myCommand.Parameters.AddWithValue("nome", funcionarioAtual.nome);
-
-                        if (funcionario.is_admin != null) myCommand.Parameters.AddWithValue("is_admin", funcionario.is_admin);
-                        else myCommand.Parameters.AddWithValue("is_admin", funcionarioAtual.is_admin);
-
-                        if (funcionario.codigo != null) myCommand.Parameters.AddWithValue("codigo", funcionario.codigo);
-                        else myCommand.Parameters.AddWithValue("codigo", funcionarioAtual.codigo);
-
-                        if (!string.IsNullOrEmpty(funcionario.pass_salt)) myCommand.Parameters.AddWithValue("pass_salt", funcionario.pass_salt);
-                        else myCommand.Parameters.AddWithValue("pass_salt", funcionarioAtual.pass_salt);
-
-                        if (!string.IsNullOrEmpty(funcionario.pass_hash)) myCommand.Parameters.AddWithValue("pass_hash", funcionario.pass_hash);
-                        else myCommand.Parameters.AddWithValue("pass_hash", funcionarioAtual.pass_hash);
-
-                        if (!string.IsNullOrEmpty(funcionario.estado)) myCommand.Parameters.AddWithValue("estado", funcionario.estado);
-                        else myCommand.Parameters.AddWithValue("estado", funcionarioAtual.estado);
+                        myCommand.Parameters.AddWithValue("id_funcionario", funcionario.id_funcionario != 0 ? funcionario.id_funcionario : funcionarioAtual.id_funcionario);
+                        myCommand.Parameters.AddWithValue("id_ginasio", funcionario.id_ginasio != 0 ? funcionario.id_ginasio : funcionarioAtual.id_ginasio);
+                        myCommand.Parameters.AddWithValue("nome", !string.IsNullOrEmpty(funcionario.nome) ? funcionario.nome : funcionarioAtual.nome);
+                        myCommand.Parameters.AddWithValue("is_admin", funcionario.is_admin != null ? funcionario.is_admin : funcionarioAtual.is_admin);
+                        myCommand.Parameters.AddWithValue("codigo", funcionario.codigo != 0 ? funcionario.codigo : funcionarioAtual.codigo);
+                        myCommand.Parameters.AddWithValue("pass_salt", !string.IsNullOrEmpty(funcionario.pass_salt) ? funcionario.pass_salt : funcionarioAtual.pass_salt);
+                        myCommand.Parameters.AddWithValue("pass_hash", !string.IsNullOrEmpty(funcionario.pass_hash) ? funcionario.pass_hash : funcionarioAtual.pass_hash);
+                        myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(funcionario.estado) ? funcionario.estado : funcionarioAtual.estado);
 
                         dataReader = myCommand.ExecuteReader();
 

@@ -146,10 +146,9 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("id_avaliacao", classificacao.id_avaliacao != 0 ? classificacao.id_avaliacao : classificacaoAtual.id_avaliacao);
                         myCommand.Parameters.AddWithValue("id_ginasio", classificacao.id_ginasio != 0 ? classificacao.id_ginasio : classificacaoAtual.id_ginasio);
                         myCommand.Parameters.AddWithValue("id_cliente", classificacao.id_cliente != 0 ? classificacao.id_cliente : classificacaoAtual.id_cliente);
-                        // nunca poderá ser zero a avaliação para se poder fazer um teste de null
                         myCommand.Parameters.AddWithValue("avaliacao", classificacao.avaliacao != 0 ? classificacao.avaliacao : classificacaoAtual.avaliacao);
                         myCommand.Parameters.AddWithValue("comentario", !string.IsNullOrEmpty(classificacao.comentario) ? classificacao.comentario : classificacaoAtual.comentario);
-                        myCommand.Parameters.AddWithValue("data_avaliacao", classificacao.data_avaliacao != DateTime.MinValue ? Convert.ToDateTime(classificacao.data_avaliacao) : Convert.ToDateTime(classificacaoAtual.data_avaliacao));
+                        myCommand.Parameters.AddWithValue("data_avaliacao", classificacao.data_avaliacao.Equals(DateTime.MinValue) ? Convert.ToDateTime(classificacao.data_avaliacao) : Convert.ToDateTime(classificacaoAtual.data_avaliacao));
                     
                         dataReader = myCommand.ExecuteReader();
 

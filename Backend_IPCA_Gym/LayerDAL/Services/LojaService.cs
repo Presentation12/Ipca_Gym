@@ -180,32 +180,15 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        if (produto.id_produto != null) myCommand.Parameters.AddWithValue("id_produto", produto.id_produto);
-                        else myCommand.Parameters.AddWithValue("id_produto", produtoAtual.id_produto);
-
-                        if (produto.id_ginasio != null) myCommand.Parameters.AddWithValue("id_ginasio", produto.id_ginasio);
-                        else myCommand.Parameters.AddWithValue("id_ginasio", produtoAtual.id_ginasio);
-
-                        if (!string.IsNullOrEmpty(produto.nome)) myCommand.Parameters.AddWithValue("nome", produto.nome);
-                        else myCommand.Parameters.AddWithValue("nome", produtoAtual.nome);
-
-                        if (!string.IsNullOrEmpty(produto.tipo_produto)) myCommand.Parameters.AddWithValue("tipo_produto", produto.tipo_produto);
-                        else myCommand.Parameters.AddWithValue("tipo_produto", produtoAtual.tipo_produto);
-
-                        if (produto.preco != null) myCommand.Parameters.AddWithValue("preco", produto.preco);
-                        else myCommand.Parameters.AddWithValue("preco", produtoAtual.preco);
-
-                        if (!string.IsNullOrEmpty(produto.descricao)) myCommand.Parameters.AddWithValue("descricao", produto.descricao);
-                        else myCommand.Parameters.AddWithValue("descricao", produtoAtual.descricao);
-
-                        if (!string.IsNullOrEmpty(produto.estado)) myCommand.Parameters.AddWithValue("estado", produto.estado);
-                        else myCommand.Parameters.AddWithValue("estado", produtoAtual.estado);
-
-                        if (!string.IsNullOrEmpty(produto.foto_produto)) myCommand.Parameters.AddWithValue("foto_produto", produto.foto_produto);
-                        else myCommand.Parameters.AddWithValue("foto_produto", produtoAtual.foto_produto);
-
-                        if (produto.quantidade != null) myCommand.Parameters.AddWithValue("quantidade", produto.quantidade);
-                        else myCommand.Parameters.AddWithValue("quantidade", produtoAtual.quantidade);
+                        myCommand.Parameters.AddWithValue("id_produto", produto.id_produto != 0 ? produto.id_produto : produtoAtual.id_produto);
+                        myCommand.Parameters.AddWithValue("id_ginasio", produto.id_ginasio != 0 ? produto.id_ginasio : produtoAtual.id_ginasio);
+                        myCommand.Parameters.AddWithValue("nome", !string.IsNullOrEmpty(produto.nome) ? produto.nome : produtoAtual.nome);
+                        myCommand.Parameters.AddWithValue("tipo_produto", !string.IsNullOrEmpty(produto.tipo_produto) ? produto.tipo_produto : produtoAtual.tipo_produto);
+                        myCommand.Parameters.AddWithValue("preco", produto.preco != (double)0 ? produto.preco : produtoAtual.preco);
+                        myCommand.Parameters.AddWithValue("descricao", !string.IsNullOrEmpty(produto.descricao) ? produto.descricao : produtoAtual.descricao);
+                        myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(produto.estado) ? produto.estado : produtoAtual.estado);
+                        myCommand.Parameters.AddWithValue("foto_produto", !string.IsNullOrEmpty(produto.foto_produto) ? produto.foto_produto : produtoAtual.foto_produto);
+                        myCommand.Parameters.AddWithValue("quantidade", produto.quantidade);
 
                         dataReader = myCommand.ExecuteReader();
 

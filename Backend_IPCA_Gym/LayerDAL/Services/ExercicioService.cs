@@ -227,32 +227,15 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        if (exercicio.id_exercicio != null) myCommand.Parameters.AddWithValue("id_exercicio", exercicio.id_exercicio);
-                        else myCommand.Parameters.AddWithValue("id_exercicio", exercicioAtual.id_exercicio);
-
-                        if (exercicio.id_plano_treino != null) myCommand.Parameters.AddWithValue("id_plano_treino", exercicio.id_plano_treino);
-                        else myCommand.Parameters.AddWithValue("id_plano_treino", exercicioAtual.id_plano_treino);
-
-                        if (!string.IsNullOrEmpty(exercicio.nome)) myCommand.Parameters.AddWithValue("nome", exercicio.nome);
-                        else myCommand.Parameters.AddWithValue("nome", exercicioAtual.nome);
-
-                        if (!string.IsNullOrEmpty(exercicio.descricao)) myCommand.Parameters.AddWithValue("descricao", exercicio.descricao);
-                        else myCommand.Parameters.AddWithValue("descricao", exercicioAtual.descricao);
-
-                        if (!string.IsNullOrEmpty(exercicio.tipo)) myCommand.Parameters.AddWithValue("tipo", exercicio.tipo);
-                        else myCommand.Parameters.AddWithValue("tipo", exercicioAtual.tipo);
-
-                        if (exercicio.series != null) myCommand.Parameters.AddWithValue("series", exercicio.series);
-                        else myCommand.Parameters.AddWithValue("series", exercicioAtual.series);
-
-                        if (exercicio.tempo != null) myCommand.Parameters.AddWithValue("tempo", exercicio.tempo);
-                        else myCommand.Parameters.AddWithValue("tempo", exercicioAtual.tempo);
-
-                        if (exercicio.repeticoes != null) myCommand.Parameters.AddWithValue("repeticoes", exercicio.repeticoes);
-                        else myCommand.Parameters.AddWithValue("repeticoes", exercicioAtual.repeticoes);
-
-                        if (!string.IsNullOrEmpty(exercicio.foto_exercicio)) myCommand.Parameters.AddWithValue("foto_exercicio", exercicio.foto_exercicio);
-                        else myCommand.Parameters.AddWithValue("foto_exercicio", exercicioAtual.foto_exercicio);
+                        myCommand.Parameters.AddWithValue("id_exercicio", exercicio.id_exercicio != 0 ? exercicio.id_exercicio : exercicioAtual.id_exercicio);
+                        myCommand.Parameters.AddWithValue("id_plano_treino", exercicio.id_plano_treino != 0 ? exercicio.id_plano_treino : exercicioAtual.id_plano_treino);
+                        myCommand.Parameters.AddWithValue("nome", !string.IsNullOrEmpty(exercicio.nome) ? exercicio.nome : exercicioAtual.nome);
+                        myCommand.Parameters.AddWithValue("descricao", !string.IsNullOrEmpty(exercicio.descricao) ? exercicio.descricao : exercicioAtual.descricao);
+                        myCommand.Parameters.AddWithValue("tipo", !string.IsNullOrEmpty(exercicio.tipo) ? exercicio.tipo : exercicioAtual.tipo);
+                        myCommand.Parameters.AddWithValue("series", exercicio.series != 0 ? exercicio.series : exercicioAtual.series);
+                        myCommand.Parameters.AddWithValue("tempo", exercicio.tempo != TimeSpan.Zero ? exercicio.tempo : exercicioAtual.tempo);
+                        myCommand.Parameters.AddWithValue("repeticoes", exercicio.repeticoes != 0 ? exercicio.repeticoes : exercicioAtual.repeticoes);
+                        myCommand.Parameters.AddWithValue("foto_exercicio", !string.IsNullOrEmpty(exercicio.foto_exercicio) ? exercicio.foto_exercicio : exercicioAtual.foto_exercicio);
 
                         dataReader = myCommand.ExecuteReader();
 

@@ -156,20 +156,11 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        if (ginasio.id_ginasio != null) myCommand.Parameters.AddWithValue("id_ginasio", targetID);
-                        else myCommand.Parameters.AddWithValue("id_ginasio", ginasioAtual.id_ginasio);
-
-                        if (!string.IsNullOrEmpty(ginasio.instituicao)) myCommand.Parameters.AddWithValue("instituicao", ginasio.instituicao);
-                        else myCommand.Parameters.AddWithValue("instituicao", ginasioAtual.instituicao);
-
-                        if (ginasio.contacto != null) myCommand.Parameters.AddWithValue("contacto", ginasio.contacto);
-                        else myCommand.Parameters.AddWithValue("contacto", ginasioAtual.contacto);
-
-                        if (!string.IsNullOrEmpty(ginasio.foto_ginasio)) myCommand.Parameters.AddWithValue("foto_ginasio", ginasio.foto_ginasio);
-                        else myCommand.Parameters.AddWithValue("foto_ginasio", ginasioAtual.foto_ginasio);
-
-                        if (!string.IsNullOrEmpty(ginasio.estado)) myCommand.Parameters.AddWithValue("estado", ginasio.estado);
-                        else myCommand.Parameters.AddWithValue("estado", ginasioAtual.estado);
+                        myCommand.Parameters.AddWithValue("id_ginasio", ginasio.id_ginasio != 0 ? ginasio.id_ginasio : ginasioAtual.id_ginasio);
+                        myCommand.Parameters.AddWithValue("instituicao", !string.IsNullOrEmpty(ginasio.instituicao) ? ginasio.instituicao : ginasioAtual.instituicao);
+                        myCommand.Parameters.AddWithValue("contacto", ginasio.contacto != 0 ? ginasio.contacto : ginasioAtual.contacto);
+                        myCommand.Parameters.AddWithValue("foto_ginasio", !string.IsNullOrEmpty(ginasio.foto_ginasio) ? ginasio.foto_ginasio : ginasioAtual.foto_ginasio);
+                        myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(ginasio.estado) ? ginasio.estado : ginasioAtual.estado);
 
                         dataReader = myCommand.ExecuteReader();
 

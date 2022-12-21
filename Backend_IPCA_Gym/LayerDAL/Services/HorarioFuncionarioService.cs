@@ -142,20 +142,11 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        if (horarioFuncionario.id_funcionario_horario != null) myCommand.Parameters.AddWithValue("id_funcionario_horario", horarioFuncionario.id_funcionario_horario);
-                        else myCommand.Parameters.AddWithValue("id_funcionario_horario", horarioFuncionarioAtual.id_funcionario_horario);
-
-                        if (horarioFuncionario.id_funcionario != null) myCommand.Parameters.AddWithValue("id_funcionario", horarioFuncionario.id_funcionario);
-                        else myCommand.Parameters.AddWithValue("id_funcionario", horarioFuncionarioAtual.id_funcionario);
-
-                        if (horarioFuncionario.hora_entrada != null) myCommand.Parameters.AddWithValue("hora_entrada", horarioFuncionario.hora_entrada);
-                        else myCommand.Parameters.AddWithValue("hora_entrada", horarioFuncionarioAtual.hora_entrada);
-
-                        if (horarioFuncionario.hora_saida != null) myCommand.Parameters.AddWithValue("hora_saida", horarioFuncionario.hora_saida);
-                        else myCommand.Parameters.AddWithValue("hora_saida", horarioFuncionarioAtual.hora_saida);
-
-                        if (!string.IsNullOrEmpty(horarioFuncionario.dia_semana)) myCommand.Parameters.AddWithValue("dia_semana", horarioFuncionario.dia_semana);
-                        else myCommand.Parameters.AddWithValue("dia_semana", horarioFuncionarioAtual.dia_semana);
+                        myCommand.Parameters.AddWithValue("id_funcionario_horario", horarioFuncionario.id_funcionario_horario != 0 ? horarioFuncionario.id_funcionario_horario : horarioFuncionarioAtual.id_funcionario_horario);
+                        myCommand.Parameters.AddWithValue("id_funcionario", horarioFuncionario.id_funcionario != 0 ? horarioFuncionario.id_funcionario : horarioFuncionarioAtual.id_funcionario);
+                        myCommand.Parameters.AddWithValue("hora_entrada", horarioFuncionario.hora_entrada != TimeSpan.Zero ? horarioFuncionario.hora_entrada : horarioFuncionarioAtual.hora_entrada);
+                        myCommand.Parameters.AddWithValue("hora_saida", horarioFuncionario.hora_saida != TimeSpan.Zero ? horarioFuncionario.hora_saida : horarioFuncionarioAtual.hora_saida);
+                        myCommand.Parameters.AddWithValue("dia_semana", !string.IsNullOrEmpty(horarioFuncionario.dia_semana) ? horarioFuncionario.dia_semana : horarioFuncionarioAtual.dia_semana);
 
                         dataReader = myCommand.ExecuteReader();
 

@@ -147,23 +147,12 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        if (marcacao.id_marcacao != null) myCommand.Parameters.AddWithValue("id_marcacao", marcacao.id_marcacao);
-                        else myCommand.Parameters.AddWithValue("id_marcacao", marcacaoAtual.id_marcacao);
-
-                        if (marcacao.id_funcionario != null) myCommand.Parameters.AddWithValue("id_funcionario", marcacao.id_funcionario);
-                        else myCommand.Parameters.AddWithValue("id_funcionario", marcacaoAtual.id_funcionario);
-
-                        if (marcacao.id_cliente != null) myCommand.Parameters.AddWithValue("id_cliente", marcacao.id_cliente);
-                        else myCommand.Parameters.AddWithValue("id_cliente", marcacaoAtual.id_cliente);
-
-                        if (marcacao.data_marcacao != null) myCommand.Parameters.AddWithValue("data_marcacao", Convert.ToDateTime(marcacao.data_marcacao));
-                        else myCommand.Parameters.AddWithValue("data_marcacao", Convert.ToDateTime(marcacaoAtual.data_marcacao));
-
-                        if (!string.IsNullOrEmpty(marcacao.descricao)) myCommand.Parameters.AddWithValue("descricao", marcacao.descricao);
-                        else myCommand.Parameters.AddWithValue("descricao", marcacaoAtual.descricao);
-
-                        if (!string.IsNullOrEmpty(marcacao.estado)) myCommand.Parameters.AddWithValue("estado", marcacao.estado);
-                        else myCommand.Parameters.AddWithValue("estado", marcacaoAtual.estado);
+                        myCommand.Parameters.AddWithValue("id_marcacao", marcacao.id_marcacao != 0 ? marcacao.id_marcacao : marcacaoAtual.id_marcacao);
+                        myCommand.Parameters.AddWithValue("id_funcionario", marcacao.id_funcionario != 0 ? marcacao.id_funcionario : marcacaoAtual.id_funcionario);
+                        myCommand.Parameters.AddWithValue("id_cliente", marcacao.id_cliente != 0 ? marcacao.id_cliente : marcacaoAtual.id_cliente);
+                        myCommand.Parameters.AddWithValue("data_marcacao", marcacao.data_marcacao.Equals(DateTime.MinValue) ? Convert.ToDateTime(marcacao.data_marcacao) : Convert.ToDateTime(marcacaoAtual.data_marcacao));
+                        myCommand.Parameters.AddWithValue("descricao", !string.IsNullOrEmpty(marcacao.descricao) ? marcacao.descricao : marcacaoAtual.descricao);
+                        myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(marcacao.estado) ? marcacao.estado : marcacaoAtual.estado);
 
                         dataReader = myCommand.ExecuteReader();
 
