@@ -143,24 +143,14 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        if (classificacao.id_avaliacao != null) myCommand.Parameters.AddWithValue("id_avaliacao", classificacao.id_avaliacao);
-                        else myCommand.Parameters.AddWithValue("id_avaliacao", classificacaoAtual.id_avaliacao);
-
-                        if (classificacao.id_ginasio != null) myCommand.Parameters.AddWithValue("id_ginasio", classificacao.id_ginasio);
-                        else myCommand.Parameters.AddWithValue("id_ginasio", classificacaoAtual.id_ginasio);
-
-                        if (classificacao.id_cliente != null) myCommand.Parameters.AddWithValue("id_cliente", classificacao.id_cliente);
-                        else myCommand.Parameters.AddWithValue("id_cliente", classificacaoAtual.id_cliente);
-
-                        if (classificacao.avaliacao != null) myCommand.Parameters.AddWithValue("avaliacao", classificacao.avaliacao);
-                        else myCommand.Parameters.AddWithValue("avaliacao", classificacaoAtual.avaliacao);
-
-                        if (!string.IsNullOrEmpty(classificacao.comentario)) myCommand.Parameters.AddWithValue("comentario", classificacao.comentario);
-                        else myCommand.Parameters.AddWithValue("comentario", classificacaoAtual.comentario);
-
-                        if (classificacao.data_avaliacao != null) myCommand.Parameters.AddWithValue("data_avaliacao", Convert.ToDateTime(classificacao.data_avaliacao));
-                        else myCommand.Parameters.AddWithValue("data_avaliacao", Convert.ToDateTime(classificacaoAtual.data_avaliacao));
-
+                        myCommand.Parameters.AddWithValue("id_avaliacao", classificacao.id_avaliacao != 0 ? classificacao.id_avaliacao : classificacaoAtual.id_avaliacao);
+                        myCommand.Parameters.AddWithValue("id_ginasio", classificacao.id_ginasio != 0 ? classificacao.id_ginasio : classificacaoAtual.id_ginasio);
+                        myCommand.Parameters.AddWithValue("id_cliente", classificacao.id_cliente != 0 ? classificacao.id_cliente : classificacaoAtual.id_cliente);
+                        // nunca poderá ser zero a avaliação para se poder fazer um teste de null
+                        myCommand.Parameters.AddWithValue("avaliacao", classificacao.avaliacao != 0 ? classificacao.avaliacao : classificacaoAtual.avaliacao);
+                        myCommand.Parameters.AddWithValue("comentario", !string.IsNullOrEmpty(classificacao.comentario) ? classificacao.comentario : classificacaoAtual.comentario);
+                        myCommand.Parameters.AddWithValue("data_avaliacao", classificacao.data_avaliacao != DateTime.MinValue ? Convert.ToDateTime(classificacao.data_avaliacao) : Convert.ToDateTime(classificacaoAtual.data_avaliacao));
+                    
                         dataReader = myCommand.ExecuteReader();
 
                         dataReader.Close();

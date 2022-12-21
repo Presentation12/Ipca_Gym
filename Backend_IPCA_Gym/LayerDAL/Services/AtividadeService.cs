@@ -138,30 +138,11 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        /*
-                        if (atividade.id_atividade.HasValue) myCommand.Parameters.AddWithValue("id_atividade", atividade.id_atividade);
-                        else myCommand.Parameters.AddWithValue("id_atividade", atividadeAtual.id_atividade);
-
-                        if (atividade.id_ginasio != null) myCommand.Parameters.AddWithValue("id_ginasio", atividade.id_ginasio);
-                        else myCommand.Parameters.AddWithValue("id_ginasio", atividadeAtual.id_ginasio);
-
-                        if (atividade.id_cliente != null) myCommand.Parameters.AddWithValue("id_cliente", atividade.id_cliente);
-                        else myCommand.Parameters.AddWithValue("id_cliente", atividadeAtual.id_cliente);
-
-                        if (atividade.data_entrada != null) myCommand.Parameters.AddWithValue("data_entrada", Convert.ToDateTime(atividade.data_entrada));
-                        else myCommand.Parameters.AddWithValue("data_entrada", Convert.ToDateTime(atividadeAtual.data_entrada));
-
-                        if (atividade.data_saida != null) myCommand.Parameters.AddWithValue("data_saida", Convert.ToDateTime(atividade.data_saida));
-                        else myCommand.Parameters.AddWithValue("data_saida", Convert.ToDateTime(atividadeAtual.data_saida));
-                        */
-
-                        //myCommand.Parameters.AddWithValue("id_atividade", atividade.id_atividade ?? atividadeAtual.id_atividade);
-
                         myCommand.Parameters.AddWithValue("id_atividade", atividade.id_atividade != 0 ? atividade.id_atividade : atividadeAtual.id_atividade);
                         myCommand.Parameters.AddWithValue("id_ginasio", atividade.id_ginasio != 0 ? atividade.id_ginasio : atividadeAtual.id_ginasio);
                         myCommand.Parameters.AddWithValue("id_cliente", atividade.id_cliente != 0 ? atividade.id_cliente : atividadeAtual.id_cliente);
                         myCommand.Parameters.AddWithValue("data_entrada", atividade.data_entrada != DateTime.MinValue ? Convert.ToDateTime(atividade.data_entrada) : Convert.ToDateTime(atividadeAtual.data_entrada));
-                        myCommand.Parameters.AddWithValue("data_entrada", atividade.data_entrada != DateTime.MinValue ? Convert.ToDateTime(atividade.data_entrada) : Convert.ToDateTime(atividadeAtual.data_entrada));
+                        myCommand.Parameters.AddWithValue("data_saida", atividade.data_saida != DateTime.MinValue ? Convert.ToDateTime(atividade.data_saida) : Convert.ToDateTime(atividadeAtual.data_saida));
 
                         dataReader = myCommand.ExecuteReader();
 
