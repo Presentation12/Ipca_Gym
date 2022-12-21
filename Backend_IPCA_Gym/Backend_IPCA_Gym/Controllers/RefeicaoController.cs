@@ -27,10 +27,55 @@ namespace Backend_IPCA_Gym.Controllers
         public async Task<IActionResult> GetAll()
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
-            Response response = await RefeicaoLogic.GetRefeicoesLogic(sqlDataSource);
+            Response response = await RefeicaoLogic.GetAllLogic(sqlDataSource);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
             
+            return new JsonResult(response);
+        }
+
+        [HttpGet("{targetID}")]
+        public async Task<IActionResult> GetByID(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await RefeicaoLogic.GetByIDLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] Refeicao newRefeicao)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await RefeicaoLogic.PostLogic(sqlDataSource, newRefeicao);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        [HttpPatch("{targetID}")]
+        public async Task<IActionResult> Patch([FromBody] Refeicao refeicao, int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await RefeicaoLogic.PatchLogic(sqlDataSource, refeicao, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+
+            return new JsonResult(response);
+        }
+
+        [HttpDelete("{targetID}")]
+        public async Task<IActionResult> Delete(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await RefeicaoLogic.DeleteLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
             return new JsonResult(response);
         }
     }

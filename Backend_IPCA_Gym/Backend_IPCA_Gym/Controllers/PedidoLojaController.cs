@@ -27,7 +27,52 @@ namespace Backend_IPCA_Gym.Controllers
         public async Task<IActionResult> GetAll()
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
-            Response response = await PedidoLojaLogic.GetPedidoLojasLogic(sqlDataSource);
+            Response response = await PedidoLojaLogic.GetAllLogic(sqlDataSource);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        [HttpGet("{targetID}")]
+        public async Task<IActionResult> GetByID(int targetID1, int targetID2)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await PedidoLojaLogic.GetByIDLogic(sqlDataSource, targetID1, targetID2);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] PedidoLoja newPedidoLoja)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await PedidoLojaLogic.PostLogic(sqlDataSource, newPedidoLoja);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        [HttpPatch("{targetID}")]
+        public async Task<IActionResult> Patch([FromBody] PedidoLoja pedidoLoja, int targetID1, int targetID2)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await PedidoLojaLogic.PatchLogic(sqlDataSource, pedidoLoja, targetID1, targetID2);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+
+            return new JsonResult(response);
+        }
+
+        [HttpDelete("{targetID}")]
+        public async Task<IActionResult> Delete(int targetID1, int targetID2)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await PedidoLojaLogic.DeleteLogic(sqlDataSource, targetID1, targetID2);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
 

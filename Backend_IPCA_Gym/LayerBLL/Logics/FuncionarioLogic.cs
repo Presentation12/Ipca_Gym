@@ -13,7 +13,7 @@ namespace LayerBLL.Logics
 {
     public class FuncionarioLogic
     {
-        public static async Task<Response> GetFuncionariosLogic(string sqlDataSource)
+        public static async Task<Response> GetAllLogic(string sqlDataSource)
         {
             Response response = new Response();
             List<Funcionario> funcionarioList = await FuncionarioService.GetAllService(sqlDataSource);

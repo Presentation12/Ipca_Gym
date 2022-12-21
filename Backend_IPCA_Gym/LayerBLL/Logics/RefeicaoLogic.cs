@@ -13,7 +13,7 @@ namespace LayerBLL.Logics
 {
     public class RefeicaoLogic
     {
-        public static async Task<Response> GetRefeicoesLogic(string sqlDataSource)
+        public static async Task<Response> GetAllLogic(string sqlDataSource)
         {
             Response response = new Response();
             List<Refeicao> refeicaoList = await RefeicaoService.GetAllService(sqlDataSource);

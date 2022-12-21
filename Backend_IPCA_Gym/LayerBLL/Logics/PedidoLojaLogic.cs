@@ -28,10 +28,10 @@ namespace LayerBLL.Logics
             return response;
         }
 
-        public static async Task<Response> GetByIDLogic(string sqlDataSource, int targetID)
+        public static async Task<Response> GetByIDLogic(string sqlDataSource, int targetID1, int targetID2)
         {
             Response response = new Response();
-            PedidoLoja pedido_loja = await PedidoLojaService.GetByIDService(sqlDataSource, targetID);
+            PedidoLoja pedido_loja = await PedidoLojaService.GetByIDService(sqlDataSource, targetID1, targetID2);
 
             if (pedido_loja != null)
             {
@@ -58,10 +58,10 @@ namespace LayerBLL.Logics
             return response;
         }
 
-        public static async Task<Response> PatchLogic(string sqlDataSource, PedidoLoja pedido_loja, int targetID)
+        public static async Task<Response> PatchLogic(string sqlDataSource, PedidoLoja pedido_loja, int targetID1, int targetID2)
         {
             Response response = new Response();
-            bool updateResult = await PedidoLoja.PatchService(sqlDataSource, pedido_loja, targetID);
+            bool updateResult = await PedidoLojaService.PatchService(sqlDataSource, pedido_loja, targetID1, targetID2);
 
             if (updateResult)
             {
@@ -73,10 +73,10 @@ namespace LayerBLL.Logics
             return response;
         }
 
-        public static async Task<Response> DeleteLogic(string sqlDataSource, int targetID)
+        public static async Task<Response> DeleteLogic(string sqlDataSource, int targetID1, int targetID2)
         {
             Response response = new Response();
-            bool deleteResult = await PedidoLoja.DeleteService(sqlDataSource, targetID);
+            bool deleteResult = await PedidoLojaService.DeleteService(sqlDataSource, targetID1, targetID2);
 
             if (deleteResult)
             {
