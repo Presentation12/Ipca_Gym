@@ -137,14 +137,9 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        if (pedidoLoja.id_pedido != null) myCommand.Parameters.AddWithValue("id_pedido", pedidoLoja.id_pedido);
-                        else myCommand.Parameters.AddWithValue("id_pedido", pedidoLojaAtual.id_pedido);
-
-                        if (pedidoLoja.id_produto != null) myCommand.Parameters.AddWithValue("id_produto", pedidoLoja.id_produto);
-                        else myCommand.Parameters.AddWithValue("id_produto", pedidoLojaAtual.id_produto);
-
-                        if (pedidoLoja.quantidade != null) myCommand.Parameters.AddWithValue("quantidade", pedidoLoja.quantidade);
-                        else myCommand.Parameters.AddWithValue("quantidade", pedidoLojaAtual.quantidade);
+                        myCommand.Parameters.AddWithValue("id_pedido", pedidoLoja.id_pedido != 0 ? pedidoLoja.id_pedido : pedidoLojaAtual.id_pedido);
+                        myCommand.Parameters.AddWithValue("id_produto", pedidoLoja.id_produto != 0 ? pedidoLoja.id_produto : pedidoLojaAtual.id_produto);
+                        myCommand.Parameters.AddWithValue("quantidade", pedidoLojaAtual.quantidade);
 
                         dataReader = myCommand.ExecuteReader();
 

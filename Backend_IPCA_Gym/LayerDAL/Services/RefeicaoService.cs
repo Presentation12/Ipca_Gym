@@ -163,21 +163,12 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        if (refeicao.id_refeicao != null) myCommand.Parameters.AddWithValue("id_refeicao", refeicao.id_refeicao);
-                        else myCommand.Parameters.AddWithValue("id_refeicao", refeicaoAtual.id_refeicao);
-
-                        if (refeicao.id_plano_nutricional != null) myCommand.Parameters.AddWithValue("id_plano_nutricional", refeicao.id_plano_nutricional);
-                        else myCommand.Parameters.AddWithValue("id_plano_nutricional", refeicaoAtual.id_plano_nutricional);
-
-                        if (!string.IsNullOrEmpty(refeicao.descricao)) myCommand.Parameters.AddWithValue("descricao", refeicao.descricao);
-                        else myCommand.Parameters.AddWithValue("descricao", refeicaoAtual.descricao);
-
-                        if (refeicao.hora != null) myCommand.Parameters.AddWithValue("hora", refeicao.hora);
-                        else myCommand.Parameters.AddWithValue("hora", refeicaoAtual.hora);
-
-                        if (!string.IsNullOrEmpty(refeicao.foto_refeicao)) myCommand.Parameters.AddWithValue("foto_refeicao", refeicao.foto_refeicao);
-                        else myCommand.Parameters.AddWithValue("foto_refeicao", refeicaoAtual.foto_refeicao);
-
+                        myCommand.Parameters.AddWithValue("id_refeicao", refeicao.id_refeicao != 0 ? refeicao.id_refeicao : refeicaoAtual.id_refeicao);
+                        myCommand.Parameters.AddWithValue("id_plano_nutricional", refeicao.id_plano_nutricional != 0 ? refeicao.id_plano_nutricional : refeicaoAtual.id_plano_nutricional);
+                        myCommand.Parameters.AddWithValue("descricao", !string.IsNullOrEmpty(refeicao.descricao) ? refeicao.descricao : refeicaoAtual.descricao);
+                        myCommand.Parameters.AddWithValue("hora", refeicao.hora != TimeSpan.Zero ? refeicao.hora : refeicaoAtual.hora);
+                        myCommand.Parameters.AddWithValue("foto_refeicao", !string.IsNullOrEmpty(refeicao.foto_refeicao) ? refeicao.foto_refeicao : refeicaoAtual.foto_refeicao);
+                        
                         dataReader = myCommand.ExecuteReader();
 
                         dataReader.Close();

@@ -158,17 +158,11 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        if (planoTreino.id_plano_treino != null) myCommand.Parameters.AddWithValue("id_plano_treino", planoTreino.id_plano_treino);
-                        else myCommand.Parameters.AddWithValue("id_plano_treino", planoTreinoAtual.id_plano_treino);
+                        myCommand.Parameters.AddWithValue("id_plano_treino", planoTreino.id_plano_treino != 0 ? planoTreino.id_plano_treino : planoTreinoAtual.id_plano_treino);
+                        myCommand.Parameters.AddWithValue("id_ginasio", planoTreino.id_ginasio != 0 ? planoTreino.id_ginasio : planoTreinoAtual.id_ginasio);
+                        myCommand.Parameters.AddWithValue("tipo", !string.IsNullOrEmpty(planoTreino.tipo) ? planoTreino.tipo : planoTreinoAtual.tipo);
+                        myCommand.Parameters.AddWithValue("foto_plano_treino", !string.IsNullOrEmpty(planoTreino.foto_plano_treino) ? planoTreino.foto_plano_treino : planoTreinoAtual.foto_plano_treino);
 
-                        if (planoTreino.id_ginasio != null) myCommand.Parameters.AddWithValue("id_ginasio", planoTreino.id_ginasio);
-                        else myCommand.Parameters.AddWithValue("id_ginasio", planoTreinoAtual.id_ginasio);
-
-                        if (!string.IsNullOrEmpty(planoTreino.tipo)) myCommand.Parameters.AddWithValue("tipo", planoTreino.tipo);
-                        else myCommand.Parameters.AddWithValue("tipo", planoTreinoAtual.tipo);
-
-                        if (!string.IsNullOrEmpty(planoTreino.foto_plano_treino)) myCommand.Parameters.AddWithValue("foto_plano_treino", planoTreino.foto_plano_treino);
-                        else myCommand.Parameters.AddWithValue("foto_plano_treino", planoTreinoAtual.foto_plano_treino);
 
                         dataReader = myCommand.ExecuteReader();
 

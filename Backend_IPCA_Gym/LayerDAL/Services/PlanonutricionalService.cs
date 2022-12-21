@@ -162,20 +162,11 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        if (planoNutricional.id_plano_nutricional != null) myCommand.Parameters.AddWithValue("id_plano_nutricional", planoNutricional.id_plano_nutricional);
-                        else myCommand.Parameters.AddWithValue("id_plano_nutricional", planoNutricionalAtual.id_plano_nutricional);
-
-                        if (planoNutricional.id_ginasio != null) myCommand.Parameters.AddWithValue("id_ginasio", planoNutricional.id_ginasio);
-                        else myCommand.Parameters.AddWithValue("id_ginasio", planoNutricionalAtual.id_ginasio);
-
-                        if (!string.IsNullOrEmpty(planoNutricional.tipo)) myCommand.Parameters.AddWithValue("tipo", planoNutricional.tipo);
-                        else myCommand.Parameters.AddWithValue("tipo", planoNutricionalAtual.tipo);
-
-                        if (planoNutricional.calorias != null) myCommand.Parameters.AddWithValue("calorias", planoNutricional.calorias);
-                        else myCommand.Parameters.AddWithValue("calorias", planoNutricionalAtual.calorias);
-
-                        if (!string.IsNullOrEmpty(planoNutricional.foto_plano_nutricional)) myCommand.Parameters.AddWithValue("foto_plano_nutricional", planoNutricional.foto_plano_nutricional);
-                        else myCommand.Parameters.AddWithValue("foto_plano_nutricional", planoNutricionalAtual.foto_plano_nutricional);
+                        myCommand.Parameters.AddWithValue("id_plano_nutricional", planoNutricional.id_plano_nutricional != 0 ? planoNutricional.id_plano_nutricional : planoNutricionalAtual.id_plano_nutricional);
+                        myCommand.Parameters.AddWithValue("id_ginasio", planoNutricional.id_ginasio != 0 ? planoNutricional.id_ginasio : planoNutricionalAtual.id_ginasio);
+                        myCommand.Parameters.AddWithValue("tipo", !string.IsNullOrEmpty(planoNutricional.tipo) ? planoNutricional.tipo : planoNutricionalAtual.tipo);
+                        myCommand.Parameters.AddWithValue("calorias", planoNutricional.calorias != 0 ? planoNutricional.calorias : planoNutricionalAtual.calorias);
+                        myCommand.Parameters.AddWithValue("foto_plano_nutricional", !string.IsNullOrEmpty(planoNutricional.foto_plano_nutricional) ? planoNutricional.foto_plano_nutricional : planoNutricionalAtual.foto_plano_nutricional);
 
                         dataReader = myCommand.ExecuteReader();
 

@@ -141,17 +141,10 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        if (pedido.id_pedido != null) myCommand.Parameters.AddWithValue("id_pedido", pedido.id_pedido);
-                        else myCommand.Parameters.AddWithValue("id_pedido", pedidoAtual.id_pedido);
-
-                        if (pedido.id_cliente != null) myCommand.Parameters.AddWithValue("id_cliente", pedido.id_cliente);
-                        else myCommand.Parameters.AddWithValue("id_cliente", pedidoAtual.id_cliente);
-
-                        if (pedido.data_pedido != null) myCommand.Parameters.AddWithValue("data_pedido", Convert.ToDateTime(pedido.data_pedido));
-                        else myCommand.Parameters.AddWithValue("data_pedido", Convert.ToDateTime(pedidoAtual.data_pedido));
-
-                        if (!string.IsNullOrEmpty(pedido.estado)) myCommand.Parameters.AddWithValue("estado", pedido.estado);
-                        else myCommand.Parameters.AddWithValue("estado", pedidoAtual.estado);
+                        myCommand.Parameters.AddWithValue("id_pedido", pedido.id_pedido != 0 ? pedido.id_pedido : pedidoAtual.id_pedido);
+                        myCommand.Parameters.AddWithValue("id_cliente", pedido.id_cliente != 0 ? pedido.id_cliente : pedidoAtual.id_cliente);
+                        myCommand.Parameters.AddWithValue("data_pedido", pedido.data_pedido.Equals(DateTime.MinValue) ? pedido.data_pedido : pedidoAtual.data_pedido);
+                        myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(pedido.estado) ? pedido.estado : pedidoAtual.estado);
 
                         dataReader = myCommand.ExecuteReader();
 
