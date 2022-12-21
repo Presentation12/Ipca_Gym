@@ -219,7 +219,7 @@ namespace LayerDAL.Services
                     {
                         myCommand.Parameters.AddWithValue("id_pedido", pedido.id_pedido != 0 ? pedido.id_pedido : pedidoAtual.id_pedido);
                         myCommand.Parameters.AddWithValue("id_cliente", pedido.id_cliente != 0 ? pedido.id_cliente : pedidoAtual.id_cliente);
-                        myCommand.Parameters.AddWithValue("data_pedido", pedido.data_pedido.Equals(DateTime.MinValue) ? pedido.data_pedido : pedidoAtual.data_pedido);
+                        myCommand.Parameters.AddWithValue("data_pedido", !pedido.data_pedido.Equals(DateTime.MinValue) ? pedido.data_pedido : pedidoAtual.data_pedido);
                         myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(pedido.estado) ? pedido.estado : pedidoAtual.estado);
 
                         dataReader = myCommand.ExecuteReader();

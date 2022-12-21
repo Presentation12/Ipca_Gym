@@ -215,7 +215,7 @@ namespace LayerDAL.Services
                     {
                         myCommand.Parameters.AddWithValue("id_pedido", pedidoLoja.id_pedido != 0 ? pedidoLoja.id_pedido : pedidoLojaAtual.id_pedido);
                         myCommand.Parameters.AddWithValue("id_produto", pedidoLoja.id_produto != 0 ? pedidoLoja.id_produto : pedidoLojaAtual.id_produto);
-                        myCommand.Parameters.AddWithValue("quantidade", pedidoLojaAtual.quantidade);
+                        myCommand.Parameters.AddWithValue("quantidade", pedidoLoja.quantidade);
 
                         dataReader = myCommand.ExecuteReader();
 

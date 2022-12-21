@@ -181,7 +181,7 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("hora", newRefeicao.hora);
 
                         if (!string.IsNullOrEmpty(newRefeicao.foto_refeicao)) myCommand.Parameters.AddWithValue("foto_refeicao", newRefeicao.foto_refeicao);
-                        else myCommand.Parameters.AddWithValue("foto_refeicao", string.Empty);
+                        else myCommand.Parameters.AddWithValue("foto_refeicao", DBNull.Value);
 
                         dataReader = myCommand.ExecuteReader();
 

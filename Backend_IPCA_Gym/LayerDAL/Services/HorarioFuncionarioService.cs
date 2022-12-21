@@ -74,7 +74,7 @@ namespace LayerDAL.Services
 
         public static async Task<HorarioFuncionario> GetByIDService(string sqlDataSource, int targetID)
         {
-            string query = @"select * from dbo.Horario_Funcionario where id_horario_funcionario = @id_horario_funcionario";
+            string query = @"select * from dbo.Horario_Funcionario where id_funcionario_horario = @id_funcionario_horario";
 
             try
             {
@@ -84,7 +84,7 @@ namespace LayerDAL.Services
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
                         Console.WriteLine(targetID);
-                        myCommand.Parameters.AddWithValue("id_horario_funcionario", targetID);
+                        myCommand.Parameters.AddWithValue("id_funcionario_horario", targetID);
 
                         using (SqlDataReader reader = myCommand.ExecuteReader())
                         {
