@@ -117,8 +117,7 @@ namespace LayerDAL.Services
 
         public static async Task<Cliente> GetByIDService(string sqlDataSource, int targetID)
         {
-            string query = @"
-                            select * from dbo.Cliente where id_cliente = @id_cliente";
+            string query = @"select * from dbo.Cliente where id_cliente = @id_cliente";
             try
             {
                 using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
@@ -170,7 +169,7 @@ namespace LayerDAL.Services
 
                             if (!Convert.IsDBNull(reader["gordura"]))
                             {
-                                targetCliente.gordura = reader.GetInt32(10);
+                                targetCliente.gordura = reader.GetDouble(10);
                             }
                             else
                             {
@@ -310,7 +309,7 @@ namespace LayerDAL.Services
         public static async Task<bool> PatchService(string sqlDataSource, Cliente cliente, int targetID)
         {
             string query = @"
-                            update dbo.Classificacao 
+                            update dbo.Cliente 
                             set id_ginasio = @id_ginasio, 
                             id_plano_nutricional = @id_plano_nutricional, 
                             nome = @nome,
@@ -322,7 +321,7 @@ namespace LayerDAL.Services
                             altura = @altura,
                             gordura = @gordura,
                             foto_perfil = @foto_perfil,
-                            estado = @estado,
+                            estado = @estado
                             where id_cliente = @id_cliente";
             try
             {
@@ -342,9 +341,9 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("telemovel", cliente.telemovel != 0 ? cliente.telemovel : clienteAtual.telemovel);
                         myCommand.Parameters.AddWithValue("pass_hash", !string.IsNullOrEmpty(cliente.pass_hash) ? cliente.pass_hash : clienteAtual.pass_hash);
                         myCommand.Parameters.AddWithValue("pass_salt", !string.IsNullOrEmpty(cliente.pass_salt) ? cliente.pass_salt : clienteAtual.pass_salt);
-                        myCommand.Parameters.AddWithValue("peso", cliente.peso != (double)0 ? cliente.peso : clienteAtual.peso);
-                        myCommand.Parameters.AddWithValue("altura", cliente.altura != 0 ? cliente.altura : clienteAtual.altura);
-                        myCommand.Parameters.AddWithValue("gordura", cliente.gordura != (double)0 ? cliente.gordura : clienteAtual.gordura);
+                        myCommand.Parameters.AddWithValue("peso", cliente.peso != null ? cliente.peso : clienteAtual.peso);
+                        myCommand.Parameters.AddWithValue("altura", cliente.altura != null ? cliente.altura : clienteAtual.altura);
+                        myCommand.Parameters.AddWithValue("gordura", cliente.gordura != null ? cliente.gordura : clienteAtual.gordura);
                         myCommand.Parameters.AddWithValue("foto_perfil", !string.IsNullOrEmpty(cliente.foto_perfil) ? cliente.foto_perfil : clienteAtual.foto_perfil);
                         myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(cliente.estado) ? cliente.estado : clienteAtual.estado);
 
