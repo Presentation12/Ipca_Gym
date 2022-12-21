@@ -8,7 +8,6 @@
     ".NETCoreApp,Version=v6.0": {
       "LayerBLL/1.0.0": {
         "dependencies": {
-          "LayerBOL": "1.0.0",
           "LayerDAL": "1.0.0",
           "Microsoft.AspNetCore.Mvc.Formatters.Json": "2.2.0"
         },

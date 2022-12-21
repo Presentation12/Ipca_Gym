@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LayerBLL\LayerBLL.csproj" />
-    <ProjectReference Include="..\LayerBOL\LayerBOL.csproj" />
   </ItemGroup>
 
 </Project>
