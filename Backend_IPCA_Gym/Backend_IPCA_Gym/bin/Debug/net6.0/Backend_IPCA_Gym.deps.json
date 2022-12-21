@@ -717,13 +717,19 @@
       "LayerBLL/1.0.0": {
         "dependencies": {
           "LayerDAL": "1.0.0",
-          "Microsoft.AspNetCore.Mvc.Formatters.Json": "2.2.0"
+          "Microsoft.AspNetCore.Mvc.Formatters.Json": "2.2.0",
+          "Swashbuckle.AspNetCore": "6.2.3",
+          "Swashbuckle.AspNetCore.Annotations": "6.4.0"
         },
         "runtime": {
           "LayerBLL.dll": {}
         }
       },
       "LayerBOL/1.0.0": {
+        "dependencies": {
+          "Swashbuckle.AspNetCore": "6.2.3",
+          "Swashbuckle.AspNetCore.Annotations": "6.4.0"
+        },
         "runtime": {
           "LayerBOL.dll": {}
         }
@@ -731,6 +737,8 @@
       "LayerDAL/1.0.0": {
         "dependencies": {
           "LayerBOL": "1.0.0",
+          "Swashbuckle.AspNetCore": "6.2.3",
+          "Swashbuckle.AspNetCore.Annotations": "6.4.0",
           "System.Data.SqlClient": "4.8.5"
         },
         "runtime": {

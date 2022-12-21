@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Backend_IPCA_Gym</name>
+    </assembly>
+    <members>
+        <member name="T:Backend_IPCA_Gym.Controllers.AtividadeController">
+            <summary>
+            Controlador da entidade Atividade
+            </summary>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.AtividadeController.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Construtor do controlador Atividade
+            </summary>
+            <param name="configuration">Dependency Injection</param>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.AtividadeController.GetAll">
+            <summary>
+            Retorna todos as atividades presentes na base de dados
+            </summary>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de atividades em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.AtividadeController.GetByID(System.Int32)">
+            <summary>
+            Retorna uma atividade com o id passado por parâmetro
+            </summary>
+            <param name="targetID">ID da atividade que é pretendida ser retornada</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a Atividade em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.AtividadeController.Post(LayerBOL.Models.Atividade)">
+            <summary>
+            Criação de uma nova Atividade
+            </summary>
+            <param name="newAtividade">Dados da nova Atividade a ser inserida</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.AtividadeController.Patch(LayerBOL.Models.Atividade,System.Int32)">
+            <summary>
+            Fazer atualização dos dados de uma Atividade
+            </summary>
+            <param name="atividade">Atividade com dados alterados</param>
+            <param name="targetID">ID da Atividade pretendida para alterar os dados</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.AtividadeController.Delete(System.Int32)">
+            <summary>
+            Remover uma Atividade da base de dados
+            </summary>
+            <param name="targetID">ID da Atividade pretendida para ser removida</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+    </members>
+</doc>
