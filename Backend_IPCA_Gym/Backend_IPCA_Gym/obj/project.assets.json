@@ -1487,7 +1487,6 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "LayerBOL": "1.0.0",
           "LayerDAL": "1.0.0",
           "Microsoft.AspNetCore.Mvc.Formatters.Json": "2.2.0"
         },
@@ -4698,7 +4697,6 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "LayerBLL >= 1.0.0",
-      "LayerBOL >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 6.0.12",
       "Npgsql >= 7.0.0",
       "Swashbuckle.AspNetCore >= 6.2.3",
@@ -4713,11 +4711,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\Backend_IPCA_Gym\\Backend_IPCA_Gym.csproj",
+      "projectUniqueName": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\Ipca_Gym\\Backend_IPCA_Gym\\Backend_IPCA_Gym\\Backend_IPCA_Gym.csproj",
       "projectName": "Backend_IPCA_Gym",
-      "projectPath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\Backend_IPCA_Gym\\Backend_IPCA_Gym.csproj",
+      "projectPath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\Ipca_Gym\\Backend_IPCA_Gym\\Backend_IPCA_Gym\\Backend_IPCA_Gym.csproj",
       "packagesPath": "C:\\Users\\joaoc\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\Backend_IPCA_Gym\\obj\\",
+      "outputPath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\Ipca_Gym\\Backend_IPCA_Gym\\Backend_IPCA_Gym\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4740,11 +4738,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerBLL\\LayerBLL.csproj": {
-              "projectPath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerBLL\\LayerBLL.csproj"
-            },
-            "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj": {
-              "projectPath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj"
+            "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\Ipca_Gym\\Backend_IPCA_Gym\\LayerBLL\\LayerBLL.csproj": {
+              "projectPath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\Ipca_Gym\\Backend_IPCA_Gym\\LayerBLL\\LayerBLL.csproj"
             }
           }
         }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tgpnf/trmpIqMlj521OM1Wq2LsWXI2oO6xWc3tiPigODPKjNWRqVpJQIYMcM++WmHkKL/c0xBaM9G6FYVJNAfA==",
+  "dgSpecHash": "+t3y461faWpqcNk/bhdjKFhtTJ1diMGQZWcbZsguSeq31jhtcSy+4pjiJmFFSSyrxroYZm6l2xJUgtCSlBFwvA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerBLL\\LayerBLL.csproj",
+  "projectFilePath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\Ipca_Gym\\Backend_IPCA_Gym\\LayerBLL\\LayerBLL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\joaoc\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\joaoc\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",

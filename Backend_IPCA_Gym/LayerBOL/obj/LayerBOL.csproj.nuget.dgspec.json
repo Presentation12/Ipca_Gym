@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj": {}
+    "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\Ipca_Gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj": {
+    "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\Ipca_Gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj",
+        "projectUniqueName": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\Ipca_Gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj",
         "projectName": "LayerBOL",
-        "projectPath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj",
+        "projectPath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\Ipca_Gym\\Backend_IPCA_Gym\\LayerBOL\\LayerBOL.csproj",
         "packagesPath": "C:\\Users\\joaoc\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\ipca_gym\\Backend_IPCA_Gym\\LayerBOL\\obj\\",
+        "outputPath": "C:\\Users\\joaoc\\OneDrive\\Ambiente de Trabalho\\Ipca_Gym\\Backend_IPCA_Gym\\LayerBOL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
