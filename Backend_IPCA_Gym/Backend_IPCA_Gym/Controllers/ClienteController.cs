@@ -13,16 +13,27 @@ using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace Backend_IPCA_Gym.Controllers
 {
+    /// <summary>
+    /// Controlador da entidade Cliente
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ClienteController : Controller
     {
         private readonly IConfiguration _configuration;
+        /// <summary>
+        /// Construtor do controlador cliente
+        /// </summary>
+        /// <param name="configuration">Dependency Injection</param>
         public ClienteController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Método http get para retornar os clientes da base de dados
+        /// </summary>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de clientes em formato Json</returns>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -34,6 +45,11 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http get para retornar um cliente através do seu id
+        /// </summary>
+        /// <param name="targetID">ID do cliente que é pretendido ser retornado</param>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a cliente em formato Json</returns>
         [HttpGet("{targetID}")]
         public async Task<IActionResult> GetByID(int targetID)
         {
@@ -45,6 +61,11 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http post para inserção de um novo cliente
+        /// </summary>
+        /// <param name="newCliente">Dados do novo cliente a ser inserido</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Cliente newCliente)
         {
@@ -56,6 +77,12 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http patch para alteração dos dados de um cliente através do id e novos dados
+        /// </summary>
+        /// <param name="cliente">Cliente com dados alterados</param>
+        /// <param name="targetID">ID da Cliente pretendida para alterar os dados</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         [HttpPatch("{targetID}")]
         public async Task<IActionResult> Patch([FromBody] Cliente cliente, int targetID)
         {
@@ -68,6 +95,11 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http delete para remover um cliente da base de dados através do seu id
+        /// </summary>
+        /// <param name="targetID">ID do cliente pretendida para ser removido</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         [HttpDelete("{targetID}")]
         public async Task<IActionResult> Delete(int targetID)
         {

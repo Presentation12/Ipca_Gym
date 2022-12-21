@@ -13,16 +13,28 @@ using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace Backend_IPCA_Gym.Controllers
 {
+    /// <summary>
+    /// Controlador da entidade ginásio
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class GinasioController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+
+        /// <summary>
+        /// Construtor do controlador ginásio
+        /// </summary>
+        /// <param name="configuration">Dependency Injection</param>
         public GinasioController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Método http get para retornar os ginásios da base de dados
+        /// </summary>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de ginásios em formato Json</returns>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -35,6 +47,11 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http get para retornar um ginásio através do seu id
+        /// </summary>
+        /// <param name="targetID">ID da ginásio que é pretendido ser retornado</param>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e o ginásio em formato Json</returns>
         [HttpGet("{targetID}")]
         public async Task<IActionResult> GetByID(int targetID)
         {
@@ -46,6 +63,11 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http post para inserção de um novo ginásio
+        /// </summary>
+        /// <param name="newGinasio">Dados do novo ginásio a ser inserido</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Ginasio newGinasio)
         {
@@ -57,6 +79,12 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http patch para alteração dos dados de um ginásio através do id e novos dados
+        /// </summary>
+        /// <param name="ginasio">ginásio com dados alterados</param>
+        /// <param name="targetID">ID do ginásio pretendido para alterar os dados</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         [HttpPatch("{targetID}")]
         public async Task<IActionResult> Patch([FromBody] Ginasio ginasio, int targetID)
         {
@@ -69,6 +97,11 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http delete para remover um ginásio da base de dados através do seu id
+        /// </summary>
+        /// <param name="targetID">ID do ginásio pretendido para ser removido</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         [HttpDelete("{targetID}")]
         public async Task<IActionResult> Delete(int targetID)
         {
