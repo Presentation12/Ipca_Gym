@@ -138,7 +138,8 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        if (atividade.id_atividade != null) myCommand.Parameters.AddWithValue("id_atividade", atividade.id_atividade);
+                        /*
+                        if (atividade.id_atividade.HasValue) myCommand.Parameters.AddWithValue("id_atividade", atividade.id_atividade);
                         else myCommand.Parameters.AddWithValue("id_atividade", atividadeAtual.id_atividade);
 
                         if (atividade.id_ginasio != null) myCommand.Parameters.AddWithValue("id_ginasio", atividade.id_ginasio);
@@ -152,6 +153,15 @@ namespace LayerDAL.Services
 
                         if (atividade.data_saida != null) myCommand.Parameters.AddWithValue("data_saida", Convert.ToDateTime(atividade.data_saida));
                         else myCommand.Parameters.AddWithValue("data_saida", Convert.ToDateTime(atividadeAtual.data_saida));
+                        */
+
+                        //myCommand.Parameters.AddWithValue("id_atividade", atividade.id_atividade ?? atividadeAtual.id_atividade);
+
+                        myCommand.Parameters.AddWithValue("id_atividade", atividade.id_atividade != 0 ? atividade.id_atividade : atividadeAtual.id_atividade);
+                        myCommand.Parameters.AddWithValue("id_ginasio", atividade.id_ginasio != 0 ? atividade.id_ginasio : atividadeAtual.id_ginasio);
+                        myCommand.Parameters.AddWithValue("id_cliente", atividade.id_cliente != 0 ? atividade.id_cliente : atividadeAtual.id_cliente);
+                        myCommand.Parameters.AddWithValue("data_entrada", atividade.data_entrada != DateTime.MinValue ? Convert.ToDateTime(atividade.data_entrada) : Convert.ToDateTime(atividadeAtual.data_entrada));
+                        myCommand.Parameters.AddWithValue("data_entrada", atividade.data_entrada != DateTime.MinValue ? Convert.ToDateTime(atividade.data_entrada) : Convert.ToDateTime(atividadeAtual.data_entrada));
 
                         dataReader = myCommand.ExecuteReader();
 
