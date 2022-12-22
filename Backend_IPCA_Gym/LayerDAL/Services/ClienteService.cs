@@ -391,8 +391,8 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("nome", !string.IsNullOrEmpty(cliente.nome) ? cliente.nome : clienteAtual.nome);
                         myCommand.Parameters.AddWithValue("mail", !string.IsNullOrEmpty(cliente.mail) ? cliente.mail : clienteAtual.mail);
                         myCommand.Parameters.AddWithValue("telemovel", cliente.telemovel != 0 ? cliente.telemovel : clienteAtual.telemovel);
-                        myCommand.Parameters.AddWithValue("pass_hash", !string.IsNullOrEmpty(cliente.pass_hash) ? cliente.pass_hash : clienteAtual.pass_hash);
-                        myCommand.Parameters.AddWithValue("pass_salt", !string.IsNullOrEmpty(cliente.pass_salt) ? cliente.pass_salt : clienteAtual.pass_salt);
+                        myCommand.Parameters.AddWithValue("pass_hash", clienteAtual.pass_hash);
+                        myCommand.Parameters.AddWithValue("pass_salt", clienteAtual.pass_salt);
                         myCommand.Parameters.AddWithValue("peso", cliente.peso != null ? cliente.peso : clienteAtual.peso);
                         myCommand.Parameters.AddWithValue("altura", cliente.altura != null ? cliente.altura : clienteAtual.altura);
                         myCommand.Parameters.AddWithValue("gordura", cliente.gordura != null ? cliente.gordura : clienteAtual.gordura);

@@ -201,8 +201,14 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("nome", newFuncionario.nome);
                         myCommand.Parameters.AddWithValue("is_admin", newFuncionario.is_admin);
                         myCommand.Parameters.AddWithValue("codigo", newFuncionario.codigo);
-                        myCommand.Parameters.AddWithValue("pass_salt", newFuncionario.pass_salt);
+
+                        PasswordEncryption.CreatePasswordHash(newFuncionario.pass_salt, out byte[] passwordHash, out byte[] passwordSalt);
+                        newFuncionario.pass_hash = Convert.ToBase64String(passwordHash);
+                        newFuncionario.pass_salt = Convert.ToBase64String(passwordSalt);
+
                         myCommand.Parameters.AddWithValue("pass_hash", newFuncionario.pass_hash);
+                        myCommand.Parameters.AddWithValue("pass_salt", newFuncionario.pass_salt);
+
                         myCommand.Parameters.AddWithValue("estado", newFuncionario.estado);
 
                         dataReader = myCommand.ExecuteReader();
@@ -281,8 +287,8 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("nome", !string.IsNullOrEmpty(funcionario.nome) ? funcionario.nome : funcionarioAtual.nome);
                         myCommand.Parameters.AddWithValue("is_admin", funcionario.is_admin != null ? funcionario.is_admin : funcionarioAtual.is_admin);
                         myCommand.Parameters.AddWithValue("codigo", funcionario.codigo != 0 ? funcionario.codigo : funcionarioAtual.codigo);
-                        myCommand.Parameters.AddWithValue("pass_salt", !string.IsNullOrEmpty(funcionario.pass_salt) ? funcionario.pass_salt : funcionarioAtual.pass_salt);
-                        myCommand.Parameters.AddWithValue("pass_hash", !string.IsNullOrEmpty(funcionario.pass_hash) ? funcionario.pass_hash : funcionarioAtual.pass_hash);
+                        myCommand.Parameters.AddWithValue("pass_salt", funcionarioAtual.pass_salt);
+                        myCommand.Parameters.AddWithValue("pass_hash", funcionarioAtual.pass_hash);
                         myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(funcionario.estado) ? funcionario.estado : funcionarioAtual.estado);
 
                         dataReader = myCommand.ExecuteReader();

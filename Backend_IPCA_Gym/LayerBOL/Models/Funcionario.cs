@@ -36,7 +36,7 @@
         /// Representação criptografica da password do funcionário
         /// </summary>
         /// <example>erfgergertngiue348975y3478t438fh348fbh3</example>
-        public string pass_hash { get; set; }
+        public string? pass_hash { get; set; }
         /// <summary>
         /// Estado do funcionário (Ativo ou Inativo)
         /// </summary>
