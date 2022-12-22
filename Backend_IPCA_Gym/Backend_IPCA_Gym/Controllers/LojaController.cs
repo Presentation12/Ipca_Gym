@@ -123,7 +123,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do ginásio que é pretendido que retorne os produtos</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e o produto em formato Json</returns>
-        [HttpGet("/Ginasio/{targetID}")]
+        [HttpGet("Ginasio/{targetID}")]
         public async Task<IActionResult> GetAllByGinasioID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
