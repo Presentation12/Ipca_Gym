@@ -7,6 +7,8 @@ namespace LayerDAL.Services
 {
     public class PlanoNutricionalService
     {
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Leitura dos dados de todos os planos nutricionais da base de dados
         /// </summary>
@@ -24,7 +26,7 @@ namespace LayerDAL.Services
 
             try
             {
-                List<PlanoNutricional> planosnutricionais = new List<PlanoNutricional>();
+                List<PlanoNutricional> planosNutricionais = new List<PlanoNutricional>();
                 SqlDataReader dataReader;
 
                 using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
@@ -51,7 +53,7 @@ namespace LayerDAL.Services
                                 planoNutricional.foto_plano_nutricional = null;
                             }
 
-                            planosnutricionais.Add(planoNutricional);
+                            planosNutricionais.Add(planoNutricional);
                         }
 
                         dataReader.Close();
@@ -59,7 +61,7 @@ namespace LayerDAL.Services
                     }
                 }
 
-                return planosnutricionais;
+                return planosNutricionais;
             }
             catch (SqlException ex)
             {
@@ -377,5 +379,102 @@ namespace LayerDAL.Services
                 return false;
             }
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+        /// <summary>
+        /// Leitura dos dados de todos os planos de nutrição de um ginásio através do seu id de ginásio na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID">ID do ginásio ao qual pertencem os planos de nutrição a ser lido</param>
+        /// <returns>Planos de nutrição se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<List<PlanoNutricional>> GetAllByGinasioIDService(string sqlDataSource, int targetID)
+
+        {
+            string query = @"select * from dbo.Plano_Nutricional where id_ginasio = @targetID";
+
+            try
+            {
+                List<PlanoNutricional> planosNutricionais = new List<PlanoNutricional>();
+                SqlDataReader dataReader;
+
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("id_ginasio", targetID);
+                        myCommand.Parameters.AddWithValue("targetID", targetID);
+                        dataReader = myCommand.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            PlanoNutricional planoNutricional = new PlanoNutricional();
+
+                            planoNutricional.id_plano_nutricional = Convert.ToInt32(dataReader["id_plano_nutricional"]);
+                            planoNutricional.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
+                            planoNutricional.tipo = dataReader["tipo"].ToString();
+                            planoNutricional.calorias = Convert.ToInt32(dataReader["calorias"]);
+
+                            if (!Convert.IsDBNull(dataReader["foto_plano_nutricional"]))
+                            {
+                                planoNutricional.foto_plano_nutricional = dataReader["foto_plano_nutricional"].ToString();
+                            }
+                            else
+                            {
+                                planoNutricional.foto_plano_nutricional = null;
+                            }
+
+                            planosNutricionais.Add(planoNutricional);
+                        }
+
+                        dataReader.Close();
+                        databaseConnection.Close();
+                    }
+                }
+
+                return planosNutricionais;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
+        #endregion
     }
 }

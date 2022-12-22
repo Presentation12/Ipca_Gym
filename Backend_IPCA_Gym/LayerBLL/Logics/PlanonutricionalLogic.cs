@@ -16,6 +16,8 @@ namespace LayerBLL.Logics
     /// </summary>
     public class PlanoNutricionalLogic
     {
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Método que recebe os dados do serviço de obter todos os planos nutricionais
         /// </summary>
@@ -120,5 +122,32 @@ namespace LayerBLL.Logics
 
             return response;
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+        /// <summary>
+        /// Método que recebe os dados do serviço de obter todos os planos de nutrição de um ginásio
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do ginásio que é pretendido retornar os planos de nutrição</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> GetAllByGinasioIDLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+            List<PlanoNutricional> planoNutricionalList = await PlanoNutricionalService.GetAllByGinasioIDService(sqlDataSource, targetID);
+
+            if (planoNutricionalList.Count != 0)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Lista de planos de treino obtida com sucesso";
+                response.Data = new JsonResult(planoNutricionalList);
+            }
+
+            return response;
+        }
+
+        #endregion
     }
 }

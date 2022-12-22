@@ -31,6 +31,8 @@ namespace Backend_IPCA_Gym.Controllers
             _configuration = configuration;
         }
 
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Método http get para retornar os planos nutricionais da base de dados
         /// </summary>
@@ -111,5 +113,27 @@ namespace Backend_IPCA_Gym.Controllers
 
             return new JsonResult(response);
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+        /// <summary>
+        /// Método http get para retornar os planos de nutrição de um ginásio da base de dados
+        /// </summary>
+        /// <param name="targetID">ID do ginásio que é pretendido ser retornado os planos de nutrição</param>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de planos de nutrição em formato Json</returns>
+        [HttpGet("Ginasio/{targetID}")]
+        public async Task<IActionResult> GetAllByGinasioID(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await PlanoNutricionalLogic.GetAllByGinasioIDLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        #endregion
     }
 }
