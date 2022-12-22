@@ -50,7 +50,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// Método http get para retornar um pedido de loja através do seu id
         /// </summary>
         /// <param name="targetID1">ID do pedido de loja que é pretendido ser retornado</param>
-        /// /// <param name="targetID2">ID do pedido de loja que é pretendido ser retornado</param>
+        /// <param name="targetID2">ID do produto de loja que é pretendido ser retornado</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a PedidoLoja em formato Json</returns>
         [HttpGet("{targetID}")]
         public async Task<IActionResult> GetByID(int targetID1, int targetID2)
@@ -82,8 +82,9 @@ namespace Backend_IPCA_Gym.Controllers
         /// <summary>
         /// Método http patch para alteração dos dados de um pedido de loja através do id e novos dados
         /// </summary>
-        /// <param name="pedido de loja">PedidoLoja com dados alterados</param>
-        /// <param name="targetID">ID do PedidoLoja pretendido para alterar os dados</param>
+        /// <param name="pedidoLoja">PedidoLoja com dados alterados</param>
+        /// <param name="targetID1">ID do pedido de loja que é pretendido ser retornado</param>
+        /// <param name="targetID2">ID do produto de loja que é pretendido ser retornado</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         [HttpPatch("{targetID}")]
         public async Task<IActionResult> Patch([FromBody] PedidoLoja pedidoLoja, int targetID1, int targetID2)
@@ -100,7 +101,8 @@ namespace Backend_IPCA_Gym.Controllers
         /// <summary>
         /// Método http delete para remover um pedido de loja da base de dados através do seu id
         /// </summary>
-        /// <param name="targetID">ID da PedidoLoja pretendido para ser removido</param>
+        /// <param name="targetID1">ID do pedido de loja que é pretendido ser retornado</param>
+        /// <param name="targetID2">ID do produto de loja que é pretendido ser retornado</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         [HttpDelete("{targetID}")]
         public async Task<IActionResult> Delete(int targetID1, int targetID2)

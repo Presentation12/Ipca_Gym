@@ -13,8 +13,16 @@ using LayerDAL.Services;
 
 namespace LayerBLL.Logics
 {
+    /// <summary>
+    /// Classe que contém a lógica do response da entidade Ginasio
+    /// </summary>
     public class GinasioLogic
     {
+        /// <summary>
+        /// Método que recebe os dados do serviço de obter todos os ginasios
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
         public static async Task<Response> GetAllLogic(string sqlDataSource)
         {
             Response response = new Response();
@@ -30,6 +38,12 @@ namespace LayerBLL.Logics
             return response;
         }
 
+        /// <summary>
+        /// Método que recebe os dados do serviço de obter um ginasio em específico
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do Ginasio que é pretendido retornar</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
         public static async Task<Response> GetByIDLogic(string sqlDataSource, int targetID)
         {
             Response response = new Response();
@@ -45,6 +59,12 @@ namespace LayerBLL.Logics
             return response;
         }
 
+        /// <summary>
+        /// Método que recebe a resposta do serviço de criar um ginasio
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="newGinasio">Objeto com os dados do Ginasio a ser criado</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
         public static async Task<Response> PostLogic(string sqlDataSource, Ginasio newGinasio)
         {
             Response response = new Response();
@@ -60,6 +80,13 @@ namespace LayerBLL.Logics
             return response;
         }
 
+        /// <summary>
+        /// Método que recebe a resposta do serviço de atualizar um ginasio
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="ginasio">Objeto que contém os dados atualizados do Ginasio</param>
+        /// <param name="targetID">ID do Ginasio que é pretendido atualizar</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
         public static async Task<Response> PatchLogic(string sqlDataSource, Ginasio ginasio, int targetID)
         {
             Response response = new Response();
@@ -75,6 +102,12 @@ namespace LayerBLL.Logics
             return response;
         }
 
+        /// <summary>
+        /// Método que recebe a resposta do serviço de eliminar um ginasio
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do Ginasio que é pretendido eliminar</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
         public static async Task<Response> DeleteLogic(string sqlDataSource, int targetID)
         {
             Response response = new Response();

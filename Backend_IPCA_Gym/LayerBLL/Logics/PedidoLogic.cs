@@ -11,8 +11,16 @@ using LayerDAL.Services;
 
 namespace LayerBLL.Logics
 {
+    /// <summary>
+    /// Classe que contém a lógica do response da entidade Pedido
+    /// </summary>
     public class PedidoLogic
     {
+        /// <summary>
+        /// Método que recebe os dados do serviço de obter todos os pedidos
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
         public static async Task<Response> GetAllLogic(string sqlDataSource)
         {
             Response response = new Response();
@@ -28,6 +36,12 @@ namespace LayerBLL.Logics
             return response;
         }
 
+        /// <summary>
+        /// Método que recebe os dados do serviço de obter um pedido em específico
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do Pedido que é pretendido retornar</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
         public static async Task<Response> GetByIDLogic(string sqlDataSource, int targetID)
         {
             Response response = new Response();
@@ -43,6 +57,12 @@ namespace LayerBLL.Logics
             return response;
         }
 
+        /// <summary>
+        /// Método que recebe a resposta do serviço de criar um pedido
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="newPedido">Objeto com os dados do Pedido a ser criado</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
         public static async Task<Response> PostLogic(string sqlDataSource, Pedido newPedido)
         {
             Response response = new Response();
@@ -58,6 +78,13 @@ namespace LayerBLL.Logics
             return response;
         }
 
+        /// <summary>
+        /// Método que recebe a resposta do serviço de atualizar um pedido
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="pedido">Objeto que contém os dados atualizados do Pedido</param>
+        /// <param name="targetID">ID do Pedido que é pretendido atualizar</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
         public static async Task<Response> PatchLogic(string sqlDataSource, Pedido pedido, int targetID)
         {
             Response response = new Response();
@@ -73,6 +100,12 @@ namespace LayerBLL.Logics
             return response;
         }
 
+        /// <summary>
+        /// Método que recebe a resposta do serviço de eliminar um pedido
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do Pedido que é pretendido eliminar</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
         public static async Task<Response> DeleteLogic(string sqlDataSource, int targetID)
         {
             Response response = new Response();
