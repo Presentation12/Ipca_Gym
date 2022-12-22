@@ -10,6 +10,10 @@ using LayerBLL.Utils;
 using LayerBLL.Logics;
 using Swashbuckle.AspNetCore.Annotations;
 using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Backend_IPCA_Gym.Controllers
 {
@@ -106,6 +110,23 @@ namespace Backend_IPCA_Gym.Controllers
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             Response response = await FuncionarioLogic.DeleteLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        /// <summary>
+        /// Método http para efetuar o login de um funcionário
+        /// </summary>
+        /// <param name="conta">Funcionario que pretende fazer login</param>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a token de sessão em formato json</returns>
+        [Route("login")]
+        [HttpPost]
+        public async Task<IActionResult> Login([FromBody] Funcionario conta)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await FuncionarioLogic.Login(sqlDataSource, conta);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
 

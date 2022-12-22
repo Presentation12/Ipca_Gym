@@ -1,11 +1,27 @@
 ﻿using LayerBOL.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.Data.SqlClient;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace LayerDAL.Services
 {
     public class FuncionarioService
     {
+        private readonly IConfiguration _configuration;
+
+        /// <summary>
+        /// Construtor do controlador funcionario
+        /// </summary>
+        /// <param name="configuration">Dependency Injection</param>
+        public FuncionarioService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         /// <summary>
         /// Leitura dos dados de todos os funcionarios da base de dados
         /// </summary>
@@ -374,6 +390,71 @@ namespace LayerDAL.Services
             {
                 Console.WriteLine(ex.ToString());
                 return false;
+            }
+        }
+
+        private string CreateTokenFuncionario(Funcionario funcionario)
+        {
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Email, funcionario.codigo.ToString()),
+                new Claim(ClaimTypes.Role, "Funcionario")
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds);
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return jwt;
+        }
+
+        public async Task<string> Login(string sqlDataSource, Funcionario conta)
+        {
+            string query = @"
+                            select from dbo.Funcionario 
+                            where codigo = @codigo";
+
+            try
+            {
+                SqlDataReader dataReader;
+
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("codigo", conta.codigo);
+                        dataReader = myCommand.ExecuteReader();
+                        //verificar user
+                        dataReader.Close();
+                        databaseConnection.Close();
+                    }
+                }
+                string token = CreateTokenFuncionario(conta);
+
+                return token;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return string.Empty;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return string.Empty;
             }
         }
     }
