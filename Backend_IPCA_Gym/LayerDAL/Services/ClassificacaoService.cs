@@ -6,6 +6,8 @@ namespace LayerDAL.Services
 {
     public class ClassificacaoService
     {
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Leitura dos dados de todas as classificações da base de dados
         /// </summary>
@@ -360,5 +362,10 @@ namespace LayerDAL.Services
                 return false;
             }
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+        #endregion
     }
 }

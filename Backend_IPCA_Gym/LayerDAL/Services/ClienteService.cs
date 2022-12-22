@@ -6,6 +6,8 @@ namespace LayerDAL.Services
 {
     public class ClienteService
     {
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Leitura dos dados de todos os clientes da base de dados
         /// </summary>
@@ -484,5 +486,10 @@ namespace LayerDAL.Services
                 return false;
             }
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+        #endregion
     }
 }
