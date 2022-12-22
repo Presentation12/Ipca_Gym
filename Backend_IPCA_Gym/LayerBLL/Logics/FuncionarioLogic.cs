@@ -8,6 +8,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using LayerDAL.Services;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LayerBLL.Logics
 {
@@ -116,6 +117,28 @@ namespace LayerBLL.Logics
                 response.StatusCode = StatusCodes.SUCCESS;
                 response.Message = "Success!";
                 response.Data = new JsonResult("Funcionario removido com sucesso");
+            }
+
+            return response;
+        }
+
+        /// <summary>
+        /// Método que recebe a resposta do serviço de efetuar o login
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="conta">Funcionario que pretende fazer login</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> Login(string sqlDataSource, Funcionario conta)
+        {
+            Response response = new Response();
+            //string token = await FuncionarioService.Login(sqlDataSource, conta);
+            string token = "Token temporario, metodo por fazer";
+
+            if (token.Length != 0)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Login feito com sucesso!";
+                response.Data = new JsonResult(token);
             }
 
             return response;
