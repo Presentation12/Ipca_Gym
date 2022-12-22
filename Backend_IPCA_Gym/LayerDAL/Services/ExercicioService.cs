@@ -8,6 +8,17 @@ namespace LayerDAL.Services
 {
     public class ExercicioService
     {
+        /// <summary>
+        /// Leitura dos dados de todos os exercicios da base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <returns>Lista de exercicios se uma leitura bem sucedida, null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<List<Exercicio>> GetAllService(string sqlDataSource)
         {
             string query = @"select * from dbo.Exercicio";
@@ -106,6 +117,19 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Leitura dos dados de um exercicio através do seu id na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID">ID do exercicio a ser lido</param>
+        /// <returns>Exercicio se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Exercicio> GetByIDService(string sqlDataSource, int targetID)
         {
             string query = @"
@@ -213,6 +237,17 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Inserção dos dados de um novo exercicio na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="newExercicio">Objeto com os dados do novo exercicio</param>
+        /// <returns>True se a escrita dos dados foi bem sucedida, false em caso de erro.</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<bool> PostService(string sqlDataSource, Exercicio newExercicio)
         {
             string query = @"
@@ -280,6 +315,18 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Atualiza os dados de um exercicio através do seu id na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="exercicio">Objeto com os novos dados da exercicio</param>
+        /// <param name="targetID">ID do exercicio a ser atualizado</param>
+        /// <returns>True se a atualização dos dados foi bem-sucedida, false caso contrário</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<bool> PatchService(string sqlDataSource, Exercicio exercicio, int targetID)
         {
             string query = @"
@@ -350,6 +397,15 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Remoção de um exercicio da base de dados pelo seu ID
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <param name="targetID">ID do exercicio a ser removido</param>
+        /// <returns>True se a remoção foi bem sucedida, false em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<bool> DeleteService(string sqlDataSource, int targetID)
         {
             string query = @"

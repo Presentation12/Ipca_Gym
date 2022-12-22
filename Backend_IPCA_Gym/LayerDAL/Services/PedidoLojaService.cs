@@ -7,6 +7,17 @@ namespace LayerDAL.Services
 {
     public class PedidoLojaService
     {
+        /// <summary>
+        /// Leitura dos dados de todas as associações de pedido e produto da base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <returns>Lista de associações de pedido e produto se uma leitura bem sucedida, null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<List<PedidoLoja>> GetAllService(string sqlDataSource)
         {
             string query = @"select * from dbo.Pedido_Loja";
@@ -72,6 +83,20 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Leitura dos dados de uma associação de pedido e produto através do seu id na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID1">ID do pedido a ser lido</param>
+        /// /// <param name="targetID2">ID do produto a ser lida</param>
+        /// <returns>Associação de um pedido e um produto se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<PedidoLoja> GetByIDService(string sqlDataSource, int targetID1, int targetID2)
         {
             string query = @"select * from dbo.Pedido_Loja where id_pedido = @id_pedido and id_produto = @id_produto";
@@ -141,6 +166,17 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Inserção dos dados de uma nova associação de pedido e produto na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="newPedidoLoja">Objeto com os dados da nova associação de pedido e produto</param>
+        /// <returns>True se a escrita dos dados foi bem sucedida, false em caso de erro.</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<bool> PostService(string sqlDataSource, PedidoLoja newPedidoLoja)
         {
             string query = @"
@@ -196,6 +232,18 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Atualiza os dados de uma associação de pedido e produto através do seu id na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="associação de pedido e produto">Objeto com os novos dados da associação de pedido e produto</param>
+        /// <param name="targetID">ID da associação de pedido e produto a ser atualizada</param>
+        /// <returns>True se a atualização dos dados foi bem sucedida, false caso contrário</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<bool> PatchService(string sqlDataSource, PedidoLoja pedidoLoja, int targetID1, int targetID2)
         {
             string query = @"
@@ -253,6 +301,15 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Remoção de uma associação de pedido e produto da base de dados pelo seu ID
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <param name="targetID">ID da associação de pedido e produto a ser removida</param>
+        /// <returns>True se a remoção foi bem sucedida, false em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<bool> DeleteService(string sqlDataSource, int targetID1, int targetID2)
         {
             string query = @"

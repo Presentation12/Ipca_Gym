@@ -6,6 +6,17 @@ namespace LayerDAL.Services
 {
     public class ClienteService
     {
+        /// <summary>
+        /// Leitura dos dados de todos os clientes da base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <returns>Lista de clientes se uma leitura bem sucedida, null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<List<Cliente>> GetAllService(string sqlDataSource)
         {
             string query = @"select * from dbo.Cliente";
@@ -115,6 +126,19 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Leitura dos dados de um cliente através do seu id na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID">ID do cliente a ser lido</param>
+        /// <returns>Cliente se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Cliente> GetByIDService(string sqlDataSource, int targetID)
         {
             string query = @"select * from dbo.Cliente where id_cliente = @id_cliente";
@@ -232,6 +256,17 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Inserção dos dados de um novo cliente na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="newCliente">Objeto com os dados do novo cliente</param>
+        /// <returns>True se a escrita dos dados foi bem sucedida, false em caso de erro.</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<bool> PostService(string sqlDataSource, Cliente newCliente)
         {
             string query = @"
@@ -306,6 +341,18 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Atualiza os dados de um cliente através do seu id na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="cliente">Objeto com os novos dados da cliente</param>
+        /// <param name="targetID">ID do cliente a ser atualizado</param>
+        /// <returns>True se a atualização dos dados foi bem-sucedida, false caso contrário</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<bool> PatchService(string sqlDataSource, Cliente cliente, int targetID)
         {
             string query = @"
@@ -383,6 +430,15 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Remoção de um cliente da base de dados pelo seu ID
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <param name="targetID">ID do cliente a ser removido</param>
+        /// <returns>True se a remoção foi bem sucedida, false em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<bool> DeleteService(string sqlDataSource, int targetID)
         {
             string query = @"

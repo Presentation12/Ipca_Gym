@@ -2,8 +2,17 @@
 {
     public class Response
     {
+        /// <summary>
+        /// Código do estado do request
+        /// </summary>
         public StatusCodes StatusCode { get; set; }
+        /// <summary>
+        /// Mensagem dos requests
+        /// </summary>
         public string Message { get; set; }
+        /// <summary>
+        /// Dados que o request envia
+        /// </summary>
         public object Data { get; set; }
 
         /// <summary>
