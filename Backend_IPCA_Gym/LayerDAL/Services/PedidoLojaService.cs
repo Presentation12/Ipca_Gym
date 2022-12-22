@@ -361,10 +361,92 @@ namespace LayerDAL.Services
         #region BACKLOG REQUESTS
 
         /// <summary>
-        /// Remoção de todas as associações de pedido e produto da base de dados pelo id do pedido, e inativação do pedido
+        /// Leitura dos dados de todos as asssociações de um pedido com produtos através do seu id de pedido na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID">ID do pedido ao qual pertencem os produtos a ser lido</param>
+        /// <returns>Produtos de um pedido se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<List<PedidoLoja>> GetAllByPedidoIDService(string sqlDataSource, int targetID)
+
+        {
+            string query = @"select * from dbo.Pedido_Loja where id_pedido = @targetID";
+
+            try
+            {
+                List<PedidoLoja> pedidosLoja = new List<PedidoLoja>();
+                SqlDataReader dataReader;
+
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+
+                        myCommand.Parameters.AddWithValue("id_pedido", targetID);
+                        myCommand.Parameters.AddWithValue("targetID", targetID);
+                        dataReader = myCommand.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            PedidoLoja pedidoloja = new PedidoLoja();
+
+                            pedidoloja.id_pedido = Convert.ToInt32(dataReader["id_pedido"]);
+                            pedidoloja.id_produto = Convert.ToInt32(dataReader["id_produto"]);
+                            pedidoloja.quantidade = Convert.ToInt32(dataReader["quantidade"]);
+
+                            pedidosLoja.Add(pedidoloja);
+                        }
+
+                        dataReader.Close();
+                        databaseConnection.Close();
+                    }
+                }
+
+                return pedidosLoja;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Remoção de todas as associações de pedido e produto da base de dados pelo id do pedido, inativação do pedido e restock da loja
         /// </summary>
         /// <param name="sqlDataSource">String de conexão com a base de dados</param>
-        /// <param name="targetID1">ID do pedido</param>
+        /// <param name="targetID">ID do pedido</param>
         /// <returns>True se a remoção foi bem sucedida, false em caso de erro</returns>
         /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
         /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
@@ -382,12 +464,29 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
+                        // lista dos produtos pertencentes ao pedido
+                        List<PedidoLoja> listPedidosID = await PedidoLojaService.GetAllByPedidoIDService(sqlDataSource, targetID);
+
                         myCommand.Parameters.AddWithValue("id_pedido", targetID);
                         dataReader = myCommand.ExecuteReader();
 
-                        Pedido p = await PedidoService.GetByIDService(sqlDataSource, targetID);
-                        p.estado = "Inativo";
-                        PedidoService.PatchService(sqlDataSource ,p ,targetID);
+                        Console.WriteLine("TAMANHO DA LISTA: " + listPedidosID.Count);
+
+                        // devolver stock de cada produto na lista loja
+                        foreach (PedidoLoja x in listPedidosID)
+                        {
+                            Loja produto = await LojaService.GetByIDService(sqlDataSource, x.id_produto);
+                            produto.quantidade = produto.quantidade + x.quantidade;
+
+                            Console.WriteLine("Quantidade nova do produto id " + produto.id_produto + ": " + produto.quantidade);
+
+                            LojaService.PatchService(sqlDataSource, produto, produto.id_produto);
+                        }
+
+                        // Desativar o pedido na lista de pedidos
+                        Pedido pedido = await PedidoService.GetByIDService(sqlDataSource, targetID);
+                        pedido.estado = "Inativo";
+                        PedidoService.PatchService(sqlDataSource , pedido, targetID);
 
                         dataReader.Close();
                         databaseConnection.Close();

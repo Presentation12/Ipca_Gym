@@ -122,9 +122,25 @@ namespace Backend_IPCA_Gym.Controllers
         #region BACKLOG REQUESTS
 
         /// <summary>
-        /// Método http delete para remover todos os pedidos de loja da base de dados através do seu id de pedido
+        /// Método http get para retornar os produtos de um pedido da base de dados
         /// </summary>
-        /// <param name="targetID1">ID do pedido de loja que é pretendido ser remover</param>
+        /// <param name="targetID">ID do pedido que é pretendido ser retornado os produtos</param>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de planos de treino em formato Json</returns>
+        [HttpGet("Pedido/{targetID}")]
+        public async Task<IActionResult> GetAllByPedidoIDID(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await PedidoLojaLogic.GetAllByPedidoIDLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        /// <summary>
+        /// Método http delete para remover todos os produtos de um pedido da base de dados através do seu id de pedido
+        /// </summary>
+        /// <param name="targetID">ID do pedido que é pretendido ser remover os produtos</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         [HttpDelete("Pedido/{targetID}")]
         public async Task<IActionResult> DeletePedidoLoja(int targetID)

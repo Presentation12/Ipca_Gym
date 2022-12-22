@@ -131,6 +131,27 @@ namespace LayerBLL.Logics
         #region BACKLOG REQUESTS
 
         /// <summary>
+        /// Método que recebe os dados do serviço de obter todos os produtos de um pedido
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do pedido que é pretendido retornar os produtos</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> GetAllByPedidoIDLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+            List<PedidoLoja> pedidoLojaList = await PedidoLojaService.GetAllByPedidoIDService(sqlDataSource, targetID);
+
+            if (pedidoLojaList.Count != 0)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Lista de pedidos de loja obtida com sucesso";
+                response.Data = new JsonResult(pedidoLojaList);
+            }
+
+            return response;
+        }
+
+        /// <summary>
         /// Método que recebe a resposta do serviço de eliminar todas as associações pedido_loja de um id de um pedido
         /// </summary>
         /// <param name="sqlDataSource">String de Conexão à database</param>
