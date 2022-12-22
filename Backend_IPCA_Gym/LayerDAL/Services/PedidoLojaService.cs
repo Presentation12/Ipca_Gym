@@ -7,6 +7,8 @@ namespace LayerDAL.Services
 {
     public class PedidoLojaService
     {
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Leitura dos dados de todas as associações de pedido e produto da base de dados
         /// </summary>
@@ -305,7 +307,8 @@ namespace LayerDAL.Services
         /// Remoção de uma associação de pedido e produto da base de dados pelo seu ID
         /// </summary>
         /// <param name="sqlDataSource">String de conexão com a base de dados</param>
-        /// <param name="targetID">ID da associação de pedido e produto a ser removida</param>
+        /// <param name="targetID1">ID do pedido</param>
+        /// <param name="targetID2">ID do produto</param>
         /// <returns>True se a remoção foi bem sucedida, false em caso de erro</returns>
         /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
         /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
@@ -352,5 +355,64 @@ namespace LayerDAL.Services
                 return false;
             }
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+        /// <summary>
+        /// Remoção de todas as associações de pedido e produto da base de dados pelo id do pedido, e inativação do pedido
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <param name="targetID1">ID do pedido</param>
+        /// <returns>True se a remoção foi bem sucedida, false em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<bool> DeletePedidoService(string sqlDataSource, int targetID)
+        {
+            string query = @"delete from dbo.Pedido_Loja where id_pedido = @id_pedido";
+
+            try
+            {
+                SqlDataReader dataReader;
+
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("id_pedido", targetID);
+                        dataReader = myCommand.ExecuteReader();
+
+                        Pedido p = await PedidoService.GetByIDService(sqlDataSource, targetID);
+                        p.estado = "Inativo";
+                        PedidoService.PatchService(sqlDataSource ,p ,targetID);
+
+                        dataReader.Close();
+                        databaseConnection.Close();
+                    }
+                }
+
+                return true;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
+        #endregion
     }
 }

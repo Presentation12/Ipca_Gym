@@ -6,6 +6,8 @@ namespace LayerDAL.Services
 {
     public class PedidoService
     {
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Leitura dos dados de todos os pedidos da base de dados
         /// </summary>
@@ -355,5 +357,13 @@ namespace LayerDAL.Services
                 return false;
             }
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+
+
+        #endregion
     }
 }
