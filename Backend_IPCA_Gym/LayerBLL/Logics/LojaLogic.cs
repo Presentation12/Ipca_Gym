@@ -16,6 +16,8 @@ namespace LayerBLL.Logics
     /// </summary>
     public class LojaLogic
     {
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Método que recebe os dados do serviço de obter todos os produtos de todas as lojas
         /// </summary>
@@ -29,7 +31,7 @@ namespace LayerBLL.Logics
             if (lojaList.Count != 0)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Lista de produtos obtida com sucesso";
+                response.Message = "Lista de produtos obtidos com sucesso";
                 response.Data = new JsonResult(lojaList);
             }
 
@@ -50,7 +52,7 @@ namespace LayerBLL.Logics
             if (loja != null)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Produto obtida com sucesso!";
+                response.Message = "Produto obtido com sucesso!";
                 response.Data = new JsonResult(loja);
             }
 
@@ -120,5 +122,32 @@ namespace LayerBLL.Logics
 
             return response;
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+        /// <summary>
+        /// Método que recebe os dados do serviço de obter os produtos de um ginásio específico
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do ginásio que é pretendido retornar os produtos</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> GetAllByGinasioIDLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+            List<Loja> loja = await LojaService.GetAllByGinasioIDService(sqlDataSource, targetID);
+
+            if (loja.Count != 0)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Produtos obtidos com sucesso!";
+                response.Data = new JsonResult(loja);
+            }
+
+            return response;
+        }
+
+        #endregion
     }
 }

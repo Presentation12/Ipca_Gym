@@ -6,6 +6,9 @@ namespace LayerDAL.Services
 {
     public class LojaService
     {
+
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Leitura dos dados de todos os produtos da base de dados
         /// </summary>
@@ -100,7 +103,7 @@ namespace LayerDAL.Services
         /// </summary>
         /// <param name="sqlDataSource">String de conexão á base de dados</param>
         /// <param name="targetID">ID do produto a ser lido</param>
-        /// <returns>Atividade se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <returns>Produto se uma leitura bem sucedida, ou null em caso de erro</returns>
         /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
         /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
         /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
@@ -119,7 +122,6 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        Console.WriteLine(targetID);
                         myCommand.Parameters.AddWithValue("id_produto", targetID);
 
                         using (SqlDataReader reader = myCommand.ExecuteReader())
@@ -399,5 +401,112 @@ namespace LayerDAL.Services
                 return false;
             }
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+        /// <summary>
+        /// Leitura dos dados de todos os produtos de um ginásio através do seu id na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID">ID do ginásio a ser lido</param>
+        /// <returns>Lista de produto se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<List<Loja>> GetAllByGinasioIDService(string sqlDataSource, int targetID)
+        {
+            string query = @"select * from dbo.Loja where id_ginasio = @targetID";
+
+            try
+            {
+                List<Loja> produtos = new List<Loja>();
+                SqlDataReader dataReader;
+
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("id_ginasio", targetID);
+                        myCommand.Parameters.AddWithValue("targetID", targetID);
+                        dataReader = myCommand.ExecuteReader();
+
+                        while (dataReader.Read())
+                        {
+                            Loja produto = new Loja();
+
+                            produto.id_produto = Convert.ToInt32(dataReader["id_produto"]);
+                            produto.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
+                            produto.nome = dataReader["nome"].ToString();
+                            produto.descricao = dataReader["descricao"].ToString();
+                            produto.preco = Convert.ToDouble(dataReader["preco"]);
+                            produto.tipo_produto = dataReader["tipo_produto"].ToString();
+                            produto.estado = dataReader["estado"].ToString();
+                            if (!Convert.IsDBNull(dataReader["foto_produto"]))
+                            {
+                                produto.foto_produto = dataReader["foto_produto"].ToString();
+                            }
+                            else
+                            {
+                                produto.foto_produto = null;
+                            }
+                            produto.quantidade = Convert.ToInt32(dataReader["quantidade"]);
+
+                            produtos.Add(produto);
+                        }
+
+                        dataReader.Close();
+                        databaseConnection.Close();
+                    }
+                }
+
+                return produtos;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+
+        }
+        
+        #endregion
     }
 }
