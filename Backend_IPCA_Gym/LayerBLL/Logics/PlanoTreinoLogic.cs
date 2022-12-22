@@ -16,6 +16,8 @@ namespace LayerBLL.Logics
     /// </summary>
     public class PlanoTreinoLogic
     {
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Método que recebe os dados do serviço de obter todos os planos de treino
         /// </summary>
@@ -24,13 +26,13 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetAllLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<PlanoTreino> planotreinoList = await PlanoTreinoService.GetAllService(sqlDataSource);
+            List<PlanoTreino> planoTreinoList = await PlanoTreinoService.GetAllService(sqlDataSource);
 
-            if (planotreinoList.Count != 0)
+            if (planoTreinoList.Count != 0)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
                 response.Message = "Lista de planos de treino obtida com sucesso";
-                response.Data = new JsonResult(planotreinoList);
+                response.Data = new JsonResult(planoTreinoList);
             }
 
             return response;
@@ -120,5 +122,32 @@ namespace LayerBLL.Logics
 
             return response;
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+        /// <summary>
+        /// Método que recebe os dados do serviço de obter todos os planos de treino de um ginásio
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do ginásio que é pretendido retornar os planos de treino</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> GetAllByGinasioIDLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+            List<PlanoTreino> planoTreinoList = await PlanoTreinoService.GetAllByGinasioIDService(sqlDataSource, targetID);
+
+            if (planoTreinoList.Count != 0)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Lista de planos de treino obtida com sucesso";
+                response.Data = new JsonResult(planoTreinoList);
+            }
+
+            return response;
+        }
+
+        #endregion
     }
 }

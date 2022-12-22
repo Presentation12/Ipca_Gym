@@ -1,11 +1,14 @@
 ﻿using LayerBOL.Models;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 
 namespace LayerDAL.Services
 {
     public class PlanoTreinoService
     {
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Leitura dos dados de todos os planos de treino da base de dados
         /// </summary>
@@ -372,5 +375,102 @@ namespace LayerDAL.Services
                 return false;
             }
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+        /// <summary>
+        /// Leitura dos dados de todos os planos de treino de um ginásio através do seu id de ginásio na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID">ID do ginásio ao qual pertencem os planos de treino a ser lido</param>
+        /// <returns>Planos de treino se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<List<PlanoTreino>> GetAllByGinasioIDService(string sqlDataSource, int targetID)
+
+        {
+            string query = @"select * from dbo.Plano_Treino where id_ginasio = @targetID";
+
+            try
+            {
+                List<PlanoTreino> planostreino = new List<PlanoTreino>();
+                SqlDataReader dataReader;
+
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("id_ginasio", targetID);
+                        myCommand.Parameters.AddWithValue("targetID", targetID);
+                        dataReader = myCommand.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            PlanoTreino planotreino = new PlanoTreino();
+
+                            planotreino.id_plano_treino = Convert.ToInt32(dataReader["id_plano_treino"]);
+                            planotreino.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
+                            planotreino.tipo = dataReader["tipo"].ToString();
+
+                            if (!Convert.IsDBNull(dataReader["foto_plano_treino"]))
+                            {
+                                planotreino.foto_plano_treino = dataReader["foto_plano_treino"].ToString();
+
+                            }
+                            else
+                            {
+                                planotreino.foto_plano_treino = null;
+                            }
+
+                            planostreino.Add(planotreino);
+                        }
+
+                        dataReader.Close();
+                        databaseConnection.Close();
+                    }
+                }
+
+                return planostreino;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
+        #endregion
     }
 }
