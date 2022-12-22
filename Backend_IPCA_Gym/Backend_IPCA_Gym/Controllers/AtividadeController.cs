@@ -24,7 +24,7 @@ namespace Backend_IPCA_Gym.Controllers
         }
 
         /// <summary>
-        /// Retorna todos as atividades presentes na base de dados
+        /// Método http get para retornar as atividades da base de dados
         /// </summary>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de atividades em formato Json</returns>
         [HttpGet]
@@ -34,12 +34,12 @@ namespace Backend_IPCA_Gym.Controllers
             Response response = await AtividadeLogic.GetAllLogic(sqlDataSource);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
-                
+            
             return new JsonResult(response);
         }
 
         /// <summary>
-        /// Retorna uma atividade com o id passado por parâmetro
+        /// Método http get para retornar uma atividade através do seu id
         /// </summary>
         /// <param name="targetID">ID da atividade que é pretendida ser retornada</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a Atividade em formato Json</returns>
@@ -55,7 +55,7 @@ namespace Backend_IPCA_Gym.Controllers
         }
 
         /// <summary>
-        /// Criação de uma nova Atividade
+        /// Método http post para inserção de uma nova atividade
         /// </summary>
         /// <param name="newAtividade">Dados da nova Atividade a ser inserida</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
@@ -71,7 +71,7 @@ namespace Backend_IPCA_Gym.Controllers
         }
 
         /// <summary>
-        /// Fazer atualização dos dados de uma Atividade
+        /// Método http patch para alteração dos dados de uma atividade através do id e novos dados
         /// </summary>
         /// <param name="atividade">Atividade com dados alterados</param>
         /// <param name="targetID">ID da Atividade pretendida para alterar os dados</param>
@@ -89,7 +89,7 @@ namespace Backend_IPCA_Gym.Controllers
         }
 
         /// <summary>
-        /// Remover uma Atividade da base de dados
+        /// Método http delete para remover uma atividade da base de dados através do seu id
         /// </summary>
         /// <param name="targetID">ID da Atividade pretendida para ser removida</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>

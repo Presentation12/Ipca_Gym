@@ -13,16 +13,28 @@ using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace Backend_IPCA_Gym.Controllers
 {
+    /// <summary>
+    /// Controlador da entidade HorarioFuncionario
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class HorarioFuncionarioController : Controller
     {
         private readonly IConfiguration _configuration;
+
+        /// <summary>
+        /// Construtor do controlador HorarioFuncionario
+        /// </summary>
+        /// <param name="configuration">Dependency Injection</param>
         public HorarioFuncionarioController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Método http get para retornar os horários (diário) do funcionário da base de dados
+        /// </summary>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de horários (diário) do funcionário em formato Json</returns>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -34,6 +46,11 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http get para retornar um horário (dia) do funcionário através do seu id
+        /// </summary>
+        /// <param name="targetID">ID do horário (dia) do funcionário que é pretendido ser retornado</param>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e o horário (dia) do funcionário em formato Json</returns>
         [HttpGet("{targetID}")]
         public async Task<IActionResult> GetByID(int targetID)
         {
@@ -45,6 +62,11 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http post para inserção de um novo horário (dia) do funcionário
+        /// </summary>
+        /// <param name="newHorarioFuncionario">Dados do novo horário (dia) do funcionário a ser inserida</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] HorarioFuncionario newHorarioFuncionario)
         {
@@ -56,6 +78,12 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http patch para alteração dos dados de um horário (dia) do funcionário através do id e novos dados
+        /// </summary>
+        /// <param name="horarioFuncionario">Horário (dia) do funcionário com dados alterados</param>
+        /// <param name="targetID">ID do Horário (dia) do funcionário pretendido para alterar os dados</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         [HttpPatch("{targetID}")]
         public async Task<IActionResult> Patch([FromBody] HorarioFuncionario horarioFuncionario, int targetID)
         {
@@ -68,6 +96,11 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http delete para remover um horário (dia) do funcionário da base de dados através do seu id
+        /// </summary>
+        /// <param name="targetID">ID do horário (dia) do funcionário pretendido para ser removido</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         [HttpDelete("{targetID}")]
         public async Task<IActionResult> Delete(int targetID)
         {

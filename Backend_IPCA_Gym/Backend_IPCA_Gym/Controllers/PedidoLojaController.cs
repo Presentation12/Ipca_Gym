@@ -13,16 +13,28 @@ using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace Backend_IPCA_Gym.Controllers
 {
+    /// <summary>
+    /// Controlador da entidade PedidoLoja
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class PedidoLojaController : Controller
     {
         private readonly IConfiguration _configuration;
+
+        /// <summary>
+        /// Construtor do controlador PedidoLoja
+        /// </summary>
+        /// <param name="configuration">Dependency Injection</param>
         public PedidoLojaController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Método http get para retornar os pedidos de loja da base de dados
+        /// </summary>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de pedidos de loja em formato Json</returns>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -34,6 +46,12 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http get para retornar um pedido de loja através do seu id
+        /// </summary>
+        /// <param name="targetID1">ID do pedido de loja que é pretendido ser retornado</param>
+        /// /// <param name="targetID2">ID do pedido de loja que é pretendido ser retornado</param>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a PedidoLoja em formato Json</returns>
         [HttpGet("{targetID}")]
         public async Task<IActionResult> GetByID(int targetID1, int targetID2)
         {
@@ -45,6 +63,11 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http post para inserção de um novo pedido de loja
+        /// </summary>
+        /// <param name="newPedidoLoja">Dados do novo PedidoLoja a ser inserido</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PedidoLoja newPedidoLoja)
         {
@@ -56,6 +79,12 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http patch para alteração dos dados de um pedido de loja através do id e novos dados
+        /// </summary>
+        /// <param name="pedido de loja">PedidoLoja com dados alterados</param>
+        /// <param name="targetID">ID do PedidoLoja pretendido para alterar os dados</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         [HttpPatch("{targetID}")]
         public async Task<IActionResult> Patch([FromBody] PedidoLoja pedidoLoja, int targetID1, int targetID2)
         {
@@ -68,6 +97,11 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http delete para remover um pedido de loja da base de dados através do seu id
+        /// </summary>
+        /// <param name="targetID">ID da PedidoLoja pretendido para ser removido</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         [HttpDelete("{targetID}")]
         public async Task<IActionResult> Delete(int targetID1, int targetID2)
         {
