@@ -289,8 +289,13 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("nome", newCliente.nome);
                         myCommand.Parameters.AddWithValue("mail", newCliente.mail);
                         myCommand.Parameters.AddWithValue("telemovel", newCliente.telemovel);
-                        myCommand.Parameters.AddWithValue("pass_salt", newCliente.pass_salt);
+
+                        PasswordEncryption.CreatePasswordHash(newCliente.pass_salt, out byte[] passwordHash, out byte[] passwordSalt);
+                        newCliente.pass_hash = Convert.ToBase64String(passwordHash);
+                        newCliente.pass_salt = Convert.ToBase64String(passwordSalt);
+
                         myCommand.Parameters.AddWithValue("pass_hash", newCliente.pass_hash);
+                        myCommand.Parameters.AddWithValue("pass_salt", newCliente.pass_salt);
 
                         if (newCliente.peso != null) myCommand.Parameters.AddWithValue("peso", newCliente.peso);
                         else myCommand.Parameters.AddWithValue("peso", DBNull.Value);

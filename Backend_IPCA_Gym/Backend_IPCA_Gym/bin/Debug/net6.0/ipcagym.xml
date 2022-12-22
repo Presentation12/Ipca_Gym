@@ -17,27 +17,27 @@
         </member>
         <member name="M:Backend_IPCA_Gym.Controllers.AtividadeController.GetAll">
             <summary>
-            Retorna todos as atividades presentes na base de dados
+            Método http get para retornar as atividades da base de dados
             </summary>
             <returns>Resposta do request que contém a sua mensagem, seu código e a lista de atividades em formato Json</returns>
         </member>
         <member name="M:Backend_IPCA_Gym.Controllers.AtividadeController.GetByID(System.Int32)">
             <summary>
-            Retorna uma atividade com o id passado por parâmetro
+            Método http get para retornar uma atividade através do seu id
             </summary>
             <param name="targetID">ID da atividade que é pretendida ser retornada</param>
             <returns>Resposta do request que contém a sua mensagem, seu código e a Atividade em formato Json</returns>
         </member>
         <member name="M:Backend_IPCA_Gym.Controllers.AtividadeController.Post(LayerBOL.Models.Atividade)">
             <summary>
-            Criação de uma nova Atividade
+            Método http post para inserção de uma nova atividade
             </summary>
             <param name="newAtividade">Dados da nova Atividade a ser inserida</param>
             <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         </member>
         <member name="M:Backend_IPCA_Gym.Controllers.AtividadeController.Patch(LayerBOL.Models.Atividade,System.Int32)">
             <summary>
-            Fazer atualização dos dados de uma Atividade
+            Método http patch para alteração dos dados de uma atividade através do id e novos dados
             </summary>
             <param name="atividade">Atividade com dados alterados</param>
             <param name="targetID">ID da Atividade pretendida para alterar os dados</param>
@@ -45,9 +45,610 @@
         </member>
         <member name="M:Backend_IPCA_Gym.Controllers.AtividadeController.Delete(System.Int32)">
             <summary>
-            Remover uma Atividade da base de dados
+            Método http delete para remover uma atividade da base de dados através do seu id
             </summary>
             <param name="targetID">ID da Atividade pretendida para ser removida</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="T:Backend_IPCA_Gym.Controllers.ClassificacaoController">
+            <summary>
+            Controlador da entidade Classificação
+            </summary>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ClassificacaoController.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Construtor do controlador Classificação
+            </summary>
+            <param name="configuration">Dependency Injection</param>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ClassificacaoController.GetAll">
+            <summary>
+            Método http get para retornar as classificações da base de dados
+            </summary>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de classificações em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ClassificacaoController.GetByID(System.Int32)">
+            <summary>
+            Método http get para retornar uma classificação através do seu id
+            </summary>
+            <param name="targetID">ID da classificação que é pretendida ser retornada</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a classificação em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ClassificacaoController.Post(LayerBOL.Models.Classificacao)">
+            <summary>
+            Método http post para inserção de uma nova classificação
+            </summary>
+            <param name="newClassificacao">Dados da nova classificação a ser inserida</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ClassificacaoController.Patch(LayerBOL.Models.Classificacao,System.Int32)">
+            <summary>
+            Método http patch para alteração dos dados de uma classificação através do id e novos dados
+            </summary>
+            <param name="classificacao">classificação com dados alterados</param>
+            <param name="targetID">ID da classificação pretendida para alterar os dados</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ClassificacaoController.Delete(System.Int32)">
+            <summary>
+            Método http delete para remover uma classificação da base de dados através do seu id
+            </summary>
+            <param name="targetID">ID da classificação pretendida para ser removida</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="T:Backend_IPCA_Gym.Controllers.ClienteController">
+            <summary>
+            Controlador da entidade Cliente
+            </summary>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ClienteController.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Construtor do controlador cliente
+            </summary>
+            <param name="configuration">Dependency Injection</param>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ClienteController.GetAll">
+            <summary>
+            Método http get para retornar os clientes da base de dados
+            </summary>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de clientes em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ClienteController.GetByID(System.Int32)">
+            <summary>
+            Método http get para retornar um cliente através do seu id
+            </summary>
+            <param name="targetID">ID do cliente que é pretendido ser retornado</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a cliente em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ClienteController.Post(LayerBOL.Models.Cliente)">
+            <summary>
+            Método http post para inserção de um novo cliente
+            </summary>
+            <param name="newCliente">Dados do novo cliente a ser inserido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ClienteController.Patch(LayerBOL.Models.Cliente,System.Int32)">
+            <summary>
+            Método http patch para alteração dos dados de um cliente através do id e novos dados
+            </summary>
+            <param name="cliente">Cliente com dados alterados</param>
+            <param name="targetID">ID da Cliente pretendida para alterar os dados</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ClienteController.Delete(System.Int32)">
+            <summary>
+            Método http delete para remover um cliente da base de dados através do seu id
+            </summary>
+            <param name="targetID">ID do cliente pretendida para ser removido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="T:Backend_IPCA_Gym.Controllers.ExercicioController">
+            <summary>
+            Controlador da entidade Exercicio
+            </summary>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ExercicioController.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Construtor do controlador Exercicio
+            </summary>
+            <param name="configuration">Dependency Injection</param>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ExercicioController.GetAll">
+            <summary>
+            Método http get para retornar os exercicios da base de dados
+            </summary>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de exercicios em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ExercicioController.GetByID(System.Int32)">
+            <summary>
+            Método http get para retornar um exercicio através do seu id
+            </summary>
+            <param name="targetID">ID do exercicio que é pretendida ser retornada</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e o Exercicio em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ExercicioController.Post(LayerBOL.Models.Exercicio)">
+            <summary>
+            Método http post para inserção de um novo exercicio
+            </summary>
+            <param name="newExercicio">Dados do novo Exercicio a ser inserido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ExercicioController.Patch(LayerBOL.Models.Exercicio,System.Int32)">
+            <summary>
+            Método http patch para alteração dos dados de um exercicio através do id e novos dados
+            </summary>
+            <param name="exercicio">Exercicio com dados alterados</param>
+            <param name="targetID">ID do Exercicio pretendido para alterar os dados</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.ExercicioController.Delete(System.Int32)">
+            <summary>
+            Método http delete para remover um exercicio da base de dados através do seu id
+            </summary>
+            <param name="targetID">ID da Exercicio pretendido para ser removido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="T:Backend_IPCA_Gym.Controllers.FuncionarioController">
+            <summary>
+            Controlador da entidade Funcionario
+            </summary>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.FuncionarioController.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Construtor do controlador funcionario
+            </summary>
+            <param name="configuration">Dependency Injection</param>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.FuncionarioController.GetAll">
+            <summary>
+            Método http get para retornar os funcionários da base de dados
+            </summary>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de funcionários em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.FuncionarioController.GetByID(System.Int32)">
+            <summary>
+            Método http get para retornar um funcionário através do seu id
+            </summary>
+            <param name="targetID">ID do funcionário que é pretendido ser retornado</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e o funcionario em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.FuncionarioController.Post(LayerBOL.Models.Funcionario)">
+            <summary>
+            Método http post para inserção de um novo funcionário
+            </summary>
+            <param name="newFuncionario">Dados do novo funcionario a ser inserido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.FuncionarioController.Patch(LayerBOL.Models.Funcionario,System.Int32)">
+            <summary>
+            Método http patch para alteração dos dados de um funcionário através do id e novos dados
+            </summary>
+            <param name="funcionario">funcionario com dados alterados</param>
+            <param name="targetID">ID do funcionario pretendido para alterar os dados</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.FuncionarioController.Delete(System.Int32)">
+            <summary>
+            Método http delete para remover um funcionário da base de dados através do seu id
+            </summary>
+            <param name="targetID">ID da funcionario pretendido para ser removido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="T:Backend_IPCA_Gym.Controllers.GinasioController">
+            <summary>
+            Controlador da entidade ginásio
+            </summary>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.GinasioController.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Construtor do controlador ginásio
+            </summary>
+            <param name="configuration">Dependency Injection</param>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.GinasioController.GetAll">
+            <summary>
+            Método http get para retornar os ginásios da base de dados
+            </summary>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de ginásios em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.GinasioController.GetByID(System.Int32)">
+            <summary>
+            Método http get para retornar um ginásio através do seu id
+            </summary>
+            <param name="targetID">ID da ginásio que é pretendido ser retornado</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e o ginásio em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.GinasioController.Post(LayerBOL.Models.Ginasio)">
+            <summary>
+            Método http post para inserção de um novo ginásio
+            </summary>
+            <param name="newGinasio">Dados do novo ginásio a ser inserido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.GinasioController.Patch(LayerBOL.Models.Ginasio,System.Int32)">
+            <summary>
+            Método http patch para alteração dos dados de um ginásio através do id e novos dados
+            </summary>
+            <param name="ginasio">ginásio com dados alterados</param>
+            <param name="targetID">ID do ginásio pretendido para alterar os dados</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.GinasioController.Delete(System.Int32)">
+            <summary>
+            Método http delete para remover um ginásio da base de dados através do seu id
+            </summary>
+            <param name="targetID">ID do ginásio pretendido para ser removido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="T:Backend_IPCA_Gym.Controllers.HorarioFuncionarioController">
+            <summary>
+            Controlador da entidade HorarioFuncionario
+            </summary>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.HorarioFuncionarioController.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Construtor do controlador HorarioFuncionario
+            </summary>
+            <param name="configuration">Dependency Injection</param>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.HorarioFuncionarioController.GetAll">
+            <summary>
+            Método http get para retornar os horários (diário) do funcionário da base de dados
+            </summary>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de horários (diário) do funcionário em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.HorarioFuncionarioController.GetByID(System.Int32)">
+            <summary>
+            Método http get para retornar um horário (dia) do funcionário através do seu id
+            </summary>
+            <param name="targetID">ID do horário (dia) do funcionário que é pretendido ser retornado</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e o horário (dia) do funcionário em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.HorarioFuncionarioController.Post(LayerBOL.Models.HorarioFuncionario)">
+            <summary>
+            Método http post para inserção de um novo horário (dia) do funcionário
+            </summary>
+            <param name="newHorarioFuncionario">Dados do novo horário (dia) do funcionário a ser inserida</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.HorarioFuncionarioController.Patch(LayerBOL.Models.HorarioFuncionario,System.Int32)">
+            <summary>
+            Método http patch para alteração dos dados de um horário (dia) do funcionário através do id e novos dados
+            </summary>
+            <param name="horarioFuncionario">Horário (dia) do funcionário com dados alterados</param>
+            <param name="targetID">ID do Horário (dia) do funcionário pretendido para alterar os dados</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.HorarioFuncionarioController.Delete(System.Int32)">
+            <summary>
+            Método http delete para remover um horário (dia) do funcionário da base de dados através do seu id
+            </summary>
+            <param name="targetID">ID do horário (dia) do funcionário pretendido para ser removido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="T:Backend_IPCA_Gym.Controllers.LojaController">
+            <summary>
+            Controlador da entidade loja
+            </summary>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.LojaController.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Construtor do controlador loja
+            </summary>
+            <param name="configuration">Dependency Injection</param>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.LojaController.GetAll">
+            <summary>
+            Método http get para retornar os produtos da base de dados
+            </summary>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de produtos em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.LojaController.GetByID(System.Int32)">
+            <summary>
+            Método http get para retornar um produto através do seu id
+            </summary>
+            <param name="targetID">ID do produto que é pretendido ser retornado</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e o produto em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.LojaController.Post(LayerBOL.Models.Loja)">
+            <summary>
+            Método http post para inserção de um novo produto
+            </summary>
+            <param name="newLoja">Dados do novo produto a ser inserido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.LojaController.Patch(LayerBOL.Models.Loja,System.Int32)">
+            <summary>
+            Método http patch para alteração dos dados de um produto através do id e novos dados
+            </summary>
+            <param name="produto">produto com dados alterados</param>
+            <param name="targetID">ID do produto pretendido para alterar os dados</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.LojaController.Delete(System.Int32)">
+            <summary>
+            Método http delete para remover um produto da base de dados através do seu id
+            </summary>
+            <param name="targetID">ID do produto pretendido para ser removido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="T:Backend_IPCA_Gym.Controllers.MarcacaoController">
+            <summary>
+            Controlador da entidade marcação
+            </summary>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.MarcacaoController.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Construtor do controlador marcação
+            </summary>
+            <param name="configuration">Dependency Injection</param>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.MarcacaoController.GetAll">
+            <summary>
+            Método http get para retornar as marcações da base de dados
+            </summary>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de marcações em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.MarcacaoController.GetByID(System.Int32)">
+            <summary>
+            Método http get para retornar uma marcação através do seu id
+            </summary>
+            <param name="targetID">ID da marcação que é pretendida ser retornada</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a marcação em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.MarcacaoController.Post(LayerBOL.Models.Marcacao)">
+            <summary>
+            Método http post para inserção de uma nova marcação
+            </summary>
+            <param name="newMarcacao">Dados da nova marcação a ser inserida</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.MarcacaoController.Patch(LayerBOL.Models.Marcacao,System.Int32)">
+            <summary>
+            Método http patch para alteração dos dados de uma marcação através do id e novos dados
+            </summary>
+            <param name="marcacao">marcação com dados alterados</param>
+            <param name="targetID">ID da marcação pretendida para alterar os dados</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.MarcacaoController.Delete(System.Int32)">
+            <summary>
+            Método http delete para remover uma marcação da base de dados através do seu id
+            </summary>
+            <param name="targetID">ID da marcação pretendida para ser removida</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="T:Backend_IPCA_Gym.Controllers.PedidoController">
+            <summary>
+            Controlador da entidade pedido
+            </summary>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PedidoController.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Construtor do controlador pedido
+            </summary>
+            <param name="configuration">Dependency Injection</param>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PedidoController.GetAll">
+            <summary>
+            Método http get para retornar os pedidos da base de dados
+            </summary>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de pedidos em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PedidoController.GetByID(System.Int32)">
+            <summary>
+            Método http get para retornar um pedido através do seu id
+            </summary>
+            <param name="targetID">ID do pedido que é pretendido ser retornado</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a pedido em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PedidoController.Post(LayerBOL.Models.Pedido)">
+            <summary>
+            Método http post para inserção de um novo pedido
+            </summary>
+            <param name="newPedido">Dados do novo pedido a ser inserido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PedidoController.Patch(LayerBOL.Models.Pedido,System.Int32)">
+            <summary>
+            Método http patch para alteração dos dados de um pedido através do id e novos dados
+            </summary>
+            <param name="pedido">pedido com dados alterados</param>
+            <param name="targetID">ID do pedido pretendido para alterar os dados</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PedidoController.Delete(System.Int32)">
+            <summary>
+            Método http delete para remover um pedido da base de dados através do seu id
+            </summary>
+            <param name="targetID">ID do pedido pretendido para ser removido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="T:Backend_IPCA_Gym.Controllers.PedidoLojaController">
+            <summary>
+            Controlador da entidade PedidoLoja
+            </summary>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PedidoLojaController.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Construtor do controlador PedidoLoja
+            </summary>
+            <param name="configuration">Dependency Injection</param>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PedidoLojaController.GetAll">
+            <summary>
+            Método http get para retornar os pedidos de loja da base de dados
+            </summary>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de pedidos de loja em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PedidoLojaController.GetByID(System.Int32,System.Int32)">
+            <summary>
+            Método http get para retornar um pedido de loja através do seu id
+            </summary>
+            <param name="targetID1">ID do pedido de loja que é pretendido ser retornado</param>
+            <param name="targetID2">ID do produto de loja que é pretendido ser retornado</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a PedidoLoja em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PedidoLojaController.Post(LayerBOL.Models.PedidoLoja)">
+            <summary>
+            Método http post para inserção de um novo pedido de loja
+            </summary>
+            <param name="newPedidoLoja">Dados do novo PedidoLoja a ser inserido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PedidoLojaController.Patch(LayerBOL.Models.PedidoLoja,System.Int32,System.Int32)">
+            <summary>
+            Método http patch para alteração dos dados de um pedido de loja através do id e novos dados
+            </summary>
+            <param name="pedidoLoja">PedidoLoja com dados alterados</param>
+            <param name="targetID1">ID do pedido de loja que é pretendido ser retornado</param>
+            <param name="targetID2">ID do produto de loja que é pretendido ser retornado</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PedidoLojaController.Delete(System.Int32,System.Int32)">
+            <summary>
+            Método http delete para remover um pedido de loja da base de dados através do seu id
+            </summary>
+            <param name="targetID1">ID do pedido de loja que é pretendido ser retornado</param>
+            <param name="targetID2">ID do produto de loja que é pretendido ser retornado</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="T:Backend_IPCA_Gym.Controllers.PlanoNutricionalController">
+            <summary>
+            Controlador da entidade plano nutricional
+            </summary>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PlanoNutricionalController.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Construtor do controlador plano nutricional
+            </summary>
+            <param name="configuration">Dependency Injection</param>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PlanoNutricionalController.GetAll">
+            <summary>
+            Método http get para retornar os planos nutricionais da base de dados
+            </summary>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de planos nutricionais em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PlanoNutricionalController.GetByID(System.Int32)">
+            <summary>
+            Método http get para retornar uma plano nutricional através do seu id
+            </summary>
+            <param name="targetID">ID do plano nutricional que é pretendido ser retornado</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e o plano nutricional em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PlanoNutricionalController.Post(LayerBOL.Models.PlanoNutricional)">
+            <summary>
+            Método http post para inserção de um novo plano nutricional
+            </summary>
+            <param name="newPlanoNutricional">Dados do novo plano nutricional a ser inserido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PlanoNutricionalController.Patch(LayerBOL.Models.PlanoNutricional,System.Int32)">
+            <summary>
+            Método http patch para alteração dos dados de um plano nutricional através do id e novos dados
+            </summary>
+            <param name="planoNutricional">plano nutricional com dados alterados</param>
+            <param name="targetID">ID da plano nutricional pretendido para alterar os dados</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PlanoNutricionalController.Delete(System.Int32)">
+            <summary>
+            Método http delete para remover um plano nutricional da base de dados através do seu id
+            </summary>
+            <param name="targetID">ID da plano nutricional pretendido para ser removido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="T:Backend_IPCA_Gym.Controllers.PlanoTreinoController">
+            <summary>
+            Controlador da entidade PlanoTreino
+            </summary>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PlanoTreinoController.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Construtor do controlador Atividade
+            </summary>
+            <param name="configuration">Dependency Injection</param>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PlanoTreinoController.GetAll">
+            <summary>
+            Método http get para retornar os planos de treino da base de dados
+            </summary>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de planos de treino em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PlanoTreinoController.GetByID(System.Int32)">
+            <summary>
+            Método http get para retornar um plano de treino através do seu id
+            </summary>
+            <param name="targetID">ID do PlanoTreino que é pretendido ser retornado</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e o PlanoTreino em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PlanoTreinoController.Post(LayerBOL.Models.PlanoTreino)">
+            <summary>
+            Método http post para inserção de um novo plano de treino
+            </summary>
+            <param name="newPlanoTreino">Dados do novo PlanoTreino a ser inserido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PlanoTreinoController.Patch(LayerBOL.Models.PlanoTreino,System.Int32)">
+            <summary>
+            Método http patch para alteração dos dados de uma plano de treino através do id e novos dados
+            </summary>
+            <param name="planoTreino">PlanoTreino com dados alterados</param>
+            <param name="targetID">ID do PlanoTreino pretendido para alterar os dados</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PlanoTreinoController.Delete(System.Int32)">
+            <summary>
+            Método http delete para remover um plano de treino da base de dados através do seu id
+            </summary>
+            <param name="targetID">ID do PlanoTreino pretendido para ser removido</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="T:Backend_IPCA_Gym.Controllers.RefeicaoController">
+            <summary>
+            Controlador da entidade Refeicao
+            </summary>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.RefeicaoController.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Construtor do controlador Refeicao
+            </summary>
+            <param name="configuration">Dependency Injection</param>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.RefeicaoController.GetAll">
+            <summary>
+            Método http get para retornar as refeicoes da base de dados
+            </summary>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de refeicoes em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.RefeicaoController.GetByID(System.Int32)">
+            <summary>
+            Método http get para retornar uma refeicao através do seu id
+            </summary>
+            <param name="targetID">ID da refeicao que é pretendida ser retornada</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a refeicao em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.RefeicaoController.Post(LayerBOL.Models.Refeicao)">
+            <summary>
+            Método http post para inserção de uma nova refeicao
+            </summary>
+            <param name="newRefeicao">Dados da nova refeicao a ser inserida</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.RefeicaoController.Patch(LayerBOL.Models.Refeicao,System.Int32)">
+            <summary>
+            Método http patch para alteração dos dados de uma refeicao através do id e novos dados
+            </summary>
+            <param name="refeicao">Refeicao com dados alterados</param>
+            <param name="targetID">ID da Refeicao pretendida para alterar os dados</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.RefeicaoController.Delete(System.Int32)">
+            <summary>
+            Método http delete para remover uma refeicao da base de dados através do seu id
+            </summary>
+            <param name="targetID">ID da refeicao pretendida para ser removida</param>
             <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         </member>
     </members>

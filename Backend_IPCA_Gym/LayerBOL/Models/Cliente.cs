@@ -41,7 +41,7 @@
         /// Representação criptografica da password do cliente
         /// </summary>
         /// <example>grtbgvr5j945-tj48fv94yugb4845</example>
-        public string pass_hash { get; set; }
+        public string? pass_hash { get; set; }
         /// <summary>
         /// Peso do cliente em kg sendo este inicializado nulo
         /// </summary>
