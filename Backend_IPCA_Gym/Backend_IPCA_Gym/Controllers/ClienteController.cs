@@ -110,5 +110,15 @@ namespace Backend_IPCA_Gym.Controllers
 
             return new JsonResult(response);
         }
+
+        [HttpGet("RecoverPass/{targetID}")]
+        public async Task<IActionResult> RecoverPassword(int targetID, ClienteLogic ClienteLogic)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            await ClienteLogic.SendPasswordByEmail(sqlDataSource, targetID);
+
+            return Ok();
+        }
+
     }
 }

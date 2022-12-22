@@ -1,6 +1,8 @@
 ﻿using LayerBOL.Models;
 using System.Data;
 using System.Data.SqlClient;
+using System.Net.Mail;
+using System.Net;
 
 namespace LayerDAL.Services
 {
@@ -490,6 +492,9 @@ namespace LayerDAL.Services
         #endregion
 
         #region BACKLOG REQUESTS
+
+
+
         #endregion
     }
 }

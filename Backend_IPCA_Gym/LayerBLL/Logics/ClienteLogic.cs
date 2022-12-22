@@ -8,6 +8,9 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using LayerDAL.Services;
+using System.Net.Mail;
+using System.Net;
+
 
 namespace LayerBLL.Logics
 {
@@ -16,6 +19,8 @@ namespace LayerBLL.Logics
     /// </summary>
     public class ClienteLogic
     {
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Método que recebe os dados do serviço de obter todos os clientes
         /// </summary>
@@ -120,5 +125,65 @@ namespace LayerBLL.Logics
 
             return response;
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+        /// <summary>
+        /// Envia por email a password do utilizador quando este a deseja recuperar
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="clientId">ID do Cliente que pretende recuperar a password</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task SendPasswordByEmail(string sqlDataSource, int clientId)
+        {
+            Cliente cliente = await ClienteService.GetByIDService(sqlDataSource, clientId);
+            
+            /*
+            var password = "";
+
+            // Crie um novo objeto HttpClient e faça a requisição para obter a senha do cliente
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetAsync($"https://example.com/api/clients/{clientId}/pass_salt");
+
+                // Verifique se a requisição foi bem-sucedida
+                if (!response.IsSuccessStatusCode)
+                {
+                    // A requisição falhou, então você pode lançar uma exceção ou retornar um erro
+                    throw new Exception("Falha ao obter a senha do cliente");
+                }
+
+                // Obtenha a senha do cliente a partir da resposta da requisição
+                password = await response.Content.ReadAsStringAsync();
+            }
+            */
+
+            // Crie um novo objeto SmtpClient para enviar o email
+            using (var smtpClient = new SmtpClient())
+            {
+                // Configure as configurações de servidor SMTP e autenticação
+                smtpClient.Host = "smtp.gmail.com";
+                smtpClient.Port = 587;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential("feedycorps@gmail.com", "melhorprojeto2022");
+                smtpClient.EnableSsl = true;
+
+                // Crie o email a ser enviado
+                var mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress("feedycorps@gmail.com");
+                mailMessage.To.Add("joaocarlosapresentacao@gmail.com");
+                mailMessage.Subject = "Sua senha";
+                mailMessage.Body = $"Sua senha é: {cliente.pass_salt}";
+
+                // Envie o email
+                await smtpClient.SendMailAsync(mailMessage);
+            }
+
+            
+        }
+        #endregion
     }
 }
