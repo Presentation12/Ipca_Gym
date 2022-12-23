@@ -681,6 +681,51 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Alteração de stock de um produto
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <param name="quantidade">Novo valor de quantidade de stock na loja</param>
+        /// <param name="targetID">ID do produto da Loja que se pretende alterar stock</param>
+        /// <returns>Resultado da alteração de stock de um produto</returns>
+        public static async Task<bool> EditLojaStockService(string sqlDataSource, int quantidade, int targetID)
+        {
+            try
+            {
+                Loja produtoTarget = await LojaService.GetByIDService(sqlDataSource, targetID);
+
+                if (produtoTarget == null) return false;
+
+                //Verificar se o cliente está no ginasio do funcionario
+                //Admin pode remover qualquer cliente
+
+                produtoTarget.quantidade_produto = quantidade;
+
+                return await LojaService.PatchService(sqlDataSource, produtoTarget, targetID);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Produto inexistente: " + ex.Message);
+
+                return false;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
         #endregion
     }
 }

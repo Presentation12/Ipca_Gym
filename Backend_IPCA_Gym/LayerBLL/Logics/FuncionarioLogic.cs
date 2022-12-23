@@ -230,5 +230,27 @@ namespace LayerBLL.Logics
 
             return response;
         }
+
+        /// <summary>
+        /// Método que recebe a resposta do serviço de alterar stock de um produto
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <param name="quantidade">Novo valor de quantidade de stock na loja</param>
+        /// <param name="targetID">ID do produto da Loja que se pretende alterar stock</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> EditLojaStockLogic(string sqlDataSource, int quantidade, int targetID)
+        {
+            Response response = new Response();
+            bool editResult = await FuncionarioService.EditLojaStockService(sqlDataSource, quantidade, targetID);
+
+            if (editResult)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Success!";
+                response.Data = new JsonResult("Stock do produto alterado com sucesso!");
+            }
+
+            return response;
+        }
     }
 }

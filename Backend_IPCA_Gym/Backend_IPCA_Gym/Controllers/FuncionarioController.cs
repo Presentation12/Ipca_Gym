@@ -192,5 +192,22 @@ namespace Backend_IPCA_Gym.Controllers
 
             return new JsonResult(response);
         }
+
+        /// <summary>
+        /// Método http para editar valor de stock de um produto
+        /// </summary>
+        /// <param name="targetID">ID do produto da Loja que se pretende alterar stock</param>
+        /// <param name="quantidade">Novo valor de quantidade de stock na loja</param>
+        /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
+        [HttpPatch("changestock/{targetID}")]
+        public async Task<IActionResult> EditLojaStock(int targetID, int quantidade)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await FuncionarioLogic.EditLojaStockLogic(sqlDataSource, quantidade, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
     }
 }
