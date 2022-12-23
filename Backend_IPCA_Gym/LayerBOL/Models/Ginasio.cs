@@ -27,5 +27,16 @@
         /// </summary>
         /// <example>911922933</example>
         public int contacto { get; set; }
+
+        /// <summary>
+        /// Numero de pessoas a utilizar o ginasio
+        /// </summary>
+        /// <example>12</example>
+        public int? lotacao { get; set; }
+        /// <summary>
+        /// Numero de pessoas maximo que pode utilizar o ginasio
+        /// </summary>
+        /// <example>50</example>
+        public int? lotacaoMax { get; set; }
     }
 }

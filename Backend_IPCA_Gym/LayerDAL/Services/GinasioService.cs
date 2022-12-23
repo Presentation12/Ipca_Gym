@@ -47,6 +47,8 @@ namespace LayerDAL.Services
                                 ginasio.foto_ginasio = null;
                             }
                             ginasio.contacto = Convert.ToInt32(dataReader["contacto"]);
+                            ginasio.contacto = Convert.ToInt32(dataReader["lotacao"]);
+                            ginasio.contacto = Convert.ToInt32(dataReader["lotacaoMax"]);
 
                             ginasios.Add(ginasio);
                         }
@@ -135,6 +137,8 @@ namespace LayerDAL.Services
                             }
 
                             targetGinasio.estado = reader.GetString(4);
+                            targetGinasio.lotacao = reader.GetString(5);
+                            targetGinasio.lotacaoMax = reader.GetString(6);
 
                             reader.Close();
                             databaseConnection.Close();
@@ -195,8 +199,8 @@ namespace LayerDAL.Services
         /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<bool> PostService(string sqlDataSource, Ginasio newGinasio)
         {
-            string query = @"insert into dbo.Ginasio (instituicao, contacto, foto_ginasio, estado)
-                            values (@instituicao, @contacto, @foto_ginasio, @estado)";
+            string query = @"insert into dbo.Ginasio (instituicao, contacto, foto_ginasio, estado, lotacao, lotacaoMax)
+                            values (@instituicao, @contacto, @foto_ginasio, @estado, @lotacao, @lotacaoMax)";
 
             try
             {
@@ -211,6 +215,8 @@ namespace LayerDAL.Services
                         if (!string.IsNullOrEmpty(newGinasio.foto_ginasio)) myCommand.Parameters.AddWithValue("foto_ginasio", newGinasio.foto_ginasio);
                         else myCommand.Parameters.AddWithValue("foto_ginasio", DBNull.Value);
                         myCommand.Parameters.AddWithValue("estado", newGinasio.estado);
+                        myCommand.Parameters.AddWithValue("lotacao", newGinasio.contacto);
+                        myCommand.Parameters.AddWithValue("lotacaoMax", newGinasio.contacto);
                         dataReader = myCommand.ExecuteReader();
 
                         dataReader.Close();
@@ -266,7 +272,9 @@ namespace LayerDAL.Services
                             set instituicao = @instituicao, 
                             contacto = @contacto, 
                             foto_ginasio = @foto_ginasio, 
-                            estado = @estado
+                            estado = @estado,
+                            lotacao = @lotacao,
+                            lotacaoMax = @lotacaoMax
                             where id_ginasio = @id_ginasio";
 
             try
@@ -284,6 +292,8 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("contacto", ginasio.contacto != 0 ? ginasio.contacto : ginasioAtual.contacto);
                         myCommand.Parameters.AddWithValue("foto_ginasio", !string.IsNullOrEmpty(ginasio.foto_ginasio) ? ginasio.foto_ginasio : ginasioAtual.foto_ginasio);
                         myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(ginasio.estado) ? ginasio.estado : ginasioAtual.estado);
+                        myCommand.Parameters.AddWithValue("lotacao", ginasio.lotacao);
+                        myCommand.Parameters.AddWithValue("lotacaoMax", ginasio.lotacaoMax);
 
                         dataReader = myCommand.ExecuteReader();
 
