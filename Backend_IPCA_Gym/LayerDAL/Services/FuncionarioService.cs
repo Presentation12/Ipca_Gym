@@ -726,6 +726,55 @@ namespace LayerDAL.Services
             }
         }
 
+
+        /// <summary>
+        /// Remoção de um funcionário por parte do funcionário admin
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <param name="targetID">ID do cliente que se pretende arquivar/remover</param>
+        /// <returns>Resultado da remoção de um cliente</returns>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<bool> RemoverFuncionarioService(string sqlDataSource, int targetID)
+        {
+            try
+            {
+                Funcionario funcionario = await GetByIDService(sqlDataSource, targetID);
+
+                if (funcionario == null || funcionario.is_admin == true) return false;
+
+                //Verificar se o cliente está no ginasio do funcionario
+                //Admin pode remover qualquer funcionario
+
+                funcionario.estado = "Inativo";
+
+
+                return await PatchService(sqlDataSource, funcionario, targetID);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Funcionario inexistente: " + ex.Message);
+
+                return false;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
         #endregion
     }
 }
