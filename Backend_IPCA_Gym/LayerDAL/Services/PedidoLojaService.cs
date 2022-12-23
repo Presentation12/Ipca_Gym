@@ -41,7 +41,7 @@ namespace LayerDAL.Services
 
                             pedidoloja.id_pedido = Convert.ToInt32(dataReader["id_pedido"]);
                             pedidoloja.id_produto = Convert.ToInt32(dataReader["id_produto"]);
-                            pedidoloja.quantidade = Convert.ToInt32(dataReader["quantidade"]);
+                            pedidoloja.quantidade_pedido = Convert.ToInt32(dataReader["quantidade_pedido"]);
 
                             pedidosloja.Add(pedidoloja);
                         }
@@ -120,7 +120,7 @@ namespace LayerDAL.Services
                             PedidoLoja targetPedidoLoja = new PedidoLoja();
                             targetPedidoLoja.id_pedido = reader.GetInt32(0);
                             targetPedidoLoja.id_produto = reader.GetInt32(1);
-                            targetPedidoLoja.quantidade = reader.GetInt32(2);
+                            targetPedidoLoja.quantidade_pedido = reader.GetInt32(2);
 
                             reader.Close();
                             databaseConnection.Close();
@@ -182,8 +182,8 @@ namespace LayerDAL.Services
         public static async Task<bool> PostService(string sqlDataSource, PedidoLoja newPedidoLoja)
         {
             string query = @"
-                            insert into dbo.Pedido_Loja (id_pedido, id_produto, quantidade)
-                            values (@id_pedido, @id_produto, @quantidade)";
+                            insert into dbo.Pedido_Loja (id_pedido, id_produto, quantidade_pedido)
+                            values (@id_pedido, @id_produto, @quantidade_pedido)";
 
             try
             {
@@ -196,7 +196,7 @@ namespace LayerDAL.Services
                     {
                         myCommand.Parameters.AddWithValue("id_pedido", newPedidoLoja.id_pedido);
                         myCommand.Parameters.AddWithValue("id_produto", newPedidoLoja.id_produto);
-                        myCommand.Parameters.AddWithValue("quantidade", newPedidoLoja.quantidade);
+                        myCommand.Parameters.AddWithValue("quantidade_pedido", newPedidoLoja.quantidade_pedido);
 
                         dataReader = myCommand.ExecuteReader();
 
@@ -251,7 +251,7 @@ namespace LayerDAL.Services
         {
             string query = @"
                             update dbo.Pedido_Loja 
-                            set quantidade = @quantidade
+                            set quantidade_pedido = @quantidade_pedido
                             where id_pedido = @id_pedido and id_produto = @id_produto";
 
             try
@@ -266,7 +266,7 @@ namespace LayerDAL.Services
                     {
                         myCommand.Parameters.AddWithValue("id_pedido", pedidoLoja.id_pedido != 0 ? pedidoLoja.id_pedido : pedidoLojaAtual.id_pedido);
                         myCommand.Parameters.AddWithValue("id_produto", pedidoLoja.id_produto != 0 ? pedidoLoja.id_produto : pedidoLojaAtual.id_produto);
-                        myCommand.Parameters.AddWithValue("quantidade", pedidoLoja.quantidade);
+                        myCommand.Parameters.AddWithValue("quantidade_pedido", pedidoLoja.quantidade_pedido);
 
                         dataReader = myCommand.ExecuteReader();
 
@@ -399,7 +399,7 @@ namespace LayerDAL.Services
 
                             pedidoloja.id_pedido = Convert.ToInt32(dataReader["id_pedido"]);
                             pedidoloja.id_produto = Convert.ToInt32(dataReader["id_produto"]);
-                            pedidoloja.quantidade = Convert.ToInt32(dataReader["quantidade"]);
+                            pedidoloja.quantidade_pedido = Convert.ToInt32(dataReader["quantidade_pedido"]);
 
                             pedidosLoja.Add(pedidoloja);
                         }
@@ -475,14 +475,14 @@ namespace LayerDAL.Services
                         foreach (PedidoLoja x in listPedidosID)
                         {
                             Loja produto = await LojaService.GetByIDService(sqlDataSource, x.id_produto);
-                            produto.quantidade = produto.quantidade + x.quantidade;
+                            produto.quantidade_produto = produto.quantidade_produto + x.quantidade_pedido;
 
                             LojaService.PatchService(sqlDataSource, produto, produto.id_produto);
                         }
 
                         // Desativar o pedido na lista de pedidos
                         Pedido pedido = await PedidoService.GetByIDService(sqlDataSource, targetID);
-                        pedido.estado = "Inativo";
+                        pedido.estado_pedido = "Inativo";
                         PedidoService.PatchService(sqlDataSource , pedido, targetID);
 
                         dataReader.Close();
@@ -523,15 +523,15 @@ namespace LayerDAL.Services
         public static async Task<bool> PostPedidoCheckedService(string sqlDataSource, PedidoLoja newPedidoLoja)
         {
             string query = @"
-                            insert into dbo.Pedido_Loja (id_pedido, id_produto, quantidade)
-                            values (@id_pedido, @id_produto, @quantidade)";
+                            insert into dbo.Pedido_Loja (id_pedido, id_produto, quantidade_pedido)
+                            values (@id_pedido, @id_produto, @quantidade_pedido)";
 
             try
             {
                 // produto pedido
                 Loja produto = await LojaService.GetByIDService(sqlDataSource, newPedidoLoja.id_produto);
                 // verifica se a quantidade pedida é maior que o stock existente
-                if (newPedidoLoja.quantidade > produto.quantidade)
+                if (newPedidoLoja.quantidade_pedido > produto.quantidade_produto)
                 {
                     // produto não é adicionado
                     return false;
@@ -548,10 +548,10 @@ namespace LayerDAL.Services
                         {
                             myCommand.Parameters.AddWithValue("id_pedido", newPedidoLoja.id_pedido);
                             myCommand.Parameters.AddWithValue("id_produto", newPedidoLoja.id_produto);
-                            myCommand.Parameters.AddWithValue("quantidade", newPedidoLoja.quantidade);
+                            myCommand.Parameters.AddWithValue("quantidade_pedido", newPedidoLoja.quantidade_pedido);
 
                             // atualizar o stock o produto
-                            produto.quantidade = produto.quantidade - newPedidoLoja.quantidade;
+                            produto.quantidade_produto = produto.quantidade_produto - newPedidoLoja.quantidade_pedido;
                             LojaService.PatchService(sqlDataSource, produto, produto.id_produto);
 
                             dataReader = myCommand.ExecuteReader();
@@ -608,7 +608,7 @@ namespace LayerDAL.Services
         {
             string query = @"
                             update dbo.Pedido_Loja 
-                            set quantidade = @quantidade
+                            set quantidade_pedido = @quantidade_pedido
                             where id_pedido = @id_pedido and id_produto = @id_produto";
 
             try
@@ -616,7 +616,7 @@ namespace LayerDAL.Services
                 // produto pedido
                 Loja produto = await LojaService.GetByIDService(sqlDataSource, pedidoLoja.id_produto);
                 // verifica se a quantidade pedida é maior que o stock existente
-                if (pedidoLoja.quantidade > produto.quantidade)
+                if (pedidoLoja.quantidade_pedido > produto.quantidade_produto)
                 {
                     // produto não é adicionado
                     return false;
@@ -634,7 +634,7 @@ namespace LayerDAL.Services
                         {
                             myCommand.Parameters.AddWithValue("id_pedido", targetID1);
                             myCommand.Parameters.AddWithValue("id_produto", targetID2);
-                            myCommand.Parameters.AddWithValue("quantidade", pedidoLoja.quantidade);
+                            myCommand.Parameters.AddWithValue("quantidade_pedido", pedidoLoja.quantidade_pedido);
 
                             dataReader = myCommand.ExecuteReader();
 

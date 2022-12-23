@@ -17,6 +17,6 @@ namespace LayerBOL.Models
         /// Quantidade do produto pedido
         /// </summary>
         /// <example>20</example>
-        public int quantidade { get; set; }
+        public int quantidade_pedido { get; set; }
     }
 }

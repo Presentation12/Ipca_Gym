@@ -21,6 +21,6 @@
         /// Estado do pedido (Ativo ou Inativo)
         /// </summary>
         /// <example>Ativo</example>
-        public string estado { get; set; }
+        public string estado_pedido { get; set; }
     }
 }

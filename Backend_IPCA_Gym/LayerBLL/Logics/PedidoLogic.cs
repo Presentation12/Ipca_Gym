@@ -136,13 +136,13 @@ namespace LayerBLL.Logics
         public static async Task<Response> GetAllConnectionClientLogic(string sqlDataSource, int targetID)
         {
             Response response = new Response();
-            List<Object> pedidoList = await PedidoService.GetAllConnectionClientService(sqlDataSource, targetID);
+            List<JoinPedido> pedidoJoinList = await PedidoService.GetAllConnectionClientService(sqlDataSource, targetID);
 
-            if (pedidoList.Count != 0)
+            if (pedidoJoinList.Count != 0)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
                 response.Message = "Lista de pedidos obtida com sucesso!";
-                response.Data = new JsonResult(pedidoList);
+                response.Data = new JsonResult(pedidoJoinList);
             }
 
             return response;

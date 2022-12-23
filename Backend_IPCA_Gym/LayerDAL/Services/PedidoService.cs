@@ -41,7 +41,7 @@ namespace LayerDAL.Services
                             pedido.id_pedido = Convert.ToInt32(dataReader["id_pedido"]);
                             pedido.id_cliente = Convert.ToInt32(dataReader["id_cliente"]);
                             pedido.data_pedido = Convert.ToDateTime(dataReader["data_pedido"]);
-                            pedido.estado = dataReader["estado"].ToString();
+                            pedido.estado_pedido = dataReader["estado_pedido"].ToString();
 
                             pedidos.Add(pedido);
                         }
@@ -119,7 +119,7 @@ namespace LayerDAL.Services
                             Pedido targetPedido = new Pedido();
                             targetPedido.id_pedido = reader.GetInt32(0);
                             targetPedido.id_cliente = reader.GetInt32(1);
-                            targetPedido.estado = reader.GetString(2);
+                            targetPedido.estado_pedido = reader.GetString(2);
                             targetPedido.data_pedido = reader.GetDateTime(3);
 
                             reader.Close();
@@ -182,8 +182,8 @@ namespace LayerDAL.Services
         public static async Task<bool> PostService(string sqlDataSource, Pedido newPedido)
         {
             string query = @"
-                            insert into dbo.Pedido (id_cliente, data_pedido, estado)
-                            values (@id_cliente, @data_pedido, @estado)";
+                            insert into dbo.Pedido (id_cliente, data_pedido, estado_pedido)
+                            values (@id_cliente, @data_pedido, @estado_pedido)";
 
             try
             {
@@ -196,7 +196,7 @@ namespace LayerDAL.Services
                     {
                         myCommand.Parameters.AddWithValue("id_cliente", newPedido.id_cliente);
                         myCommand.Parameters.AddWithValue("data_pedido", Convert.ToDateTime(newPedido.data_pedido));
-                        myCommand.Parameters.AddWithValue("estado", newPedido.estado);
+                        myCommand.Parameters.AddWithValue("estado_pedido", newPedido.estado_pedido);
 
                         dataReader = myCommand.ExecuteReader();
 
@@ -253,7 +253,7 @@ namespace LayerDAL.Services
                             update dbo.Pedido 
                             set id_cliente = @id_cliente, 
                             data_pedido = @data_pedido,
-                            estado = @estado
+                            estado_pedido = @estado_pedido
                             where id_pedido = @id_pedido";
 
             try
@@ -269,7 +269,7 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("id_pedido", pedido.id_pedido != 0 ? pedido.id_pedido : pedidoAtual.id_pedido);
                         myCommand.Parameters.AddWithValue("id_cliente", pedido.id_cliente != 0 ? pedido.id_cliente : pedidoAtual.id_cliente);
                         myCommand.Parameters.AddWithValue("data_pedido", !pedido.data_pedido.Equals(DateTime.MinValue) ? pedido.data_pedido : pedidoAtual.data_pedido);
-                        myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(pedido.estado) ? pedido.estado : pedidoAtual.estado);
+                        myCommand.Parameters.AddWithValue("estado_pedido", !string.IsNullOrEmpty(pedido.estado_pedido) ? pedido.estado_pedido : pedidoAtual.estado_pedido);
 
                         dataReader = myCommand.ExecuteReader();
 
@@ -400,7 +400,7 @@ namespace LayerDAL.Services
                             pedido.id_pedido = Convert.ToInt32(dataReader["id_pedido"]);
                             pedido.id_cliente = Convert.ToInt32(dataReader["id_cliente"]);
                             pedido.data_pedido = Convert.ToDateTime(dataReader["data_pedido"]);
-                            pedido.estado = dataReader["estado"].ToString();
+                            pedido.estado_pedido = dataReader["estado_pedido"].ToString();
 
                             pedidos.Add(pedido);
                         }
@@ -456,7 +456,7 @@ namespace LayerDAL.Services
         /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
         /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
         /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
-        public static async Task<List<Object>> GetAllConnectionClientService(string sqlDataSource, int TargetID)
+        public static async Task<List<JoinPedido>> GetAllConnectionClientService(string sqlDataSource, int TargetID)
         {
             string query = @"SELECT * FROM Pedido
                             INNER JOIN Pedido_Loja ON Pedido.id_pedido = Pedido_Loja.id_pedido
@@ -465,7 +465,7 @@ namespace LayerDAL.Services
 
             try
             {
-                List<Object> join = new List<Object>();
+                List<JoinPedido> join = new List<JoinPedido>();
 
                 SqlDataReader dataReader;
 
@@ -481,42 +481,33 @@ namespace LayerDAL.Services
 
                         while (dataReader.Read())
                         {
-                            Pedido pedido = new Pedido();
-                            PedidoLoja pedidoLoja = new PedidoLoja();
-                            Loja produto = new Loja();
+                            JoinPedido pedido_join = new JoinPedido();
 
-                            pedido.id_pedido = Convert.ToInt32(dataReader["id_pedido"]);
-                            pedido.id_cliente = Convert.ToInt32(dataReader["id_cliente"]);
-                            pedido.data_pedido = Convert.ToDateTime(dataReader["data_pedido"]);
-                            pedido.estado = dataReader["estado"].ToString();
+                            pedido_join.id_pedido = Convert.ToInt32(dataReader["id_pedido"]);
+                            pedido_join.id_cliente = Convert.ToInt32(dataReader["id_cliente"]);
+                            pedido_join.data_pedido = Convert.ToDateTime(dataReader["data_pedido"]);
+                            pedido_join.estado_pedido = dataReader["estado_pedido"].ToString();
 
-                            join.Add(pedido);
-                             
+                            pedido_join.quantidade_pedido = Convert.ToInt32(dataReader["quantidade_pedido"]);
 
-                            pedidoLoja.id_pedido = Convert.ToInt32(dataReader["id_pedido"]);
-                            pedidoLoja.quantidade = Convert.ToInt32(dataReader["quantidade"]);
-                            pedidoLoja.id_produto = Convert.ToInt32(dataReader["id_produto"]);
-
-                            join.Add(pedidoLoja);
-
-                            produto.id_produto = Convert.ToInt32(dataReader["id_produto"]);
-                            produto.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
-                            produto.nome = dataReader["nome"].ToString();
-                            produto.descricao = dataReader["descricao"].ToString();
-                            produto.preco = Convert.ToDouble(dataReader["preco"]);
-                            produto.tipo_produto = dataReader["tipo_produto"].ToString();
-                            produto.estado = dataReader["estado"].ToString();
+                            pedido_join.id_produto = Convert.ToInt32(dataReader["id_produto"]);
+                            pedido_join.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
+                            pedido_join.nome_produto = dataReader["nome"].ToString();
+                            pedido_join.descricao_produto = dataReader["descricao"].ToString();
+                            pedido_join.preco_produto = Convert.ToDouble(dataReader["preco"]);
+                            pedido_join.tipo_produto = dataReader["tipo_produto"].ToString();
+                            pedido_join.estado_produto = dataReader["estado_produto"].ToString();
                             if (!Convert.IsDBNull(dataReader["foto_produto"]))
                             {
-                                produto.foto_produto = dataReader["foto_produto"].ToString();
+                                pedido_join.foto_produto = dataReader["foto_produto"].ToString();
                             }
                             else
                             {
-                                produto.foto_produto = null;
+                                pedido_join.foto_produto = null;
                             }
-                            produto.quantidade = Convert.ToInt32(dataReader["quantidade"]);
+                            pedido_join.quantidade_produto = Convert.ToInt32(dataReader["quantidade_produto"]);
 
-                            join.Add(produto);
+                            join.Add(pedido_join);
 
                         }
 

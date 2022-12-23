@@ -45,7 +45,7 @@ namespace LayerDAL.Services
                             produto.descricao = dataReader["descricao"].ToString();
                             produto.preco = Convert.ToDouble(dataReader["preco"]);
                             produto.tipo_produto = dataReader["tipo_produto"].ToString();
-                            produto.estado = dataReader["estado"].ToString();
+                            produto.estado_produto = dataReader["estado_produto"].ToString();
                             if (!Convert.IsDBNull(dataReader["foto_produto"]))
                             {
                                 produto.foto_produto = dataReader["foto_produto"].ToString();
@@ -54,7 +54,7 @@ namespace LayerDAL.Services
                             {
                                 produto.foto_produto = null;
                             }
-                            produto.quantidade = Convert.ToInt32(dataReader["quantidade"]);
+                            produto.quantidade_produto = Convert.ToInt32(dataReader["quantidade_produto"]);
 
                             produtos.Add(produto);
                         }
@@ -135,7 +135,7 @@ namespace LayerDAL.Services
                             targetLoja.tipo_produto = reader.GetString(3);
                             targetLoja.preco = reader.GetDouble(4);
                             targetLoja.descricao = reader.GetString(5);
-                            targetLoja.estado = reader.GetString(6);
+                            targetLoja.estado_produto = reader.GetString(6);
 
                             if (!Convert.IsDBNull(reader["foto_produto"]))
                             {
@@ -146,7 +146,7 @@ namespace LayerDAL.Services
                                 targetLoja.foto_produto = null;
                             }
 
-                            targetLoja.quantidade = reader.GetInt32(8);
+                            targetLoja.quantidade_produto = reader.GetInt32(8);
 
                             reader.Close();
                             databaseConnection.Close();
@@ -209,8 +209,8 @@ namespace LayerDAL.Services
         public static async Task<bool> PostService(string sqlDataSource, Loja newProduto)
         {
             string query = @"
-                            insert into dbo.Loja (id_ginasio, nome, tipo_produto, preco, descricao, estado, foto_produto, quantidade)
-                            values (@id_ginasio, @nome, @tipo_produto, @preco, @descricao, @estado, @foto_produto, @quantidade)";
+                            insert into dbo.Loja (id_ginasio, nome, tipo_produto, preco, descricao, estado, foto_produto, quantidade_produto)
+                            values (@id_ginasio, @nome, @tipo_produto, @preco, @descricao, @estado, @foto_produto, @quantidade_produto)";
 
             try
             {
@@ -226,12 +226,12 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("tipo_produto", newProduto.tipo_produto);
                         myCommand.Parameters.AddWithValue("preco", newProduto.preco);
                         myCommand.Parameters.AddWithValue("descricao", newProduto.descricao);
-                        myCommand.Parameters.AddWithValue("estado", newProduto.estado);
+                        myCommand.Parameters.AddWithValue("estado_produto", newProduto.estado_produto);
 
                         if (!string.IsNullOrEmpty(newProduto.foto_produto)) myCommand.Parameters.AddWithValue("foto_produto", newProduto.foto_produto);
                         else myCommand.Parameters.AddWithValue("foto_produto", DBNull.Value);
 
-                        myCommand.Parameters.AddWithValue("quantidade", newProduto.quantidade);
+                        myCommand.Parameters.AddWithValue("quantidade_produto", newProduto.quantidade_produto);
 
                         dataReader = myCommand.ExecuteReader();
 
@@ -290,9 +290,9 @@ namespace LayerDAL.Services
                             tipo_produto = @tipo_produto,
                             preco = @preco,
                             descricao = @descricao,
-                            estado = @estado,
+                            estado_produto = @estado_produto,
                             foto_produto = @foto_produto,
-                            quantidade = @quantidade
+                            quantidade_produto = @quantidade_produto
                             where id_produto = @id_produto";
 
             try
@@ -311,9 +311,9 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("tipo_produto", !string.IsNullOrEmpty(produto.tipo_produto) ? produto.tipo_produto : produtoAtual.tipo_produto);
                         myCommand.Parameters.AddWithValue("preco", produto.preco != (double)0 ? produto.preco : produtoAtual.preco);
                         myCommand.Parameters.AddWithValue("descricao", !string.IsNullOrEmpty(produto.descricao) ? produto.descricao : produtoAtual.descricao);
-                        myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(produto.estado) ? produto.estado : produtoAtual.estado);
+                        myCommand.Parameters.AddWithValue("estado_produto", !string.IsNullOrEmpty(produto.estado_produto) ? produto.estado_produto : produtoAtual.estado_produto);
                         myCommand.Parameters.AddWithValue("foto_produto", !string.IsNullOrEmpty(produto.foto_produto) ? produto.foto_produto : produtoAtual.foto_produto);
-                        myCommand.Parameters.AddWithValue("quantidade", produto.quantidade);
+                        myCommand.Parameters.AddWithValue("quantidade_produto", produto.quantidade_produto);
 
                         dataReader = myCommand.ExecuteReader();
 
@@ -447,7 +447,7 @@ namespace LayerDAL.Services
                             produto.descricao = dataReader["descricao"].ToString();
                             produto.preco = Convert.ToDouble(dataReader["preco"]);
                             produto.tipo_produto = dataReader["tipo_produto"].ToString();
-                            produto.estado = dataReader["estado"].ToString();
+                            produto.estado_produto = dataReader["estado_produto"].ToString();
                             if (!Convert.IsDBNull(dataReader["foto_produto"]))
                             {
                                 produto.foto_produto = dataReader["foto_produto"].ToString();
@@ -456,7 +456,7 @@ namespace LayerDAL.Services
                             {
                                 produto.foto_produto = null;
                             }
-                            produto.quantidade = Convert.ToInt32(dataReader["quantidade"]);
+                            produto.quantidade_produto = Convert.ToInt32(dataReader["quantidade_produto"]);
 
                             produtos.Add(produto);
                         }
