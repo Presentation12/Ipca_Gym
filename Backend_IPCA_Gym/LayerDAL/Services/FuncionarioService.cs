@@ -1,7 +1,12 @@
 ﻿using LayerBOL.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualBasic;
+using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -272,8 +277,6 @@ namespace LayerDAL.Services
                             nome = @nome, 
                             is_admin = @is_admin,
                             codigo = @codigo,
-                            pass_salt = @pass_salt,
-                            pass_hash = @pass_hash,
                             estado = @estado
                             where id_funcionario = @id_funcionario";
 
@@ -292,8 +295,6 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("nome", !string.IsNullOrEmpty(funcionario.nome) ? funcionario.nome : funcionarioAtual.nome);
                         myCommand.Parameters.AddWithValue("is_admin", funcionario.is_admin != null ? funcionario.is_admin : funcionarioAtual.is_admin);
                         myCommand.Parameters.AddWithValue("codigo", funcionario.codigo != 0 ? funcionario.codigo : funcionarioAtual.codigo);
-                        myCommand.Parameters.AddWithValue("pass_salt", funcionarioAtual.pass_salt);
-                        myCommand.Parameters.AddWithValue("pass_hash", funcionarioAtual.pass_hash);
                         myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(funcionario.estado) ? funcionario.estado : funcionarioAtual.estado);
 
                         dataReader = myCommand.ExecuteReader();
@@ -383,37 +384,79 @@ namespace LayerDAL.Services
         }
 
         /// <summary>
-        /// Método auxiliar que faz a criação de um Token de Sessao
+        /// Recuperação de uma palavra pass de um funcionario
         /// </summary>
-        /// <param name="funcionario">Funcionario que esta a efetuar login</param>
-        /// <param name="_configuration">Dependency Injection</param>
-        /// <returns>Token jwt de sessao</returns>
-        private static string CreateTokenFuncionario(Funcionario funcionario, IConfiguration _configuration)
+        /// <param name="codigo">Codigo do funcionario</param>
+        /// <param name="password">Nova palavra pass</param>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <returns>Resultado de recuperação da palavra pass</returns>
+        /// <exception cref="ArgumentException">Ocorre quando o funcionário do codigo inserido não existe</exception>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<bool> RecuperarPassword(int codigo, string password, string sqlDataSource)
         {
-            string role = string.Empty;
-
-            if (funcionario.is_admin) role = "Gerente";
-            else role = "Funcionario";
-
-            List <Claim> claims = new List<Claim>
+            string query = @"update dbo.Funcionario 
+                                            set pass_salt = @pass_salt, pass_hash = @pass_hash where codigo = @codigo";
+            try
             {
-                new Claim(ClaimTypes.Email, funcionario.codigo.ToString()),
-                new Claim(ClaimTypes.Role, role)
-            };
+                SqlDataReader dataReader;
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("codigo", codigo);
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+                        List<Funcionario> tempList = await GetAllService(sqlDataSource);
+                        bool found = false;
 
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: creds);
+                        for(int i = 0; i < tempList.Count() && found == false; i++)
+                        {
+                            if (tempList[i].codigo == codigo) 
+                                found = true;
+                        }
 
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+                        if(found == false) throw new ArgumentException("Funcionário inexistente.", "codigo");
 
-            return jwt;
+                        //Verificar que o user atual é quem tem o código associado
+
+                        PasswordEncryption.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+                        string newHash = Convert.ToBase64String(passwordHash);
+                        string newSalt = Convert.ToBase64String(passwordSalt);
+
+                        myCommand.Parameters.AddWithValue("pass_hash", newHash);
+                        myCommand.Parameters.AddWithValue("pass_salt", newSalt);
+
+                        dataReader = myCommand.ExecuteReader();
+                        
+                        dataReader.Close();
+                        databaseConnection.Close();
+
+                        return true;
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
         }
+
+        
 
         /// <summary>
         /// Remoção de um funcionário da base de dados pelo seu ID
@@ -462,7 +505,7 @@ namespace LayerDAL.Services
                                 throw new ArgumentException("Password Errada.", "conta");
                             }
 
-                            string token = CreateTokenFuncionario(targetFuncionario, _configuration);
+                            string token = Token.CreateTokenFuncionario(targetFuncionario, _configuration);
 
                             return token;
                         }

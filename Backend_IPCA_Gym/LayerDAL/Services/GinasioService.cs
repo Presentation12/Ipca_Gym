@@ -137,8 +137,8 @@ namespace LayerDAL.Services
                             }
 
                             targetGinasio.estado = reader.GetString(4);
-                            targetGinasio.lotacao = reader.GetString(5);
-                            targetGinasio.lotacaoMax = reader.GetString(6);
+                            targetGinasio.lotacao = reader.GetInt32(5);
+                            targetGinasio.lotacaoMax = reader.GetInt32(6);
 
                             reader.Close();
                             databaseConnection.Close();
