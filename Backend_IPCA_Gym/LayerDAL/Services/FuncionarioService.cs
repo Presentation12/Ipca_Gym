@@ -17,6 +17,8 @@ namespace LayerDAL.Services
 {
     public class FuncionarioService
     {
+        #region CRUD SERVICES
+
         /// <summary>
         /// Leitura dos dados de todos os funcionarios da base de dados
         /// </summary>
@@ -30,7 +32,7 @@ namespace LayerDAL.Services
         /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<List<Funcionario>> GetAllService(string sqlDataSource)
         {
-            string query = @"select * from dbo.Funcionario";
+            string query = @"select * from dbo.Funcionario where estado != 'Inativo'";
 
             try
             {
@@ -111,7 +113,7 @@ namespace LayerDAL.Services
         /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Funcionario> GetByIDService(string sqlDataSource, int targetID)
         {
-            string query = @"select * from dbo.Funcionario where id_funcionario = @id_funcionario";
+            string query = @"select * from dbo.Funcionario where id_funcionario = @id_funcionario and estado != 'Inativo'";
 
             try
             {
@@ -383,6 +385,10 @@ namespace LayerDAL.Services
             }
         }
 
+        #endregion
+
+        #region BACKLOG SERVICES
+
         /// <summary>
         /// Recuperação de uma palavra pass de um funcionario
         /// </summary>
@@ -394,7 +400,7 @@ namespace LayerDAL.Services
         /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
         /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
         /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
-        public static async Task<bool> RecuperarPassword(int codigo, string password, string sqlDataSource)
+        public static async Task<bool> RecoverPasswordService(int codigo, string password, string sqlDataSource)
         {
             string query = @"update dbo.Funcionario 
                                             set pass_salt = @pass_salt, pass_hash = @pass_hash where codigo = @codigo";
@@ -456,20 +462,18 @@ namespace LayerDAL.Services
             }
         }
 
-        
-
         /// <summary>
-        /// Remoção de um funcionário da base de dados pelo seu ID
+        /// Login de um funcionário
         /// </summary>
         /// <param name="sqlDataSource">String de conexão com a base de dados</param>
         /// <param name="conta">Model de login de Funcionario</param>
         /// <param name="_configuration">Dependency Injection</param>
-        /// <returns>True se a remoção foi bem sucedida, false em caso de erro</returns>
+        /// <returns>True o login foi bem sucedido</returns>
         /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
         /// <exception cref="InvalidOperationException">Ocorre quando o codigo do funcionario nao está atribuido</exception>
         /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
         /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
-        public static async Task<string> Login(string sqlDataSource, LoginFuncionario conta, IConfiguration _configuration)
+        public static async Task<string> LoginService(string sqlDataSource, LoginFuncionario conta, IConfiguration _configuration)
         {
             string query = @"
                             select * from dbo.Funcionario 
@@ -533,5 +537,150 @@ namespace LayerDAL.Services
                 return string.Empty;
             }
         }
+
+        /// <summary>
+        /// Registo de um novo cliente no ginasio
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <param name="newCliente">Objeto que contem os dados do novo cliente</param>
+        /// <returns>True se o cliente foi registado com sucesso</returns>
+        /// /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<bool> RegistClienteService(string sqlDataSource, Cliente newCliente)
+        {
+            try
+            {
+                //Verificar se o cliente está a tentar entrar no ginasio ao qual o funcionario pertence
+
+                //Admin pode colocar em qualquer ginasio
+
+                return await ClienteService.PostService(sqlDataSource, newCliente);
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return false;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Remoção de um utilizador por parte do funcionário
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <param name="targetID">ID do cliente que se pretende arquivar/remover</param>
+        /// <returns>Resultado da remoção de um cliente</returns>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<bool> RemoveClienteService(string sqlDataSource, int targetID)
+        {
+            try
+            {
+                Cliente cliente = await ClienteService.GetByIDService(sqlDataSource, targetID);
+
+                if (cliente == null) return false;
+
+                //Verificar se o cliente está no ginasio do funcionario
+                //Admin pode remover qualquer cliente
+
+                cliente.estado = "Inativo";
+
+                return await ClienteService.PatchService(sqlDataSource, cliente, targetID);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Cliente inexistente: " + ex.Message);
+
+                return false;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Edição de um utilizador por parte do funcionário
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <param name="targetID">ID do cliente que se pretende editar</param>
+        /// <param name="cliente">Objeto que contêm os dados do cliente atualizados</param>
+        /// <returns>Resultado da edição de um cliente</returns>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<bool> EditClienteService(string sqlDataSource, int targetID, Cliente cliente)
+        {
+            try
+            {
+                Cliente clienteVerify = await ClienteService.GetByIDService(sqlDataSource, targetID);
+
+                if (clienteVerify == null) return false;
+
+                //Verificar se o cliente está no ginasio do funcionario
+                //Admin pode remover qualquer cliente
+
+                return await ClienteService.PatchService(sqlDataSource, cliente, targetID);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Cliente inexistente: " + ex.Message);
+
+                return false;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
+        #endregion
     }
 }

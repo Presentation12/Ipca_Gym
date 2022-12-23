@@ -153,7 +153,6 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        Console.WriteLine(targetID);
                         myCommand.Parameters.AddWithValue("id_cliente", targetID);
 
                         using (SqlDataReader reader = myCommand.ExecuteReader())
@@ -391,16 +390,37 @@ namespace LayerDAL.Services
                     {
                         myCommand.Parameters.AddWithValue("id_cliente", cliente.id_cliente != 0 ? cliente.id_cliente : clienteAtual.id_cliente);
                         myCommand.Parameters.AddWithValue("id_ginasio", cliente.id_ginasio != 0 ? cliente.id_ginasio : clienteAtual.id_ginasio);
-                        myCommand.Parameters.AddWithValue("id_plano_nutricional", cliente.id_plano_nutricional != 0 ? cliente.id_plano_nutricional : clienteAtual.id_plano_nutricional);
+                        if(clienteAtual.id_plano_nutricional != null && cliente.id_plano_nutricional != null)
+                            myCommand.Parameters.AddWithValue("id_plano_nutricional", cliente.id_plano_nutricional == null ? cliente.id_plano_nutricional : clienteAtual.id_plano_nutricional);
+                        else
+                            myCommand.Parameters.AddWithValue("id_plano_nutricional", DBNull.Value);
+
                         myCommand.Parameters.AddWithValue("nome", !string.IsNullOrEmpty(cliente.nome) ? cliente.nome : clienteAtual.nome);
                         myCommand.Parameters.AddWithValue("mail", !string.IsNullOrEmpty(cliente.mail) ? cliente.mail : clienteAtual.mail);
                         myCommand.Parameters.AddWithValue("telemovel", cliente.telemovel != 0 ? cliente.telemovel : clienteAtual.telemovel);
                         myCommand.Parameters.AddWithValue("pass_hash", clienteAtual.pass_hash);
                         myCommand.Parameters.AddWithValue("pass_salt", clienteAtual.pass_salt);
-                        myCommand.Parameters.AddWithValue("peso", cliente.peso != null ? cliente.peso : clienteAtual.peso);
-                        myCommand.Parameters.AddWithValue("altura", cliente.altura != null ? cliente.altura : clienteAtual.altura);
-                        myCommand.Parameters.AddWithValue("gordura", cliente.gordura != null ? cliente.gordura : clienteAtual.gordura);
-                        myCommand.Parameters.AddWithValue("foto_perfil", !string.IsNullOrEmpty(cliente.foto_perfil) ? cliente.foto_perfil : clienteAtual.foto_perfil);
+
+                        if (clienteAtual.peso != null && cliente.peso != null)
+                            myCommand.Parameters.AddWithValue("peso", cliente.peso == null ? cliente.peso : clienteAtual.peso);
+                        else
+                            myCommand.Parameters.AddWithValue("peso", DBNull.Value);
+                        
+                        if (clienteAtual.altura != null && cliente.altura != null)
+                            myCommand.Parameters.AddWithValue("altura", cliente.altura == null ? cliente.altura : clienteAtual.altura);
+                        else
+                            myCommand.Parameters.AddWithValue("altura", DBNull.Value);
+
+                        if (clienteAtual.gordura != null && cliente.gordura != null)
+                            myCommand.Parameters.AddWithValue("gordura", cliente.gordura == null ? cliente.gordura : clienteAtual.gordura);
+                        else
+                            myCommand.Parameters.AddWithValue("gordura", DBNull.Value);
+
+                        if (clienteAtual.foto_perfil != null && cliente.foto_perfil != null)
+                            myCommand.Parameters.AddWithValue("foto_perfil", cliente.foto_perfil == null ? cliente.foto_perfil : clienteAtual.foto_perfil);
+                        else
+                            myCommand.Parameters.AddWithValue("foto_perfil", DBNull.Value);
+
                         myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(cliente.estado) ? cliente.estado : clienteAtual.estado);
 
                         dataReader = myCommand.ExecuteReader();
