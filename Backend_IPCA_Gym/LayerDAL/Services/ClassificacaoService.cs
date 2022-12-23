@@ -366,6 +366,91 @@ namespace LayerDAL.Services
         #endregion
 
         #region BACKLOG REQUESTS
+
+        /// <summary>
+        /// Leitura das avaliações de um ginásio através do seu id de ginásio na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID">ID do ginásio ao qual pertencem os planos de treino a ser lido</param>
+        /// <returns>Classificacoes se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+
+        public static async Task<List<Classificacao>> GetAllClassificationsByGinasioIDService(string sqlDataSource, int targetID)
+
+        {
+            string query = @"select * from dbo.Classificacao where id_ginasio = @targetID";
+
+            try
+            {
+                List<Classificacao> classificacoes = new List<Classificacao>();
+                SqlDataReader dataReader;
+
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("id_ginasio", targetID);
+                        myCommand.Parameters.AddWithValue("targetID", targetID);
+                        dataReader = myCommand.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            Classificacao classificacao = new Classificacao();
+
+                            classificacao.id_avaliacao = Convert.ToInt32(dataReader["id_avaliacao"]);
+                            classificacao.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
+                            classificacao.id_cliente = Convert.ToInt32(dataReader["id_cliente"]);
+                            classificacao.avaliacao = Convert.ToInt32(dataReader["avaliacao"]);
+                            classificacao.comentario = dataReader["comentario"].ToString();
+                            classificacao.data_avaliacao = Convert.ToDateTime(dataReader["data_avaliacao"]);
+
+                            classificacoes.Add(classificacao);
+                        }
+
+                        dataReader.Close();
+                        databaseConnection.Close();
+                    }
+                }
+                return classificacoes;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
         #endregion
     }
 }

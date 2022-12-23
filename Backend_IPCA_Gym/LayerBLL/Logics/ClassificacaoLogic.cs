@@ -11,6 +11,7 @@ using LayerDAL.Services;
 
 namespace LayerBLL.Logics
 {
+    #region DEFAULT REQUESTS
     /// <summary>
     /// Classe que contém a lógica do response da entidade Classificacao
     /// </summary>
@@ -120,5 +121,30 @@ namespace LayerBLL.Logics
 
             return response;
         }
+        #endregion
+
+    #region BACKLOG REQUESTS
+        /// <summary>
+        /// Método que recebe os dados do serviço de obter todas as classificacoes de um ginásio
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do ginásio que é pretendido retornar as classificacoes</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> GetAllClassificationsByGinasioIDLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+            List<Classificacao> classificacaoList = await ClassificacaoService.GetAllClassificationsByGinasioIDService(sqlDataSource, targetID);
+
+            if (classificacaoList.Count != 0)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Lista de classificacoes obtida com sucesso";
+                response.Data = new JsonResult(classificacaoList);
+            }
+
+            return response;
+        }
+
+        #endregion
     }
 }

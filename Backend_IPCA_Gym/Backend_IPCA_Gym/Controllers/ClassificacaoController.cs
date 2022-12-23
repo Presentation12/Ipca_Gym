@@ -110,5 +110,26 @@ namespace Backend_IPCA_Gym.Controllers
 
             return new JsonResult(response);
         }
+
+        #region BACKLOG REQUESTS
+
+        /// <summary>
+        /// Método http get para retornar as classificacoes de um ginásio da base de dados
+        /// </summary>
+        /// <param name="targetID">ID do ginásio que é pretendido ser retornado as classificacoes</param>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de planos de treino em formato Json</returns>
+        
+        [HttpGet("Ginasio/{targetID}")]
+        public async Task<IActionResult> GetAllClassificationsByGinasioID(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await ClassificacaoLogic.GetAllClassificationsByGinasioIDLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+        #endregion
     }
 }
+
