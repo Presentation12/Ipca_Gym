@@ -126,7 +126,67 @@ namespace Backend_IPCA_Gym.Controllers
         public async Task<IActionResult> Login([FromBody] LoginFuncionario conta)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
-            Response response = await FuncionarioLogic.Login(sqlDataSource, conta, _configuration);
+            Response response = await FuncionarioLogic.LoginLogic(sqlDataSource, conta, _configuration);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        [HttpPatch("recoverpass")]
+        public async Task<IActionResult> RecoverPassword(int codigo, string password)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await FuncionarioLogic.RecoverPasswordLogic(codigo, password, sqlDataSource);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        /// <summary>
+        /// Método http para adicionar um novo cliente por parte do funcionario
+        /// </summary>
+        /// <param name="newCliente">Objeto que contém os dados do novo cliente</param>
+        /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
+        [HttpPost("register/cliente")]
+        public async Task<IActionResult> RegistClient([FromBody] Cliente newCliente)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await FuncionarioLogic.RegistClientLogic(sqlDataSource, newCliente);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        /// <summary>
+        /// Método http para remover um cliente por parte do funcionario
+        /// </summary>
+        /// <param name="targetID">ID do cliente que se pretende remover</param>
+        /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
+        [HttpDelete("remove/cliente/{targetID}")]
+        public async Task<IActionResult> RemoveCliente(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await FuncionarioLogic.RemoveClienteLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        /// <summary>
+        /// Método http para editar um cliente por parte do funcionario
+        /// </summary>
+        /// <param name="targetID">ID do funcionario a editar</param>
+        /// <param name="cliente">Objeto que contém os dados atualizados do funcionário</param>
+        /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
+        [HttpPatch("edit/cliente/{targetID}")]
+        public async Task<IActionResult> EditCliente(int targetID, [FromBody] Cliente cliente)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await FuncionarioLogic.EditClienteLogic(sqlDataSource, targetID, cliente);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
 

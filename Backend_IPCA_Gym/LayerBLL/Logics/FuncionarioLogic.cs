@@ -130,7 +130,7 @@ namespace LayerBLL.Logics
         /// <param name="conta">Model de login de Funcionario</param>
         /// <param name="_configuration">Dependency Injection</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
-        public static async Task<Response> Login(string sqlDataSource, LoginFuncionario conta, IConfiguration _configuration)
+        public static async Task<Response> LoginLogic(string sqlDataSource, LoginFuncionario conta, IConfiguration _configuration)
         {
             Response response = new Response();
             string token = await FuncionarioService.LoginService(sqlDataSource, conta, _configuration);
@@ -140,6 +140,92 @@ namespace LayerBLL.Logics
                 response.StatusCode = StatusCodes.SUCCESS;
                 response.Message = "Login feito com sucesso!";
                 response.Data = new JsonResult(token);
+            }
+
+            return response;
+        }
+
+        /// <summary>
+        /// Método que recebe a resposta do serviço de adicionar um cliente por parte de um funcionario
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="newCliente">Objeto que contém os dados do novo cliente</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> RegistClientLogic(string sqlDataSource, Cliente newCliente)
+        {
+            Response response = new Response();
+            bool creationResult = await FuncionarioService.RegistClienteService(sqlDataSource, newCliente);
+
+            if (creationResult)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Success!";
+                response.Data = new JsonResult("Cliente adicionado com sucesso!");
+            }
+
+            return response;
+        }
+
+        /// <summary>
+        /// Método que recebe a resposta do serviço de remover um cliente por parte do funcionário
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do cliente que se pretende remover</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> RemoveClienteLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+            bool removeResult = await FuncionarioService.RemoveClienteService(sqlDataSource, targetID);
+
+            if (removeResult)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Success!";
+                response.Data = new JsonResult("Cliente removido com sucesso!");
+            }
+
+            return response;
+        }
+
+        /// <summary>
+        /// Método que recebe a resposta do serviço de recuperar uma password de um funcionario
+        /// </summary>
+        /// <param name="codigo">Codigo do funcionario que se pretende recuperar a password</param>
+        /// <param name="password">Nova password</param>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> RecoverPasswordLogic(int codigo, string password, string sqlDataSource)
+        {
+            Response response = new Response();
+            bool recoverResult = await FuncionarioService.RecoverPasswordService(codigo, password, sqlDataSource);
+
+            if (recoverResult)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Success!";
+                response.Data = new JsonResult("Password alterada com sucesso!");
+            }
+
+            return response;
+        }
+
+        /// <summary>
+        /// Método que recebe a resposta do serviço de editar um cliente
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do cliente que se pretende alterar</param>
+        /// <param name="cliente">Objeto que contêm os dados atualizados do cliente</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> EditClienteLogic(string sqlDataSource, int targetID, Cliente cliente)
+        {
+            Response response = new Response();
+            bool editResult = await FuncionarioService.EditClienteService(sqlDataSource, targetID, cliente);
+
+            if (editResult)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Success!";
+                response.Data = new JsonResult("Cliente editado com sucesso!");
             }
 
             return response;
