@@ -238,8 +238,9 @@ namespace LayerDAL.Services
         /// Atualiza os dados de uma associação de pedido e produto através do seu id na base de dados
         /// </summary>
         /// <param name="sqlDataSource">String de conexão á base de dados</param>
-        /// <param name="associação de pedido e produto">Objeto com os novos dados da associação de pedido e produto</param>
-        /// <param name="targetID">ID da associação de pedido e produto a ser atualizada</param>
+        /// <param name="pedidoLoja">Objeto com os novos dados da associação de pedido e produto</param>
+        /// <param name="targetID1">ID do pedido</param>
+        /// <param name="targetID2">ID do produto</param>
         /// <returns>True se a atualização dos dados foi bem sucedida, false caso contrário</returns>
         /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
         /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
@@ -470,15 +471,11 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("id_pedido", targetID);
                         dataReader = myCommand.ExecuteReader();
 
-                        Console.WriteLine("TAMANHO DA LISTA: " + listPedidosID.Count);
-
                         // devolver stock de cada produto na lista loja
                         foreach (PedidoLoja x in listPedidosID)
                         {
                             Loja produto = await LojaService.GetByIDService(sqlDataSource, x.id_produto);
                             produto.quantidade = produto.quantidade + x.quantidade;
-
-                            Console.WriteLine("Quantidade nova do produto id " + produto.id_produto + ": " + produto.quantidade);
 
                             LojaService.PatchService(sqlDataSource, produto, produto.id_produto);
                         }
@@ -498,6 +495,170 @@ namespace LayerDAL.Services
             catch (SqlException ex)
             {
                 Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Inserção dos dados de uma nova associação de pedido e produto na base de dados com a verificação de stock e manipulação da quantidade
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="newPedidoLoja">Objeto com os dados da nova associação de pedido e produto</param>
+        /// <returns>True se a escrita dos dados foi bem sucedida, false em caso de erro.</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<bool> PostPedidoCheckedService(string sqlDataSource, PedidoLoja newPedidoLoja)
+        {
+            string query = @"
+                            insert into dbo.Pedido_Loja (id_pedido, id_produto, quantidade)
+                            values (@id_pedido, @id_produto, @quantidade)";
+
+            try
+            {
+                // produto pedido
+                Loja produto = await LojaService.GetByIDService(sqlDataSource, newPedidoLoja.id_produto);
+                // verifica se a quantidade pedida é maior que o stock existente
+                if (newPedidoLoja.quantidade > produto.quantidade)
+                {
+                    // produto não é adicionado
+                    return false;
+                }
+
+                else
+                {
+                    SqlDataReader dataReader;
+
+                    using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                    {
+                        databaseConnection.Open();
+                        using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                        {
+                            myCommand.Parameters.AddWithValue("id_pedido", newPedidoLoja.id_pedido);
+                            myCommand.Parameters.AddWithValue("id_produto", newPedidoLoja.id_produto);
+                            myCommand.Parameters.AddWithValue("quantidade", newPedidoLoja.quantidade);
+
+                            // atualizar o stock o produto
+                            produto.quantidade = produto.quantidade - newPedidoLoja.quantidade;
+                            LojaService.PatchService(sqlDataSource, produto, produto.id_produto);
+
+                            dataReader = myCommand.ExecuteReader();
+
+                            dataReader.Close();
+                            databaseConnection.Close();
+                        }
+                    }
+
+                    return true;
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return false;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Atualiza os dados de uma quantidade em uma associação de pedido e produto através do seu id na base de dados com verificação de stock
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="pedidoLoja">Objeto com os novos dados da associação de pedido e produto</param>
+        /// <param name="targetID1">ID do pedido</param>
+        /// <param name="targetID2">ID do produto</param>
+        /// <returns>True se a atualização dos dados foi bem sucedida, false caso contrário</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<bool> PatchPedidoCheckedService(string sqlDataSource, PedidoLoja pedidoLoja, int targetID1, int targetID2)
+        {
+            string query = @"
+                            update dbo.Pedido_Loja 
+                            set quantidade = @quantidade
+                            where id_pedido = @id_pedido and id_produto = @id_produto";
+
+            try
+            {
+                // produto pedido
+                Loja produto = await LojaService.GetByIDService(sqlDataSource, pedidoLoja.id_produto);
+                // verifica se a quantidade pedida é maior que o stock existente
+                if (pedidoLoja.quantidade > produto.quantidade)
+                {
+                    // produto não é adicionado
+                    return false;
+                }
+
+                else
+                {
+                    //PedidoLoja pedidoLojaAtual = await GetByIDService(sqlDataSource, targetID1, targetID2);
+                    SqlDataReader dataReader;
+
+                    using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                    {
+                        databaseConnection.Open();
+                        using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                        {
+                            myCommand.Parameters.AddWithValue("id_pedido", targetID1);
+                            myCommand.Parameters.AddWithValue("id_produto", targetID2);
+                            myCommand.Parameters.AddWithValue("quantidade", pedidoLoja.quantidade);
+
+                            dataReader = myCommand.ExecuteReader();
+
+                            dataReader.Close();
+                            databaseConnection.Close();
+                        }
+                    }
+
+                    return true;
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return false;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
                 return false;
             }
             catch (ArgumentNullException ex)

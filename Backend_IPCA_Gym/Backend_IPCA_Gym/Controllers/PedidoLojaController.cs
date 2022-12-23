@@ -153,6 +153,22 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http post para inserção de um novo pedido de loja com verificação de stock e manipulação dele
+        /// </summary>
+        /// <param name="newPedidoLoja">Dados do novo PedidoLoja a ser inserido</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        [HttpPost("PedidoChecked")]
+        public async Task<IActionResult> PostPedidoChecked([FromBody] PedidoLoja newPedidoLoja)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await PedidoLojaLogic.PostPedidoCheckedLogic(sqlDataSource, newPedidoLoja);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
         #endregion
     }
 }

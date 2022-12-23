@@ -16,6 +16,8 @@ namespace LayerBLL.Logics
     /// </summary>
     public class PedidoLogic
     {
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Método que recebe os dados do serviço de obter todos os pedidos
         /// </summary>
@@ -120,5 +122,32 @@ namespace LayerBLL.Logics
 
             return response;
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS    
+
+        /// <summary>
+        /// Método que recebe os dados do serviço de obter todos os pedidos com seus produtos de um cliente (join)
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do Cliente que é pretendido retornar os dados</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> GetAllConnectionClientLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+            List<Object> pedidoList = await PedidoService.GetAllConnectionClientService(sqlDataSource, targetID);
+
+            if (pedidoList.Count != 0)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Lista de pedidos obtida com sucesso!";
+                response.Data = new JsonResult(pedidoList);
+            }
+
+            return response;
+        }
+
+        #endregion
     }
 }

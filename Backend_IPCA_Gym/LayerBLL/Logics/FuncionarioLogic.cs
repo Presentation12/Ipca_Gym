@@ -133,7 +133,7 @@ namespace LayerBLL.Logics
         public static async Task<Response> Login(string sqlDataSource, LoginFuncionario conta, IConfiguration _configuration)
         {
             Response response = new Response();
-            string token = await FuncionarioService.Login(sqlDataSource, conta, _configuration);
+            string token = await FuncionarioService.LoginService(sqlDataSource, conta, _configuration);
 
             if (token.Length != 0)
             {

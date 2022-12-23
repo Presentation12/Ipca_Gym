@@ -6,6 +6,8 @@ namespace LayerDAL.Services
 {
     public class GinasioService
     {
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Leitura dos dados de todos os ginásios da base de dados
         /// </summary>
@@ -380,5 +382,11 @@ namespace LayerDAL.Services
                 return false;
             }
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+        #endregion
     }
 }

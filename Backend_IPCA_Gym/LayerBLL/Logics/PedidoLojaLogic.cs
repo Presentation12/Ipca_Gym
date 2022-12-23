@@ -172,6 +172,27 @@ namespace LayerBLL.Logics
             return response;
         }
 
+        /// <summary>
+        /// Método que recebe a resposta do serviço de criar uma associação pedido_loja com verificações de stock e manipulação de stock
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="newPedido_Loja">Objeto com os dados de PedidoLoja a ser criado</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> PostPedidoCheckedLogic(string sqlDataSource, PedidoLoja newPedido_Loja)
+        {
+            Response response = new Response();
+            bool creationResult = await PedidoLojaService.PostPedidoCheckedService(sqlDataSource, newPedido_Loja);
+
+            if (creationResult)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Success!";
+                response.Data = new JsonResult("Produto_pedido criado com sucesso!");
+            }
+
+            return response;
+        }
+
         #endregion
     }
 }
