@@ -31,6 +31,8 @@ namespace Backend_IPCA_Gym.Controllers
             _configuration = configuration;
         }
 
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Método http get para retornar os horários (diário) do funcionário da base de dados
         /// </summary>
@@ -111,5 +113,27 @@ namespace Backend_IPCA_Gym.Controllers
 
             return new JsonResult(response);
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+        /// <summary>
+        /// Método http get para leitura dos dados de todos os horários de um funcionário através do seu id de funcionário na base de dados
+        /// </summary>
+        /// <param name="targetID">ID do funcionário que é pretendido ser retornado os horários</param>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e os horários (dia) do funcionário em formato Json</returns>
+        [HttpGet("{targetID}")]
+        public async Task<IActionResult> GetAllByFuncionarioID(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await HorarioFuncionarioLogic.GetAllByFuncionarioIDLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        #endregion
     }
 }

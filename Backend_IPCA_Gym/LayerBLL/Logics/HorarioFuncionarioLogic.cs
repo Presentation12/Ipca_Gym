@@ -16,6 +16,8 @@ namespace LayerBLL.Logics
     /// </summary>
     public class HorarioFuncionarioLogic
     {
+        #region DEFAULT REQUESTS 
+
         /// <summary>
         /// Método que recebe os dados do serviço de obter todos os horarios
         /// </summary>
@@ -120,5 +122,32 @@ namespace LayerBLL.Logics
 
             return response;
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+        /// <summary>
+        /// Leitura dos dados de todos os horários de um funcionário através do seu id de funcionário na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do funcionário que é pretendido retornar horarios</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> GetAllByFuncionarioIDLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+            List<HorarioFuncionario> horarioFuncionarioList = await HorarioFuncionarioService.GetAllByFuncionarioIDService(sqlDataSource, targetID);
+
+            if (horarioFuncionarioList.Count != 0)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Horario obtido com sucesso!";
+                response.Data = new JsonResult(horarioFuncionarioList);
+            }
+
+            return response;
+        }
+
+        #endregion
     }
 }

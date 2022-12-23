@@ -16,6 +16,8 @@ namespace LayerBLL.Logics
     /// </summary>
     public class MarcacaoLogic
     {
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Método que recebe os dados do serviço de obter todas as marcacoes
         /// </summary>
@@ -120,5 +122,53 @@ namespace LayerBLL.Logics
 
             return response;
         }
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+        /// <summary>
+        /// Método que recebe os dados do serviço de obter todas as marcações de um funcionário através do seu id de funcionário na base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID da Funcionário que é pretendida retornar as marcações</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> GetAllByFuncionarioIDLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+            List<Marcacao> marcacaoList = await MarcacaoService.GetAllByFuncionarioIDService(sqlDataSource, targetID);
+
+            if (marcacaoList.Count != 0)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Marcações obtida com sucesso!";
+                response.Data = new JsonResult(marcacaoList);
+            }
+
+            return response;
+        }
+
+        /// <summary>
+        /// Método que recebe a resposta do serviço de criar uma nova marcação na base de dados com o uso das regras de negócio
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="newMarcacao">Objeto com os dados da Marcacao a ser criada</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> PostCheckedLogic(string sqlDataSource, Marcacao newMarcacao)
+        {
+            Response response = new Response();
+            bool creationResult = await MarcacaoService.PostCheckedService(sqlDataSource, newMarcacao);
+
+            if (creationResult)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Success!";
+                response.Data = new JsonResult("Marcacao criada com sucesso!");
+            }
+
+            return response;
+        }
+
+        #endregion
     }
 }
