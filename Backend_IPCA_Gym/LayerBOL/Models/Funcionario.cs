@@ -1,6 +1,6 @@
 ﻿namespace LayerBOL.Models
 {
-    public  class Funcionario
+    public class Funcionario
     {
         /// <summary>
         /// Id do funcionario

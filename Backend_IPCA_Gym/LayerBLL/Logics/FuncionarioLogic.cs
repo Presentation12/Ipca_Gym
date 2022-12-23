@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LayerDAL.Services;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
 
 namespace LayerBLL.Logics
 {
@@ -126,13 +127,13 @@ namespace LayerBLL.Logics
         /// Método que recebe a resposta do serviço de efetuar o login
         /// </summary>
         /// <param name="sqlDataSource">String de Conexão à database</param>
-        /// <param name="conta">Funcionario que pretende fazer login</param>
+        /// <param name="conta">Model de login de Funcionario</param>
+        /// <param name="_configuration">Dependency Injection</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
-        public static async Task<Response> Login(string sqlDataSource, Funcionario conta)
+        public static async Task<Response> Login(string sqlDataSource, LoginFuncionario conta, IConfiguration _configuration)
         {
             Response response = new Response();
-            //string token = await FuncionarioService.Login(sqlDataSource, conta);
-            string token = "Token temporario, metodo por fazer";
+            string token = await FuncionarioService.Login(sqlDataSource, conta, _configuration);
 
             if (token.Length != 0)
             {

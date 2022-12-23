@@ -119,14 +119,14 @@ namespace Backend_IPCA_Gym.Controllers
         /// <summary>
         /// Método http para efetuar o login de um funcionário
         /// </summary>
-        /// <param name="conta">Funcionario que pretende fazer login</param>
+        /// <param name="conta">Model de login de Funcionario</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a token de sessão em formato json</returns>
         [Route("login")]
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] Funcionario conta)
+        public async Task<IActionResult> Login([FromBody] LoginFuncionario conta)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
-            Response response = await FuncionarioLogic.Login(sqlDataSource, conta);
+            Response response = await FuncionarioLogic.Login(sqlDataSource, conta, _configuration);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
 

@@ -234,6 +234,13 @@
             <param name="targetID">ID da funcionario pretendido para ser removido</param>
             <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.FuncionarioController.Login(LayerBOL.Models.LoginFuncionario)">
+            <summary>
+            Método http para efetuar o login de um funcionário
+            </summary>
+            <param name="conta">Model de login de Funcionario</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a token de sessão em formato json</returns>
+        </member>
         <member name="T:Backend_IPCA_Gym.Controllers.GinasioController">
             <summary>
             Controlador da entidade ginásio
@@ -371,6 +378,13 @@
             </summary>
             <param name="targetID">ID do produto pretendido para ser removido</param>
             <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.LojaController.GetAllByGinasioID(System.Int32)">
+            <summary>
+            Método http get para retornar os produtos através do id do ginásio
+            </summary>
+            <param name="targetID">ID do ginásio que é pretendido que retorne os produtos</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e o produto em formato Json</returns>
         </member>
         <member name="T:Backend_IPCA_Gym.Controllers.MarcacaoController">
             <summary>
@@ -513,6 +527,20 @@
             <param name="targetID2">ID do produto de loja que é pretendido ser retornado</param>
             <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PedidoLojaController.GetAllByPedidoIDID(System.Int32)">
+            <summary>
+            Método http get para retornar os produtos de um pedido da base de dados
+            </summary>
+            <param name="targetID">ID do pedido que é pretendido ser retornado os produtos</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de planos de treino em formato Json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PedidoLojaController.DeletePedidoLoja(System.Int32)">
+            <summary>
+            Método http delete para remover todos os produtos de um pedido da base de dados através do seu id de pedido
+            </summary>
+            <param name="targetID">ID do pedido que é pretendido ser remover os produtos</param>
+            <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
         <member name="T:Backend_IPCA_Gym.Controllers.PlanoNutricionalController">
             <summary>
             Controlador da entidade plano nutricional
@@ -559,6 +587,13 @@
             <param name="targetID">ID da plano nutricional pretendido para ser removido</param>
             <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
         </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PlanoNutricionalController.GetAllByGinasioID(System.Int32)">
+            <summary>
+            Método http get para retornar os planos de nutrição de um ginásio da base de dados
+            </summary>
+            <param name="targetID">ID do ginásio que é pretendido ser retornado os planos de nutrição</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de planos de nutrição em formato Json</returns>
+        </member>
         <member name="T:Backend_IPCA_Gym.Controllers.PlanoTreinoController">
             <summary>
             Controlador da entidade PlanoTreino
@@ -604,6 +639,13 @@
             </summary>
             <param name="targetID">ID do PlanoTreino pretendido para ser removido</param>
             <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        </member>
+        <member name="M:Backend_IPCA_Gym.Controllers.PlanoTreinoController.GetAllByGinasioID(System.Int32)">
+            <summary>
+            Método http get para retornar os planos de treino de um ginásio da base de dados
+            </summary>
+            <param name="targetID">ID do ginásio que é pretendido ser retornado os planos de treino</param>
+            <returns>Resposta do request que contém a sua mensagem, seu código e a lista de planos de treino em formato Json</returns>
         </member>
         <member name="T:Backend_IPCA_Gym.Controllers.RefeicaoController">
             <summary>

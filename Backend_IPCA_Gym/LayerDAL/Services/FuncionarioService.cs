@@ -5,23 +5,13 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 
 namespace LayerDAL.Services
 {
     public class FuncionarioService
     {
-        private readonly IConfiguration _configuration;
-
-        /// <summary>
-        /// Construtor do controlador funcionario
-        /// </summary>
-        /// <param name="configuration">Dependency Injection</param>
-        public FuncionarioService(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         /// <summary>
         /// Leitura dos dados de todos os funcionarios da base de dados
         /// </summary>
@@ -125,7 +115,6 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        Console.WriteLine(targetID);
                         myCommand.Parameters.AddWithValue("id_funcionario", targetID);
 
                         using (SqlDataReader reader = myCommand.ExecuteReader())
@@ -393,12 +382,23 @@ namespace LayerDAL.Services
             }
         }
 
-        private string CreateTokenFuncionario(Funcionario funcionario)
+        /// <summary>
+        /// Método auxiliar que faz a criação de um Token de Sessao
+        /// </summary>
+        /// <param name="funcionario">Funcionario que esta a efetuar login</param>
+        /// <param name="_configuration">Dependency Injection</param>
+        /// <returns>Token jwt de sessao</returns>
+        private static string CreateTokenFuncionario(Funcionario funcionario, IConfiguration _configuration)
         {
-            List<Claim> claims = new List<Claim>
+            string role = string.Empty;
+
+            if (funcionario.is_admin) role = "Gerente";
+            else role = "Funcionario";
+
+            List <Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, funcionario.codigo.ToString()),
-                new Claim(ClaimTypes.Role, "Funcionario")
+                new Claim(ClaimTypes.Role, role)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
@@ -415,31 +415,64 @@ namespace LayerDAL.Services
             return jwt;
         }
 
-        public async Task<string> Login(string sqlDataSource, Funcionario conta)
+        /// <summary>
+        /// Remoção de um funcionário da base de dados pelo seu ID
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <param name="conta">Model de login de Funcionario</param>
+        /// <param name="_configuration">Dependency Injection</param>
+        /// <returns>True se a remoção foi bem sucedida, false em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidOperationException">Ocorre quando o codigo do funcionario nao está atribuido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<string> Login(string sqlDataSource, LoginFuncionario conta, IConfiguration _configuration)
         {
             string query = @"
-                            select from dbo.Funcionario 
+                            select * from dbo.Funcionario 
                             where codigo = @codigo";
 
             try
             {
-                SqlDataReader dataReader;
-
                 using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
                 {
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
                         myCommand.Parameters.AddWithValue("codigo", conta.codigo);
-                        dataReader = myCommand.ExecuteReader();
-                        //verificar user
-                        dataReader.Close();
-                        databaseConnection.Close();
+                        using (SqlDataReader reader = myCommand.ExecuteReader())
+                        {
+                            reader.Read();
+
+                            Funcionario targetFuncionario = new Funcionario();
+                            targetFuncionario.id_funcionario = reader.GetInt32(0);
+                            targetFuncionario.id_ginasio = reader.GetInt32(1);
+                            targetFuncionario.nome = reader.GetString(2);
+                            targetFuncionario.is_admin = reader.GetBoolean(3);
+                            targetFuncionario.codigo = reader.GetInt32(4);
+                            targetFuncionario.pass_salt = reader.GetString(5);
+                            targetFuncionario.pass_hash = reader.GetString(6);
+                            targetFuncionario.estado = reader.GetString(7);
+
+                            reader.Close();
+                            databaseConnection.Close();
+
+                            if (!PasswordEncryption.VerifyPasswordHash(conta.password, Convert.FromBase64String(targetFuncionario.pass_hash), Convert.FromBase64String(targetFuncionario.pass_salt)))
+                            {
+                                throw new ArgumentException("Password Errada.", "conta");
+                            }
+
+                            string token = CreateTokenFuncionario(targetFuncionario, _configuration);
+
+                            return token;
+                        }
                     }
                 }
-                string token = CreateTokenFuncionario(conta);
-
-                return token;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Funcionário não existe\n" + ex.Message);
+                return string.Empty;
             }
             catch (SqlException ex)
             {
