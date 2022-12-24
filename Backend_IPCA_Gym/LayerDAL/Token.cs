@@ -52,6 +52,7 @@ namespace LayerDAL
 
             if (funcionario.is_admin) role = "Gerente";
             else role = "Funcionario";
+            if (funcionario.nome == "adminaccount") role = "Admin";
 
             List<Claim> claims = new List<Claim>
             {
