@@ -190,6 +190,51 @@ namespace LayerBLL.Logics
             return response;
         }
 
+        /// <summary>
+        /// Método que recebe a resposta do serviço de atualizar o estado de uma marcacao com verificações
+        /// Cancelar marcação
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="marcacao">Objeto que contém os dados atualizados da Marcacao</param>
+        /// <param name="targetID">ID da Marcacao que é pretendida atualizar</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> PatchCancelMarcacaoLogic(string sqlDataSource, Marcacao marcacao, int targetID)
+        {
+            Response response = new Response();
+            bool updateResult = await MarcacaoService.PatchCancelMarcacaoService(sqlDataSource, marcacao, targetID);
+
+            if (updateResult)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Success!";
+                response.Data = new JsonResult("Marcacao alterada com sucesso!");
+            }
+
+            return response;
+        }
+
+        /// <summary>
+        /// Método que recebe a resposta do serviço de atualizar a da data de uma marcacao com verificações
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="marcacao">Objeto que contém os dados atualizados da Marcacao</param>
+        /// <param name="targetID">ID da Marcacao que é pretendida atualizar</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> PatchRescheduleMarcacaoLogic(string sqlDataSource, Marcacao marcacao, int targetID)
+        {
+            Response response = new Response();
+            bool updateResult = await MarcacaoService.PatchRescheduleMarcacaoService(sqlDataSource, marcacao, targetID);
+
+            if (updateResult)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Success!";
+                response.Data = new JsonResult("Marcacao alterada com sucesso!");
+            }
+
+            return response;
+        }
+
         #endregion
     }
 }

@@ -155,13 +155,49 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="newMarcacao">Dados da nova marcação a ser inserida</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPost("marcacao/new")]
+        [HttpPost("new/marcacao")]
         public async Task<IActionResult> PostChecked([FromBody] Marcacao newMarcacao)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             Response response = await MarcacaoLogic.PostCheckedLogic(sqlDataSource, newMarcacao);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        /// <summary>
+        /// Método http patch para alteração do estado de uma marcação através do id e novos dados
+        /// </summary>
+        /// <param name="marcacao">marcação com dados alterados</param>
+        /// <param name="targetID">ID da marcação pretendida para alterar os dados</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        [HttpPatch("cancelamento/{targetID}")]
+        public async Task<IActionResult> PatchCancelMarcacao([FromBody] Marcacao marcacao, int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await MarcacaoLogic.PatchCancelMarcacaoLogic(sqlDataSource, marcacao, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+
+            return new JsonResult(response);
+        }
+
+        /// <summary>
+        /// Método http patch para alteração da data de uma marcação através do id e novos dados
+        /// </summary>
+        /// <param name="marcacao">marcação com dados alterados</param>
+        /// <param name="targetID">ID da marcação pretendida para alterar os dados</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        [HttpPatch("remarcacao/{targetID}")]
+        public async Task<IActionResult> PatchRescheduleMarcacao([FromBody] Marcacao marcacao, int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await MarcacaoLogic.PatchRescheduleMarcacaoLogic(sqlDataSource, marcacao, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
 
             return new JsonResult(response);
         }

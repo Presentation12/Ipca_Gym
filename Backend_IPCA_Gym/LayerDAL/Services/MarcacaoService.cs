@@ -555,10 +555,6 @@ namespace LayerDAL.Services
         /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<bool> PostCheckedService(string sqlDataSource, Marcacao newMarcacao)
         {
-            string query = @"
-                            insert into dbo.Marcacao (id_funcionario, id_cliente, data_marcacao, descricao, estado)
-                            values (@id_funcionario, @id_cliente, @data_marcacao, @descricao, @estado)";
-
             try
             {
                 // Verifica se é inserida uma data de marcação com uma antecedencia de 2 horas
@@ -612,28 +608,8 @@ namespace LayerDAL.Services
                         return false;
                     }
                 }
-                
-                SqlDataReader dataReader;
 
-                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
-                {
-                    databaseConnection.Open();
-                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
-                    {
-                        myCommand.Parameters.AddWithValue("id_funcionario", newMarcacao.id_funcionario);
-                        myCommand.Parameters.AddWithValue("id_cliente", newMarcacao.id_cliente);
-                        myCommand.Parameters.AddWithValue("data_marcacao", Convert.ToDateTime(newMarcacao.data_marcacao));
-                        myCommand.Parameters.AddWithValue("descricao", newMarcacao.descricao);
-                        myCommand.Parameters.AddWithValue("estado", newMarcacao.estado);
-
-                        dataReader = myCommand.ExecuteReader();
-
-                        dataReader.Close();
-                        databaseConnection.Close();
-                    }
-                }
-
-                return true;
+                return await MarcacaoService.PostService(sqlDataSource, newMarcacao);
             }
             catch (SqlException ex)
             {
@@ -658,6 +634,170 @@ namespace LayerDAL.Services
             catch (Exception ex)
             {
                 Console.Write(ex.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Atualiza o estado de uma marcação para inativo através do seu id na base de dados
+        /// Cancelar marcação
+        /// -> Verificar se cancela a marcação no dia depois de 12 horas de antecedencia
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="marcação">Objeto com os novos dados da marcação</param>
+        /// <param name="targetID">ID da marcação a ser atualizada</param>
+        /// <returns>True se a atualização dos dados foi bem sucedida, false caso contrário</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<bool> PatchCancelMarcacaoService(string sqlDataSource, Marcacao marcacaoCancelada, int targetID)
+        {
+            try
+            {
+                // Verificar se cancela a marcação no dia depois de 12 horas de antecedencia
+                if (marcacaoCancelada.data_marcacao.Date == DateTime.Now.Date && DateTime.Now.TimeOfDay < (marcacaoCancelada.data_marcacao.TimeOfDay - TimeSpan.FromHours(12)))
+                {
+                    return false;
+                }
+
+                marcacaoCancelada.estado = "Cancelada";
+                return await MarcacaoService.PatchService(sqlDataSource, marcacaoCancelada, targetID);
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return false;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Atualiza a data de uma marcação através do seu id na base de dados uso de regras de negócio
+        /// -> Verificar se a remarcação é feita no dia, depois de 12 horas de antecedencia
+        /// -> Verifica se o funcionário tem horários
+        /// -> Verifica se o funcionário trabalha naquele horário
+        /// -> Verifica se o funcionário não tem uma marcação para essa hora nesse dia
+        /// -> Verifica se cliente já tem consulta nesse dia, nessa hora
+        /// -> Verifica se é inserida uma data de remarcação com uma antecedencia de 2 horas
+        /// -> Funcionário só pode ficar até á sua hora de saida
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="marcação">Objeto com os novos dados da marcação</param>
+        /// <param name="targetID">ID da marcação a ser atualizada</param>
+        /// <returns>True se a atualização dos dados foi bem sucedida, false caso contrário</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<bool> PatchRescheduleMarcacaoService(string sqlDataSource, Marcacao marcacaoNovaData, int targetID)
+        {
+            try
+            {
+                // Verifica se é inserida uma data de remarcação com uma antecedencia de 2 horas
+                if (marcacaoNovaData.data_marcacao.Date < DateTime.Now.Date && marcacaoNovaData.data_marcacao.TimeOfDay < (DateTime.Now.TimeOfDay - TimeSpan.FromHours(2)))
+                {
+                    return false;
+                }
+
+                // Buscar horario completo do funcionario pedido
+                List<HorarioFuncionario> horarioFuncionario = await HorarioFuncionarioService.GetAllByFuncionarioIDService(sqlDataSource, marcacaoNovaData.id_funcionario);
+
+                // Verifica se o funcionário tem horários
+                if (horarioFuncionario.Count == 0) return false;
+
+                // Verifica se o funcionário trabalha naquele horário
+                int count = 0;
+                foreach (HorarioFuncionario dia in horarioFuncionario)
+                {
+                    // comparar horario do dia com a data marcada -> verificar se são o mesmo dia da semaana e se esta dentro do intervalo de horarios (depois do funcionario entrar e 2 horas antes dele sair)
+                    if (marcacaoNovaData.data_marcacao.DayOfWeek.ToString() == dia.dia_semana && marcacaoNovaData.data_marcacao.TimeOfDay >= dia.hora_entrada && marcacaoNovaData.data_marcacao.TimeOfDay <= (dia.hora_saida - TimeSpan.FromHours(2)))
+                    {
+                        // horario compativel fase 1
+                        count = 1;
+                    }
+                }
+                // horario imcompativel com este funcionario
+                if (count == 0) return false;
+
+                // Buscar lista de marcações do funcionario
+                List<Marcacao> marcacoesFuncionario = await MarcacaoService.GetAllByFuncionarioIDService(sqlDataSource, marcacaoNovaData.id_funcionario);
+                // Verifica se o funcionário já tem marcação nesse dia, nessa hora
+                foreach (Marcacao marcacaoFuncionario in marcacoesFuncionario)
+                {
+                    // compara a data e verifica se ja tem marcação nesse dia e intervalo de tempo
+                    if (marcacaoNovaData.data_marcacao.Date == marcacaoFuncionario.data_marcacao.Date && marcacaoNovaData.data_marcacao.TimeOfDay >= marcacaoFuncionario.data_marcacao.TimeOfDay && marcacaoNovaData.data_marcacao.TimeOfDay <= (marcacaoFuncionario.data_marcacao.TimeOfDay + TimeSpan.FromHours(2)))
+                    {
+                        // horario imcompativel por que funcionario ja tem marcação
+                        return false;
+                    }
+                }
+
+                // Buscar lista de marcações do cliente
+                List<Marcacao> marcacoesCliente = await MarcacaoService.GetAllByClienteIDService(sqlDataSource, marcacaoNovaData.id_cliente);
+                // Verifica se cliente já tem marcação nesse dia, nessa hora
+                foreach (Marcacao marcacaoCliente in marcacoesCliente)
+                {
+                    // compara a data e verifica se ja tem marcação nesse dia e intervalo de tempo
+                    if (marcacaoNovaData.data_marcacao.Date == marcacaoCliente.data_marcacao.Date && marcacaoNovaData.data_marcacao.TimeOfDay >= marcacaoCliente.data_marcacao.TimeOfDay && marcacaoNovaData.data_marcacao.TimeOfDay <= (marcacaoCliente.data_marcacao.TimeOfDay + TimeSpan.FromHours(2)))
+                    {
+                        // horario imcompativel por que cliente ja tem marcação
+                        return false;
+                    }
+                }
+
+                // Verificar se a remarcação é feita no dia, depois de 12 horas de antecedencia
+                if (marcacaoNovaData.data_marcacao.Date == DateTime.Now.Date && DateTime.Now.TimeOfDay < (marcacaoNovaData.data_marcacao.TimeOfDay - TimeSpan.FromHours(12)))
+                {
+                    return false;
+                }
+
+                return await MarcacaoService.PatchService(sqlDataSource, marcacaoNovaData, targetID);
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return false;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
                 return false;
             }
         }
