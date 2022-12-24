@@ -255,10 +255,12 @@ namespace Backend_IPCA_Gym.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        [HttpGet("avaliacoes")]
+        [HttpGet("avaliacoes"), Authorize(Roles = "Funcionario, Gerente")]
         public async Task<IActionResult> GetAvaliacoesOnGym()
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            if (User.FindFirstValue(ClaimTypes.Role) == "Funcionario" || User.FindFirstValue(ClaimTypes.Role) == "Gerente") return new JsonResult("Boas");
+
             Response response = await FuncionarioLogic.GetAvaliacoesOnGymLogic(sqlDataSource, User.FindFirstValue(ClaimTypes.SerialNumber));
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);

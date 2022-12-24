@@ -897,7 +897,7 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        myCommand.Parameters.AddWithValue("codigo", codigo);
+                        myCommand.Parameters.AddWithValue("codigo", int.Parse(codigo));
                         using (SqlDataReader reader = myCommand.ExecuteReader())
                         {
                             reader.Read();
