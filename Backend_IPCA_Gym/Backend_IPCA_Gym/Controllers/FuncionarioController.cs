@@ -209,5 +209,22 @@ namespace Backend_IPCA_Gym.Controllers
 
             return new JsonResult(response);
         }
+
+        /// <summary>
+        /// Método http para editar um produto
+        /// </summary>
+        /// <param name="produto">Objeto que contém dados atualizados do produto da Loja</param>
+        /// <param name="targetID">ID do produto pretendido a mudar</param>
+        /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
+        [HttpPatch("edit/product/{targetID}")]
+        public async Task<IActionResult> EditLoja(int targetID, Loja produto)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await FuncionarioLogic.EditLojaLogic(sqlDataSource, produto, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
     }
 }

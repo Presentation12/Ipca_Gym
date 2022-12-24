@@ -123,7 +123,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do funcionário ao qual pertencem as marcações a ser retornado</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a marcação em formato Json</returns>
-        [HttpGet("{targetID}")]
+        [HttpGet("funcionario/{targetID}")]
         public async Task<IActionResult> GetAllByFuncionarioID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -139,7 +139,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="newMarcacao">Dados da nova marcação a ser inserida</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPost]
+        [HttpPost("makeappointment/new")]
         public async Task<IActionResult> PostChecked([FromBody] Marcacao newMarcacao)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");

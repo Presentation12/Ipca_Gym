@@ -123,7 +123,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do funcionário que é pretendido ser retornado os horários</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e os horários (dia) do funcionário em formato Json</returns>
-        [HttpGet("{targetID}")]
+        [HttpGet("funcionario/{targetID}")]
         public async Task<IActionResult> GetAllByFuncionarioID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
