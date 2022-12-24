@@ -120,5 +120,20 @@ namespace Backend_IPCA_Gym.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Método http para executar o login do user
+        /// </summary>
+        /// <param name="conta">Dados da conta para fazer login</param>
+        /// <returns>Resposta do request que contém a sua mensagem, código e a token de sessão do cliente em formato json</returns>
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginCliente conta)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await ClienteLogic.LoginLogic(sqlDataSource, conta, _configuration);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
     }
 }

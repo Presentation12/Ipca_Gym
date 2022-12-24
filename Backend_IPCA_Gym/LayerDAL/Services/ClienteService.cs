@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.Extensions.Configuration;
 
 namespace LayerDAL.Services
 {
@@ -513,7 +514,108 @@ namespace LayerDAL.Services
 
         #region BACKLOG REQUESTS
 
+        /// <summary>
+        /// Login de um cliente
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <param name="conta">Model de login de Cliente</param>
+        /// <param name="_configuration">Dependency Injection</param>
+        /// <returns>True o login foi bem sucedido</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidOperationException">Ocorre quando o codigo do funcionario nao está atribuido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<string> LoginService(string sqlDataSource, LoginCliente conta, IConfiguration _configuration)
+        {
+            string query = @"
+                            select * from dbo.Cliente 
+                            where mail = @mail";
 
+            try
+            {
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("mail", conta.mail);
+                        using (SqlDataReader reader = myCommand.ExecuteReader())
+                        {
+                            reader.Read();
+
+                            Cliente targetCliente = new Cliente();
+                            targetCliente.id_cliente = reader.GetInt32(0);
+                            targetCliente.id_ginasio = reader.GetInt32(1);
+
+                            if (!Convert.IsDBNull(reader["id_plano_nutricional"]))
+                                targetCliente.id_plano_nutricional = reader.GetInt32(2);
+                            else
+                                targetCliente.id_plano_nutricional = null;
+
+                            targetCliente.nome = reader.GetString(3);
+                            targetCliente.mail = reader.GetString(4);
+                            targetCliente.telemovel = reader.GetInt32(5);
+                            targetCliente.pass_salt = reader.GetString(6);
+                            targetCliente.pass_hash = reader.GetString(7);
+
+                            if (!Convert.IsDBNull(reader["peso"]))
+                                targetCliente.peso = reader.GetDouble(8);
+                            else
+                                targetCliente.peso = null;
+
+                            if (!Convert.IsDBNull(reader["altura"]))
+                                targetCliente.altura = reader.GetInt32(9);
+                            else
+                                targetCliente.altura = null;
+
+                            if (!Convert.IsDBNull(reader["gordura"]))
+                                targetCliente.gordura = reader.GetDouble(10);
+                            else
+                                targetCliente.gordura = null;
+
+                            if (!Convert.IsDBNull(reader["foto_perfil"]))
+                                targetCliente.foto_perfil = reader.GetString(11);
+                            else
+                                targetCliente.foto_perfil = null;
+
+                            targetCliente.estado = reader.GetString(12);
+
+                            reader.Close();
+                            databaseConnection.Close();
+
+                            if (!PasswordEncryption.VerifyPasswordHash(conta.password, Convert.FromBase64String(targetCliente.pass_hash), Convert.FromBase64String(targetCliente.pass_salt)))
+                            {
+                                throw new ArgumentException("Password Errada.", "conta");
+                            }
+
+                            string token = Token.CreateTokenCliente(targetCliente, _configuration);
+
+                            return token;
+                        }
+                    }
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Cliente não existe\n" + ex.Message);
+                return string.Empty;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return string.Empty;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return string.Empty;
+            }
+        }
 
         #endregion
     }

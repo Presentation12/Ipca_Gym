@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using LayerDAL.Services;
 using System.Net.Mail;
 using System.Net;
-
+using Microsoft.Extensions.Configuration;
 
 namespace LayerBLL.Logics
 {
@@ -137,7 +137,7 @@ namespace LayerBLL.Logics
         /// <param name="clientId">ID do Cliente que pretende recuperar a password</param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task SendPasswordByEmail(string sqlDataSource, int clientId)
+        public static async Task SendPasswordByEmail(string sqlDataSource, int clientId)
         {
             Cliente cliente = await ClienteService.GetByIDService(sqlDataSource, clientId);
             
@@ -184,6 +184,29 @@ namespace LayerBLL.Logics
 
             
         }
+
+        /// <summary>
+        /// Método que recebe a resposta do serviço de login de um cliente
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <param name="conta">Model de login de Cliente</param>
+        /// <param name="_configuration">Dependency Injection</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> LoginLogic(string sqlDataSource, LoginCliente conta, IConfiguration _configuration)
+        {
+            Response response = new Response();
+            string token = await ClienteService.LoginService(sqlDataSource, conta, _configuration);
+
+            if (token.Length != 0)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Login feito com sucesso";
+                response.Data = new JsonResult(token);
+            }
+
+            return response;
+        }
+
         #endregion
     }
 }

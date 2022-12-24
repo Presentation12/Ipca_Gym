@@ -18,7 +18,7 @@ namespace LayerDAL
         /// </summary>
         /// <param name="cliente"> Cliente </param>
         /// <returns> JSON web token </returns>
-        public string CreateTokenCliente(Cliente cliente, IConfiguration _configuration)
+        public static string CreateTokenCliente(Cliente cliente, IConfiguration _configuration)
         {
             List<Claim> claims = new List<Claim>
             {
