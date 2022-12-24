@@ -135,11 +135,27 @@ namespace Backend_IPCA_Gym.Controllers
         }
 
         /// <summary>
+        /// Método http get para retornar todos as marcações de um cliente através do seu id de cliente na base de dados
+        /// </summary>
+        /// <param name="targetID">ID do cliente ao qual pertencem as marcações a ser retornado</param>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a marcação em formato Json</returns>
+        [HttpGet("cliente/{targetID}")]
+        public async Task<IActionResult> GetAllByClienteID(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await MarcacaoLogic.GetAllByClienteIDLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        /// <summary>
         /// Método http post para inserção de uma nova marcação na base de dados com o uso das regras de negócio
         /// </summary>
         /// <param name="newMarcacao">Dados da nova marcação a ser inserida</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPost("makeappointment/new")]
+        [HttpPost("marcacao/new")]
         public async Task<IActionResult> PostChecked([FromBody] Marcacao newMarcacao)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
