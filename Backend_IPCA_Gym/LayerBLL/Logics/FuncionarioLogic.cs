@@ -274,5 +274,28 @@ namespace LayerBLL.Logics
 
             return response;
         }
+
+        /// <summary>
+        /// Método que recebe a resposta do serviço de alterar a lotacao atual do ginasio
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão à base de dados</param>
+        /// <param name="targetID">ID do ginásio a alterar a sua ocupação</param>
+        /// <param name="lotacao">Valor da lotação atual do ginásio</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> EditLotacaoGymLogic(string sqlDataSource, int targetID, int lotacao)
+        {
+            Response response = new Response();
+            bool editResult = await FuncionarioService.EditLotacaoGymLogicService(sqlDataSource, targetID, lotacao);
+
+            if (editResult)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Success!";
+                response.Data = new JsonResult("Lotacao do ginasio alterada com sucesso!");
+            }
+
+
+            return response;
+        }
     }
 }

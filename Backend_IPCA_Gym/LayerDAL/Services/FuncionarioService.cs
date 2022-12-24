@@ -826,6 +826,55 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Alteração do valor de lotacao atual no ginasio
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão à base de dados</param>
+        /// <param name="targetID">ID do ginásio a alterar a sua ocupação</param>
+        /// <param name="lotacao">Valor da lotação atual do ginásio</param>
+        /// <returns>Resultado da alteracao da lotacao atual do ginasio</returns>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<bool> EditLotacaoGymLogicService(string sqlDataSource, int targetID, int lotacao)
+        {
+            try
+            {
+                Ginasio ginasioVerify = await GinasioService.GetByIDService(sqlDataSource, targetID);
+
+                if (ginasioVerify == null) return false;
+
+                //Verificar se o funcionario está no ginasio
+                //Admin pode editar qualquer ginasio
+
+                ginasioVerify.lotacao = lotacao;
+
+                return await GinasioService.PatchService(sqlDataSource, ginasioVerify, targetID);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Ginasio inexistente: " + ex.Message);
+
+                return false;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
         #endregion
     }
 }

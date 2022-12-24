@@ -133,6 +133,12 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http para recuperar a palavra passe de um funcionario
+        /// </summary>
+        /// <param name="codigo">Codigo do funcionario que se pretende recuperar a password</param>
+        /// <param name="password">Nova password</param>
+        /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
         [HttpPatch("recoverpass")]
         public async Task<IActionResult> RecoverPassword(int codigo, string password)
         {
@@ -221,6 +227,23 @@ namespace Backend_IPCA_Gym.Controllers
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             Response response = await FuncionarioLogic.EditLojaLogic(sqlDataSource, produto, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        /// <summary>
+        /// Método http para editar a ocupação de um ginásio
+        /// </summary>
+        /// <param name="targetID">ID do ginásio a alterar a sua ocupação</param>
+        /// <param name="lotacao">Valor da lotação atual do ginásio</param>
+        /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
+        [HttpPatch("edit/ocupation/{targetID}")]
+        public async Task<IActionResult> EditLotacaoGym(int targetID, int lotacao)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await FuncionarioLogic.EditLotacaoGymLogic(sqlDataSource, targetID, lotacao);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
 
