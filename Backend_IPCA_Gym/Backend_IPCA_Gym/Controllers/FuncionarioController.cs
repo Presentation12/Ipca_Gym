@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend_IPCA_Gym.Controllers
 {
@@ -244,6 +245,21 @@ namespace Backend_IPCA_Gym.Controllers
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             Response response = await FuncionarioLogic.EditLotacaoGymLogic(sqlDataSource, targetID, lotacao);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("avaliacoes")]
+        public async Task<IActionResult> GetAvaliacoesOnGym()
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await FuncionarioLogic.GetAvaliacoesOnGymLogic(sqlDataSource, User.FindFirstValue(ClaimTypes.SerialNumber));
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
 

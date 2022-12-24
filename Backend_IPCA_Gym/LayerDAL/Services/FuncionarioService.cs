@@ -2,16 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.VisualBasic;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Principal;
-using System.Text;
 
 namespace LayerDAL.Services
 {
@@ -872,6 +864,70 @@ namespace LayerDAL.Services
             {
                 Console.WriteLine(ex.ToString());
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sqlDataSource"></param>
+        /// <param name="codigo"></param>
+        /// <returns></returns>
+        public static async Task<List<Classificacao>> GetAvaliacoesOnGymService(string sqlDataSource, string codigo)
+        {
+            try
+            {
+                bool authorized = false;
+                string query = @"
+                            select * from dbo.Funcionario 
+                            where codigo = @codigo";
+
+                /*if (User.HasClaim(ClaimTypes.Role, "Gerente") || (User.HasClaim(ClaimTypes.Role, "Funcionario") && !User.HasClaim(ClaimTypes.Role, "Admin")))
+                {
+
+                    authorized = true;
+                }
+
+                //Ver como fazer para ADMIN (nao tem gyms todos associados)
+                if(User.HasClaim(ClaimTypes.Role, "Admin")) authorized = true;*/
+
+
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("codigo", codigo);
+                        using (SqlDataReader reader = myCommand.ExecuteReader())
+                        {
+                            reader.Read();
+
+                            int id_ginasio = reader.GetInt32(1);
+
+                            List<Classificacao> list = await ClassificacaoService.GetAllClassificationsByGinasioIDService(sqlDataSource, id_ginasio);
+
+                            reader.Close();
+                            databaseConnection.Close();
+
+                            return list;
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
             }
         }
 

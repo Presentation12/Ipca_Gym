@@ -52,12 +52,14 @@ namespace LayerDAL
 
             if (funcionario.is_admin) role = "Gerente";
             else role = "Funcionario";
+
             if (funcionario.nome == "adminaccount") role = "Admin";
 
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, funcionario.codigo.ToString()),
-                new Claim(ClaimTypes.Role, role)
+                new Claim(ClaimTypes.Role, role),
+                new Claim(ClaimTypes.SerialNumber, funcionario.id_ginasio.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));

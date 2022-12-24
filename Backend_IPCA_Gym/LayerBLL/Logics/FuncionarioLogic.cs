@@ -297,5 +297,20 @@ namespace LayerBLL.Logics
 
             return response;
         }
+
+        public static async Task<Response> GetAvaliacoesOnGymLogic(string sqlDataSource, string codigo) 
+        {
+            Response response = new Response();
+            List<Classificacao> list = await FuncionarioService.GetAvaliacoesOnGymService(sqlDataSource, codigo);
+
+            if (list != null)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Success!";
+                response.Data = new JsonResult($"Lista de avaliacoes do ginasio {codigo} obtida com sucesso");
+            }
+
+            return response;
+        }
     }
 }

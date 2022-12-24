@@ -26,6 +26,19 @@ builder.Services.AddSwaggerGen(c =>
     var filePath = System.IO.Path.Combine(System.AppContext.BaseDirectory, "ipcagym.xml"); c.IncludeXmlComments(filePath);
 });
 
+builder.Services.AddSwaggerGen(s =>
+{
+    s.AddSecurityDefinition("JWT Bearer Token", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Insira a Token JWT",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+});
+
 // ATIVAÇÃO DE CORS
 /*builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {
