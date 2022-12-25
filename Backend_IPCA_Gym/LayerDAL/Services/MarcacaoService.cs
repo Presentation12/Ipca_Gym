@@ -657,7 +657,7 @@ namespace LayerDAL.Services
             try
             {
                 // Verificar se cancela a marcação no dia depois de 12 horas de antecedencia
-                if (marcacaoCancelada.data_marcacao.Date == DateTime.Now.Date && DateTime.Now.TimeOfDay < (marcacaoCancelada.data_marcacao.TimeOfDay - TimeSpan.FromHours(12)))
+                if (marcacaoCancelada.data_marcacao.Date == DateTime.Now.Date && DateTime.Now.TimeOfDay > (marcacaoCancelada.data_marcacao.TimeOfDay - TimeSpan.FromHours(12)))
                 {
                     return false;
                 }
@@ -768,7 +768,7 @@ namespace LayerDAL.Services
                 }
 
                 // Verificar se a remarcação é feita no dia, depois de 12 horas de antecedencia
-                if (marcacaoNovaData.data_marcacao.Date == DateTime.Now.Date && DateTime.Now.TimeOfDay < (marcacaoNovaData.data_marcacao.TimeOfDay - TimeSpan.FromHours(12)))
+                if (marcacaoNovaData.data_marcacao.Date == DateTime.Now.Date && DateTime.Now.TimeOfDay > (marcacaoNovaData.data_marcacao.TimeOfDay - TimeSpan.FromHours(12)))
                 {
                     return false;
                 }
