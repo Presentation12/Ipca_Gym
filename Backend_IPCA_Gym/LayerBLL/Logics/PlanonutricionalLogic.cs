@@ -474,6 +474,59 @@ namespace LayerBLL.Logics
             }
         }
 
+        /// <summary>
+        /// Método que recebe a resposta do serviço de eliminar um plano nutricional e suas dependencias
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do PlanoNutricional que é pretendido eliminar</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+
+        public static async Task<Response> DeleteCheckedLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+
+            try
+            {
+                bool deleteResult = await PlanoNutricionalService.DeleteCheckedService(sqlDataSource, targetID);
+
+                if (deleteResult)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Success!";
+                    response.Data = new JsonResult("Plano Nutricional apagado com sucesso!");
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+        }
+
         #endregion
     }
 }

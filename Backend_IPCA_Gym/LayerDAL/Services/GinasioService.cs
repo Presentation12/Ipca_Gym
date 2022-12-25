@@ -389,9 +389,5 @@ namespace LayerDAL.Services
         }
 
         #endregion
-
-        #region BACKLOG REQUESTS
-
-        #endregion
     }
 }
