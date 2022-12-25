@@ -39,6 +39,26 @@ namespace LayerBLL.Logics
         }
 
         /// <summary>
+        /// Método que recebe os dados do serviço de obter todos os funcionarios ativos
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> GetAllAtivoLogic(string sqlDataSource)
+        {
+            Response response = new Response();
+            List<Funcionario> funcionarioList = await FuncionarioService.GetAllAtivoService(sqlDataSource);
+
+            if (funcionarioList.Count != 0)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Lista de funcionarios obtida com sucesso";
+                response.Data = new JsonResult(funcionarioList);
+            }
+
+            return response;
+        }
+
+        /// <summary>
         /// Método que recebe os dados do serviço de obter um funcionario em específico
         /// </summary>
         /// <param name="sqlDataSource">String de Conexão à database</param>
@@ -298,15 +318,21 @@ namespace LayerBLL.Logics
             return response;
         }
 
-        public static async Task<Response> GetAvaliacoesOnGymLogic(string sqlDataSource, int codigo) 
+        /// <summary>
+        /// Método que recebe a resposta do serviço de ver avaliaçoes de um ginasio
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão à base de dados</param>
+        /// <param name="codigofuncionario">Codigo do funcionario que faz o request</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> GetAvaliacoesOnGymLogic(string sqlDataSource, int codigofuncionario) 
         {
             Response response = new Response();
-            List<Classificacao> list = await FuncionarioService.GetAvaliacoesOnGymService(sqlDataSource, codigo);
+            List<Classificacao> list = await FuncionarioService.GetAvaliacoesOnGymService(sqlDataSource, codigofuncionario);
 
             if (list != null)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = $"Lista de avaliacoes do ginasio {codigo} obtida com sucesso";
+                response.Message = $"Lista de avaliacoes do ginasio obtida com sucesso";
                 response.Data = new JsonResult(list);
             }
 

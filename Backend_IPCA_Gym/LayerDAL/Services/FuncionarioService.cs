@@ -24,6 +24,85 @@ namespace LayerDAL.Services
         /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<List<Funcionario>> GetAllService(string sqlDataSource)
         {
+            string query = @"select * from dbo.Funcionario";
+
+            try
+            {
+                List<Funcionario> funcionarios = new List<Funcionario>();
+                SqlDataReader dataReader;
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        dataReader = myCommand.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            Funcionario funcionario = new Funcionario();
+
+                            funcionario.id_funcionario = Convert.ToInt32(dataReader["id_funcionario"]);
+                            funcionario.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
+                            funcionario.nome = dataReader["nome"].ToString();
+                            funcionario.is_admin = Convert.ToBoolean(dataReader["is_admin"]);
+                            funcionario.codigo = Convert.ToInt32(dataReader["codigo"]);
+                            funcionario.pass_salt = dataReader["pass_salt"].ToString();
+                            funcionario.pass_hash = dataReader["pass_hash"].ToString();
+                            funcionario.estado = dataReader["estado"].ToString();
+
+                            funcionarios.Add(funcionario);
+                        }
+
+                        dataReader.Close();
+                        databaseConnection.Close();
+                    }
+                }
+                return funcionarios;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Leitura dos dados de todos os funcionarios ativos da base de dados
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <returns>Lista de funcionarios se uma leitura bem sucedida, null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<List<Funcionario>> GetAllAtivoService(string sqlDataSource)
+        {
             string query = @"select * from dbo.Funcionario where estado != 'Inativo'";
 
             try
@@ -89,6 +168,7 @@ namespace LayerDAL.Services
                 return null;
             }
         }
+
 
         /// <summary>
         /// Leitura dos dados de uma funcionário através do seu id na base de dados
@@ -469,7 +549,7 @@ namespace LayerDAL.Services
         {
             string query = @"
                             select * from dbo.Funcionario 
-                            where codigo = @codigo";
+                            where codigo = @codigo and estado != 'Inativo'";
 
             try
             {
@@ -545,10 +625,6 @@ namespace LayerDAL.Services
         {
             try
             {
-                //Verificar se o cliente está a tentar entrar no ginasio ao qual o funcionario pertence
-
-                //Admin pode colocar em qualquer ginasio
-
                 return await ClienteService.PostService(sqlDataSource, newCliente);
             }
             catch (SqlException ex)
@@ -596,9 +672,6 @@ namespace LayerDAL.Services
 
                 if (cliente == null) return false;
 
-                //Verificar se o cliente está no ginasio do funcionario
-                //Admin pode remover qualquer cliente
-
                 cliente.estado = "Inativo";
 
                 return await ClienteService.PatchService(sqlDataSource, cliente, targetID);
@@ -645,9 +718,6 @@ namespace LayerDAL.Services
 
                 if (clienteVerify == null) return false;
 
-                //Verificar se o cliente está no ginasio do funcionario
-                //Admin pode remover qualquer cliente
-
                 return await ClienteService.PatchService(sqlDataSource, cliente, targetID);
             }
             catch (InvalidOperationException ex)
@@ -691,9 +761,6 @@ namespace LayerDAL.Services
                 Loja produtoTarget = await LojaService.GetByIDService(sqlDataSource, targetID);
 
                 if (produtoTarget == null) return false;
-
-                //Verificar se o cliente está no ginasio do funcionario
-                //Admin pode remover qualquer cliente
 
                 produtoTarget.quantidade_produto = quantidade;
 
@@ -740,11 +807,7 @@ namespace LayerDAL.Services
 
                 if (funcionario == null || funcionario.is_admin == true) return false;
 
-                //Verificar se o cliente está no ginasio do funcionario
-                //Admin pode remover qualquer funcionario
-
                 funcionario.estado = "Inativo";
-
 
                 return await PatchService(sqlDataSource, funcionario, targetID);
             }
@@ -790,9 +853,6 @@ namespace LayerDAL.Services
 
                 if (produtoVerify == null) return false;
 
-                //Verificar se o cliente está no ginasio do funcionario
-                //Admin pode remover qualquer cliente
-
                 return await LojaService.PatchService(sqlDataSource, produto, targetID);
             }
             catch (InvalidOperationException ex)
@@ -837,9 +897,6 @@ namespace LayerDAL.Services
 
                 if (ginasioVerify == null) return false;
 
-                //Verificar se o funcionario está no ginasio
-                //Admin pode editar qualquer ginasio
-
                 ginasioVerify.lotacao = lotacao;
 
                 return await GinasioService.PatchService(sqlDataSource, ginasioVerify, targetID);
@@ -868,19 +925,18 @@ namespace LayerDAL.Services
         }
 
         /// <summary>
-        /// 
+        /// Ver avaliaçoes de um ginasio
         /// </summary>
-        /// <param name="sqlDataSource"></param>
-        /// <param name="codigo"></param>
+        /// <param name="sqlDataSource">String de conexão à base de dados</param>
+        /// <param name="codigofuncionario">Codigo do funcionario que faz o request</param>
         /// <returns></returns>
-        public static async Task<List<Classificacao>> GetAvaliacoesOnGymService(string sqlDataSource, int codigo)
+        public static async Task<List<Classificacao>> GetAvaliacoesOnGymService(string sqlDataSource, int codigofuncionario)
         {
             try
             {
-                bool authorized = false;
                 string query = @"
                             select * from dbo.Funcionario 
-                            where codigo = @codigo";
+                            where codigo = @codigo and estado != 'Inativo'";
 
 
                 using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
@@ -888,7 +944,7 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        myCommand.Parameters.AddWithValue("codigo", codigo);
+                        myCommand.Parameters.AddWithValue("codigo", codigofuncionario);
                         using (SqlDataReader reader = myCommand.ExecuteReader())
                         {
                             reader.Read();

@@ -40,7 +40,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// Método http get para retornar os funcionários da base de dados
         /// </summary>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de funcionários em formato Json</returns>
-        [HttpGet]
+        [HttpGet("history"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -52,11 +52,26 @@ namespace Backend_IPCA_Gym.Controllers
         }
 
         /// <summary>
+        /// Método http get para retornar os funcionários da base de dados
+        /// </summary>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de funcionários em formato Json</returns>
+        [HttpGet, Authorize(Roles = "Admin, Gerente, Funcionario")]
+        public async Task<IActionResult> GetAllAtivo()
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await FuncionarioLogic.GetAllAtivoLogic(sqlDataSource);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        /// <summary>
         /// Método http get para retornar um funcionário através do seu id
         /// </summary>
         /// <param name="targetID">ID do funcionário que é pretendido ser retornado</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e o funcionario em formato Json</returns>
-        [HttpGet("{targetID}")]
+        [HttpGet("{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> GetByID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -72,10 +87,13 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="newFuncionario">Dados do novo funcionario a ser inserido</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin, Gerente")]
         public async Task<IActionResult> Post([FromBody] Funcionario newFuncionario)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            //Verificar se Gerente é do mesmo gym que o novo funcionario
+
             Response response = await FuncionarioLogic.PostLogic(sqlDataSource, newFuncionario);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
@@ -89,10 +107,14 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="funcionario">funcionario com dados alterados</param>
         /// <param name="targetID">ID do funcionario pretendido para alterar os dados</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPatch("{targetID}")]
+        [HttpPatch("{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> Patch([FromBody] Funcionario funcionario, int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            //Verificar se Gerente pertence ao ginasio ao qual o funcionario em questao pertence tambem
+            //Verificar se Funcionario, caso seja um patch em si proprio, só faz patch em si proprio
+
             Response response = await FuncionarioLogic.PatchLogic(sqlDataSource, funcionario, targetID);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
@@ -106,7 +128,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID da funcionario pretendido para ser removido</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpDelete("{targetID}")]
+        [HttpDelete("{targetID}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -140,10 +162,13 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="codigo">Codigo do funcionario que se pretende recuperar a password</param>
         /// <param name="password">Nova password</param>
         /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
-        [HttpPatch("recoverpass")]
+        [HttpPatch("recoverpass"), Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> RecoverPassword(int codigo, string password)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            //Verificar se quem executa request é quem possui o codigo
+
             Response response = await FuncionarioLogic.RecoverPasswordLogic(codigo, password, sqlDataSource);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
@@ -156,10 +181,13 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="newCliente">Objeto que contém os dados do novo cliente</param>
         /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
-        [HttpPost("register/cliente")]
+        [HttpPost("register/cliente"), Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> RegistClient([FromBody] Cliente newCliente)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            //Verificar se Gerente e Funcionario pertencem ao ginasio ao qual o cliente pertence
+
             Response response = await FuncionarioLogic.RegistClientLogic(sqlDataSource, newCliente);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
@@ -172,10 +200,13 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do cliente que se pretende remover</param>
         /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
-        [HttpDelete("remove/cliente/{targetID}")]
+        [HttpDelete("remove/cliente/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> RemoveCliente(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            //Verificar se Gerente e Funcionario pertencem ao ginasio ao qual o cliente pertence
+
             Response response = await FuncionarioLogic.RemoveClienteLogic(sqlDataSource, targetID);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
@@ -189,10 +220,13 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="targetID">ID do funcionario a editar</param>
         /// <param name="cliente">Objeto que contém os dados atualizados do funcionário</param>
         /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
-        [HttpPatch("edit/cliente/{targetID}")]
+        [HttpPatch("edit/cliente/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> EditCliente(int targetID, [FromBody] Cliente cliente)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            //Verificar se Gerente e Funcionario pertencem ao ginasio com ID = cliente.id_ginasio
+
             Response response = await FuncionarioLogic.EditClienteLogic(sqlDataSource, targetID, cliente);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
@@ -206,10 +240,13 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="targetID">ID do produto da Loja que se pretende alterar stock</param>
         /// <param name="quantidade">Novo valor de quantidade de stock na loja</param>
         /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
-        [HttpPatch("changestock/{targetID}")]
+        [HttpPatch("changestock/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> EditLojaStock(int targetID, int quantidade)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            //Verificar se Gerente e Funcionario pertencem ao ginasio com ID = targetID
+
             Response response = await FuncionarioLogic.EditLojaStockLogic(sqlDataSource, quantidade, targetID);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
@@ -223,10 +260,13 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="produto">Objeto que contém dados atualizados do produto da Loja</param>
         /// <param name="targetID">ID do produto pretendido a mudar</param>
         /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
-        [HttpPatch("edit/product/{targetID}")]
+        [HttpPatch("edit/product/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionário")]
         public async Task<IActionResult> EditLoja(int targetID, Loja produto)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            //Verificar se Gerente e Funcionario pertencem ao ginasio com ID = targetID
+
             Response response = await FuncionarioLogic.EditLojaLogic(sqlDataSource, produto, targetID);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
@@ -240,10 +280,13 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="targetID">ID do ginásio a alterar a sua ocupação</param>
         /// <param name="lotacao">Valor da lotação atual do ginásio</param>
         /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
-        [HttpPatch("edit/ocupation/{targetID}")]
+        [HttpPatch("edit/ocupation/{targetID}"), Authorize(Roles = "Admin, Funcionario, Gerente")]
         public async Task<IActionResult> EditLotacaoGym(int targetID, int lotacao)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            
+            //Verificar se Gerente e Funcionario pertencem ao ginasio com ID = targetID
+            
             Response response = await FuncionarioLogic.EditLotacaoGymLogic(sqlDataSource, targetID, lotacao);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
@@ -252,10 +295,11 @@ namespace Backend_IPCA_Gym.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Método http para ver as avaliacoes de um ginasio
         /// </summary>
-        /// <returns></returns>
-        [HttpGet("avaliacoes/{codigofuncionario}"), Authorize(Roles = "Funcionario, Gerente")]
+        /// <param name="codigofuncionario">Codigo do funcionario que faz o request</param>
+        /// <returns>Resposta do request que contém a sua mensagem, o seu código e a lista de avaliacoes em formato json</returns>
+        [HttpGet("avaliacoes/{codigofuncionario}"), Authorize(Roles = "Admin, Funcionario, Gerente")]
         public async Task<IActionResult> GetAvaliacoesOnGym(int codigofuncionario)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
