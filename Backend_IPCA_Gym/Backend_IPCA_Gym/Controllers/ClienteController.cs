@@ -10,6 +10,7 @@ using LayerBLL.Utils;
 using LayerBLL.Logics;
 using Swashbuckle.AspNetCore.Annotations;
 using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend_IPCA_Gym.Controllers
 {
@@ -29,6 +30,8 @@ namespace Backend_IPCA_Gym.Controllers
         {
             _configuration = configuration;
         }
+
+        #region DEFAULT REQUESTS
 
         /// <summary>
         /// Método http get para retornar os clientes da base de dados
@@ -111,6 +114,12 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+        // Tentativa de enviar mail com password ao user
+        /*
         [HttpGet("RecoverPass/{targetID}")]
         public async Task<IActionResult> RecoverPassword(int targetID, ClienteLogic ClienteLogic)
         {
@@ -118,6 +127,27 @@ namespace Backend_IPCA_Gym.Controllers
             await ClienteLogic.SendPasswordByEmail(sqlDataSource, targetID);
 
             return Ok();
+        }
+        */
+
+        /// <summary>
+        /// Método http para recuperar a palavra passe de um cliente
+        /// </summary>
+        /// <param name="mail">Mail do cliente que se pretende recuperar a password</param>
+        /// <param name="password">Nova password</param>
+        /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
+        [HttpPatch("recoverpass"), Authorize(Roles = "Admin, Gerente, Funcionario")]
+        public async Task<IActionResult> RecoverPassword(string mail, string password)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            //Verificar se quem executa request é quem possui o codigo
+
+            Response response = await ClienteLogic.RecoverPasswordLogic(mail, password, sqlDataSource);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
         }
 
         /// <summary>
@@ -135,5 +165,7 @@ namespace Backend_IPCA_Gym.Controllers
 
             return new JsonResult(response);
         }
+
+        #endregion
     }
 }

@@ -128,8 +128,10 @@ namespace LayerBLL.Logics
 
         #endregion
 
-        #region BACKLOG REQUESTS
+        #region BACKLOG REQUEST
 
+        // Tentativa de enviar mail da password
+        /*
         /// <summary>
         /// Envia por email a password do utilizador quando este a deseja recuperar
         /// </summary>
@@ -141,25 +143,24 @@ namespace LayerBLL.Logics
         {
             Cliente cliente = await ClienteService.GetByIDService(sqlDataSource, clientId);
             
-            /*
-            var password = "";
+            //var password = "";
 
             // Crie um novo objeto HttpClient e faça a requisição para obter a senha do cliente
-            using (var httpClient = new HttpClient())
-            {
-                var response = await httpClient.GetAsync($"https://example.com/api/clients/{clientId}/pass_salt");
+            //using (var httpClient = new HttpClient())
+            //{
+            //    var response = await httpClient.GetAsync($"https://example.com/api/clients/{clientId}/pass_salt");
 
                 // Verifique se a requisição foi bem-sucedida
-                if (!response.IsSuccessStatusCode)
-                {
-                    // A requisição falhou, então você pode lançar uma exceção ou retornar um erro
-                    throw new Exception("Falha ao obter a senha do cliente");
-                }
+           //     if (!response.IsSuccessStatusCode)
+           //     {
+           //         // A requisição falhou, então você pode lançar uma exceção ou retornar um erro
+           //         throw new Exception("Falha ao obter a senha do cliente");
+           //     }
 
                 // Obtenha a senha do cliente a partir da resposta da requisição
-                password = await response.Content.ReadAsStringAsync();
-            }
-            */
+           //     password = await response.Content.ReadAsStringAsync();
+           // }
+            
 
             // Crie um novo objeto SmtpClient para enviar o email
             using (var smtpClient = new SmtpClient())
@@ -181,8 +182,29 @@ namespace LayerBLL.Logics
                 // Envie o email
                 await smtpClient.SendMailAsync(mailMessage);
             }
+        }
+        */
 
-            
+        /// <summary>
+        /// Método que recebe a resposta do serviço de recuperar uma password de um cliente
+        /// </summary>
+        /// <param name="mail">Mail do cliente que se pretende recuperar a password</param>
+        /// <param name="password">Nova password</param>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> RecoverPasswordLogic(string mail, string password, string sqlDataSource)
+        {
+            Response response = new Response();
+            bool recoverResult = await ClienteService.RecoverPasswordService(mail, password, sqlDataSource);
+
+            if (recoverResult)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Success!";
+                response.Data = new JsonResult("Password alterada com sucesso!");
+            }
+
+            return response;
         }
 
         /// <summary>

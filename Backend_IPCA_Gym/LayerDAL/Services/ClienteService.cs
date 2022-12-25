@@ -515,6 +515,78 @@ namespace LayerDAL.Services
         #region BACKLOG REQUESTS
 
         /// <summary>
+        /// Recuperação de uma palavra pass de um cliente
+        /// </summary>
+        /// <param name="codigo">Mail do cliente</param>
+        /// <param name="password">Nova palavra pass</param>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <returns>Resultado de recuperação da palavra pass</returns>
+        /// <exception cref="ArgumentException">Ocorre quando o funcionário do codigo inserido não existe</exception>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<bool> RecoverPasswordService(string mail, string password, string sqlDataSource)
+        {
+            string query = @"update dbo.Cliente set pass_salt = @pass_salt, pass_hash = @pass_hash where mail = @mail";
+            try
+            {
+                SqlDataReader dataReader;
+
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("mail", mail);
+
+                        List<Cliente> tempList = await GetAllService(sqlDataSource);
+                        bool found = false;
+
+                        for (int i = 0; i < tempList.Count() && found == false; i++)
+                        {
+                            if (tempList[i].mail == mail)
+                                found = true;
+                        }
+
+                        if (found == false) throw new ArgumentException("Cliente inexistente.", "mail");
+
+                        //Verificar que o user atual é quem tem o código associado
+
+                        PasswordEncryption.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+                        string newHash = Convert.ToBase64String(passwordHash);
+                        string newSalt = Convert.ToBase64String(passwordSalt);
+
+                        myCommand.Parameters.AddWithValue("pass_hash", newHash);
+                        myCommand.Parameters.AddWithValue("pass_salt", newSalt);
+
+                        dataReader = myCommand.ExecuteReader();
+
+                        dataReader.Close();
+                        databaseConnection.Close();
+
+                        return true;
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Login de um cliente
         /// </summary>
         /// <param name="sqlDataSource">String de conexão com a base de dados</param>
