@@ -11,6 +11,7 @@ using LayerDAL.Services;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.Extensions.Configuration;
+using System.Data.SqlClient;
 
 namespace LayerBLL.Logics
 {
@@ -26,19 +27,77 @@ namespace LayerBLL.Logics
         /// </summary>
         /// <param name="sqlDataSource">String de Conexão à database</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> GetAllLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<Cliente> clienteList = await ClienteService.GetAllService(sqlDataSource);
-
-            if (clienteList.Count != 0)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Lista de clientes obtidos com sucesso";
-                response.Data = new JsonResult(clienteList);
-            }
+                List<Cliente> clienteList = await ClienteService.GetAllService(sqlDataSource);
 
-            return response;
+                if (clienteList.Count != 0)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Lista de clientes obtidos com sucesso";
+                    response.Data = new JsonResult(clienteList);
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de leitura dos dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de acesso a uma coluna da base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -47,19 +106,86 @@ namespace LayerBLL.Logics
         /// <param name="sqlDataSource">String de Conexão à database</param>
         /// <param name="targetID">ID do Cliente que é pretendido retornar</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> GetByIDLogic(string sqlDataSource, int targetID)
         {
             Response response = new Response();
-            Cliente cliente = await ClienteService.GetByIDService(sqlDataSource, targetID);
-
-            if (cliente != null)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Cliente obtido com sucesso";
-                response.Data = new JsonResult(cliente);
-            }
+                Cliente cliente = await ClienteService.GetByIDService(sqlDataSource, targetID);
 
-            return response;
+                if (cliente != null)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Cliente obtido com sucesso";
+                    response.Data = new JsonResult(cliente);
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de leitura dos dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de acesso a uma coluna da base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -68,19 +194,68 @@ namespace LayerBLL.Logics
         /// <param name="sqlDataSource">String de Conexão à database</param>
         /// <param name="newCliente">Objeto com os dados do Cliente a ser criado</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> PostLogic(string sqlDataSource, Cliente newCliente)
         {
             Response response = new Response();
-            bool creationResult = await ClienteService.PostService(sqlDataSource, newCliente);
-
-            if (creationResult)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Success!";
-                response.Data = new JsonResult("Cliente adicionado com sucesso");
-            }
+                bool creationResult = await ClienteService.PostService(sqlDataSource, newCliente);
 
-            return response;
+                if (creationResult)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Success!";
+                    response.Data = new JsonResult("Cliente adicionado com sucesso");
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -90,19 +265,68 @@ namespace LayerBLL.Logics
         /// <param name="cliente">Objeto que contém os dados atualizados do Cliente</param>
         /// <param name="targetID">ID do Cliente que é pretendido atualizar</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> PatchLogic(string sqlDataSource, Cliente cliente, int targetID)
         {
             Response response = new Response();
-            bool updateResult = await ClienteService.PatchService(sqlDataSource, cliente, targetID);
-
-            if (updateResult)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Success!";
-                response.Data = new JsonResult("Cliente alterado com sucesso");
-            }
+                bool updateResult = await ClienteService.PatchService(sqlDataSource, cliente, targetID);
 
-            return response;
+                if (updateResult)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Success!";
+                    response.Data = new JsonResult("Cliente alterado com sucesso");
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -111,6 +335,9 @@ namespace LayerBLL.Logics
         /// <param name="sqlDataSource">String de Conexão à database</param>
         /// <param name="targetID">ID do Cliente que é pretendido eliminar</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> DeleteLogic(string sqlDataSource, int targetID)
         {
             Response response = new Response();
@@ -124,6 +351,34 @@ namespace LayerBLL.Logics
             }
 
             return response;
+            try
+            {
+
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         #endregion
@@ -192,19 +447,59 @@ namespace LayerBLL.Logics
         /// <param name="password">Nova password</param>
         /// <param name="sqlDataSource">String de Conexão à database</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="ArgumentException">Ocorre quando o cliente do codigo inserido não existe</exception>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> RecoverPasswordLogic(string mail, string password, string sqlDataSource)
         {
             Response response = new Response();
-            bool recoverResult = await ClienteService.RecoverPasswordService(mail, password, sqlDataSource);
 
-            if (recoverResult)
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Success!";
-                response.Data = new JsonResult("Password alterada com sucesso!");
-            }
+                bool recoverResult = await ClienteService.RecoverPasswordService(mail, password, sqlDataSource);
 
-            return response;
+                if (recoverResult)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Success!";
+                    response.Data = new JsonResult("Password alterada com sucesso!");
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Cliente inexistente: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -214,19 +509,67 @@ namespace LayerBLL.Logics
         /// <param name="conta">Model de login de Cliente</param>
         /// <param name="_configuration">Dependency Injection</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidOperationException">Ocorre quando o codigo do funcionario nao está atribuido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> LoginLogic(string sqlDataSource, LoginCliente conta, IConfiguration _configuration)
         {
             Response response = new Response();
-            string token = await ClienteService.LoginService(sqlDataSource, conta, _configuration);
-
-            if (token.Length != 0)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Login feito com sucesso";
-                response.Data = new JsonResult(token);
-            }
+                string token = await ClienteService.LoginService(sqlDataSource, conta, _configuration);
 
-            return response;
+                if (token.Length != 0)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Login feito com sucesso";
+                    response.Data = new JsonResult(token);
+                }
+
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Cliente não existe\n" + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Password Errada" + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -235,19 +578,59 @@ namespace LayerBLL.Logics
         /// <param name="sqlDataSource">String de Conexão à database</param>
         /// <param name="targetID">ID do cliente que se pretende remover</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> DeleteClienteLogic(string sqlDataSource, int targetID)
         {
             Response response = new Response();
-            bool removeResult = await ClienteService.DeleteClienteService(sqlDataSource, targetID);
-
-            if (removeResult)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Success!";
-                response.Data = new JsonResult("Cliente removido com sucesso!");
-            }
+                bool removeResult = await ClienteService.DeleteClienteService(sqlDataSource, targetID);
 
-            return response;
+                if (removeResult)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Success!";
+                    response.Data = new JsonResult("Cliente removido com sucesso!");
+                }
+
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Cliente não existe\n" + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         #endregion

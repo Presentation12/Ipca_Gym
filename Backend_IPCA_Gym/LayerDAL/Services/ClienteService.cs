@@ -521,7 +521,7 @@ namespace LayerDAL.Services
         /// <param name="password">Nova palavra pass</param>
         /// <param name="sqlDataSource">String de conexão com a base de dados</param>
         /// <returns>Resultado de recuperação da palavra pass</returns>
-        /// <exception cref="ArgumentException">Ocorre quando o funcionário do codigo inserido não existe</exception>
+        /// <exception cref="ArgumentException">Ocorre quando o cliente do codigo inserido não existe</exception>
         /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
         /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
         /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>

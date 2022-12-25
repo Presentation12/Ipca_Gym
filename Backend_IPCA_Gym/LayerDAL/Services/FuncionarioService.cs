@@ -611,50 +611,6 @@ namespace LayerDAL.Services
         }
 
         /// <summary>
-        /// Registo de um novo cliente no ginasio
-        /// </summary>
-        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
-        /// <param name="newCliente">Objeto que contem os dados do novo cliente</param>
-        /// <returns>True se o cliente foi registado com sucesso</returns>
-        /// /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
-        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
-        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
-        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
-        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
-        public static async Task<bool> RegistClienteService(string sqlDataSource, Cliente newCliente)
-        {
-            try
-            {
-                return await ClienteService.PostService(sqlDataSource, newCliente);
-            }
-            catch (SqlException ex)
-            {
-                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
-                return false;
-            }
-            catch (InvalidCastException ex)
-            {
-                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
-                return false;
-            }
-            catch (FormatException ex)
-            {
-                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
-                return false;
-            }
-            catch (ArgumentNullException ex)
-            {
-                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex.ToString());
-                return false;
-            }
-        }
-
-        /// <summary>
         /// Edição de um utilizador por parte do funcionário
         /// </summary>
         /// <param name="sqlDataSource">String de conexão com a base de dados</param>
@@ -678,52 +634,6 @@ namespace LayerDAL.Services
             catch (InvalidOperationException ex)
             {
                 Console.WriteLine("Cliente inexistente: " + ex.Message);
-
-                return false;
-            }
-            catch (SqlException ex)
-            {
-                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
-                return false;
-            }
-            catch (ArgumentNullException ex)
-            {
-                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Alteração de stock de um produto
-        /// </summary>
-        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
-        /// <param name="quantidade">Novo valor de quantidade de stock na loja</param>
-        /// <param name="targetID">ID do produto da Loja que se pretende alterar stock</param>
-        /// <returns>Resultado da alteração de stock de um produto</returns>
-        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
-        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
-        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
-        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
-        public static async Task<bool> EditLojaStockService(string sqlDataSource, int quantidade, int targetID)
-        {
-            try
-            {
-                Loja produtoTarget = await LojaService.GetByIDService(sqlDataSource, targetID);
-
-                if (produtoTarget == null) return false;
-
-                produtoTarget.quantidade_produto = quantidade;
-
-                return await LojaService.PatchService(sqlDataSource, produtoTarget, targetID);
-            }
-            catch (InvalidOperationException ex)
-            {
-                Console.WriteLine("Produto inexistente: " + ex.Message);
 
                 return false;
             }
@@ -808,49 +718,6 @@ namespace LayerDAL.Services
             }
         }
 
-        /// <summary>
-        /// Edição de um produto na loja
-        /// </summary>
-        /// <param name="sqlDataSource">String de conexão à base de dados</param>
-        /// <param name="produto">Objeto que contém dados atualizados do produto da Loja</param>
-        /// <param name="targetID">ID do produto pretendido a mudar</param>
-        /// <returns>Resultado da edição de um produto</returns>
-        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
-        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
-        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
-        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
-        public static async Task<bool> EditLojaService(string sqlDataSource, Loja produto, int targetID)
-        {
-            try
-            {
-                Loja produtoVerify = await LojaService.GetByIDService(sqlDataSource, targetID);
-
-                if (produtoVerify == null) return false;
-
-                return await LojaService.PatchService(sqlDataSource, produto, targetID);
-            }
-            catch (InvalidOperationException ex)
-            {
-                Console.WriteLine("Produto inexistente: " + ex.Message);
-
-                return false;
-            }
-            catch (SqlException ex)
-            {
-                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
-                return false;
-            }
-            catch (ArgumentNullException ex)
-            {
-                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return false;
-            }
-        }
 
         /// <summary>
         /// Alteração do valor de lotacao atual no ginasio
@@ -903,7 +770,14 @@ namespace LayerDAL.Services
         /// </summary>
         /// <param name="sqlDataSource">String de conexão à base de dados</param>
         /// <param name="codigofuncionario">Codigo do funcionario que faz o request</param>
-        /// <returns></returns>
+        /// <returns>Lista de classificacoes de um ginasio</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<List<Classificacao>> GetAvaliacoesOnGymService(string sqlDataSource, int codigofuncionario)
         {
             try
@@ -940,6 +814,27 @@ namespace LayerDAL.Services
                 Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
                 return null;
             }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
             catch (ArgumentNullException ex)
             {
                 Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
@@ -947,7 +842,7 @@ namespace LayerDAL.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.Message);
                 return null;
             }
         }

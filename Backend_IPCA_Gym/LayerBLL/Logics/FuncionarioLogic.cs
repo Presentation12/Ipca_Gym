@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using LayerDAL.Services;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
+using System.Data.SqlClient;
 
 namespace LayerBLL.Logics
 {
@@ -18,24 +19,83 @@ namespace LayerBLL.Logics
     /// </summary>
     public class FuncionarioLogic
     {
+        #region DEFAULT METHODS
         /// <summary>
         /// Método que recebe os dados do serviço de obter todos os funcionarios
         /// </summary>
         /// <param name="sqlDataSource">String de Conexão à database</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> GetAllLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<Funcionario> funcionarioList = await FuncionarioService.GetAllService(sqlDataSource);
-
-            if (funcionarioList.Count != 0)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Lista de funcionarios obtida com sucesso";
-                response.Data = new JsonResult(funcionarioList);
-            }
+                List<Funcionario> funcionarioList = await FuncionarioService.GetAllService(sqlDataSource);
 
-            return response;
+                if (funcionarioList.Count != 0)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Lista de funcionarios obtida com sucesso";
+                    response.Data = new JsonResult(funcionarioList);
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de leitura dos dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de acesso a uma coluna da base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -43,19 +103,77 @@ namespace LayerBLL.Logics
         /// </summary>
         /// <param name="sqlDataSource">String de Conexão à database</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> GetAllAtivoLogic(string sqlDataSource)
         {
             Response response = new Response();
-            List<Funcionario> funcionarioList = await FuncionarioService.GetAllAtivoService(sqlDataSource);
-
-            if (funcionarioList.Count != 0)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Lista de funcionarios obtida com sucesso";
-                response.Data = new JsonResult(funcionarioList);
-            }
+                List<Funcionario> funcionarioList = await FuncionarioService.GetAllAtivoService(sqlDataSource);
 
-            return response;
+                if (funcionarioList.Count != 0)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Lista de funcionarios obtida com sucesso";
+                    response.Data = new JsonResult(funcionarioList);
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de leitura dos dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de acesso a uma coluna da base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -64,19 +182,86 @@ namespace LayerBLL.Logics
         /// <param name="sqlDataSource">String de Conexão à database</param>
         /// <param name="targetID">ID do Funcionario que é pretendido retornar</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> GetByIDLogic(string sqlDataSource, int targetID)
         {
             Response response = new Response();
-            Funcionario funcionario = await FuncionarioService.GetByIDService(sqlDataSource, targetID);
-
-            if (funcionario != null)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Funcionario obtido com sucesso";
-                response.Data = new JsonResult(funcionario);
-            }
+                Funcionario funcionario = await FuncionarioService.GetByIDService(sqlDataSource, targetID);
 
-            return response;
+                if (funcionario != null)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Funcionario obtido com sucesso";
+                    response.Data = new JsonResult(funcionario);
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de leitura dos dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de acesso a uma coluna da base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -85,19 +270,68 @@ namespace LayerBLL.Logics
         /// <param name="sqlDataSource">String de Conexão à database</param>
         /// <param name="newFuncionario">Objeto com os dados do Funcionario a ser criado</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> PostLogic(string sqlDataSource, Funcionario newFuncionario)
         {
             Response response = new Response();
-            bool creationResult = await FuncionarioService.PostService(sqlDataSource, newFuncionario);
-
-            if (creationResult)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Success!";
-                response.Data = new JsonResult("Funcionario adicionado com sucesso");
-            }
+                bool creationResult = await FuncionarioService.PostService(sqlDataSource, newFuncionario);
 
-            return response;
+                if (creationResult)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Success!";
+                    response.Data = new JsonResult("Funcionario adicionado com sucesso");
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -107,19 +341,68 @@ namespace LayerBLL.Logics
         /// <param name="funcionario">Objeto que contém os dados atualizados do Funcionario</param>
         /// <param name="targetID">ID do Funcionario que é pretendido atualizar</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> PatchLogic(string sqlDataSource, Funcionario funcionario, int targetID)
         {
             Response response = new Response();
-            bool updateResult = await FuncionarioService.PatchService(sqlDataSource, funcionario, targetID);
-
-            if (updateResult)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Success!";
-                response.Data = new JsonResult("Funcionario alterado com sucesso");
-            }
+                bool updateResult = await FuncionarioService.PatchService(sqlDataSource, funcionario, targetID);
 
-            return response;
+                if (updateResult)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Success!";
+                    response.Data = new JsonResult("Funcionario alterado com sucesso");
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -128,21 +411,56 @@ namespace LayerBLL.Logics
         /// <param name="sqlDataSource">String de Conexão à database</param>
         /// <param name="targetID">ID do Funcionario que é pretendido eliminar</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> DeleteLogic(string sqlDataSource, int targetID)
         {
             Response response = new Response();
-            bool deleteResult = await FuncionarioService.DeleteService(sqlDataSource, targetID);
-
-            if (deleteResult)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Success!";
-                response.Data = new JsonResult("Funcionario removido com sucesso");
-            }
+                bool deleteResult = await FuncionarioService.DeleteService(sqlDataSource, targetID);
 
-            return response;
+                if (deleteResult)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Success!";
+                    response.Data = new JsonResult("Funcionario removido com sucesso");
+                }
+
+                return response;
+                
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
+        #endregion
+
+        #region BACKLOG METHODS
         /// <summary>
         /// Método que recebe a resposta do serviço de efetuar o login
         /// </summary>
@@ -150,19 +468,67 @@ namespace LayerBLL.Logics
         /// <param name="conta">Model de login de Funcionario</param>
         /// <param name="_configuration">Dependency Injection</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidOperationException">Ocorre quando o codigo do funcionario nao está atribuido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> LoginLogic(string sqlDataSource, LoginFuncionario conta, IConfiguration _configuration)
         {
             Response response = new Response();
-            string token = await FuncionarioService.LoginService(sqlDataSource, conta, _configuration);
-
-            if (token.Length != 0)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Login feito com sucesso!";
-                response.Data = new JsonResult(token);
-            }
+                string token = await FuncionarioService.LoginService(sqlDataSource, conta, _configuration);
 
-            return response;
+                if (token.Length != 0)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Login feito com sucesso!";
+                    response.Data = new JsonResult(token);
+                }
+
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Cliente não existe\n" + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Password Errada" + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -171,22 +537,69 @@ namespace LayerBLL.Logics
         /// <param name="sqlDataSource">String de Conexão à database</param>
         /// <param name="newCliente">Objeto que contém os dados do novo cliente</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> RegistClientLogic(string sqlDataSource, Cliente newCliente)
         {
             Response response = new Response();
-            bool creationResult = await FuncionarioService.RegistClienteService(sqlDataSource, newCliente);
-
-            if (creationResult)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Success!";
-                response.Data = new JsonResult("Cliente adicionado com sucesso!");
+                bool creationResult = await ClienteService.PostService(sqlDataSource, newCliente);
+
+                if (creationResult)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Success!";
+                    response.Data = new JsonResult("Cliente adicionado com sucesso!");
+                }
+
+                return response;
             }
+            catch(SqlException ex)
+{
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
 
-            return response;
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
-
-
 
         /// <summary>
         /// Método que recebe a resposta do serviço de recuperar uma password de um funcionario
@@ -195,19 +608,59 @@ namespace LayerBLL.Logics
         /// <param name="password">Nova password</param>
         /// <param name="sqlDataSource">String de Conexão à database</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="ArgumentException">Ocorre quando o cliente do codigo inserido não existe</exception>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> RecoverPasswordLogic(int codigo, string password, string sqlDataSource)
         {
             Response response = new Response();
-            bool recoverResult = await FuncionarioService.RecoverPasswordService(codigo, password, sqlDataSource);
-
-            if (recoverResult)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Success!";
-                response.Data = new JsonResult("Password alterada com sucesso!");
-            }
+                bool recoverResult = await FuncionarioService.RecoverPasswordService(codigo, password, sqlDataSource);
 
-            return response;
+                if (recoverResult)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Success!";
+                    response.Data = new JsonResult("Password alterada com sucesso!");
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Cliente inexistente: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -217,19 +670,76 @@ namespace LayerBLL.Logics
         /// <param name="targetID">ID do cliente que se pretende alterar</param>
         /// <param name="cliente">Objeto que contêm os dados atualizados do cliente</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> EditClienteLogic(string sqlDataSource, int targetID, Cliente cliente)
         {
             Response response = new Response();
-            bool editResult = await FuncionarioService.EditClienteService(sqlDataSource, targetID, cliente);
 
-            if (editResult)
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Success!";
-                response.Data = new JsonResult("Cliente editado com sucesso!");
-            }
+                /*//Cliente clienteVerify = await ClienteService.GetByIDService(sqlDataSource, targetID);
+                //if (clienteVerify == null)
+                //{
+                //response.StatusCode = StatusCodes.NOCONTENT;
+                //response.Message = "Error!";
+                //response.Data = new JsonResult("Cliente nao existe"); 
+                //}*/
 
-            return response;
+                bool editResult = await ClienteService.PatchService(sqlDataSource, cliente, targetID);
+
+                if (editResult)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Success!";
+                    response.Data = new JsonResult("Cliente editado com sucesso!");
+                }
+
+                return response;
+            }
+            catch(SqlException ex)
+{
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -239,19 +749,90 @@ namespace LayerBLL.Logics
         /// <param name="quantidade">Novo valor de quantidade de stock na loja</param>
         /// <param name="targetID">ID do produto da Loja que se pretende alterar stock</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> EditLojaStockLogic(string sqlDataSource, int quantidade, int targetID)
         {
             Response response = new Response();
-            bool editResult = await FuncionarioService.EditLojaStockService(sqlDataSource, quantidade, targetID);
-
-            if (editResult)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Success!";
-                response.Data = new JsonResult("Stock do produto alterado com sucesso!");
-            }
+                Loja produtoTarget = await LojaService.GetByIDService(sqlDataSource, targetID);
 
-            return response;
+                produtoTarget.quantidade_produto = quantidade;
+
+                bool editResult = await LojaService.PatchService(sqlDataSource, produtoTarget, targetID);
+
+                if (editResult)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Success!";
+                    response.Data = new JsonResult("Stock do produto alterado com sucesso!");
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de leitura dos dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de acesso a uma coluna da base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -261,19 +842,68 @@ namespace LayerBLL.Logics
         /// <param name="produto">Objeto que contém dados atualizados do produto da Loja</param>
         /// <param name="targetID">ID do produto pretendido a mudar</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> EditLojaLogic(string sqlDataSource, Loja produto, int targetID)
         {
             Response response = new Response();
-            bool editResult = await FuncionarioService.EditLojaService(sqlDataSource, produto, targetID);
-
-            if (editResult)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Success!";
-                response.Data = new JsonResult("Produto modificado com sucesso!");
-            }
+                bool editResult = await LojaService.PatchService(sqlDataSource, produto, targetID);
 
-            return response;
+                if (editResult)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Success!";
+                    response.Data = new JsonResult("Produto modificado com sucesso!");
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -283,20 +913,89 @@ namespace LayerBLL.Logics
         /// <param name="targetID">ID do ginásio a alterar a sua ocupação</param>
         /// <param name="lotacao">Valor da lotação atual do ginásio</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> EditLotacaoGymLogic(string sqlDataSource, int targetID, int lotacao)
         {
             Response response = new Response();
-            bool editResult = await FuncionarioService.EditLotacaoGymLogicService(sqlDataSource, targetID, lotacao);
 
-            if (editResult)
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Success!";
-                response.Data = new JsonResult("Lotacao do ginasio alterada com sucesso!");
+                Ginasio targetGinasio = await GinasioService.GetByIDService(sqlDataSource, targetID);
+                targetGinasio.lotacao = lotacao;
+
+                bool editResult = await GinasioService.PatchService(sqlDataSource, targetGinasio, targetID);
+
+                if (editResult)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Success!";
+                    response.Data = new JsonResult("Lotacao do ginasio alterada com sucesso!");
+                }
+
+                return response;
             }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
 
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
 
-            return response;
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de leitura dos dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de acesso a uma coluna da base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -305,19 +1004,86 @@ namespace LayerBLL.Logics
         /// <param name="sqlDataSource">String de conexão à base de dados</param>
         /// <param name="codigofuncionario">Codigo do funcionario que faz o request</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> GetAvaliacoesOnGymLogic(string sqlDataSource, int codigofuncionario) 
         {
             Response response = new Response();
-            List<Classificacao> list = await FuncionarioService.GetAvaliacoesOnGymService(sqlDataSource, codigofuncionario);
-
-            if (list != null)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = $"Lista de avaliacoes do ginasio obtida com sucesso";
-                response.Data = new JsonResult(list);
-            }
+                List<Classificacao> list = await FuncionarioService.GetAvaliacoesOnGymService(sqlDataSource, codigofuncionario);
 
-            return response;
+                if (list != null)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = $"Lista de avaliacoes do ginasio obtida com sucesso";
+                    response.Data = new JsonResult(list);
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de leitura dos dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de acesso a uma coluna da base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -326,20 +1092,88 @@ namespace LayerBLL.Logics
         /// <param name="sqlDataSource">String de conexão à base de dados</param>
         /// <param name="targetID">ID do funcionário</param>
         /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
         public static async Task<Response> DeleteFuncionarioLogic(string sqlDataSource, int targetID)
         {
             Response response = new Response();
-            bool editResult = await FuncionarioService.DeleteFuncionarioService(sqlDataSource, targetID);
-
-            if (editResult)
+            
+            try
             {
-                response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Success!";
-                response.Data = new JsonResult("Funcionário removido com sucesso!");
+                bool editResult = await FuncionarioService.DeleteFuncionarioService(sqlDataSource, targetID);
+
+                if (editResult)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Success!";
+                    response.Data = new JsonResult("Funcionário removido com sucesso!");
+                }
+
+
+                return response;
             }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
 
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
 
-            return response;
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de leitura dos dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de acesso a uma coluna da base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
         }
+        #endregion
     }
 }
