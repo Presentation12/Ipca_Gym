@@ -22,21 +22,31 @@ builder.Services.AddSwaggerGen(c =>
         Version = "Alpha",
         Description = "Web API para o aplicativo IPCAGym"
     });
-
-    var filePath = System.IO.Path.Combine(System.AppContext.BaseDirectory, "ipcagym.xml"); c.IncludeXmlComments(filePath);
-});
-
-builder.Services.AddSwaggerGen(s =>
-{
-    s.AddSecurityDefinition("JWT Bearer Token", new OpenApiSecurityScheme
+    c.AddSecurityDefinition("JWT Bearer Token", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
         Description = "Insira a Token JWT",
         Name = "Authorization",
-        Type = SecuritySchemeType.Http,
+        Type = SecuritySchemeType.ApiKey,
         BearerFormat = "JWT",
-        Scheme = "bearer"
+        Scheme = "Bearer"
     });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{ }
+        }
+    });
+
+    var filePath = Path.Combine(AppContext.BaseDirectory, "ipcagym.xml"); c.IncludeXmlComments(filePath);
 });
 
 // ATIVAÇÃO DE CORS
