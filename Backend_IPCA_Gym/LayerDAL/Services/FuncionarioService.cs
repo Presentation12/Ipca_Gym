@@ -790,7 +790,7 @@ namespace LayerDAL.Services
         }
 
         /// <summary>
-        /// Remoção de um funcionário por parte do funcionário admin
+        /// Remoção de um funcionário com uso de verificações e remoção de dependencias
         /// </summary>
         /// <param name="sqlDataSource">String de conexão com a base de dados</param>
         /// <param name="targetID">ID do funcionario que se pretende arquivar/remover</param>
@@ -799,7 +799,7 @@ namespace LayerDAL.Services
         /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
         /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
         /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
-        public static async Task<bool> RemoverFuncionarioService(string sqlDataSource, int targetID)
+        public static async Task<bool> DeleteFuncionarioService(string sqlDataSource, int targetID)
         {
             try
             {

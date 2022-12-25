@@ -338,5 +338,27 @@ namespace LayerBLL.Logics
 
             return response;
         }
+
+        /// <summary>
+        /// Método que recebe a resposta do serviço de remover funcionario do ginasio
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão à base de dados</param>
+        /// <param name="targetID">ID do funcionário</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> DeleteFuncionarioLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+            bool editResult = await FuncionarioService.DeleteFuncionarioService(sqlDataSource, targetID);
+
+            if (editResult)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Success!";
+                response.Data = new JsonResult("Funcionário removido com sucesso!");
+            }
+
+
+            return response;
+        }
     }
 }

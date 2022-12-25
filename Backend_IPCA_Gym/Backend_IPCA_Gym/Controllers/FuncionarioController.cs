@@ -310,5 +310,22 @@ namespace Backend_IPCA_Gym.Controllers
 
             return new JsonResult(response);
         }
+
+        /// <summary>
+        /// Método http para remover um funcionário com regras
+        /// </summary>
+        /// <param name="targetID">Id do funcionário que faz o request</param>
+        /// <returns>Resposta do request que contém a sua mensagem, o seu código e a lista de avaliacoes em formato json</returns>
+        [HttpGet("delete/{targetID}"), Authorize(Roles = "Admin, Gerente")]
+        public async Task<IActionResult> DeleteFuncionario(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            Response response = await FuncionarioLogic.DeleteFuncionarioLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
     }
 }
