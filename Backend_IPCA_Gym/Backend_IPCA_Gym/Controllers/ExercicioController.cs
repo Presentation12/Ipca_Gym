@@ -112,6 +112,20 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
-        //Fazer metodo de obter exericios de um plano
+        /// <summary>
+        /// Método http get para obter os exercicios de um plano
+        /// </summary>
+        /// <param name="targetID">ID do plano de treino ao qual pertencem os exercicios a ser lidas</param>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e lista de exercicios de um plano em formato json</returns>
+        [HttpGet("plan/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
+        public async Task<IActionResult> GetAllByPlanoID(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await ExercicioLogic.GetAllByPlanoIDLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
     }
 }

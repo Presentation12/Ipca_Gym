@@ -446,5 +446,118 @@ namespace LayerDAL.Services
                 return false;
             }
         }
+
+        /// <summary>
+        /// Retornar uma lista de exercicios de um plano de treino em especifico
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID">ID do plano de treino ao qual pertencem os exercicios a ser lidas</param>
+        /// <returns>Plano de Treino se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<List<Exercicio>> GetAllByPlanoIDService(string sqlDataSource, int targetID)
+        {
+            string query = @"select * from dbo.Exercicio where id_plano_treino = @targetID";
+
+            try
+            {
+                List<Exercicio> plano = new List<Exercicio>();
+                SqlDataReader dataReader;
+
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    { 
+                        myCommand.Parameters.AddWithValue("targetID", targetID);
+                        dataReader = myCommand.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            Exercicio exercicio = new Exercicio();
+                            
+                            exercicio.id_exercicio = Convert.ToInt32(dataReader["id_exercicio"]);
+                            exercicio.id_plano_treino = Convert.ToInt32(dataReader["id_plano_treino"]);
+                            exercicio.nome = dataReader["nome"].ToString();
+                            exercicio.descricao = dataReader["descricao"].ToString();
+                            exercicio.tipo = dataReader["tipo"].ToString();
+                            if (!Convert.IsDBNull(dataReader["series"]))
+                            {
+                                exercicio.series = Convert.ToInt32(dataReader["series"]);
+                            }
+                            else
+                            {
+                                exercicio.series = null;
+                            }
+                            if (!Convert.IsDBNull(dataReader["tempo"]))
+                            {
+                                exercicio.tempo = (TimeSpan?)dataReader["tempo"];
+                            }
+                            else
+                            {
+                                exercicio.tempo = null;
+                            }
+                            if (!Convert.IsDBNull(dataReader["repeticoes"]))
+                            {
+                                exercicio.repeticoes = Convert.ToInt32(dataReader["repeticoes"]);
+                            }
+                            else
+                            {
+                                exercicio.repeticoes = null;
+                            }
+                            if (!Convert.IsDBNull(dataReader["foto_exercicio"]))
+                            {
+                                exercicio.foto_exercicio = dataReader["foto_exercicio"].ToString();
+                            }
+                            else
+                            {
+                                exercicio.foto_exercicio = null;
+                            }
+
+                            plano.Add(exercicio);
+                        }
+
+                        dataReader.Close();
+                        databaseConnection.Close();
+                    }
+                }
+
+                return plano;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
     }
 }

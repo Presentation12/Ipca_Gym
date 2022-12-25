@@ -113,7 +113,21 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
-        //Fazer metodo de obter refeicoes de um plano
+        /// <summary>
+        /// Método http get para obter as refeicoes de um plano
+        /// </summary>
+        /// <param name="targetID">ID do plano nutricional ao qual pertencem as refeicoes a ser lidas</param>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e lista de refeicoes de um plano em formato json</returns>
+        [HttpGet("plan/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
+        public async Task<IActionResult> GetAllByPlanoID(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await RefeicaoLogic.GetAllByPlanoIDLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
     }
 }
 

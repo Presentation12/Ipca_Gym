@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LayerDAL.Services;
 using System.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LayerBLL.Logics
 {
@@ -353,6 +354,94 @@ namespace LayerBLL.Logics
             {
                 response.StatusCode = StatusCodes.NOCONTENT;
                 response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+        }
+
+        /// <summary>
+        /// Método que recebe a resposta do serviço de retornar uma lista de exercicios
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID">ID do plano de treino ao qual pertencem os exercicios a ser lidas</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<Response> GetAllByPlanoIDLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+
+            try
+            {
+                List<Exercicio> plano = await ExercicioService.GetAllByPlanoIDService(sqlDataSource, targetID);
+
+                if (!plano.IsNullOrEmpty())
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Plano obtido com sucesso";
+                    response.Data = new JsonResult(plano);
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de leitura dos dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de acesso a uma coluna da base de dados: " + ex.Message;
                 response.Data = new JsonResult(null);
 
                 return response;
