@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,15 +23,16 @@ builder.Services.AddSwaggerGen(c =>
         Version = "Alpha",
         Description = "Web API para o aplicativo IPCAGym"
     });
-    c.AddSecurityDefinition("JWT Bearer Token", new OpenApiSecurityScheme
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
-        Description = "Insira a Token JWT",
+        Description = "Please enter token",
         Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
+        Type = SecuritySchemeType.Http,
         BearerFormat = "JWT",
-        Scheme = "Bearer"
+        Scheme = "bearer"
     });
+    // -- --
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -38,11 +40,11 @@ builder.Services.AddSwaggerGen(c =>
             {
                 Reference = new OpenApiReference
                 {
-                    Type = ReferenceType.SecurityScheme,
+                    Type=ReferenceType.SecurityScheme,
                     Id="Bearer"
                 }
             },
-            new string[]{ }
+            Array.Empty<string>()
         }
     });
 
