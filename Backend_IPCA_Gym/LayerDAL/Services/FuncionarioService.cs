@@ -873,7 +873,7 @@ namespace LayerDAL.Services
         /// <param name="sqlDataSource"></param>
         /// <param name="codigo"></param>
         /// <returns></returns>
-        public static async Task<List<Classificacao>> GetAvaliacoesOnGymService(string sqlDataSource, string codigo)
+        public static async Task<List<Classificacao>> GetAvaliacoesOnGymService(string sqlDataSource, int codigo)
         {
             try
             {
@@ -882,14 +882,13 @@ namespace LayerDAL.Services
                             select * from dbo.Funcionario 
                             where codigo = @codigo";
 
-                Console.WriteLine(codigo);
 
                 using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
                 {
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        myCommand.Parameters.AddWithValue("codigo", int.Parse(codigo));
+                        myCommand.Parameters.AddWithValue("codigo", codigo);
                         using (SqlDataReader reader = myCommand.ExecuteReader())
                         {
                             reader.Read();

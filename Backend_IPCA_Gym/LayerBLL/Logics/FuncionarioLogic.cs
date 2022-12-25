@@ -298,7 +298,7 @@ namespace LayerBLL.Logics
             return response;
         }
 
-        public static async Task<Response> GetAvaliacoesOnGymLogic(string sqlDataSource, string codigo) 
+        public static async Task<Response> GetAvaliacoesOnGymLogic(string sqlDataSource, int codigo) 
         {
             Response response = new Response();
             List<Classificacao> list = await FuncionarioService.GetAvaliacoesOnGymService(sqlDataSource, codigo);
@@ -306,8 +306,8 @@ namespace LayerBLL.Logics
             if (list != null)
             {
                 response.StatusCode = StatusCodes.SUCCESS;
-                response.Message = "Success!";
-                response.Data = new JsonResult($"Lista de avaliacoes do ginasio {codigo} obtida com sucesso");
+                response.Message = $"Lista de avaliacoes do ginasio {codigo} obtida com sucesso";
+                response.Data = new JsonResult(list);
             }
 
             return response;
