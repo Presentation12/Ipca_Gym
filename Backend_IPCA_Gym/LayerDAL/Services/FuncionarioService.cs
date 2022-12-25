@@ -793,7 +793,7 @@ namespace LayerDAL.Services
         /// Remoção de um funcionário por parte do funcionário admin
         /// </summary>
         /// <param name="sqlDataSource">String de conexão com a base de dados</param>
-        /// <param name="targetID">ID do cliente que se pretende arquivar/remover</param>
+        /// <param name="targetID">ID do funcionario que se pretende arquivar/remover</param>
         /// <returns>Resultado da remoção de um funcionário</returns>
         /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
         /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
@@ -803,6 +803,22 @@ namespace LayerDAL.Services
         {
             try
             {
+                // Inativar todas as suas marcações
+                List<Marcacao> marcacoesFuncionario = await MarcacaoService.GetAllByFuncionarioIDService(sqlDataSource, targetID);
+                foreach (Marcacao marcacao in marcacoesFuncionario)
+                {
+                    if (marcacao.estado == "Ativo") marcacao.estado = "Inativo";
+                    MarcacaoService.PatchService(sqlDataSource, marcacao, marcacao.id_marcacao);
+                }
+
+                // Remover o seu horario todo
+                List<HorarioFuncionario> horarioFuncionario = await HorarioFuncionarioService.GetAllByFuncionarioIDService(sqlDataSource, targetID);
+                foreach (HorarioFuncionario dia in horarioFuncionario)
+                {
+                    HorarioFuncionarioService.DeleteService(sqlDataSource, dia.id_funcionario_horario);
+                }
+
+                // Inativar funcionário
                 Funcionario funcionario = await GetByIDService(sqlDataSource, targetID);
 
                 if (funcionario == null || funcionario.is_admin == true) return false;
