@@ -166,6 +166,25 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http para remover um cliente
+        /// </summary>
+        /// <param name="targetID">ID do cliente que se pretende remover</param>
+        /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
+        [HttpDelete("remove/cliente/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
+        public async Task<IActionResult> DeleteCliente(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            //Verificar se Gerente e Funcionario pertencem ao ginasio ao qual o cliente pertence
+
+            Response response = await ClienteLogic.DeleteClienteLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
         #endregion
     }
 }

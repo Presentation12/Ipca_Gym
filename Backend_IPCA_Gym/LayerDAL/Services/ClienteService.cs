@@ -689,6 +689,70 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Remoção de um utilizador através do seu id
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <param name="targetID">ID do cliente que se pretende arquivar/remover</param>
+        /// <returns>Resultado da remoção de um cliente</returns>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<bool> DeleteClienteService(string sqlDataSource, int targetID)
+        {
+            try
+            {
+                // Inativar marcações
+                List<Marcacao> marcacoesCliente = await MarcacaoService.GetAllByClienteIDService(sqlDataSource, targetID);
+                foreach (Marcacao marcacao in marcacoesCliente)
+                {
+                    if (marcacao.estado == "Ativo")
+                    {
+                        marcacao.estado = "Inativo";
+                        MarcacaoService.PatchService(sqlDataSource, marcacao, marcacao.id_marcacao);
+                    }
+                }
+
+                // Inativar os pedidos
+                List<Pedido> pedidosCliente = await PedidoService.GetAllByClienteIDService(sqlDataSource, targetID);
+                foreach (Pedido pedidoCliente in pedidosCliente)
+                {
+                    PedidoLojaService.DeletePedidoService(sqlDataSource, pedidoCliente.id_pedido);
+                }
+
+                // Inativar client
+                Cliente cliente = await ClienteService.GetByIDService(sqlDataSource, targetID);
+
+                if (cliente == null) return false;
+
+                cliente.estado = "Inativo";
+
+                return await ClienteService.PatchService(sqlDataSource, cliente, targetID);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Cliente inexistente: " + ex.Message);
+
+                return false;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
         #endregion
     }
 }

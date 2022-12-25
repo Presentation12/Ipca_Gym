@@ -229,6 +229,27 @@ namespace LayerBLL.Logics
             return response;
         }
 
+        /// <summary>
+        /// Método que recebe a resposta do serviço de remover um cliente
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do cliente que se pretende remover</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        public static async Task<Response> DeleteClienteLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+            bool removeResult = await ClienteService.DeleteClienteService(sqlDataSource, targetID);
+
+            if (removeResult)
+            {
+                response.StatusCode = StatusCodes.SUCCESS;
+                response.Message = "Success!";
+                response.Data = new JsonResult("Cliente removido com sucesso!");
+            }
+
+            return response;
+        }
+
         #endregion
     }
 }
