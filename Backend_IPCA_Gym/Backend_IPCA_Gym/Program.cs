@@ -40,6 +40,10 @@ builder.Services.AddSwaggerGen(s =>
 });
 
 // ATIVAÇÃO DE CORS
+builder.Services.AddCors(c =>
+{
+    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
 /*builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {
     builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
@@ -91,7 +95,13 @@ if (app.Environment.IsDevelopment())
 //app CORS
 //app.UseCors("corsapp");
 
+app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+
+app.UseRouting();
 
 app.UseAuthorization();
 

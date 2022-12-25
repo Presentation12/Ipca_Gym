@@ -882,15 +882,7 @@ namespace LayerDAL.Services
                             select * from dbo.Funcionario 
                             where codigo = @codigo";
 
-                /*if (User.HasClaim(ClaimTypes.Role, "Gerente") || (User.HasClaim(ClaimTypes.Role, "Funcionario") && !User.HasClaim(ClaimTypes.Role, "Admin")))
-                {
-
-                    authorized = true;
-                }
-
-                //Ver como fazer para ADMIN (nao tem gyms todos associados)
-                if(User.HasClaim(ClaimTypes.Role, "Admin")) authorized = true;*/
-
+                Console.WriteLine(codigo);
 
                 using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
                 {
