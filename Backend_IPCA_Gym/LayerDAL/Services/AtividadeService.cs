@@ -6,6 +6,8 @@ namespace LayerDAL.Services
 {
     public class AtividadeService
     {
+        #region DEFAULT REQUESTS
+
         /// <summary>
         /// Leitura dos dados de todas as atividades da base de dados
         /// </summary>
@@ -353,5 +355,7 @@ namespace LayerDAL.Services
                 return false;
             }
         }
+
+        #endregion
     }
 }

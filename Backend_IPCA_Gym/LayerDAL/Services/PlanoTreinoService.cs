@@ -471,6 +471,44 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Remoção de um plano de treino da base de dados pelo seu ID e das suas dependencias
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão com a base de dados</param>
+        /// <param name="targetID">ID do plano de treino a ser removido</param>
+        /// <returns>True se a remoção foi bem sucedida, false em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<bool> DeleteCheckedService(string sqlDataSource, int targetID)
+        {
+            try
+            {
+                List<Exercicio> exerciciosPlano = await ExercicioService.GetAllByPlanoTreinoIDService(sqlDataSource, targetID);
+                foreach (Exercicio r in exerciciosPlano)
+                {
+                    await ExercicioService.DeleteService(sqlDataSource, r.id_exercicio);
+                }
+
+                return await PlanoTreinoService.DeleteService(sqlDataSource, targetID);
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
         #endregion
     }
 }

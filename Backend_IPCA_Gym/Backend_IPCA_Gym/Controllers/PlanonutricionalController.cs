@@ -142,6 +142,25 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http delete para remover um plano nutricional da base de dados através do seu id e suas dependencias
+        /// </summary>
+        /// <param name="targetID">ID da plano nutricional pretendido para ser removido</param>
+        /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
+        [HttpDelete("Delete/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
+        public async Task<IActionResult> DeleteChecked(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            //Certificar que o plano a ser apagado pertence ao gym associado a quem fez o request
+
+            Response response = await PlanoNutricionalLogic.DeleteCheckedLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
         #endregion
     }
 }
