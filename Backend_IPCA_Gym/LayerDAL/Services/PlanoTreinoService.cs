@@ -484,7 +484,7 @@ namespace LayerDAL.Services
         {
             try
             {
-                List<Exercicio> exerciciosPlano = await ExercicioService.GetAllByPlanoTreinoIDService(sqlDataSource, targetID);
+                List<Exercicio> exerciciosPlano = await ExercicioService.GetAllByPlanoIDService(sqlDataSource, targetID);
                 foreach (Exercicio r in exerciciosPlano)
                 {
                     await ExercicioService.DeleteService(sqlDataSource, r.id_exercicio);

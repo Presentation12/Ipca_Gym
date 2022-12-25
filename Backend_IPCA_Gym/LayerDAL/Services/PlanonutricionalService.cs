@@ -488,7 +488,7 @@ namespace LayerDAL.Services
         {
             try
             {
-                List<Refeicao> refeicoesPlano = await RefeicaoService.GetAllByPlanoNutricionalIDService(sqlDataSource, targetID);
+                List<Refeicao> refeicoesPlano = await RefeicaoService.GetAllByPlanoIDService(sqlDataSource, targetID);
                 foreach (Refeicao r in refeicoesPlano)
                 {
                     await RefeicaoService.DeleteService(sqlDataSource, r.id_refeicao);
