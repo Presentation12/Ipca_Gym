@@ -10,6 +10,8 @@ using LayerBLL.Utils;
 using LayerBLL.Logics;
 using Swashbuckle.AspNetCore.Annotations;
 using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
+using Microsoft.AspNetCore.Authorization;
+
 namespace Backend_IPCA_Gym.Controllers
 {
     /// <summary>
@@ -37,7 +39,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// Método http get para retornar os produtos da base de dados
         /// </summary>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de produtos em formato Json</returns>
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -53,7 +55,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do produto que é pretendido ser retornado</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e o produto em formato Json</returns>
-        [HttpGet("{targetID}")]
+        [HttpGet("{targetID}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetByID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -69,7 +71,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="newLoja">Dados do novo produto a ser inserido</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin, Gerente")]
         public async Task<IActionResult> Post([FromBody] Loja newLoja)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -86,7 +88,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="produto">produto com dados alterados</param>
         /// <param name="targetID">ID do produto pretendido para alterar os dados</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPatch("{targetID}")]
+        [HttpPatch("{targetID}"), Authorize(Roles = "Admin, Gerente")]
         public async Task<IActionResult> Patch([FromBody] Loja produto, int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -103,7 +105,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do produto pretendido para ser removido</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpDelete("{targetID}")]
+        [HttpDelete("{targetID}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -123,7 +125,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do ginásio que é pretendido que retorne os produtos</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e o produto em formato Json</returns>
-        [HttpGet("Ginasio/{targetID}")]
+        [HttpGet("Ginasio/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
         public async Task<IActionResult> GetAllByGinasioID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");

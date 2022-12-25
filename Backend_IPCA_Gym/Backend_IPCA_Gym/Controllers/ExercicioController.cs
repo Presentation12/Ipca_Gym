@@ -10,6 +10,7 @@ using LayerBLL.Utils;
 using LayerBLL.Logics;
 using Swashbuckle.AspNetCore.Annotations;
 using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend_IPCA_Gym.Controllers
 {
@@ -34,7 +35,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// Método http get para retornar os exercicios da base de dados
         /// </summary>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de exercicios em formato Json</returns>
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -50,7 +51,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do exercicio que é pretendida ser retornada</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e o Exercicio em formato Json</returns>
-        [HttpGet("{targetID}")]
+        [HttpGet("{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
         public async Task<IActionResult> GetByID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -66,7 +67,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="newExercicio">Dados do novo Exercicio a ser inserido</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> Post([FromBody] Exercicio newExercicio)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -83,7 +84,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="exercicio">Exercicio com dados alterados</param>
         /// <param name="targetID">ID do Exercicio pretendido para alterar os dados</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPatch("{targetID}")]
+        [HttpPatch("{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> Patch([FromBody] Exercicio exercicio, int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -100,7 +101,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID da Exercicio pretendido para ser removido</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpDelete("{targetID}")]
+        [HttpDelete("{targetID}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -110,5 +111,7 @@ namespace Backend_IPCA_Gym.Controllers
 
             return new JsonResult(response);
         }
+
+        //Fazer metodo de obter exericios de um plano
     }
 }

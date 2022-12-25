@@ -2,6 +2,7 @@
 using LayerBOL.Models;
 using LayerBLL.Utils;
 using LayerBLL.Logics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend_IPCA_Gym.Controllers
 {
@@ -27,7 +28,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// Método http get para retornar as atividades da base de dados
         /// </summary>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de atividades em formato Json</returns>
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -43,7 +44,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID da atividade que é pretendida ser retornada</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a Atividade em formato Json</returns>
-        [HttpGet("{targetID}")]
+        [HttpGet("{targetID}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetByID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -59,7 +60,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="newAtividade">Dados da nova Atividade a ser inserida</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> Post([FromBody] Atividade newAtividade)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -76,7 +77,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="atividade">Atividade com dados alterados</param>
         /// <param name="targetID">ID da Atividade pretendida para alterar os dados</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPatch("{targetID}")]
+        [HttpPatch("{targetID}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> Patch([FromBody] Atividade atividade, int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -93,7 +94,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID da Atividade pretendida para ser removida</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpDelete("{targetID}")]
+        [HttpDelete("{targetID}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");

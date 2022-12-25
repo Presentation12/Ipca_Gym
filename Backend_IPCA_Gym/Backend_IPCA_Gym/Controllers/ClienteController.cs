@@ -37,7 +37,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// Método http get para retornar os clientes da base de dados
         /// </summary>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de clientes em formato Json</returns>
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -53,7 +53,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do cliente que é pretendido ser retornado</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a cliente em formato Json</returns>
-        [HttpGet("{targetID}")]
+        [HttpGet("{targetID}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetByID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -69,7 +69,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="newCliente">Dados do novo cliente a ser inserido</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin")]
         public async Task<IActionResult> Post([FromBody] Cliente newCliente)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -86,7 +86,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="cliente">Cliente com dados alterados</param>
         /// <param name="targetID">ID da Cliente pretendida para alterar os dados</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPatch("{targetID}")]
+        [HttpPatch("{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
         public async Task<IActionResult> Patch([FromBody] Cliente cliente, int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -103,7 +103,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do cliente pretendida para ser removido</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpDelete("{targetID}")]
+        [HttpDelete("{targetID}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -136,12 +136,12 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="mail">Mail do cliente que se pretende recuperar a password</param>
         /// <param name="password">Nova password</param>
         /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
-        [HttpPatch("recoverpass"), Authorize(Roles = "Admin, Gerente, Funcionario")]
+        [HttpPatch("recoverpass"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
         public async Task<IActionResult> RecoverPassword(string mail, string password)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
 
-            //Verificar se quem executa request é quem possui o codigo
+            //Verificar se quem executa request é quem possui o mail
 
             Response response = await ClienteLogic.RecoverPasswordLogic(mail, password, sqlDataSource);
 

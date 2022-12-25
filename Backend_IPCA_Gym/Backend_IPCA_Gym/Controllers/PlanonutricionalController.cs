@@ -10,6 +10,7 @@ using LayerBLL.Utils;
 using LayerBLL.Logics;
 using Swashbuckle.AspNetCore.Annotations;
 using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend_IPCA_Gym.Controllers
 {
@@ -37,7 +38,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// Método http get para retornar os planos nutricionais da base de dados
         /// </summary>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de planos nutricionais em formato Json</returns>
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -53,7 +54,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do plano nutricional que é pretendido ser retornado</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e o plano nutricional em formato Json</returns>
-        [HttpGet("{targetID}")]
+        [HttpGet("{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
         public async Task<IActionResult> GetByID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -69,9 +70,10 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="newPlanoNutricional">Dados do novo plano nutricional a ser inserido</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> Post([FromBody] PlanoNutricional newPlanoNutricional)
         {
+            // No novo plano é passado o ID da pessoa logada(funcionario ou gerente)
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             Response response = await PlanoNutricionalLogic.PostLogic(sqlDataSource, newPlanoNutricional);
 
@@ -86,10 +88,13 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="planoNutricional">plano nutricional com dados alterados</param>
         /// <param name="targetID">ID da plano nutricional pretendido para alterar os dados</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPatch("{targetID}")]
+        [HttpPatch("{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> Patch([FromBody] PlanoNutricional planoNutricional, int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            //Certificar que o plano a ser modificado pertence ao gym associado a quem fez o request
+
             Response response = await PlanoNutricionalLogic.PatchLogic(sqlDataSource, planoNutricional, targetID);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
@@ -103,10 +108,13 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID da plano nutricional pretendido para ser removido</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpDelete("{targetID}")]
+        [HttpDelete("{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> Delete(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            //Certificar que o plano a ser apagado pertence ao gym associado a quem fez o request
+
             Response response = await PlanoNutricionalLogic.DeleteLogic(sqlDataSource, targetID);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
@@ -123,7 +131,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do ginásio que é pretendido ser retornado os planos de nutrição</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de planos de nutrição em formato Json</returns>
-        [HttpGet("Ginasio/{targetID}")]
+        [HttpGet("Ginasio/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> GetAllByGinasioID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");

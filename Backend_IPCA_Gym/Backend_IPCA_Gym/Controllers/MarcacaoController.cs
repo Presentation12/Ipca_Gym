@@ -10,6 +10,7 @@ using LayerBLL.Utils;
 using LayerBLL.Logics;
 using Swashbuckle.AspNetCore.Annotations;
 using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend_IPCA_Gym.Controllers
 {
@@ -37,7 +38,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// Método http get para retornar as marcações da base de dados
         /// </summary>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de marcações em formato Json</returns>
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -53,7 +54,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID da marcação que é pretendida ser retornada</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a marcação em formato Json</returns>
-        [HttpGet("{targetID}")]
+        [HttpGet("{targetID}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetByID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -69,7 +70,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="newMarcacao">Dados da nova marcação a ser inserida</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
         public async Task<IActionResult> Post([FromBody] Marcacao newMarcacao)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -86,11 +87,15 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="marcacao">marcação com dados alterados</param>
         /// <param name="targetID">ID da marcação pretendida para alterar os dados</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPatch("{targetID}")]
+        [HttpPatch("{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
         public async Task<IActionResult> Patch([FromBody] Marcacao marcacao, int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             Response response = await MarcacaoLogic.PatchLogic(sqlDataSource, marcacao, targetID);
+
+            //Verificar se a Marcacao é do cliente que faz o request
+            //Verificar se a Marcacao é do funcionario que faz o request
+            //Verificar se a Marcacao é de um funcionario do ginasio ao qual o gerente que faz o request pertence
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
 
@@ -103,7 +108,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID da marcação pretendida para ser removida</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpDelete("{targetID}")]
+        [HttpDelete("{targetID}"), Authorize(Roles = ("Admin"))]
         public async Task<IActionResult> Delete(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -123,11 +128,14 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do funcionário ao qual pertencem as marcações a ser retornado</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a marcação em formato Json</returns>
-        [HttpGet("funcionario/{targetID}")]
+        [HttpGet("funcionario/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> GetAllByFuncionarioID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             Response response = await MarcacaoLogic.GetAllByFuncionarioIDLogic(sqlDataSource, targetID);
+
+            //Se for um funcionario, no front-end mandar o ID do user que faz request
+            //Se for de um gerente, certificar que esse funcionario pertence ao ginasio
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
 
@@ -139,11 +147,14 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do cliente ao qual pertencem as marcações a ser retornado</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a marcação em formato Json</returns>
-        [HttpGet("cliente/{targetID}")]
+        [HttpGet("cliente/{targetID}"), Authorize(Roles = "Admin, Cliente")]
         public async Task<IActionResult> GetAllByClienteID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             Response response = await MarcacaoLogic.GetAllByClienteIDLogic(sqlDataSource, targetID);
+
+            //Se for um funcionario, no front-end mandar o ID do user que faz request
+            //Se for de um gerente, certificar que esse cliente pertence ao ginasio
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
 
@@ -155,7 +166,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="newMarcacao">Dados da nova marcação a ser inserida</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPost("new/marcacao")]
+        [HttpPost("new/marcacao"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
         public async Task<IActionResult> PostChecked([FromBody] Marcacao newMarcacao)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -172,7 +183,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="marcacao">marcação com dados alterados</param>
         /// <param name="targetID">ID da marcação pretendida para alterar os dados</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPatch("cancelamento/{targetID}")]
+        [HttpPatch("cancelamento/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
         public async Task<IActionResult> PatchCancelMarcacao([FromBody] Marcacao marcacao, int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -190,7 +201,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="marcacao">marcação com dados alterados</param>
         /// <param name="targetID">ID da marcação pretendida para alterar os dados</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpPatch("remarcacao/{targetID}")]
+        [HttpPatch("remarcacao/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
         public async Task<IActionResult> PatchRescheduleMarcacao([FromBody] Marcacao marcacao, int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
