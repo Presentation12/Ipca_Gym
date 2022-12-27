@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_below="@+id/profile_pic"
@@ -25,6 +26,18 @@
             android:src="@drawable/icon"></ImageView>
 
     </androidx.cardview.widget.CardView>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/profile_pic"
+        android:layout_gravity="end"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="16dp"
+        android:clickable="false"
+        android:spinnerMode="dropdown"
+        android:visibility="invisible" />
 
     <ListView
         android:id="@+id/listview_activities"
