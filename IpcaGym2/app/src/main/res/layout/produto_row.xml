@@ -28,22 +28,22 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/text_view_nome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nome do cliente"
-        android:layout_marginStart="10dp"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toTopOf="@+id/cardView" />
+    android:id="@+id/text_view_nome"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Nome do produto"
+    android:layout_marginStart="10dp"
+    app:layout_constraintStart_toEndOf="@+id/cardView"
+    app:layout_constraintTop_toTopOf="@+id/cardView" />
 
     <TextView
-        android:id="@+id/text_view_mail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mail"
-        android:layout_marginStart="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_nome" />
+    android:id="@+id/text_view_mail"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Preço"
+    android:layout_marginStart="10dp"
+    app:layout_constraintBottom_toBottomOf="@+id/cardView"
+    app:layout_constraintStart_toEndOf="@+id/cardView"
+    app:layout_constraintTop_toBottomOf="@+id/text_view_nome" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
