@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/defenitions_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2D2D2D"
+    tools:layout_editor_absoluteX="-56dp"
+    tools:layout_editor_absoluteY="-111dp">
+
+
+    <TextView
+        android:id="@+id/versio_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="144dp"
+        android:text="Follow"
+        android:textColor="#FFFFFF"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.163"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Version_Layout"
+        app:layout_constraintVertical_bias="0.08"
+        tools:text="Follow" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="301dp"
+
+        android:layout_height="170dp"
+        android:background="@drawable/grey_shape_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/versio_app"
+        app:layout_constraintVertical_bias="0.275">
+
+        <Button
+            android:id="@+id/button_follow_facebook"
+            android:layout_width="126dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="#2D2D2D"
+            android:text="Follow"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/button_follow_tiktok"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_follow_instagram" />
+
+        <Button
+            android:id="@+id/button_follow_instagram"
+            android:layout_width="126dp"
+            android:layout_height="37dp"
+
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="2dp"
+            android:backgroundTint="#2D2D2D"
+            android:text="Follow"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/button_follow_facebook"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.166" />
+
+        <Button
+            android:id="@+id/button_follow_tiktok"
+            android:layout_width="126dp"
+            android:layout_height="37dp"
+
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="#2D2D2D"
+            android:text="Follow"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_follow_facebook" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="24dp"
+            android:text="Follow on Instagram"
+            app:layout_constraintEnd_toStartOf="@+id/button_follow_instagram"
+            app:layout_constraintHorizontal_bias="0.481"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Follow on Facebook"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_follow_facebook"
+            app:layout_constraintHorizontal_bias="0.575"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintVertical_bias="0.292" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="24dp"
+            android:text="Follow on TikTok"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_follow_tiktok"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:layout_constraintVertical_bias="1.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/Versio_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Version"
+        android:textColor="#FFFFFF"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.153"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.573"
+        tools:text="Version" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/Version_Layout"
+        android:layout_width="299dp"
+        android:layout_height="60dp"
+        android:background="@drawable/grey_shape_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Versio_app"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="196dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/grey_shape_background"
+            android:backgroundTint="#2D2D2D"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView_version"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView_1.0.1"
+                android:layout_width="77dp"
+                android:layout_height="24dp"
+                android:text="1.0.1"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textView_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:text="Version"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.512" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/InfoAndHelp_Layout"
+        android:layout_width="301dp"
+        android:layout_height="165dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/grey_shape_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/InfoAndHelp_app"
+        app:layout_constraintVertical_bias="0.0">
+
+        <Button
+            android:id="@+id/button_helpandcontacts"
+            android:layout_width="238dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="2dp"
+            android:backgroundTint="#2D2D2D"
+            android:text="Help and Contacts"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/button_aboutus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/button_aboutus"
+            android:layout_width="238dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:backgroundTint="#2D2D2D"
+            android:text="About us"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/button_subscrive"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.507"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_helpandcontacts"
+            app:rippleColor="#2D2D2D" />
+
+        <Button
+            android:id="@+id/button_subscrive"
+            android:layout_width="238dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="#2D2D2D"
+            android:text="Subscribe Newsletter"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_aboutus"
+            app:rippleColor="#2D2D2D" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/InfoAndHelp_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Information and Help"
+        android:textColor="#FFFFFF"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.267"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/App_Layout"
+        app:layout_constraintVertical_bias="0.022" />
+
+    <TextView
+        android:id="@+id/defenitions_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="APP"
+        android:textColor="#FFFFFF"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.153"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.021" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/App_Layout"
+        android:layout_width="299dp"
+        android:layout_height="116dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/grey_shape_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/defenitions_app"
+        app:layout_constraintVertical_bias="0.005">
+
+        <TextView
+            android:id="@+id/textView_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="20dp"
+            android:text="Mode"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_dark"
+            app:layout_constraintHorizontal_bias="0.269"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Mode" />
+
+        <TextView
+            android:id="@+id/textView_idioma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
+
+            android:text="Idioma"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#000000"
+            app:layout_constraintBottom_toTopOf="@+id/textView_mode"
+            app:layout_constraintEnd_toStartOf="@+id/button_english"
+            app:layout_constraintHorizontal_bias="0.155"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.147" />
+
+        <Button
+            android:id="@+id/button_english"
+            android:layout_width="156dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="2dp"
+            android:backgroundTint="#2D2D2D"
+            android:text="English"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/button_dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:rippleColor="#000000"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <Button
+            android:id="@+id/button_dark"
+            android:layout_width="156dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="#2D2D2D"
+            android:text="Dark"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_english"
+            tools:ignore="TouchTargetSizeCheck" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
