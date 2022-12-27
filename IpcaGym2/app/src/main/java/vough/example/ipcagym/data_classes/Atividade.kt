@@ -15,7 +15,6 @@ class Atividade {
         id_cliente: Int?,
         data_entrada: LocalDateTime?,
         data_saida: LocalDateTime?
-
     ) {
         this.id_atividade = id_atividade
         this.id_ginasio = id_ginasio
