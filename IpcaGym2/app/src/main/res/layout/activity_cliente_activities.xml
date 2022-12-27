@@ -8,20 +8,20 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_below="@+id/profile_pic"
         android:layout_gravity="end"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
-        app:cardCornerRadius="15dp"
+        app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toTopOf="@+id/_dynamic"
         app:layout_constraintEnd_toEndOf="@id/_dynamic">
 
         <ImageView
             android:id="@+id/profile_pic"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:scaleType="centerCrop"
             android:src="@drawable/icon"></ImageView>
 
@@ -41,13 +41,13 @@
 
     <ListView
         android:id="@+id/listview_activities"
-        android:layout_width="371dp"
-        android:layout_height="550dp"
-        android:layout_marginStart="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="70dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/bottom_appbar" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottom_appbar"

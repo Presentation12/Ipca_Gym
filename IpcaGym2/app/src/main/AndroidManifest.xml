@@ -11,6 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.IpcaGym">
+        <activity android:name=".cliente_classes.ActivityDetailClienteActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".cliente_classes.ActivitiesClienteActivity"
             android:exported="true">
