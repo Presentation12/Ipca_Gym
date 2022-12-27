@@ -35,7 +35,7 @@ class ActivitiesClienteActivity : AppCompatActivity(){
         activityList.add(Atividade(3,2,4,
             LocalDateTime.of(2022,10,10,10,10,10),
             LocalDateTime.of(2022,10,10,11,10,10)))
-        /*activityList.add(Atividade(4,2,4,
+        activityList.add(Atividade(4,2,4,
             LocalDateTime.of(2022,12,13,10,10,10),
             LocalDateTime.of(2022,11,16,14,12,50)))
         activityList.add(Atividade(5,2,4,
@@ -79,7 +79,7 @@ class ActivitiesClienteActivity : AppCompatActivity(){
             LocalDateTime.of(2022,11,16,14,12,50)))
         activityList.add(Atividade(0,2,4,
             LocalDateTime.of(2022,12,13,10,10,10),
-            LocalDateTime.of(2022,11,16,14,12,50)))*/
+            LocalDateTime.of(2022,11,16,14,12,50)))
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
 
