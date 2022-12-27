@@ -10,10 +10,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
-        tools:targetApi="31">
+        android:theme="@style/Theme.IpcaGym">
         <activity
-            android:name=".funcionarios_classes.ClientesManagementActivity"
+            android:name=".cliente_classes.ActivitiesClienteActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -13,18 +13,26 @@ class ActivitiesClienteActivity : AppCompatActivity(){
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
 
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+        bottomNavigationView.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this@ActivitiesClienteActivity,"Cliente criado com sucesso!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@ActivitiesClienteActivity,"Main Menu", Toast.LENGTH_LONG).show()
                     true
                 }
-                R.id.nav_favorites -> {
-                    Toast.makeText(this@ActivitiesClienteActivity,"Cliente removido com sucesso!", Toast.LENGTH_LONG).show()
+                R.id.nav_fitness -> {
+                    Toast.makeText(this@ActivitiesClienteActivity,"Treino", Toast.LENGTH_LONG).show()
                     true
                 }
-                R.id.nav_search -> {
-                    Toast.makeText(this@ActivitiesClienteActivity,"Cliente alterado com sucesso!", Toast.LENGTH_LONG).show()
+                R.id.nav_shopping -> {
+                    Toast.makeText(this@ActivitiesClienteActivity,"Loja", Toast.LENGTH_LONG).show()
+                    true
+                }
+                R.id.nav_diet -> {
+                    Toast.makeText(this@ActivitiesClienteActivity,"Refeicoes", Toast.LENGTH_LONG).show()
+                    true
+                }
+                R.id.nav_history -> {
+                    Toast.makeText(this@ActivitiesClienteActivity,"Atividades", Toast.LENGTH_LONG).show()
                     true
                 }
                 else -> false
