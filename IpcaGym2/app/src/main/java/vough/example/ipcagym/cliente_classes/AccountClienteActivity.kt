@@ -1,4 +1,12 @@
 package vough.example.ipcagym.cliente_classes
 
-class AccountClienteActivity {
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import vough.example.ipcagym.R
+
+class AccountClienteActivity : AppCompatActivity(){
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_cliente_account)
+    }
 }
