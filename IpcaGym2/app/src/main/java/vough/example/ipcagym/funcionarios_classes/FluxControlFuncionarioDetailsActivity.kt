@@ -5,13 +5,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import org.w3c.dom.Text
 import vough.example.ipcagym.R
 
-class FuncionarioManagementDetailsActivity : AppCompatActivity() {
+class FluxControlFuncionarioDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_activity_details_funcionario)
+        setContentView(R.layout.activity_funcionario_flux_control_details)
 
         //fazer na outra activity
         val id_atividade = intent.getIntExtra("id_atividade", -1)
@@ -52,7 +51,7 @@ class FuncionarioManagementDetailsActivity : AppCompatActivity() {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(this@FuncionarioManagementDetailsActivity,options[position], Toast.LENGTH_LONG).show()
+                Toast.makeText(this@FluxControlFuncionarioDetailsActivity,options[position], Toast.LENGTH_LONG).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {

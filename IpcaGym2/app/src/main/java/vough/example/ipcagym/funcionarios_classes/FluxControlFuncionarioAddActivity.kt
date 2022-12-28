@@ -7,14 +7,13 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import vough.example.ipcagym.R
-import java.time.LocalDateTime
 
-class ActivityAddActivity : AppCompatActivity() {
+class FluxControlFuncionarioAddActivity : AppCompatActivity() {
     var client_adapter = ActivityAddAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_activity_funcionario)
+        setContentView(R.layout.activity_funcionario_flux_control_add)
 
         //Botao de concluir criação
         val buttonAdd = findViewById<Button>(R.id.buttonAddActivity)
@@ -26,12 +25,12 @@ class ActivityAddActivity : AppCompatActivity() {
 
         buttonEntry.setOnClickListener{
             state = true
-            Toast.makeText(this@ActivityAddActivity,"Activity marked as entry!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@FluxControlFuncionarioAddActivity,"Activity marked as entry!", Toast.LENGTH_SHORT).show()
         }
 
         buttonExit.setOnClickListener{
             state = false
-            Toast.makeText(this@ActivityAddActivity,"Activity marked as exit!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@FluxControlFuncionarioAddActivity,"Activity marked as exit!", Toast.LENGTH_SHORT).show()
         }
 
         buttonAdd.setOnClickListener{
@@ -54,7 +53,7 @@ class ActivityAddActivity : AppCompatActivity() {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(this@ActivityAddActivity,options[position], Toast.LENGTH_LONG).show()
+                Toast.makeText(this@FluxControlFuncionarioAddActivity,options[position], Toast.LENGTH_LONG).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {

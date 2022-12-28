@@ -147,7 +147,7 @@ class ActivitiesClienteActivity : AppCompatActivity(){
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            val rootView = layoutInflater.inflate(R.layout.activity_row,parent,false)
+            val rootView = layoutInflater.inflate(R.layout.row_activity,parent,false)
 
             //Guardar elementos em variaveis
             val date = rootView.findViewById<TextView>(R.id.activityTextView)
