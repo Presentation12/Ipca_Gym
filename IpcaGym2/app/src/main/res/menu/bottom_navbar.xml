@@ -5,11 +5,11 @@
     <item
         android:id="@+id/nav_fitness"
         android:icon="@drawable/ic_baseline_fitness_center_24"
-        android:title="Treino"/>
+        android:title="Workout"/>
     <item
         android:id="@+id/nav_diet"
         android:icon="@drawable/ic_baseline_dinner_dining_24"
-        android:title="Refeicoes"/>
+        android:title="Nutrition"/>
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_baseline_home_24"
@@ -17,9 +17,9 @@
     <item
         android:id="@+id/nav_shopping"
         android:icon="@drawable/ic_baseline_shopping_cart_24"
-        android:title="Loja"/>
+        android:title="Shop"/>
     <item
         android:id="@+id/nav_history"
         android:icon="@drawable/ic_baseline_history_24"
-        android:title="Atividade"/>
+        android:title="Activity"/>
 </menu>

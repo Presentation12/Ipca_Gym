@@ -11,6 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.IpcaGym">
+        <activity android:name=".funcionarios_classes.Activity_Funcionario_Marcacoes_Details"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity android:name=".cliente_classes.ActivityDetailClienteActivity"
             android:exported="false">
             <meta-data
@@ -30,7 +36,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".funcionarios_classes.FluxControlFuncionarioActivity"
+            android:name=".funcionarios_classes.Activity_Funcionario_Marcacoes"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
