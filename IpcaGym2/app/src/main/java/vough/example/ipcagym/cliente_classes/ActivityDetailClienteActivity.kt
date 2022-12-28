@@ -1,7 +1,8 @@
 package vough.example.ipcagym.cliente_classes
 
 import android.os.Bundle
-import android.widget.TextView
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Atividade
@@ -24,6 +25,25 @@ class ActivityDetailClienteActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.activityDetailHourExitValue).text = hora_saida
         findViewById<TextView>(R.id.activityDetailDate).text = data
 
-        //TODO: Foto perfil ter dropdown
+        val spinner = findViewById<Spinner>(R.id.spinner)
+        val options = arrayOf("Conta", "Definições", "Sair")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                Toast.makeText(this@ActivityDetailClienteActivity,options[position], Toast.LENGTH_LONG).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Do nothing
+            }
+        }
+
+        imageView.setOnClickListener {
+            spinner.performClick()
+        }
     }
 }
