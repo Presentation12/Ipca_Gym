@@ -58,7 +58,7 @@
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_navbar"
-                app:menu="@menu/bottom_navbar"
+                app:menu="@menu/bottom_navbar_funcionario"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="16dp"
@@ -106,7 +106,8 @@
         android:ems="10"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newActivityTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/newActivityTitle"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <EditText
         android:id="@+id/newIDClienteActivity"
@@ -117,7 +118,8 @@
         android:ems="10"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newIDGymActivity" />
+        app:layout_constraintTop_toBottomOf="@+id/newIDGymActivity"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <Button
         android:id="@+id/entryButton"

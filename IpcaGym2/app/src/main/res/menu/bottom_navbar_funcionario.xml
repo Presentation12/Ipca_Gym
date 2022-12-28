@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_fitness"
+        android:id="@+id/nav_clients"
         android:icon="@drawable/ic_baseline_people_24"
         android:title="Clients"/>
     <item
-        android:id="@+id/nav_diet"
+        android:id="@+id/nav_capacity"
         android:icon="@drawable/ic_baseline_incomplete_circle_24"
         android:title="Capacity"/>
     <item
