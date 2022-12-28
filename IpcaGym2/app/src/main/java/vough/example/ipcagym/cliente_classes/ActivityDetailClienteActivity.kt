@@ -5,13 +5,12 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import vough.example.ipcagym.R
-import vough.example.ipcagym.data_classes.Atividade
 
 class ActivityDetailClienteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_atividade_details)
+        setContentView(R.layout.activity_cliente_atividade_details)
 
         //fazer na outra activity
         val id_atividade = intent.getIntExtra("id_atividade", -1)
