@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_fitness"
+        android:icon="@drawable/ic_baseline_people_24"
+        android:title="Clients"/>
+    <item
+        android:id="@+id/nav_diet"
+        android:icon="@drawable/ic_baseline_incomplete_circle_24"
+        android:title="Capacity"/>
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Home"/>
+    <item
+        android:id="@+id/nav_shopping"
+        android:icon="@drawable/ic_baseline_shopping_cart_24"
+        android:title="Shop"/>
+    <item
+        android:id="@+id/nav_history"
+        android:icon="@drawable/ic_baseline_history_24"
+        android:title="Activity"/>
+</menu>

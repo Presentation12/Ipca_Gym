@@ -1,8 +1,6 @@
 package vough.example.ipcagym.cliente_classes
 
-import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +11,6 @@ import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Atividade
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 class ActivitiesClienteActivity : AppCompatActivity(){
 
@@ -83,7 +80,7 @@ class ActivitiesClienteActivity : AppCompatActivity(){
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
 
-        val imageView = findViewById<ImageView>(R.id.profile_pic)
+        val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
         val spinner = findViewById<Spinner>(R.id.spinner)
 
         val options = arrayOf("Conta", "Definições", "Sair")
@@ -156,7 +153,6 @@ class ActivitiesClienteActivity : AppCompatActivity(){
             val date = rootView.findViewById<TextView>(R.id.activityTextView)
 
             //Adicionar os textos
-            //date.text = activityList[position].data_saida?.dayOfMonth.toString() + activityList[position].data_saida?.month?.name + activityList[position].data_saida?.year.toString()
             date.text = activityList[position].data_saida?.format(date_formatter)
 
             //Clicar num rootView abre detalhes

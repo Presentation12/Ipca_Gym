@@ -7,7 +7,6 @@ import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Atividade
 
 class ActivityDetailClienteActivity : AppCompatActivity() {
-    private val activityDetailed = Atividade(null,null,null,null,null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
