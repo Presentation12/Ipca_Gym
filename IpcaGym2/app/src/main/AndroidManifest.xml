@@ -36,7 +36,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".funcionarios_classes.Activity_Funcionario_Marcacoes"
+            android:name=".funcionarios_classes.CapacityManagementActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
