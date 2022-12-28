@@ -1,6 +1,7 @@
 package vough.example.ipcagym.funcionarios_classes
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +13,11 @@ class CapacityManagementActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_capacity)
 
-        //findViewById<BottomAppBar>(R.id.bottom_navbar).setSelectedItemId(R.id.nav_capacity)
+        //select R.id.nav_capacity
+        val bottomAppBar = findViewById<BottomAppBar>(R.id.bottom_navbar)
+
+        //CODIGO PARA SELECIONAR ITEM ATUAL
+        //bottomAppBar.setSelectedItemId(R.id.nav_capacity)
 
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
         val spinner = findViewById<Spinner>(R.id.spinner)
