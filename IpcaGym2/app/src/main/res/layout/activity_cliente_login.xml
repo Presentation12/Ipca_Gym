@@ -14,7 +14,7 @@
         android:layout_width="384dp"
         android:layout_height="400dp"
         android:src="@drawable/logo_login"
-        app:layout_constraintBottom_toTopOf="@+id/code"
+        app:layout_constraintBottom_toTopOf="@+id/mail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.592"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +23,7 @@
         android:scaleType="centerCrop"/>
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/code"
+        android:id="@+id/mail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -32,7 +32,7 @@
         android:drawableLeft="@drawable/ic_baseline_person_24"
         android:drawablePadding="20dp"
         android:hint="Mail"
-        android:inputType="number"
+        android:inputType="textEmailAddress"
         android:padding="10dp"
 
         android:textColor="@color/white"

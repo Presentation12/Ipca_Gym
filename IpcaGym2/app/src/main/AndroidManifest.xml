@@ -23,6 +23,12 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".cliente_classes.PaginaInicialClienteActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity android:name=".funcionarios_classes.FluxControlFuncionarioAddActivity"
             android:exported="false">
             <meta-data
@@ -36,7 +42,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".funcionarios_classes.CapacityManagementActivity"
+            android:name=".cliente_classes.LoginClienteActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
