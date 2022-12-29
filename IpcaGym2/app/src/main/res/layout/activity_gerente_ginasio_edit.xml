@@ -84,11 +84,12 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#00FFFFFF"
         android:text="Alterar"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView11"
-        app:strokeColor="#000000"
+        app:strokeColor="#FFFFFF"
         app:strokeWidth="1dp" />
 
     <EditText

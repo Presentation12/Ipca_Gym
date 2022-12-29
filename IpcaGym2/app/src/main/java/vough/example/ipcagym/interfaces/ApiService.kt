@@ -15,7 +15,7 @@ interface ApiService {
     @GET("/api/Cliente")
     suspend fun GetAllCliente(): Response<List<Cliente>>
 
-    @POST("/api/Atividade")
+    @POST("/api/Cliente/login")
     suspend fun LoginCliente(@Body requestBody: RequestBody): Response<String>
 
     //ATIVIDADE

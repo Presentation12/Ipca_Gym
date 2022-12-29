@@ -41,8 +41,26 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".funcionarios_classes.Activity_Funcionario_Change_Password"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity android:name=".funcionarios_classes.Activity_Funcionario_RecoverPass"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity android:name=".cliente_classes.Activity_Cliente_RecoverPass"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
-            android:name=".cliente_classes.LoginClienteActivity"
+            android:name=".funcionarios_classes.FluxControlFuncionarioActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

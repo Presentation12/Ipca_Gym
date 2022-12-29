@@ -77,9 +77,9 @@
         android:elevation="10dp"
         android:text="Weight"
         android:textSize="12dp"
-        app:layout_constraintEnd_toEndOf="@+id/cardViewWeight"
-        app:layout_constraintStart_toStartOf="@+id/cardViewWeight"
-        app:layout_constraintTop_toTopOf="@+id/cardViewWeight" />
+        app:layout_constraintEnd_toEndOf="@+id/placeholderFuncionarioInfo"
+        app:layout_constraintStart_toStartOf="@+id/placeholderFuncionarioInfo"
+        app:layout_constraintTop_toTopOf="@+id/placeholderFuncionarioInfo" />
 
     <TextView
         android:id="@+id/textViewValueWeight"
@@ -89,8 +89,8 @@
         android:text="TextView"
         android:textColor="#fff"
         app:layout_constraintBottom_toTopOf="@+id/textViewKG"
-        app:layout_constraintEnd_toEndOf="@+id/cardViewWeight"
-        app:layout_constraintStart_toStartOf="@+id/cardViewWeight"
+        app:layout_constraintEnd_toEndOf="@+id/placeholderFuncionarioInfo"
+        app:layout_constraintStart_toStartOf="@+id/placeholderFuncionarioInfo"
         app:layout_constraintTop_toBottomOf="@+id/textViewWeight" />
 
     <TextView
@@ -101,9 +101,9 @@
         android:elevation="10dp"
         android:text="KG"
         android:textColor="#fff"
-        app:layout_constraintBottom_toBottomOf="@+id/cardViewWeight"
-        app:layout_constraintEnd_toEndOf="@+id/cardViewWeight"
-        app:layout_constraintStart_toStartOf="@+id/cardViewWeight" />
+        app:layout_constraintBottom_toBottomOf="@+id/placeholderFuncionarioInfo"
+        app:layout_constraintEnd_toEndOf="@+id/placeholderFuncionarioInfo"
+        app:layout_constraintStart_toStartOf="@+id/placeholderFuncionarioInfo" />
 
     <TextView
         android:id="@+id/textViewHeight"
@@ -178,7 +178,7 @@
         app:layout_constraintStart_toStartOf="@+id/cardViewFat" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewWeight"
+        android:id="@+id/placeholderFuncionarioInfo"
         android:layout_width="80dp"
         android:layout_height="90dp"
         android:layout_gravity="end"
@@ -197,8 +197,8 @@
         android:background="#393939"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toStartOf="@+id/cardViewFat"
-        app:layout_constraintStart_toEndOf="@+id/cardViewWeight"
-        app:layout_constraintTop_toTopOf="@+id/cardViewWeight">
+        app:layout_constraintStart_toEndOf="@+id/placeholderFuncionarioInfo"
+        app:layout_constraintTop_toTopOf="@+id/placeholderFuncionarioInfo">
 
     </androidx.cardview.widget.CardView>
 
@@ -211,7 +211,7 @@
         android:background="#393939"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cardViewWeight">
+        app:layout_constraintTop_toTopOf="@+id/placeholderFuncionarioInfo">
 
     </androidx.cardview.widget.CardView>
 
@@ -225,12 +225,12 @@
         android:text="Mark"
         android:textColor="#A5A5A5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardViewWeight"
+        app:layout_constraintTop_toBottomOf="@+id/placeholderFuncionarioInfo"
         app:strokeColor="#A5A5A5"
         app:strokeWidth="2dp" />
 
     <Button
-        android:id="@+id/buttonDetalhesMedidas"
+        android:id="@+id/changePassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

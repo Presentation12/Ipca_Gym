@@ -69,12 +69,12 @@
         android:background="@drawable/gradient"
         android:text="@string/sign_in"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/forgot_password"
+        app:layout_constraintBottom_toTopOf="@+id/forgetpassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/forgot_password"
+        android:id="@+id/forgetpassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"

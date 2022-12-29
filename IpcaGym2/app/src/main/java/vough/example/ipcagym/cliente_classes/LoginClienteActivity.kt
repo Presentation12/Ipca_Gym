@@ -4,11 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
 import vough.example.ipcagym.R
+import vough.example.ipcagym.funcionarios_classes.LoginFuncionarioActivity
 import vough.example.ipcagym.requests.ClienteRequests
 
 class LoginClienteActivity : AppCompatActivity() {
@@ -33,6 +34,13 @@ class LoginClienteActivity : AppCompatActivity() {
 
 
             //startActivity(Intent(this@LoginClienteActivity, PaginaInicialClienteActivity::class.java))
+        }
+
+        findViewById<TextView>(R.id.forgetpassword).setOnClickListener {
+            startActivity(
+                Intent(this@LoginClienteActivity,
+                    Activity_Cliente_RecoverPass::class.java)
+            )
         }
     }
 }
