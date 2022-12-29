@@ -26,7 +26,7 @@
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/buttonPlano"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#80FFFFFF"
