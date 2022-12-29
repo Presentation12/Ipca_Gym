@@ -224,7 +224,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView_personal_data" />
 
     <TextView
-        android:id="@+id/textView_name"
+        android:id="@+id/textView_campo_nome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -263,7 +263,7 @@
 
     <TextView
         android:elevation="10dp"
-        android:id="@+id/textView_email"
+        android:id="@+id/textView_email_campo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/button_guardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="75dp"
+        android:backgroundTint="@android:color/transparent"
+        android:elevation="10dp"
+        android:text="Guardar"
+        android:textAlignment="center"
+        android:textColor="#A5A5A5"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView_campos"
+        app:strokeColor="#A5A5A5"
+        app:strokeWidth="2dp" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_appbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:fabCradleMargin="10dp"
+            app:fabCradleRoundedCornerRadius="10dp"
+            app:fabCradleVerticalOffset="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/transparent_background"
+                app:menu="@menu/bottom_navbar_funcionario" />
+        </com.google.android.material.bottomappbar.BottomAppBar>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_campos"
+        android:layout_width="320dp"
+        android:layout_height="440dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        app:cardCornerRadius="21dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.307"/>
+
+    <TextView
+        android:elevation="10dp"
+        android:id="@+id/textView_novoRegisto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Novo registo"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="21dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView_campos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_code_edit"
+        android:layout_width="130dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#393939"
+        android:elevation="10dp"
+        app:cardCornerRadius="21dp"
+        app:layout_constraintStart_toStartOf="@+id/cardView_campos"
+        app:layout_constraintTop_toBottomOf="@+id/cardview_aniversario_edit">
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_data_nascimento"
+        android:layout_width="130dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#393939"
+        android:elevation="10dp"
+        app:cardCornerRadius="21dp"
+        app:layout_constraintStart_toStartOf="@+id/cardView_campos"
+        app:layout_constraintTop_toBottomOf="@+id/cardview_code_edit" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_aniversario_edit"
+        android:layout_width="130dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#393939"
+        android:elevation="10dp"
+        app:cardCornerRadius="21dp"
+        app:cardElevation="10dp"
+        app:layout_constraintStart_toStartOf="@+id/cardView_campos"
+        app:layout_constraintTop_toBottomOf="@+id/cardview_name_edit" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_name_edit"
+        android:layout_width="130dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#393939"
+        android:elevation="10dp"
+        app:cardCornerRadius="21dp"
+        app:layout_constraintStart_toStartOf="@+id/cardView_campos"
+        app:layout_constraintTop_toTopOf="@+id/cardView_campos" />
+
+    <TextView
+        android:id="@+id/textView_campo_nome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:elevation="10dp"
+        android:text="Nome"
+        android:textColor="#A5A5A5"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardview_name_edit"
+        app:layout_constraintStart_toStartOf="@+id/cardview_name_edit"
+        app:layout_constraintTop_toTopOf="@+id/cardview_name_edit" />
+
+    <TextView
+        android:id="@+id/textView_dataNascimento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:elevation="10dp"
+        android:text="Data Nascimento"
+        android:textColor="#A5A5A5"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardview_aniversario_edit"
+        app:layout_constraintStart_toStartOf="@+id/cardview_aniversario_edit"
+        app:layout_constraintTop_toTopOf="@+id/cardview_aniversario_edit" />
+
+    <TextView
+        android:id="@+id/textView_email_campo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:elevation="10dp"
+        android:text="Email"
+        android:textColor="#A5A5A5"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardview_data_nascimento"
+        app:layout_constraintStart_toStartOf="@+id/cardview_data_nascimento"
+        app:layout_constraintTop_toTopOf="@+id/cardview_data_nascimento" />
+
+    <TextView
+        android:id="@+id/textView_codigoPostal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:elevation="10dp"
+        android:text="Código Postal"
+        android:textColor="#A5A5A5"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardview_code_edit"
+        app:layout_constraintStart_toStartOf="@+id/cardview_code_edit"
+        app:layout_constraintTop_toTopOf="@+id/cardview_code_edit" />
+
+    <TextView
+        android:id="@+id/nome_cliente"
+        android:layout_width="133dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/gray_background"
+        android:elevation="10dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="#F4F4F4"
+        app:layout_constraintBottom_toBottomOf="@+id/cardview_name_edit"
+        app:layout_constraintEnd_toEndOf="@+id/cardView_campos"
+        app:layout_constraintStart_toEndOf="@+id/cardview_name_edit"
+        app:layout_constraintTop_toTopOf="@+id/cardview_name_edit" />
+
+    <TextView
+        android:id="@+id/data_nascimento"
+        android:layout_width="133dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/gray_background"
+        android:elevation="10dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="#F8F8F8"
+        app:layout_constraintBottom_toBottomOf="@+id/cardview_aniversario_edit"
+        app:layout_constraintEnd_toEndOf="@+id/cardView_campos"
+        app:layout_constraintStart_toEndOf="@+id/cardview_aniversario_edit"
+        app:layout_constraintTop_toTopOf="@+id/cardview_aniversario_edit" />
+
+    <TextView
+        android:textAlignment="center"
+        android:elevation="10dp"
+        android:id="@+id/codigo_postal"
+        android:layout_width="133dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/gray_background"
+        android:text="TextView"
+        android:textColor="#FAFAFA"
+        app:layout_constraintBottom_toBottomOf="@+id/cardview_code_edit"
+        app:layout_constraintEnd_toEndOf="@+id/cardView_campos"
+        app:layout_constraintStart_toEndOf="@+id/cardview_code_edit"
+        app:layout_constraintTop_toTopOf="@+id/cardview_code_edit" />
+
+    <TextView
+        android:elevation="10dp"
+        android:id="@+id/email"
+        android:layout_width="133dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/gray_background"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="#EDEBEB"
+        app:layout_constraintBottom_toBottomOf="@+id/cardview_data_nascimento"
+        app:layout_constraintEnd_toEndOf="@+id/cardView_campos"
+        app:layout_constraintStart_toEndOf="@+id/cardview_data_nascimento"
+        app:layout_constraintTop_toTopOf="@+id/cardview_data_nascimento" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView19"
+        android:layout_width="149dp"
+        android:layout_height="152dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/black"
+        android:elevation="10dp"
+        app:cardCornerRadius="21dp"
+        app:layout_constraintEnd_toEndOf="@+id/cardView_campos"
+        app:layout_constraintStart_toStartOf="@+id/cardView_campos"
+        app:layout_constraintTop_toBottomOf="@+id/cardview_data_nascimento">
+
+        <ImageView
+            android:id="@+id/imageView20"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:backgroundTint="@color/black"
+            android:scaleType="centerCrop"
+            tools:srcCompat="@tools:sample/avatars" />
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/imageView_upload"
+        android:layout_width="42dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView_campos"
+        app:layout_constraintEnd_toEndOf="@+id/cardView_campos"
+        app:layout_constraintStart_toStartOf="@+id/cardView_campos"
+        app:layout_constraintTop_toBottomOf="@+id/cardView19"
+        app:srcCompat="@android:drawable/stat_sys_upload" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
