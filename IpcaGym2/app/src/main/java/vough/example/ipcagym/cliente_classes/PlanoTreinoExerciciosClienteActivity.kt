@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Exercicio
+import java.time.Duration
 import java.time.format.DateTimeFormatter
 
 class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
@@ -93,6 +94,8 @@ class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
             return exercicios_plano_list[position].id_exercicio!!.toLong()
         }
 
+        //api para usar o Duration.ZERO
+        @RequiresApi(Build.VERSION_CODES.O)
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val rootView = layoutInflater.inflate(R.layout.row_exercicio,parent,false)
 
@@ -102,7 +105,7 @@ class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
 
             //Adicionar os textos
             exercicio_nome_view.text = exercicios_plano_list[position].nome
-            if (exercicios_plano_list[position].tempo == null)
+            if (exercicios_plano_list[position].tempo == Duration.ZERO)
             {
                 var seriesRepeticoes = exercicios_plano_list[position].series.toString() + " / " + exercicios_plano_list[position].repeticoes.toString()
                 exercicio_quantity_view.text = seriesRepeticoes
