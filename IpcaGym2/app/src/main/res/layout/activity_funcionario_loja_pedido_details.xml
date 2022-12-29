@@ -179,7 +179,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
         android:backgroundTint="@android:color/transparent"
-        android:text="Button"
+        android:text="Confirmar"
         android:textColor="#A5A5A5"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"

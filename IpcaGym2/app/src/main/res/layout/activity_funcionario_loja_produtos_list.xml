@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -42,24 +43,24 @@
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Our Products"
-        android:textStyle="bold"
-        android:textSize="16dp"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
+        android:text="Our Products"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/button7"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintTop_toTopOf="@+id/button7" />
 
     <ListView
         android:id="@+id/listviewProdutos"
+        android:layout_marginTop="10dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/button7" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -91,5 +92,18 @@
         </com.google.android.material.bottomappbar.BottomAppBar>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:backgroundTint="@android:color/transparent"
+        android:text="New"
+        android:textColor="#A5A5A5"
+        app:layout_constraintStart_toEndOf="@+id/textViewTitle"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:strokeColor="#A5A5A5"
+        app:strokeWidth="2dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
