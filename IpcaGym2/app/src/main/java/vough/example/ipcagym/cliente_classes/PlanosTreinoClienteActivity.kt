@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Plano_Treino
+import java.time.format.DateTimeFormatter
 
 class PlanosTreinoClienteActivity : AppCompatActivity() {
 
@@ -20,9 +21,7 @@ class PlanosTreinoClienteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cliente_treino_planos)
 
         val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
-
         val image_view = findViewById<ImageView>(R.id.profile_pic)
-
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = arrayOf("Conta", "Definições", "Sair")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
@@ -90,19 +89,19 @@ class PlanosTreinoClienteActivity : AppCompatActivity() {
             val root_view = layoutInflater.inflate(R.layout.row_plano_treino,parent,false)
 
             //Guardar elementos em variaveis
-            val plan = root_view.findViewById<TextView>(R.id.textViewPlanoTreino)
+            val plano_treino_view = root_view.findViewById<TextView>(R.id.textViewPlanoTreino)
 
             //Adicionar os textos
-            plan.text = planos_treino_list[position].tipo
+            plano_treino_view.text = planos_treino_list[position].tipo
 
             //Clicar num rootView abre o plano de treino
             root_view.setOnClickListener {
-                val intent = Intent(this@PlanosTreinoClienteActivity, ExercicioClienteActivity::class.java)
+                val intent = Intent(this@PlanosTreinoClienteActivity, PlanoTreinoExerciciosClienteActivity::class.java)
 
-                intent.putExtra("id_atividade", activityList[position].id_atividade)
-                intent.putExtra("data", activityList[position].data_saida?.format(date_formatter))
-                intent.putExtra("hora_entrada", activityList[position].data_entrada?.format(time_formatter))
-                intent.putExtra("hora_saida", activityList[position].data_saida?.format(time_formatter))
+                intent.putExtra("id_plano_treino", planos_treino_list[position].id_plano_treino)
+                intent.putExtra("id_ginasio", planos_treino_list[position].id_ginasio)
+                intent.putExtra("tipo", planos_treino_list[position].tipo)
+                intent.putExtra("foto_plano_treino", planos_treino_list[position].foto_plano_treino)
 
                 startActivity(intent)
             }

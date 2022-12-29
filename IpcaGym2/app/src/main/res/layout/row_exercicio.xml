@@ -39,7 +39,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textViewNomeExercicios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -51,7 +51,7 @@
         app:layout_constraintTop_toTopOf="@+id/cardView2" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/textViewSetsExercicio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -62,7 +62,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="@+id/cardView2"
         app:layout_constraintStart_toStartOf="@+id/cardView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewNomeExercicios" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
