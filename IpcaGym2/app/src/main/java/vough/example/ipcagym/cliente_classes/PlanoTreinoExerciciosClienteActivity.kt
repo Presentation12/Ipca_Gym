@@ -106,7 +106,7 @@ class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
             exercicio_nome_view.text = exercicios_plano_list[position].nome
 
             val exercicio_quantity_view = rootView.findViewById<TextView>(R.id.textViewSetsExercicio)
-            
+
             if (exercicios_plano_list[position].tempo == null)
             {
                 var seriesRepeticoes = exercicios_plano_list[position].series.toString() + " Series / " + exercicios_plano_list[position].repeticoes.toString() + " Reps"
