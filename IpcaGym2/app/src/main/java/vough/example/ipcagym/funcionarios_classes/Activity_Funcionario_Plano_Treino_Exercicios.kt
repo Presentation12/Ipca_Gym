@@ -15,6 +15,7 @@ import vough.example.ipcagym.data_classes.Plano_Treino
 import java.sql.Time
 import java.time.Duration
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.TimeZone
 
 class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
@@ -106,7 +107,8 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
                 if (listExercicios[position].tempo == null)
                     intent.putExtra("series", listExercicios[position].series.toString() + " x " + listExercicios[position].repeticoes.toString() + " sets")
                 else
-                    intent.putExtra("series", "A set of " + listExercicios[position].tempo.toString())
+                    intent.putExtra("series", "A set of " + listExercicios[position].tempo?.format(
+                        DateTimeFormatter.ofPattern("HH:mm:00")))
 
 
                 startActivity(intent)
