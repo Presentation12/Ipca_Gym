@@ -145,7 +145,7 @@
         app:layout_constraintTop_toTopOf="@+id/cardView18" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName3"
+        android:id="@+id/typePlanoValue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

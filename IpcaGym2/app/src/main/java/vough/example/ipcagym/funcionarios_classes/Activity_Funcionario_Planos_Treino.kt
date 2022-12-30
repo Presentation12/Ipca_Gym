@@ -1,18 +1,24 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import vough.example.ipcagym.R
 import vough.example.ipcagym.cliente_classes.PlanoTreinoExerciciosClienteActivity
+import vough.example.ipcagym.data_classes.Exercicio
 import vough.example.ipcagym.data_classes.Plano_Treino
+import java.time.LocalTime
 
 class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
     var planos_treino_list = arrayListOf<Plano_Treino>()
     var plano_adapter = AdapterPlanosTreino()
+    var receiverNewData : ActivityResultLauncher<Intent>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +44,16 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
         val list_view_planos_treino = findViewById<ListView>(R.id.listviewPlanosTreino)
         list_view_planos_treino.adapter = plano_adapter
 
+        receiverNewData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+
+            if(it.resultCode == Activity.RESULT_OK){
+                //Buscar variaveis no intent
+
+                //add na lista
+                plano_adapter.notifyDataSetChanged()
+            }
+        }
+
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 Toast.makeText(this@Activity_Funcionario_Planos_Treino, options[position], Toast.LENGTH_LONG).show()
@@ -53,7 +69,7 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.addPlanButton).setOnClickListener{
-            startActivity(Intent(this@Activity_Funcionario_Planos_Treino, Activity_Funcionario_Planos_Treino_Add::class.java))
+            receiverNewData?.launch(Intent(this@Activity_Funcionario_Planos_Treino, Activity_Funcionario_Planos_Treino_Add::class.java))
         }
     }
 

@@ -5,17 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView46"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
-        android:text="POR FAZER NUMERO DE REPS OU TIME"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView18"
-        app:layout_constraintEnd_toEndOf="@+id/cardView18"
-        app:layout_constraintStart_toStartOf="@+id/cardView18"
-        app:layout_constraintTop_toBottomOf="@+id/isSets" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="40dp"
@@ -101,7 +90,7 @@
         android:id="@+id/addNewPlanButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="#00FFFFFF"
         android:text="Add Exercise"
         android:textColor="#FFFFFF"
@@ -246,5 +235,94 @@
         android:textSize="21sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+    <EditText
+        android:id="@+id/timeMinExerciseValue"
+        android:layout_width="100dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="10dp"
+        android:ems="10"
+        android:inputType="date"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView18"
+        app:layout_constraintEnd_toStartOf="@+id/isSets"
+        app:layout_constraintStart_toStartOf="@+id/cardView18" />
+
+    <EditText
+        android:id="@+id/timeSecsExerciseValue"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="10dp"
+        android:ems="10"
+        android:inputType="date"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView18"
+        app:layout_constraintStart_toEndOf="@+id/textView53" />
+
+    <TextView
+        android:id="@+id/textView53"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:elevation="10dp"
+        android:text="Min"
+        app:layout_constraintBottom_toBottomOf="@+id/timeMinExerciseValue"
+        app:layout_constraintStart_toEndOf="@+id/timeMinExerciseValue"
+        app:layout_constraintTop_toTopOf="@+id/timeMinExerciseValue" />
+
+    <TextView
+        android:id="@+id/textView54"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:elevation="10dp"
+        android:text="Secs"
+        app:layout_constraintBottom_toBottomOf="@+id/timeSecsExerciseValue"
+        app:layout_constraintEnd_toEndOf="@+id/cardView18"
+        app:layout_constraintTop_toTopOf="@+id/timeSecsExerciseValue" />
+
+    <EditText
+        android:id="@+id/SetsExerciseValue"
+        android:layout_width="100dp"
+        android:layout_height="39dp"
+        android:elevation="10dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintEnd_toStartOf="@+id/isSets"
+        app:layout_constraintStart_toStartOf="@+id/cardView18"
+        app:layout_constraintTop_toTopOf="@+id/timeMinExerciseValue" />
+
+    <EditText
+        android:id="@+id/repetitionsExerciseValue"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/timeSecsExerciseValue"
+        app:layout_constraintTop_toTopOf="@+id/timeSecsExerciseValue" />
+
+    <TextView
+        android:id="@+id/textView55"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:elevation="10dp"
+        android:text="Sets"
+        app:layout_constraintBottom_toBottomOf="@+id/SetsExerciseValue"
+        app:layout_constraintStart_toEndOf="@+id/SetsExerciseValue"
+        app:layout_constraintTop_toTopOf="@+id/SetsExerciseValue" />
+
+    <TextView
+        android:id="@+id/textView56"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:elevation="10dp"
+        android:text="Times"
+        app:layout_constraintBottom_toBottomOf="@+id/timeSecsExerciseValue"
+        app:layout_constraintEnd_toEndOf="@+id/cardView18"
+        app:layout_constraintTop_toTopOf="@+id/timeSecsExerciseValue" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

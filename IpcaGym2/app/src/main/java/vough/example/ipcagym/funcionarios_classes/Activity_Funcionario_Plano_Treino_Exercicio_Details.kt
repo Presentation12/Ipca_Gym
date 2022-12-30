@@ -6,6 +6,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import org.w3c.dom.Text
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Exercicio
 import java.time.Duration
 
 class Activity_Funcionario_Plano_Treino_Exercicio_Details : AppCompatActivity() {
@@ -29,6 +30,10 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Details : AppCompatActivity() 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
+
+        findViewById<Button>(R.id.removeExercicioButton).setOnClickListener{
+
+        }
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {

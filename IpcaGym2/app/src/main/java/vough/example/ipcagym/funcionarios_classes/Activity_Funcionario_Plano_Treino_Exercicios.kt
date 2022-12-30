@@ -1,5 +1,6 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +9,8 @@ import android.view.View
 import android.view.View.inflate
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Exercicio
@@ -16,11 +19,13 @@ import java.sql.Time
 import java.time.Duration
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import java.util.TimeZone
+import java.util.*
+import kotlin.reflect.typeOf
 
 class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
     val listExercicios = arrayListOf<Exercicio>()
     val exercicio_adapter = ExercicioAdapter()
+    var receiverNewData : ActivityResultLauncher<Intent>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +47,33 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
         val list_view_planos_treino = findViewById<ListView>(R.id.listViewExercicios)
         list_view_planos_treino.adapter = exercicio_adapter
 
+        receiverNewData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+
+            if(it.resultCode == Activity.RESULT_OK){
+                val id_exercicio = it.data?.getIntExtra("id_exercicio", 0)
+                val id_plano_treino = it.data?.getIntExtra("id_plano_treino", 0)
+                val nome = it.data?.getStringExtra("nome")
+                val descricao = it.data?.getStringExtra("descricao")
+                val tipo = it.data?.getStringExtra("tipo")
+                val series = it.data?.getIntExtra("series", 0)
+                val repeticoes = it.data?.getIntExtra("repeticoes", 0)
+                val tempoMin = it.data?.getStringExtra("tempoMin")
+                val tempoSec = it.data?.getStringExtra("tempoSec")
+                val foto_exercicio = it.data?.getStringExtra("foto_exercicio")
+                val typeOfSet = it.data?.getStringExtra("aux")
+
+                if(typeOfSet == "time"){
+                    listExercicios.add(Exercicio(id_exercicio, id_plano_treino, nome, descricao, tipo, null,
+                        LocalTime.of(0, tempoMin.toString().toInt(), tempoSec.toString().toInt()), null, foto_exercicio))
+                }
+                else{
+                    listExercicios.add(Exercicio(id_exercicio, id_plano_treino, nome, descricao, tipo, series, null, repeticoes, foto_exercicio))
+                }
+
+                exercicio_adapter.notifyDataSetChanged()
+            }
+        }
+
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios,options[position], Toast.LENGTH_LONG).show()
@@ -57,7 +89,7 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.addExercicioButton).setOnClickListener{
-            startActivity(Intent(this@Activity_Funcionario_Plano_Treino_Exercicios, Activity_Funcionario_Plano_Treino_Exercicio_Add::class.java))
+            receiverNewData?.launch(Intent(this@Activity_Funcionario_Plano_Treino_Exercicios, Activity_Funcionario_Plano_Treino_Exercicio_Add::class.java))
         }
 
         findViewById<Button>(R.id.deletePlanoButton).setOnClickListener{
@@ -108,7 +140,7 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
                     intent.putExtra("series", listExercicios[position].series.toString() + " x " + listExercicios[position].repeticoes.toString() + " sets")
                 else
                     intent.putExtra("series", "A set of " + listExercicios[position].tempo?.format(
-                        DateTimeFormatter.ofPattern("HH:mm:00")))
+                        DateTimeFormatter.ofPattern("00:mm:ss")))
 
 
                 startActivity(intent)
