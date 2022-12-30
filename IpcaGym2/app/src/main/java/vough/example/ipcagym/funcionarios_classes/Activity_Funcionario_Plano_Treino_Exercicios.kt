@@ -28,7 +28,7 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
         listExercicios.add(Exercicio(1,1,"Exercicios",
             "hnviousgfiosbfkljsdhbvipdfbvopsdfbokvusdbiohjcbaoilhvcbsodbviasdhvcoiuhsdhfojsdbpiovsouhcvhpisdfjbv+<osdbf <odsihgfloiusdrwhgoipwesrbvojswberopigbsd<pivfh","tipo",3, null,3,null))
         listExercicios.add(Exercicio(1,1,"Exercicios", "descricao","tipo",4, null,5,null))
-        listExercicios.add(Exercicio(1,1,"Exercicios", "descricao","tipo",3, LocalTime.parse("00:30:00"),6,null))
+        listExercicios.add(Exercicio(1,1,"Exercicios", "descricao","tipo",3, LocalTime.of(0,30,0),6,null))
         listExercicios.add(Exercicio(1,1,"Exercicios", "descricao","tipo",null, LocalTime.parse("00:45:00"),null,null))
 
         val image_view = findViewById<ImageView>(R.id.profile_pic)
@@ -53,6 +53,14 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
 
         image_view.setOnClickListener {
             spinner.performClick()
+        }
+
+        findViewById<Button>(R.id.addExercicioButton).setOnClickListener{
+            startActivity(Intent(this@Activity_Funcionario_Plano_Treino_Exercicios, Activity_Funcionario_Plano_Treino_Exercicio_Add::class.java))
+        }
+
+        findViewById<Button>(R.id.deletePlanoButton).setOnClickListener{
+            //TODO: Remover um plano de treino
         }
     }
 

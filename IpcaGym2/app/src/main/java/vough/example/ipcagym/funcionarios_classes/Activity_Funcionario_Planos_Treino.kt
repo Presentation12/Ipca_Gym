@@ -40,7 +40,7 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(this@Activity_Funcionario_Planos_Treino,options[position], Toast.LENGTH_LONG).show()
+                Toast.makeText(this@Activity_Funcionario_Planos_Treino, options[position], Toast.LENGTH_LONG).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -50,6 +50,10 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
 
         image_view.setOnClickListener {
             spinner.performClick()
+        }
+
+        findViewById<Button>(R.id.addPlanButton).setOnClickListener{
+            startActivity(Intent(this@Activity_Funcionario_Planos_Treino, Activity_Funcionario_Planos_Treino_Add::class.java))
         }
     }
 

@@ -190,4 +190,30 @@
         </LinearLayout>
     </ScrollView>
 
+    <Button
+        android:id="@+id/editExercicioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#00FFFFFF"
+        android:text="Edit Exercise"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="@+id/placeholder"
+        app:layout_constraintTop_toBottomOf="@+id/placeholder"
+        app:strokeColor="#FFFFFF"
+        app:strokeWidth="2dp" />
+
+    <Button
+        android:id="@+id/removeExercicioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#00FFFFFF"
+        android:text="Remove Exercise"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="@+id/placeholder"
+        app:layout_constraintTop_toBottomOf="@+id/placeholder"
+        app:strokeColor="#FFFFFF"
+        app:strokeWidth="2dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
