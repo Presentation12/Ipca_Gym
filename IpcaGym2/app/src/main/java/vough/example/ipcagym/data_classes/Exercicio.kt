@@ -1,6 +1,8 @@
 package vough.example.ipcagym.data_classes
 
 import java.time.Duration
+import java.time.LocalTime
+import java.util.TimeZone
 
 class Exercicio {
     var id_exercicio: Int? = null
@@ -9,7 +11,7 @@ class Exercicio {
     var descricao : String? = null
     var tipo : String? = null
     var series : Int? = null
-    var tempo : Duration? = null
+    var tempo : LocalTime? = null
     var repeticoes : Int? = null
     var foto_exercicio : String? = null
 
@@ -20,7 +22,7 @@ class Exercicio {
         descricao : String?,
         tipo : String?,
         series : Int?,
-        tempo : Duration?,
+        tempo : LocalTime?,
         repeticoes : Int?,
         foto_exercicio : String?
 
