@@ -9,9 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Atividade
-import vough.example.ipcagym.requests.AtividadeRequests
-import vough.example.ipcagym.requests.AtividadeRequests.getAllAtividade
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class ActivitiesClienteActivity : AppCompatActivity(){
@@ -50,7 +47,7 @@ class ActivitiesClienteActivity : AppCompatActivity(){
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
-        val listViewClients = findViewById<ListView>(R.id.listview_activities)
+        val listViewClients = findViewById<ListView>(R.id.listview_funcionarios)
         listViewClients.adapter = client_adapter
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

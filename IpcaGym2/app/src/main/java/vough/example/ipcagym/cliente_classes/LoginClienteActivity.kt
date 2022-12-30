@@ -17,9 +17,9 @@ class LoginClienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_login)
 
-        val loginbutton = findViewById<Button>(R.id.button)
-        val mail = findViewById<EditText>(R.id.mail)
-        val pass = findViewById<EditText>(R.id.password)
+        val loginbutton = findViewById<Button>(R.id.buttonLogin)
+        val mail = findViewById<EditText>(R.id.mailLogin)
+        val pass = findViewById<EditText>(R.id.passwordLogin)
 
         loginbutton.setOnClickListener{
             ClienteRequests.login(GlobalScope, mail.text.toString(), pass.text.toString()){ result ->
@@ -36,7 +36,7 @@ class LoginClienteActivity : AppCompatActivity() {
             //startActivity(Intent(this@LoginClienteActivity, PaginaInicialClienteActivity::class.java))
         }
 
-        findViewById<TextView>(R.id.forgetpassword).setOnClickListener {
+        findViewById<Button>(R.id.forgetpassword).setOnClickListener {
             startActivity(
                 Intent(this@LoginClienteActivity,
                     Activity_Cliente_RecoverPass::class.java)

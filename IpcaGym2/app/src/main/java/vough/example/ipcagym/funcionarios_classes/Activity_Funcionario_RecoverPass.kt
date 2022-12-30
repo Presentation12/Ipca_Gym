@@ -14,8 +14,8 @@ class Activity_Funcionario_RecoverPass : AppCompatActivity() {
         setContentView(R.layout.activity_recover_password)
 
         findViewById<Button>(R.id.submitrecoverpassword).setOnClickListener{
-            var passNew = findViewById<EditText>(R.id.newpass).text
-            var passNewRepeated = findViewById<EditText>(R.id.newpasswordrepeat).text
+            var passNew = findViewById<EditText>(R.id.mailLogin).text
+            var passNewRepeated = findViewById<EditText>(R.id.passwordLogin).text
 
             if(passNew.toString() != passNewRepeated.toString()){
                 Toast.makeText(this@Activity_Funcionario_RecoverPass, "Palavras passe não coincidem", Toast.LENGTH_LONG).show()

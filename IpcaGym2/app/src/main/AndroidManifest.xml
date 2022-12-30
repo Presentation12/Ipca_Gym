@@ -60,7 +60,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".funcionarios_classes.FluxControlFuncionarioActivity"
+            android:name=".cliente_classes.LoginClienteActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
