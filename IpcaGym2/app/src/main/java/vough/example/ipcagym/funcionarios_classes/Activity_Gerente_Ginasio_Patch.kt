@@ -34,5 +34,7 @@ class Activity_Gerente_Ginasio_Patch : AppCompatActivity() {
         imageView.setOnClickListener {
             spinner.performClick()
         }
+
+        //TODO: Mostrar info atual + alterar info
     }
 }

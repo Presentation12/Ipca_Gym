@@ -9,8 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import vough.example.ipcagym.R
 
 class FluxControlFuncionarioAddActivity : AppCompatActivity() {
-    var client_adapter = ActivityAddAdapter()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_flux_control_add)
@@ -64,24 +62,5 @@ class FluxControlFuncionarioAddActivity : AppCompatActivity() {
         imageView.setOnClickListener {
             spinner.performClick()
         }
-    }
-
-    inner class ActivityAddAdapter : BaseAdapter(){
-        override fun getCount(): Int {
-            TODO("Not yet implemented")
-        }
-
-        override fun getItem(position: Int): Any {
-            TODO("Not yet implemented")
-        }
-
-        override fun getItemId(position: Int): Long {
-            TODO("Not yet implemented")
-        }
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            TODO("Not yet implemented")
-        }
-
     }
 }

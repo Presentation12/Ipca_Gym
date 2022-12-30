@@ -15,11 +15,16 @@ class Activity_Cliente_RecoverPass : AppCompatActivity() {
         setContentView(R.layout.activity_recover_password)
 
         findViewById<Button>(R.id.submitrecoverpassword).setOnClickListener{
-            var passNew = findViewById<EditText>(R.id.mailLogin).text
-            var passNewRepeated = findViewById<EditText>(R.id.passwordLogin).text
+            var passNew = findViewById<EditText>(R.id.newpass).text
+            var passNewRepeated = findViewById<EditText>(R.id.newpassrepeat).text
 
             if(passNew.toString() != passNewRepeated.toString()){
-                Toast.makeText(this@Activity_Cliente_RecoverPass, "Palavras passe não coincidem", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@Activity_Cliente_RecoverPass, "Passwords don't match!", Toast.LENGTH_LONG).show()
+            }
+            //TODO: Fixar if newpass == passNewRepeated
+            else if(passNew.toString() == passNewRepeated.toString()){
+                Toast.makeText(this@Activity_Cliente_RecoverPass, "Password changed!", Toast.LENGTH_LONG).show()
+                Intent(this@Activity_Cliente_RecoverPass,LoginFuncionarioActivity::class.java)
             }
         }
 
