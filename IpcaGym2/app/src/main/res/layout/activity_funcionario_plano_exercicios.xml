@@ -77,9 +77,35 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
+        app:layout_constraintBottom_toTopOf="@+id/addExercicioButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+    <Button
+        android:id="@+id/addExercicioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="16dp"
+        android:background="#00FFFFFF"
+        android:text="Add Exercise"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/deletePlanoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:background="#00FFFFFF"
+        android:text="Remove Plan"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:strokeColor="#FFFFFF" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
