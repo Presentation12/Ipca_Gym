@@ -105,7 +105,7 @@ class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
 
             //Adicionar os textos
             exercicio_nome_view.text = exercicios_plano_list[position].nome
-            if (exercicios_plano_list[position].tempo == Duration.ZERO)
+            if (exercicios_plano_list[position].tempo == null)
             {
                 var seriesRepeticoes = exercicios_plano_list[position].series.toString() + " / " + exercicios_plano_list[position].repeticoes.toString()
                 exercicio_quantity_view.text = seriesRepeticoes
