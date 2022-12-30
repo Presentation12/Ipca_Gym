@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:backgroundTint="#E5E5E5">
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -18,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/profile_pic_cliente_refeicao_page"
+            android:id="@+id/profile_pic_cliente_nutricao"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerCrop"
@@ -33,27 +32,62 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_gravity="end"
-        android:layout_marginEnd="20dp"
         android:clickable="false"
         android:spinnerMode="dropdown"
+        android:layout_marginEnd="20dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nutrition Goal"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="250dp"
-        android:layout_height="500dp"
+        android:layout_height="120dp"
         android:layout_gravity="end"
-        android:layout_margin="20dp"
-        android:backgroundTint="#393939"
+        android:layout_marginTop="10dp"
         app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle">
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/textViewMeal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:textStyle="bold"
+        android:text="Meals"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+    <ListView
+        android:id="@+id/listviewRefeicoes"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView">
-
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toBottomOf="@+id/textViewMeal" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -87,50 +121,25 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <TextView
-        android:id="@+id/textViewHora"
+        android:id="@+id/textViewCalorias"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="#D9D9D9"
         android:elevation="10dp"
-        android:text="Hora"
-        android:textColor="#000000"
+        android:text="TextView"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="@+id/cardView2"
         app:layout_constraintStart_toStartOf="@+id/cardView2"
         app:layout_constraintTop_toTopOf="@+id/cardView2" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewRefeicao"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="end"
-        android:layout_margin="40dp"
-        app:cardCornerRadius="40dp"
-
-        app:layout_constraintEnd_toEndOf="@+id/cardView2"
-        app:layout_constraintStart_toStartOf="@+id/cardView2"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHora">
-
-        <ImageView
-            android:id="@+id/refeicao_pic"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/background">
-
-        </ImageView>
-
-    </androidx.cardview.widget.CardView>
-
     <TextView
-        android:id="@+id/textViewDescricaoRefeicao"
-        android:layout_marginTop="10dp"
+        android:id="@+id/textViewTipoNutricao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Banana Podre"
+        android:layout_marginTop="10dp"
+        android:elevation="10dp"
+        android:text="TextView"
         app:layout_constraintEnd_toEndOf="@+id/cardView2"
         app:layout_constraintStart_toStartOf="@+id/cardView2"
-        app:layout_constraintTop_toBottomOf="@+id/cardViewRefeicao"
-        android:elevation="10dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/textViewCalorias" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

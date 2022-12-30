@@ -23,7 +23,8 @@ class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_treino_plano_exercicios)
 
-        exercicios_plano_list.add(Exercicio(1,1,"Flexoes","90 graus de flexao","Braços",1,null,10,null))
+        // hardcode
+        //exercicios_plano_list.add(Exercicio(1,1,"Flexoes","90 graus de flexao","Braços",1,null,10,null))
 
         val id_plano_treino = intent.getIntExtra("id_plano_treino", -1)
         val id_ginasio = intent.getIntExtra("id_ginasio", -1)

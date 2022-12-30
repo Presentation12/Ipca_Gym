@@ -5,14 +5,14 @@ class Plano_Nutricional {
     var id_ginasio: Int? = null
     var tipo : String? = null
     var calorias : Int? = null
-    var foto_plano_nutricional  : Int? = null
+    var foto_plano_nutricional  : String? = null
 
     constructor(
         id_plano_nutricional : Int?,
         id_ginasio: Int?,
         tipo : String?,
         calorias : Int?,
-        foto_plano_nutricional : Int?
+        foto_plano_nutricional : String?
 
     ) {
         this.id_plano_nutricional  = id_plano_nutricional

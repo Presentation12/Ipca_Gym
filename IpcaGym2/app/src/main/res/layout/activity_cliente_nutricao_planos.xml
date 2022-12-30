@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/profile_pic"
+            android:id="@+id/profile_pic_cliente_planos_nutricionais_page"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerCrop"
@@ -52,7 +52,9 @@
         android:id="@+id/listviewPlanosNutricionais"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
