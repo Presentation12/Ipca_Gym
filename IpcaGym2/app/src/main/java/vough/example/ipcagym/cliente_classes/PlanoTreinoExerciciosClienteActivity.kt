@@ -1,5 +1,6 @@
 package vough.example.ipcagym.cliente_classes
 
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -10,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Exercicio
-import java.time.Duration
-import java.time.format.DateTimeFormatter
+import vough.example.ipcagym.data_classes.Plano_Treino
+import java.time.LocalTime
 
 class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
 
@@ -21,6 +22,8 @@ class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_treino_plano_exercicios)
+
+        exercicios_plano_list.add(Exercicio(1,1,"Flexoes","90 graus de flexao","Braços",1,null,10,null))
 
         val id_plano_treino = intent.getIntExtra("id_plano_treino", -1)
         val id_ginasio = intent.getIntExtra("id_ginasio", -1)
@@ -99,18 +102,23 @@ class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val rootView = layoutInflater.inflate(R.layout.row_exercicio,parent,false)
 
-            //Guardar elementos em variaveis
             val exercicio_nome_view = rootView.findViewById<TextView>(R.id.textViewNomeExercicios)
-            val exercicio_quantity_view = rootView.findViewById<TextView>(R.id.textViewSetsExercicio)
-
-            //Adicionar os textos
             exercicio_nome_view.text = exercicios_plano_list[position].nome
-            if (exercicios_plano_list[position].tempo == Duration.ZERO)
+
+            val exercicio_quantity_view = rootView.findViewById<TextView>(R.id.textViewSetsExercicio)
+            if (exercicios_plano_list[position].tempo == null)
             {
-                var seriesRepeticoes = exercicios_plano_list[position].series.toString() + " / " + exercicios_plano_list[position].repeticoes.toString()
+                var seriesRepeticoes = exercicios_plano_list[position].series.toString() + " Series / " + exercicios_plano_list[position].repeticoes.toString() + " Reps"
                 exercicio_quantity_view.text = seriesRepeticoes
             }
             else exercicio_quantity_view.text = exercicios_plano_list[position].tempo.toString()
+
+            if (exercicios_plano_list[position].foto_exercicio != null)
+            {
+                val exercicio_image_view = rootView.findViewById<ImageView>(R.id.imageViewPlanoTreino)
+                val imageUri: Uri = Uri.parse(exercicios_plano_list[position].foto_exercicio)
+                exercicio_image_view.setImageURI(imageUri)
+            }
 
             return rootView
         }

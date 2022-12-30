@@ -1,6 +1,7 @@
 package vough.example.ipcagym.cliente_classes
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,10 @@ class PlanosTreinoClienteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_treino_planos)
+
+            planos_treino_list.add(Plano_Treino(1,1,"Emagrecer",null))
+            planos_treino_list.add(Plano_Treino(2,1,"Atletico",null))
+            planos_treino_list.add(Plano_Treino(3,1,"Definir",null))
 
         val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
         val image_view = findViewById<ImageView>(R.id.profile_pic)
@@ -88,11 +93,15 @@ class PlanosTreinoClienteActivity : AppCompatActivity() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val root_view = layoutInflater.inflate(R.layout.row_plano_treino,parent,false)
 
-            //Guardar elementos em variaveis
             val plano_treino_view = root_view.findViewById<TextView>(R.id.textViewPlanoTreino)
-
-            //Adicionar os textos
             plano_treino_view.text = planos_treino_list[position].tipo
+
+            if (planos_treino_list[position].foto_plano_treino != null)
+            {
+                val plano_treino_image_view = root_view.findViewById<ImageView>(R.id.imageViewPlanoTreino)
+                val imageUri: Uri = Uri.parse(planos_treino_list[position].foto_plano_treino)
+                plano_treino_image_view.setImageURI(imageUri)
+            }
 
             //Clicar num rootView abre o plano de treino
             root_view.setOnClickListener {
