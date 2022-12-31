@@ -44,7 +44,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/profile_pic_activity"
+            android:id="@+id/profile_pic_cliente_marcacao_details"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerCrop"
