@@ -44,7 +44,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView18"
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="250dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
@@ -60,12 +60,11 @@
         android:id="@+id/addNewPlanButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="32dp"
         android:backgroundTint="#00FFFFFF"
         android:text="Add Plan"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView18"
         app:strokeColor="#A5A5A5"
@@ -107,7 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="16dp"
         android:text="New Plan"
         android:textColor="#FFFFFF"
         android:textSize="21sp"
@@ -119,15 +118,15 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
         android:background="#2D2D2D"
         android:elevation="10dp"
         android:paddingLeft="5dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
         android:text="Photo"
+        app:layout_constraintBottom_toBottomOf="@+id/photoPlanoValue"
         app:layout_constraintStart_toStartOf="@+id/cardView18"
-        app:layout_constraintTop_toBottomOf="@+id/textView49" />
+        app:layout_constraintTop_toTopOf="@+id/photoPlanoValue" />
 
     <TextView
         android:id="@+id/textView49"
@@ -158,15 +157,44 @@
         app:layout_constraintStart_toEndOf="@+id/textView49"
         app:layout_constraintTop_toTopOf="@+id/textView49" />
 
-    <TextView
-        android:id="@+id/textView51"
+    <Button
+        android:id="@+id/CancelAddNewPlanButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="64dp"
+        android:backgroundTint="#002D2D2D"
+        android:text="Cancel"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/addNewPlanButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/addNewPlanButton"
+        app:strokeColor="#A5A5A5"
+        app:strokeWidth="2dp" />
+
+    <ImageView
+        android:id="@+id/photoPlanoValue"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:background="#202020"
         android:elevation="10dp"
-        android:text="TO DO PARA RECOLHER FOTO"
-        app:layout_constraintBottom_toBottomOf="@+id/textView50"
-        app:layout_constraintEnd_toEndOf="@+id/cardView18"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView18"
         app:layout_constraintStart_toEndOf="@+id/textView50"
-        app:layout_constraintTop_toTopOf="@+id/textView50" />
+        app:layout_constraintTop_toBottomOf="@+id/typePlanoValue"
+        tools:srcCompat="@drawable/ic_baseline_photo_24" />
+
+    <Button
+        android:id="@+id/addPhotoPlanNew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#00686868"
+        android:text="import"
+        app:layout_constraintBottom_toBottomOf="@+id/photoPlanoValue"
+        app:layout_constraintEnd_toEndOf="@+id/cardView18"
+        app:layout_constraintStart_toEndOf="@+id/photoPlanoValue"
+        app:layout_constraintTop_toTopOf="@+id/photoPlanoValue"
+        app:strokeWidth="2dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

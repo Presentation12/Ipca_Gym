@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -65,8 +65,39 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <!--<activity android:name=".funcionarios_classes.Activity_Funcionario_Plano_Treino_Exercicios"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>-->
+        <activity android:name=".funcionarios_classes.Activity_Funcionario_Plano_Treino_Exercicio_Details"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity android:name=".funcionarios_classes.Activity_Funcionario_Plano_Treino_Exercicio_Add"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity android:name=".funcionarios_classes.Activity_Funcionario_Planos_Treino_Add"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity android:name=".funcionarios_classes.Activity_Funcionario_Plano_Treino_Exercicios"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
         <activity
-            android:name=".cliente_classes.PlanosTreinoClienteActivity"
+            android:name=".funcionarios_classes.Activity_Funcionario_Planos_Treino"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
