@@ -1,6 +1,5 @@
 package vough.example.ipcagym.funcionarios_classes
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -8,10 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import vough.example.ipcagym.R
 
-class Activity_Funcionario_Plano_Treino_Exercicio_Add : AppCompatActivity() {
+class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_funcionario_plano_treino_exercicio_add)
+        setContentView(R.layout.activity_funcionario_plano_treino_exercicio_edit)
+
         val isSet = findViewById<CheckBox>(R.id.isSets)
         val isTime = findViewById<CheckBox>(R.id.isTime)
 
@@ -34,7 +34,7 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Add : AppCompatActivity() {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Add,options[position], Toast.LENGTH_LONG).show()
+                Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Edit,options[position], Toast.LENGTH_LONG).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -46,46 +46,41 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Add : AppCompatActivity() {
             spinner.performClick()
         }
 
-        findViewById<Button>(R.id.addNewPlanButton).setOnClickListener{
-            val intent = Intent()
+        findViewById<Button>(R.id.buttonEditExercise).setOnClickListener{
+            val nome = findViewById<EditText>(R.id.nameExerciseValue).text.toString()
+            val descricao = findViewById<EditText>(R.id.descriptionExerciseValue).text.toString()
+            val tipo = findViewById<EditText>(R.id.typeExerciseValue).text.toString()
+            //TODO: Tratar de foto
+            val foto_exercicio = "photo"
 
-            intent.putExtra("id_exercicio", 55)
-            //intent.putExtra("id_exercicio", findViewById<EditText>(R.id.nameExerciseValue).text.toString().toInt())
-            intent.putExtra("id_plano_treino", 1)
-            //intent.putExtra("id_plano_treino", findViewById<EditText>(R.id.id_plano_treino).text.toString().toInt())
-            intent.putExtra("nome", findViewById<EditText>(R.id.nameExerciseValue).text.toString())
-            intent.putExtra("descricao", findViewById<EditText>(R.id.descriptionExerciseValue).text.toString())
-            intent.putExtra("tipo", findViewById<EditText>(R.id.typeExerciseValue).text.toString())
-
-            intent.putExtra("foto_exercicio", "photo")
-
-            //TODO: VERIFICAR SE MINUTOS < 60 E SECS < 60
+            //TODO: VERIFICAR QUE MIN < 60 e SEC < 60
             if(isSet.isChecked){
-                intent.putExtra("tempoMin", "")
-                intent.putExtra("tempoSec", "")
+                val tempoMin = ""
+                val tempoSec = ""
 
-                intent.putExtra("repeticoes", findViewById<EditText>(R.id.repetitionsExerciseValue).text.toString().toInt())
-                intent.putExtra("series", findViewById<EditText>(R.id.SetsExerciseValue).text.toString().toInt())
+                val repeticoes = findViewById<EditText>(R.id.repetitionsExerciseValue).text.toString().toInt()
+                val series = findViewById<EditText>(R.id.SetsExerciseValue).text.toString().toInt()
 
-                intent.putExtra("aux", "set")
+                val aux = "set"
 
                 setResult(RESULT_OK, intent);
                 finish()
             }
             else if(isTime.isChecked){
-                intent.putExtra("series", -1)
-                intent.putExtra("repeticoes", -1)
+                val repeticoes = -1
+                val series = -1
 
-                intent.putExtra("tempoMin", findViewById<EditText>(R.id.timeMinExerciseValue).text.toString())
-                intent.putExtra("tempoSec", findViewById<EditText>(R.id.timeSecsExerciseValue).text.toString())
+                val tempoMin = findViewById<EditText>(R.id.timeMinExerciseValue).text.toString()
+                val tempoSec = findViewById<EditText>(R.id.timeSecsExerciseValue).text.toString()
 
-                intent.putExtra("aux", "time")
+                val aux = "time"
 
                 setResult(RESULT_OK, intent);
                 finish()
             }else{
-                Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Add, "You need to insert more information!", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Edit, "You need to insert more information!", Toast.LENGTH_LONG).show()
             }
+
         }
 
         isSet.setOnClickListener{

@@ -1,8 +1,13 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import org.w3c.dom.Text
 import vough.example.ipcagym.R
@@ -10,6 +15,9 @@ import vough.example.ipcagym.data_classes.Exercicio
 import java.time.Duration
 
 class Activity_Funcionario_Plano_Treino_Exercicio_Details : AppCompatActivity() {
+    var receiverEditData : ActivityResultLauncher<Intent>? = null
+    var exercicio_adapter = ExercicioAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_plano_treino_exercicio_detail)
@@ -31,8 +39,25 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Details : AppCompatActivity() 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
-        findViewById<Button>(R.id.removeExercicioButton).setOnClickListener{
+        receiverEditData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if(it.resultCode == Activity.RESULT_OK){
 
+                exercicio_adapter.notifyDataSetChanged()
+            }
+        }
+
+        findViewById<Button>(R.id.removeExercicioButton).setOnClickListener{
+            val intentDelete = Intent()
+
+            intentDelete.putExtra("id_remove", intent.getIntExtra("id_exercicio", 0))
+            intentDelete.putExtra("name_remove", intent.getStringExtra("nome"))
+
+            setResult(RESULT_OK, intentDelete);
+            finish()
+        }
+
+        findViewById<Button>(R.id.editExercicioButton).setOnClickListener{
+            receiverEditData?.launch(Intent(this@Activity_Funcionario_Plano_Treino_Exercicio_Details, Activity_Funcionario_Plano_Treino_Exercicio_Edit::class.java))
         }
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -48,5 +73,24 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Details : AppCompatActivity() 
         image_view.setOnClickListener {
             spinner.performClick()
         }
+    }
+
+    inner class ExercicioAdapter : BaseAdapter(){
+        override fun getCount(): Int {
+            TODO("Not yet implemented")
+        }
+
+        override fun getItem(position: Int): Any {
+            TODO("Not yet implemented")
+        }
+
+        override fun getItemId(position: Int): Long {
+            TODO("Not yet implemented")
+        }
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            TODO("Not yet implemented")
+        }
+
     }
 }
