@@ -26,6 +26,7 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
     val listExercicios = arrayListOf<Exercicio>()
     val exercicio_adapter = ExercicioAdapter()
     var receiverNewData : ActivityResultLauncher<Intent>? = null
+    var receiverDeleteData : ActivityResultLauncher<Intent>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +75,23 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
             }
         }
 
+        receiverDeleteData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if(it.resultCode == Activity.RESULT_OK){
+
+                val id_remove = it.data?.getIntExtra("id_remove", 0)
+                val name_remove = it.data?.getStringExtra("name_remove")
+
+                for(p in listExercicios){
+                    if(p.id_exercicio == id_remove && p.nome == name_remove){
+                        listExercicios.remove(p)
+                        break
+                    }
+                }
+
+                exercicio_adapter.notifyDataSetChanged()
+            }
+        }
+
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios,options[position], Toast.LENGTH_LONG).show()
@@ -96,6 +114,7 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
             val intentDelete = Intent()
 
             intentDelete.putExtra("id_remove", intent.getIntExtra("id_plano_treino", 0))
+            intentDelete.putExtra("name_remove", intent.getStringExtra("tipo"))
 
             setResult(RESULT_OK, intentDelete);
             finish()
@@ -148,7 +167,7 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
                         DateTimeFormatter.ofPattern("00:mm:ss")))
 
 
-                startActivity(intent)
+                receiverDeleteData?.launch(intent)
             }
 
             return rootView
