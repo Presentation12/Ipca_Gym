@@ -24,6 +24,7 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
     var planos_treino_list = arrayListOf<Plano_Treino>()
     var plano_adapter = AdapterPlanosTreino()
     var receiverNewData : ActivityResultLauncher<Intent>? = null
+    var receiverDeleteData : ActivityResultLauncher<Intent>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +62,20 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
                 }
 
                 planos_treino_list.add(Plano_Treino(id_plano_treino, id_ginasio, tipo, foto_plano_treino))
+                plano_adapter.notifyDataSetChanged()
+            }
+        }
+
+        receiverDeleteData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if(it.resultCode == Activity.RESULT_OK){
+
+                val id_remove = it.data?.getIntExtra("id_remove", 0)
+
+                for(p in planos_treino_list){
+                    if(p.id_plano_treino == id_remove)
+                        planos_treino_list.remove(p)
+                }
+
                 plano_adapter.notifyDataSetChanged()
             }
         }
@@ -121,7 +136,7 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
                 intent.putExtra("tipo", planos_treino_list[position].tipo)
                 intent.putExtra("foto_plano_treino", planos_treino_list[position].foto_plano_treino)
 
-                startActivity(intent)
+                receiverDeleteData?.launch(intent)
             }
 
             return rootView

@@ -93,7 +93,12 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.deletePlanoButton).setOnClickListener{
-            //TODO: Remover um plano de treino
+            val intentDelete = Intent()
+
+            intentDelete.putExtra("id_remove", intent.getIntExtra("id_plano_treino", 0))
+
+            setResult(RESULT_OK, intentDelete);
+            finish()
         }
     }
 

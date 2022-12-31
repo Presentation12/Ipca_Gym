@@ -31,11 +31,11 @@ class Activity_Funcionario_Planos_Treino_Add : AppCompatActivity() {
         findViewById<Button>(R.id.addNewPlanButton).setOnClickListener{
             val intent = Intent()
 
-            intent.putExtra("id_plano_treino", 1)
+            intent.putExtra("id_plano_treino", 55)
             intent.putExtra("id_ginasio", 1)
             intent.putExtra("foto_plano_treino", newImageValue)
             intent.putExtra("tipo", findViewById<EditText>(R.id.typePlanoValue).text.toString())
-            
+
             setResult(RESULT_OK, intent);
             finish()
         }
