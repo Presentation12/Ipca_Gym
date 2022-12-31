@@ -182,8 +182,8 @@
         android:layout_width="80dp"
         android:layout_height="90dp"
         android:layout_gravity="end"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="16dp"
         android:background="#393939"
         app:cardCornerRadius="20dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -230,7 +230,7 @@
         app:strokeWidth="2dp" />
 
     <Button
-        android:id="@+id/changePassword"
+        android:id="@+id/changeDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -439,7 +439,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/textView20"
+        android:id="@+id/textViewDateLastWorkout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -450,7 +450,7 @@
         app:layout_constraintTop_toTopOf="@+id/cardViewLastWorkout" />
 
     <TextView
-        android:id="@+id/textView21"
+        android:id="@+id/textViewTipoTreino"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="10dp"
@@ -459,7 +459,7 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonLastWorkoutDetails"
         app:layout_constraintEnd_toEndOf="@+id/cardViewLastWorkout"
         app:layout_constraintStart_toStartOf="@+id/cardViewLastWorkout"
-        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewDateLastWorkout" />
 
     <Button
         android:id="@+id/buttonLastWorkoutDetails"

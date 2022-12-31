@@ -47,7 +47,7 @@ class Cliente{
         peso: Double,
         altura: Int,
         gordura: Double,
-        foto_perfil: String,
+        foto_perfil: String?,
         estado: String
     ) {
         this.id_cliente = id_cliente
