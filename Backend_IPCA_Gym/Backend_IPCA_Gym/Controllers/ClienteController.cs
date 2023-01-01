@@ -37,7 +37,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// Método http get para retornar os clientes da base de dados
         /// </summary>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de clientes em formato Json</returns>
-        [HttpGet, Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -53,7 +53,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do cliente que é pretendido ser retornado</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a cliente em formato Json</returns>
-        [HttpGet("{targetID}"), Authorize(Roles = "Admin")]
+        [HttpGet("{targetID}")]
         public async Task<IActionResult> GetByID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");

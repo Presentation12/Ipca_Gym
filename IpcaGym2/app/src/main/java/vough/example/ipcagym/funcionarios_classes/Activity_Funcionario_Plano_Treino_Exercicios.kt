@@ -2,11 +2,8 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.View.inflate
 import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
@@ -14,19 +11,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Exercicio
-import vough.example.ipcagym.data_classes.Plano_Treino
-import java.sql.Time
-import java.time.Duration
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import java.util.*
-import kotlin.reflect.typeOf
 
 class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
     val listExercicios = arrayListOf<Exercicio>()
     val exercicio_adapter = ExercicioAdapter()
     var receiverNewData : ActivityResultLauncher<Intent>? = null
-    var receiverDeleteData : ActivityResultLauncher<Intent>? = null
+    var receiverEditData : ActivityResultLauncher<Intent>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +26,9 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
 
         listExercicios.add(Exercicio(1,1,"Exercicios",
             "hnviousgfiosbfkljsdhbvipdfbvopsdfbokvusdbiohjcbaoilhvcbsodbviasdhvcoiuhsdhfojsdbpiovsouhcvhpisdfjbv+<osdbf <odsihgfloiusdrwhgoipwesrbvojswberopigbsd<pivfh","tipo",3, null,3,null))
-        listExercicios.add(Exercicio(1,1,"Exercicios", "descricao","tipo",4, null,5,null))
-        listExercicios.add(Exercicio(1,1,"Exercicios", "descricao","tipo",3, LocalTime.of(0,30,0),6,null))
-        listExercicios.add(Exercicio(1,1,"Exercicios", "descricao","tipo",null, LocalTime.parse("00:45:00"),null,null))
+        listExercicios.add(Exercicio(2,1,"Exercicios1", "descricao","tipo",4, null,5,null))
+        listExercicios.add(Exercicio(3,1,"Exercicios2", "descricao","tipo",3, LocalTime.of(0,30,0),6,null))
+        listExercicios.add(Exercicio(4,1,"Exercicios3", "descricao","tipo",null, LocalTime.parse("00:45:00"),null,null))
 
         val image_view = findViewById<ImageView>(R.id.profile_pic)
         val spinner = findViewById<Spinner>(R.id.spinner)
@@ -75,16 +67,39 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
             }
         }
 
-        receiverDeleteData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        receiverEditData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if(it.resultCode == Activity.RESULT_OK){
+                val id_exercicio = it.data?.getIntExtra("id_exercicio", 0)
+                val id_plano_treino = it.data?.getIntExtra("id_plano_treino", 0)
+                val nome = it.data?.getStringExtra("nome")
+                Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios, id_exercicio.toString(), Toast.LENGTH_SHORT).show()
 
-                val id_remove = it.data?.getIntExtra("id_remove", 0)
-                val name_remove = it.data?.getStringExtra("name_remove")
+                val descricao = it.data?.getStringExtra("descricao")
+                val tipo = it.data?.getStringExtra("tipo")
+                val series = it.data?.getIntExtra("series", -2)
+                val repeticoes = it.data?.getIntExtra("repeticoes", -2)
+                val tempoMin = it.data?.getIntExtra("tempoMin", -1)
+                val tempoSec = it.data?.getIntExtra("tempoSec", -1)
+                val foto_exercicio = it.data?.getStringExtra("foto_exercicio")
+                val typeOfSet = it.data?.getStringExtra("aux")
 
-                for(p in listExercicios){
-                    if(p.id_exercicio == id_remove && p.nome == name_remove){
-                        listExercicios.remove(p)
-                        break
+                for(exercicio in listExercicios){
+                    if(exercicio.id_exercicio == id_exercicio && exercicio.id_plano_treino == id_plano_treino){
+                        exercicio.nome = nome
+                        exercicio.descricao = descricao
+                        exercicio.tipo = tipo
+                        exercicio.foto_exercicio = foto_exercicio
+
+                        if(typeOfSet == "time"){
+                            exercicio.tempo = LocalTime.of(0, tempoMin!!.toInt(), tempoSec!!.toInt())
+                            exercicio.repeticoes = null
+                            exercicio.series = null
+                        }
+                        else{
+                            exercicio.tempo = null
+                            exercicio.series = series
+                            exercicio.repeticoes = repeticoes
+                        }
                     }
                 }
 
@@ -94,7 +109,7 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios,options[position], Toast.LENGTH_LONG).show()
+                // Do nothing
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -108,16 +123,6 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
 
         findViewById<Button>(R.id.addExercicioButton).setOnClickListener{
             receiverNewData?.launch(Intent(this@Activity_Funcionario_Plano_Treino_Exercicios, Activity_Funcionario_Plano_Treino_Exercicio_Add::class.java))
-        }
-
-        findViewById<Button>(R.id.deletePlanoButton).setOnClickListener{
-            val intentDelete = Intent()
-
-            intentDelete.putExtra("id_remove", intent.getIntExtra("id_plano_treino", 0))
-            intentDelete.putExtra("name_remove", intent.getStringExtra("tipo"))
-
-            setResult(RESULT_OK, intentDelete);
-            finish()
         }
     }
 
@@ -175,13 +180,40 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
                     intent.putExtra("aux", "tempo")
                 }
 
+                startActivity(intent)
+            }
 
+            rootView.findViewById<Button>(R.id.apagarExercicioButton).setOnClickListener{
+                listExercicios.remove(listExercicios[position])
+                exercicio_adapter.notifyDataSetChanged()
+            }
 
-                receiverDeleteData?.launch(intent)
+            rootView.findViewById<Button>(R.id.patchExercicioButton).setOnClickListener{
+                val intentEdit = Intent(this@Activity_Funcionario_Plano_Treino_Exercicios, Activity_Funcionario_Plano_Treino_Exercicio_Edit::class.java)
+                var aux : String
+
+                intentEdit.putExtra("id_exercicio", listExercicios[position].id_exercicio)
+                intentEdit.putExtra("id_plano_treino", listExercicios[position].id_plano_treino)
+                intentEdit.putExtra("nome", listExercicios[position].nome)
+                intentEdit.putExtra("descricao", listExercicios[position].descricao)
+                intentEdit.putExtra("tipo", listExercicios[position].tipo)
+                intentEdit.putExtra("foto_exercicio", listExercicios[position].foto_exercicio)
+                intentEdit.putExtra("tempo_min", listExercicios[position].tempo?.minute.toString())
+                intentEdit.putExtra("tempo_sec", listExercicios[position].tempo?.second.toString())
+                intentEdit.putExtra("series", listExercicios[position].series.toString())
+                intentEdit.putExtra("repeticoes", listExercicios[position].repeticoes.toString())
+
+                if(listExercicios[position].tempo == null)
+                    aux = "series"
+                else
+                    aux = "tempo"
+
+                intentEdit.putExtra("aux", aux)
+
+                receiverEditData?.launch(intentEdit)
             }
 
             return rootView
         }
-
     }
 }

@@ -48,41 +48,41 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Add : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.addNewPlanButton).setOnClickListener{
-            val intent = Intent()
+            val intentEdit = Intent()
 
-            intent.putExtra("id_exercicio", 55)
+            intentEdit.putExtra("id_exercicio", intent.getIntExtra("id_exercicio", 0))
             //intent.putExtra("id_exercicio", findViewById<EditText>(R.id.nameExerciseValue).text.toString().toInt())
-            intent.putExtra("id_plano_treino", 1)
+            intentEdit.putExtra("id_plano_treino", intent.getIntExtra("id_plano_treino", 0))
             //intent.putExtra("id_plano_treino", findViewById<EditText>(R.id.id_plano_treino).text.toString().toInt())
-            intent.putExtra("nome", findViewById<EditText>(R.id.nameExerciseValue).text.toString())
-            intent.putExtra("descricao", findViewById<EditText>(R.id.descriptionExerciseValue).text.toString())
-            intent.putExtra("tipo", findViewById<EditText>(R.id.typeExerciseValue).text.toString())
+            intentEdit.putExtra("nome", findViewById<EditText>(R.id.nameExerciseValue).text.toString())
+            intentEdit.putExtra("descricao", findViewById<EditText>(R.id.descriptionExerciseValue).text.toString())
+            intentEdit.putExtra("tipo", findViewById<EditText>(R.id.typeExerciseValue).text.toString())
 
-            intent.putExtra("foto_exercicio", "photo")
+            intentEdit.putExtra("foto_exercicio", "photo")
 
             //TODO: VERIFICAR SE MINUTOS < 60 E SECS < 60
             if(isSet.isChecked){
-                intent.putExtra("tempoMin", "")
-                intent.putExtra("tempoSec", "")
+                intentEdit.putExtra("tempoMin", "")
+                intentEdit.putExtra("tempoSec", "")
 
-                intent.putExtra("repeticoes", findViewById<EditText>(R.id.repetitionsExerciseValue).text.toString().toInt())
-                intent.putExtra("series", findViewById<EditText>(R.id.SetsExerciseValue).text.toString().toInt())
+                intentEdit.putExtra("repeticoes", findViewById<EditText>(R.id.repetitionsExerciseValue).text.toString().toInt())
+                intentEdit.putExtra("series", findViewById<EditText>(R.id.SetsExerciseValue).text.toString().toInt())
 
-                intent.putExtra("aux", "set")
+                intentEdit.putExtra("aux", "set")
 
-                setResult(RESULT_OK, intent);
+                setResult(RESULT_OK, intentEdit);
                 finish()
             }
             else if(isTime.isChecked){
-                intent.putExtra("series", -1)
-                intent.putExtra("repeticoes", -1)
+                intentEdit.putExtra("series", -1)
+                intentEdit.putExtra("repeticoes", -1)
 
-                intent.putExtra("tempoMin", findViewById<EditText>(R.id.timeMinExerciseValue).text.toString())
-                intent.putExtra("tempoSec", findViewById<EditText>(R.id.timeSecsExerciseValue).text.toString())
+                intentEdit.putExtra("tempoMin", findViewById<EditText>(R.id.timeMinExerciseValue).text.toString())
+                intentEdit.putExtra("tempoSec", findViewById<EditText>(R.id.timeSecsExerciseValue).text.toString())
 
-                intent.putExtra("aux", "time")
+                intentEdit.putExtra("aux", "time")
 
-                setResult(RESULT_OK, intent);
+                setResult(RESULT_OK, intentEdit);
                 finish()
             }else{
                 Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Add, "You need to insert more information!", Toast.LENGTH_LONG).show()
