@@ -70,7 +70,12 @@ class Activity_Funcionario_Cliente_Add : AppCompatActivity() {
 
             var nomeCliente = findViewById<EditText>(R.id.editTextClienteNome).text.toString()
             var mailCliente = findViewById<EditText>(R.id.editTextClienteMail).text.toString()
-            var telemovelCliente = findViewById<EditText>(R.id.editTextClienteTelemovel).text.toString().toInt()
+            //TODO: trocar por condições de verificacao de campos preenchidos
+            var telemovelCliente : Int = 0
+            if (findViewById<EditText>(R.id.editTextClienteTelemovel).text.isEmpty() == false)
+            {
+                telemovelCliente = findViewById<EditText>(R.id.editTextClienteTelemovel).text.toString().toInt()
+            }
 
             // TODO: SUBSTITUIR OS NULOS e hardcodes DO OBJETO ABAIXO
             // objeto enviado para o backend

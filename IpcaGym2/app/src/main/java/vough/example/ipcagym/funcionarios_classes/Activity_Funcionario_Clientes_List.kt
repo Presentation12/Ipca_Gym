@@ -19,9 +19,7 @@ class Activity_Funcionario_Clientes_List : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_clientes_list)
 
-        //list_clientes.add(Cliente(1,1,1, LocalDateTime.of(2023,1,20,16,30,0),"Consulta Aberta","Ativo"))
-        //list_clientes.add(Cliente(2,1,1, LocalDateTime.of(2023,2,4,12,0,0),"Psicologia","Ativo"))
-        //list_clientes.add(Cliente(3,1,1, LocalDateTime.of(2023,10,10,18,10,0),"Nutricional","Ativo"))
+        list_clientes.add(Cliente(1,1,1,"Joaquim","gtgtgt@tgtg.tgtg",253440656,"","",76.6,176,54.4,null,"Ativo"))
 
         val image_view = findViewById<ImageView>(R.id.profile_pic_funcionario_list_clientes)
 
