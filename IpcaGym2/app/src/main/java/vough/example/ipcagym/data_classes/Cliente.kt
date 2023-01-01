@@ -44,9 +44,9 @@ class Cliente{
         telemovel: Int,
         pass_salt: String,
         pass_hash: String,
-        peso: Double,
-        altura: Int,
-        gordura: Double,
+        peso: Double?,
+        altura: Int?,
+        gordura: Double?,
         foto_perfil: String?,
         estado: String
     ) {

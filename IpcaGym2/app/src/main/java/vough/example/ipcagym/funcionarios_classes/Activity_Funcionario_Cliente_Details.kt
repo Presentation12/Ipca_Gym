@@ -59,7 +59,7 @@ class Activity_Funcionario_Cliente_Details : AppCompatActivity() {
         gorduraCliente.text = gordura.toString()
 
         // TODO: linkagem
-        findViewById<Button>(R.id.button_apagar).setOnClickListener {
+        findViewById<Button>(R.id.button_alterar).setOnClickListener {
             val intent = Intent(this@Activity_Funcionario_Cliente_Details, Activity_Funcionario_Cliente_Edit::class.java)
 
             intent.putExtra("id_cliente", id_cliente)

@@ -23,7 +23,6 @@ class Activity_Funcionario_Clientes_List : AppCompatActivity() {
         //list_clientes.add(Cliente(2,1,1, LocalDateTime.of(2023,2,4,12,0,0),"Psicologia","Ativo"))
         //list_clientes.add(Cliente(3,1,1, LocalDateTime.of(2023,10,10,18,10,0),"Nutricional","Ativo"))
 
-        val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
         val image_view = findViewById<ImageView>(R.id.profile_pic_funcionario_list_clientes)
 
         val spinner = findViewById<Spinner>(R.id.spinner)
@@ -44,9 +43,16 @@ class Activity_Funcionario_Clientes_List : AppCompatActivity() {
             spinner.performClick()
         }
 
+        //TODO: Enviar lista?
+        findViewById<Button>(R.id.buttonAddCliente).setOnClickListener {
+            val intent = Intent(this@Activity_Funcionario_Clientes_List, Activity_Funcionario_Cliente_Add::class.java)
+            startActivity(intent)
+        }
+
         val list_view_clientes = findViewById<ListView>(R.id.listviewClientes)
         list_view_clientes.adapter = clientes_adapter
 
+        val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
         bottom_navigation_view.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
