@@ -38,17 +38,17 @@ class Cliente{
     constructor(
         id_cliente: Int?,
         id_ginasio: Int,
-        id_plano_nutricional: Int,
-        nome: String,
-        mail: String,
-        telemovel: Int,
-        pass_salt: String,
-        pass_hash: String,
+        id_plano_nutricional: Int?,
+        nome: String?,
+        mail: String?,
+        telemovel: Int?,
+        pass_salt: String?,
+        pass_hash: String?,
         peso: Double?,
         altura: Int?,
         gordura: Double?,
         foto_perfil: String?,
-        estado: String
+        estado: String?
     ) {
         this.id_cliente = id_cliente
         this.id_ginasio = id_ginasio

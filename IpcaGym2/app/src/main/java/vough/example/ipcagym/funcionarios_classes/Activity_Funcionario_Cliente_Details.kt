@@ -63,9 +63,17 @@ class Activity_Funcionario_Cliente_Details : AppCompatActivity() {
             val intent = Intent(this@Activity_Funcionario_Cliente_Details, Activity_Funcionario_Cliente_Edit::class.java)
 
             intent.putExtra("id_cliente", id_cliente)
+            intent.putExtra("id_ginasio", id_ginasio)
+            intent.putExtra("id_plano_nutricional", id_plano_nutricional)
+            intent.putExtra("nome", nome)
+            intent.putExtra("mail", mail)
+            intent.putExtra("telemovel", telemovel)
+            intent.putExtra("pass_salt", pass_salt)
+            intent.putExtra("pass_hash", pass_hash)
+            intent.putExtra("foto_perfil", foto_perfil)
             intent.putExtra("peso", peso)
             intent.putExtra("altura", altura)
-            intent.putExtra("gordura", gordura)
+            intent.putExtra("estado", estado)
 
             startActivity(intent)
         }
