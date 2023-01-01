@@ -57,7 +57,28 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Details : AppCompatActivity() 
         }
 
         findViewById<Button>(R.id.editExercicioButton).setOnClickListener{
-            receiverEditData?.launch(Intent(this@Activity_Funcionario_Plano_Treino_Exercicio_Details, Activity_Funcionario_Plano_Treino_Exercicio_Edit::class.java))
+            val intentEdit = Intent(this@Activity_Funcionario_Plano_Treino_Exercicio_Details, Activity_Funcionario_Plano_Treino_Exercicio_Edit::class.java)
+
+            intentEdit.putExtra("id_exercicio", intent.getIntExtra("id_exercicio", 0))
+            intentEdit.putExtra("id_plano_treino", intent.getIntExtra("id_plano_treino", 0))
+            intentEdit.putExtra("nome", nome)
+            intentEdit.putExtra("descricao", descricao)
+            intentEdit.putExtra("tipo", tipo)
+            intentEdit.putExtra("foto_exercicio", intent.getStringExtra("series"))
+
+            if(intent.getStringExtra("aux").toString() == "tempo"){
+                intentEdit.putExtra("tempo_min", intent.getStringExtra("tempo_min_value"))
+                intentEdit.putExtra("tempo_sec", intent.getStringExtra("tempo_sec_value"))
+                intentEdit.putExtra("aux", "tempo")
+            }
+            else{
+                intentEdit.putExtra("series", intent.getStringExtra("series_value"))
+                intentEdit.putExtra("repeticoes", intent.getStringExtra("repeticoes_value"))
+                intentEdit.putExtra("aux", "series")
+            }
+            Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Details,
+                intentEdit.getStringExtra("series"), Toast.LENGTH_LONG).show()
+            receiverEditData?.launch(intentEdit)
         }
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

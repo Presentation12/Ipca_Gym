@@ -148,7 +148,8 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
                 var seriesRepeticoes = listExercicios[position].series.toString() + " x " + listExercicios[position].repeticoes.toString() + " sets"
                 exercicio_quantity_view.text = seriesRepeticoes
             }
-            else exercicio_quantity_view.text = "A set of " + listExercicios[position].tempo.toString()
+            else exercicio_quantity_view.text = "A set of " + listExercicios[position].tempo?.format(
+                DateTimeFormatter.ofPattern("00:mm:ss"))
 
             rootView.setOnClickListener{
                 val intent = Intent(this@Activity_Funcionario_Plano_Treino_Exercicios, Activity_Funcionario_Plano_Treino_Exercicio_Details::class.java)
@@ -160,11 +161,20 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
                 intent.putExtra("tipo", listExercicios[position].tipo)
                 intent.putExtra("foto_exercicio", listExercicios[position].foto_exercicio)
 
-                if (listExercicios[position].tempo == null)
+                if (listExercicios[position].tempo == null){
+                    intent.putExtra("series_value", listExercicios[position].series.toString())
+                    intent.putExtra("repeticoes_value", listExercicios[position].repeticoes.toString())
                     intent.putExtra("series", listExercicios[position].series.toString() + " x " + listExercicios[position].repeticoes.toString() + " sets")
-                else
+                    intent.putExtra("aux", "series")
+                }
+                else{
+                    intent.putExtra("tempo_min_value", listExercicios[position].tempo?.minute.toString())
+                    intent.putExtra("tempo_sec_value", listExercicios[position].tempo?.second.toString())
                     intent.putExtra("series", "A set of " + listExercicios[position].tempo?.format(
                         DateTimeFormatter.ofPattern("00:mm:ss")))
+                    intent.putExtra("aux", "tempo")
+                }
+
 
 
                 receiverDeleteData?.launch(intent)

@@ -11,9 +11,9 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_plano_treino_exercicio_edit)
-
-        val isSet = findViewById<CheckBox>(R.id.isSets)
-        val isTime = findViewById<CheckBox>(R.id.isTime)
+        //TODO: CASO AMBAS AS CAIXAS SEJAM DESATIVADAS
+        var isSet = findViewById<CheckBox>(R.id.isSets)
+        var isTime = findViewById<CheckBox>(R.id.isTime)
 
         findViewById<CheckBox>(R.id.timeMinExerciseValue).isInvisible = true
         findViewById<CheckBox>(R.id.timeSecsExerciseValue).isInvisible = true
@@ -24,6 +24,33 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
         findViewById<CheckBox>(R.id.repetitionsExerciseValue).isInvisible = true
         findViewById<CheckBox>(R.id.textView55).isInvisible = true
         findViewById<CheckBox>(R.id.textView56).isInvisible = true
+
+        findViewById<EditText>(R.id.nameExerciseValue).setText(intent.getStringExtra("nome"))
+        findViewById<EditText>(R.id.descriptionExerciseValue).setText(intent.getStringExtra("descricao"))
+        findViewById<EditText>(R.id.typeExerciseValue).setText(intent.getStringExtra("tipo"))
+
+        if(intent.getStringExtra("aux") == "tempo"){
+            findViewById<CheckBox>(R.id.timeMinExerciseValue).isInvisible = false
+            findViewById<CheckBox>(R.id.timeSecsExerciseValue).isInvisible = false
+            findViewById<CheckBox>(R.id.textView53).isInvisible = false
+            findViewById<CheckBox>(R.id.textView54).isInvisible = false
+            isTime.isChecked = true
+            isSet.isChecked = false
+
+            findViewById<EditText>(R.id.timeMinExerciseValue).setText(intent.getStringExtra("tempo_min"))
+            findViewById<EditText>(R.id.timeSecsExerciseValue).setText(intent.getStringExtra("tempo_sec"))
+        }
+        else if(intent.getStringExtra("aux") == "series"){
+            findViewById<CheckBox>(R.id.SetsExerciseValue).isInvisible = false
+            findViewById<CheckBox>(R.id.repetitionsExerciseValue).isInvisible = false
+            findViewById<CheckBox>(R.id.textView55).isInvisible = false
+            findViewById<CheckBox>(R.id.textView56).isInvisible = false
+            isTime.isChecked = false
+            isSet.isChecked = true
+
+            findViewById<EditText>(R.id.repetitionsExerciseValue).setText(intent.getStringExtra("repeticoes"))
+            findViewById<EditText>(R.id.SetsExerciseValue).setText(intent.getStringExtra("series"))
+        }
 
         val image_view = findViewById<ImageView>(R.id.profile_pic)
         val spinner = findViewById<Spinner>(R.id.spinner)
@@ -80,6 +107,7 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
             }else{
                 Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Edit, "You need to insert more information!", Toast.LENGTH_LONG).show()
             }
+
 
         }
 

@@ -12,6 +12,7 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Add : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_plano_treino_exercicio_add)
+        //TODO: CASO AMBAS AS CAIXAS SEJAM DESATIVADAS
         val isSet = findViewById<CheckBox>(R.id.isSets)
         val isTime = findViewById<CheckBox>(R.id.isTime)
 
