@@ -7,26 +7,33 @@
 
     <EditText
         android:id="@+id/typePlanoValue_campo_estrelas"
-        android:layout_width="193dp"
-        android:layout_height="27dp"
-        android:layout_marginBottom="80dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:layout_marginEnd="90dp"
+        android:layout_marginBottom="70dp"
         android:elevation="10dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/cardView18"
         app:layout_constraintEnd_toEndOf="@+id/cardView18"
-        app:layout_constraintStart_toEndOf="@+id/textView_stars" />
+        app:layout_constraintStart_toEndOf="@+id/estrelas"
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
     <EditText
         android:id="@+id/typePlanoValue_campo_comentario"
-        android:layout_width="193dp"
-        android:layout_height="27dp"
-        android:layout_marginTop="80dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="16dp"
         android:elevation="10dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@+id/cardView18"
-        app:layout_constraintStart_toEndOf="@+id/textView_comentario"
+        app:layout_constraintStart_toEndOf="@+id/comentario"
         app:layout_constraintTop_toTopOf="@+id/cardView18"
         tools:ignore="SpeakableTextPresentCheck" />
 
@@ -37,7 +44,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/addNewPlanButton_avaliate"
+        app:layout_constraintBottom_toTopOf="@+id/button_avaliar_ginasio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,31 +53,30 @@
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:id="@+id/cancelAddNewPlanButton_back"
+        android:id="@+id/buttom_starts_gym"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginEnd="70dp"
         android:backgroundTint="#002D2D2D"
         android:text="Voltar"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/button_avaliar_ginasio"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/addNewPlanButton_avaliate"
+        app:layout_constraintTop_toTopOf="@+id/button_avaliar_ginasio"
         app:strokeColor="#A5A5A5"
         app:strokeWidth="2dp" />
 
     <Button
-        android:id="@+id/addNewPlanButton_avaliate"
+        android:id="@+id/button_avaliar_ginasio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="70dp"
         android:layout_marginBottom="100dp"
         android:backgroundTint="#00FFFFFF"
         android:text="Avaliar"
         android:textColor="#FFFFFF"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:strokeColor="#A5A5A5"
@@ -152,32 +158,32 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/textView_comentario"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:id="@+id/comentario"
+        android:layout_width="97dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="80dp"
         android:background="#2D2D2D"
         android:elevation="10dp"
         android:paddingLeft="5dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
-        android:text="Type"
+        android:text="Comentario"
         app:layout_constraintStart_toStartOf="@+id/cardView18"
         app:layout_constraintTop_toTopOf="@+id/cardView18" />
 
     <TextView
-        android:id="@+id/textView_stars"
+        android:id="@+id/estrelas"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="80dp"
         android:background="#2D2D2D"
         android:elevation="10dp"
         android:paddingLeft="5dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
-        android:text="Type"
+        android:text="Estrelas"
         app:layout_constraintBottom_toBottomOf="@+id/cardView18"
         app:layout_constraintStart_toStartOf="@+id/cardView18" />
 
