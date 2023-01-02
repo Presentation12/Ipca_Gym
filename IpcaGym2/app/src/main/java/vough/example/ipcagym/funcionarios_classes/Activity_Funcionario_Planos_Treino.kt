@@ -57,9 +57,8 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
                 val tipo = it.data?.getStringExtra("tipo")
                 var foto_plano_treino = it.data?.getStringExtra("foto_plano_treino")
 
-                if(foto_plano_treino == "" || foto_plano_treino == null){
+                if(foto_plano_treino == "")
                     foto_plano_treino = null
-                }
 
                 planos_treino_list.add(Plano_Treino(id_plano_treino, id_ginasio, tipo, foto_plano_treino))
                 plano_adapter.notifyDataSetChanged()

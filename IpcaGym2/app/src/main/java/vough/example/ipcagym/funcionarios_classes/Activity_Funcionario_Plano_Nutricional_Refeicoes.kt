@@ -1,6 +1,8 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.LayoutInflater
@@ -8,9 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import org.w3c.dom.Text
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Exercicio
 import vough.example.ipcagym.data_classes.Refeicao
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -18,6 +23,7 @@ import java.time.format.DateTimeFormatter
 class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
     val listRefeicoes = arrayListOf<Refeicao>()
     val refeicaoAdapter = RefeicoesAdapter()
+    var receiverNewData : ActivityResultLauncher<Intent>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +48,28 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.listViewRefeicoes)
         listView.adapter = refeicaoAdapter
 
+        receiverNewData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+
+            if(it.resultCode == Activity.RESULT_OK){
+                //Buscar dados no intent
+                val id_refeicao = it.data?.getIntExtra("id_refeicao", -1)
+                val id_plano_nutricional = it.data?.getIntExtra("id_plano_nutricional", -1)
+                val descricao = it.data?.getStringExtra("descricao")
+                val hora_hour = it.data?.getIntExtra("hora_hour", -1)
+                val hora_minute = it.data?.getIntExtra("hora_minute", -1)
+                var foto_refeicao = it.data?.getStringExtra("foto_refeicao")
+
+                Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, foto_refeicao, Toast.LENGTH_SHORT).show()
+
+                if(foto_refeicao == "")
+                    foto_refeicao = null
+
+                //Inserir dados na nova refeicao
+                listRefeicoes.add(Refeicao(id_refeicao,id_plano_nutricional,descricao, LocalTime.of(hora_hour!!, hora_minute!!), foto_refeicao))
+                refeicaoAdapter.notifyDataSetChanged()
+            }
+        }
+
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 // Do nothing
@@ -60,6 +88,10 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
 
             setResult(RESULT_OK, deleteIntent)
             finish()
+        }
+
+        findViewById<Button>(R.id.addNewRefeicaoButton).setOnClickListener{
+            receiverNewData?.launch(Intent(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, Activity_Funcionario_Plano_Nutricional_Refeicao_Add::class.java))
         }
 
 
@@ -87,6 +119,7 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
 
             rootView.findViewById<TextView>(R.id.textViewHoraRefeicao).text = listRefeicoes[position].hora?.format(
                 DateTimeFormatter.ofPattern("HH:mm"))
+            rootView.findViewById<ImageView>(R.id.imageViewRefeicao).setImageURI(listRefeicoes[position].foto_refeicao?.toUri())
 
             rootView.setOnClickListener{
                 val intent = Intent(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, Activity_Funcionario_Plano_Nutricional_Refeicao_Details::class.java)
@@ -107,6 +140,21 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
 
             return rootView
         }
+    }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            100 -> {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission was granted. Do the read operation.
+                } else {
+                    // Permission denied. Show a message to the user.
+                }
+                return
+            }
+            // Handle other request codes.
+        }
     }
 }
