@@ -1,7 +1,6 @@
 package vough.example.ipcagym.funcionarios_classes
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -15,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Plano_Nutricional
 
-class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
+class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
     val listPlanosNutricionais = arrayListOf<Plano_Nutricional>()
     val adapter_nutri = PlanNutriAdapter()
 
@@ -26,7 +25,7 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
         listPlanosNutricionais.add(Plano_Nutricional(1,1, "Emagrecer", 2500, "photo"))
         listPlanosNutricionais.add(Plano_Nutricional(2,1, "Engordar", 5500, "photo2"))
         listPlanosNutricionais.add(Plano_Nutricional(3,1, "Definir", 3500, null))
-        
+
         val image_view = findViewById<ImageView>(R.id.profile_pic)
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = arrayOf("Conta", "Definições", "Sair")
