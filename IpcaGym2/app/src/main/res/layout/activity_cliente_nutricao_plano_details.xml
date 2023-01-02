@@ -142,4 +142,18 @@
         app:layout_constraintStart_toStartOf="@+id/cardView2"
         app:layout_constraintTop_toBottomOf="@+id/textViewCalorias" />
 
+    <Button
+        android:id="@+id/buttonSubmeterNovoPlanoCliente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
+        android:text="Submit"
+        android:textColor="#A5A5A5"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView2"
+        app:layout_constraintEnd_toEndOf="@+id/cardView2"
+        app:layout_constraintStart_toStartOf="@+id/cardView2"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTipoNutricao"
+        app:strokeColor="#A5A5A5"
+        app:strokeWidth="2dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

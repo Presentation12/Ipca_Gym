@@ -52,6 +52,11 @@ class NutricaoPlanoDetalhesClienteActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
+        //TODO: fazer troca de plano do cliente neste butao
+        findViewById<Button>(R.id.buttonSubmeterNovoPlanoCliente).setOnClickListener {
+            // tem de se passar o cliente atual ou aceder a ele para leterar o id do plano nutricional
+        }
+
         val list_view_refeicoes = findViewById<ListView>(R.id.listviewRefeicoes)
         list_view_refeicoes.adapter = refeicoes_adapter
 
