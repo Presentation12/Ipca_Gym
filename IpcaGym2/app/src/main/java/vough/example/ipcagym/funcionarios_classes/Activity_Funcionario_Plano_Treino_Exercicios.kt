@@ -121,6 +121,16 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
             spinner.performClick()
         }
 
+        findViewById<Button>(R.id.deletePlanoButton).setOnClickListener{
+            val deleteIntent = Intent()
+
+            deleteIntent.putExtra("id_remove", intent.getIntExtra("id_plano_treino", -1))
+            deleteIntent.putExtra("tipo_remove", intent.getStringExtra("tipo"))
+
+            setResult(RESULT_OK, deleteIntent)
+            finish()
+        }
+
         findViewById<Button>(R.id.addExercicioButton).setOnClickListener{
             receiverNewData?.launch(Intent(this@Activity_Funcionario_Plano_Treino_Exercicios, Activity_Funcionario_Plano_Treino_Exercicio_Add::class.java))
         }

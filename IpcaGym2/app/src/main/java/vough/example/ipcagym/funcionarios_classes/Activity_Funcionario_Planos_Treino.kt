@@ -70,10 +70,10 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
             if(it.resultCode == Activity.RESULT_OK){
 
                 val id_remove = it.data?.getIntExtra("id_remove", 0)
-                val name_remove = it.data?.getStringExtra("name_remove")
+                val tipo_remove = it.data?.getStringExtra("tipo_remove")
 
                 for(p in planos_treino_list){
-                    if(p.id_plano_treino == id_remove && p.tipo == name_remove){
+                    if(p.id_plano_treino == id_remove && p.tipo == tipo_remove){
                         planos_treino_list.remove(p)
                         break
                     }
