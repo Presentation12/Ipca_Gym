@@ -90,11 +90,11 @@
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonAddFuncionario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/transparent"
-        android:text="Guardar"
+        android:text="Add"
         android:textColor="#A5A5A5"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -125,7 +125,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/editTextFuncionarioNome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -139,7 +139,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardview" />
 
     <EditText
-        android:id="@+id/editTextNumber"
+        android:id="@+id/editTextCodigoFuncionario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/ic_baseline_qr_code_2_24"
@@ -150,7 +150,7 @@
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextFuncionarioNome" />
 
     <EditText
         android:id="@+id/editTextTextPassword"
