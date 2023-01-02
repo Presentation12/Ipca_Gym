@@ -87,7 +87,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="16dp"
                 android:background="@drawable/transparent_background"
-                app:menu="@menu/bottom_navbar" />
+                app:menu="@menu/bottom_navbar_funcionario" />
         </com.google.android.material.bottomappbar.BottomAppBar>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
