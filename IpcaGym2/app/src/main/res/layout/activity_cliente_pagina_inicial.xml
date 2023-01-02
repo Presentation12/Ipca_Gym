@@ -6,15 +6,43 @@
     android:layout_height="match_parent"
     android:background="#2D2D2D">
 
+    <Button
+        android:id="@+id/button_avaliar"
+        android:layout_width="98dp"
+        android:layout_height="49dp"
+        android:backgroundTint="@android:color/tertiary_text_light"
+        android:text="Avaliar"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cardView11"
+        app:layout_constraintTop_toBottomOf="@+id/textView_avaliar"
+        app:strokeColor="@color/teal_200" />
+
+    <TextView
+        android:id="@+id/textView_avaliar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="50dp"
+        android:elevation="10dp"
+        android:text="Avalie-nos"
+        android:textSize="21sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.758"
+        app:layout_constraintStart_toEndOf="@+id/textView199"
+        app:layout_constraintTop_toBottomOf="@+id/cardView_team_members" />
+
     <TextView
         android:id="@+id/textView199"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="16dp"
         android:elevation="10dp"
         android:text="Capacidade"
         android:textSize="21sp"
-        app:layout_constraintStart_toStartOf="@+id/textView18"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView_team_members" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -258,15 +286,16 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView11"
-        android:layout_width="295dp"
-        android:layout_height="104dp"
+        android:layout_width="142dp"
+        android:layout_height="106dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="16dp"
         app:cardCornerRadius="21dp"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView199">
+        app:layout_constraintTop_toBottomOf="@+id/textView199"
+        app:layout_constraintVertical_bias="1.0">
 
     </androidx.cardview.widget.CardView>
 
