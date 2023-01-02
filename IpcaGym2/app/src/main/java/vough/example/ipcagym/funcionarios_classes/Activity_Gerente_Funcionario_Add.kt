@@ -72,20 +72,22 @@ class Activity_Gerente_Funcionario_Add : AppCompatActivity() {
         // butao de adicionar funcionario novo, e volta a página ida lista de funcionários
         findViewById<Button>(R.id.buttonAddFuncionario).setOnClickListener {
             val intent = Intent(this@Activity_Gerente_Funcionario_Add, Activity_Gerente_Funcionarios_List::class.java)
-
+            
             //TODO: trocar por condições de verificacao de campos preenchidos
-            var nome : String = "Default"
-            var codigo : Int = 0
+            var nome : String
+            var codigo : Int
             var is_admin : Boolean
 
-            if (findViewById<EditText>(R.id.editTextNomeFuncionario).text.isEmpty() == false)
+            if (findViewById<EditText>(R.id.editTextFuncionarioNome).text.isEmpty() == false )
             {
-                nome = findViewById<EditText>(R.id.editTextNomeFuncionario).text.toString()
+                nome = findViewById<EditText>(R.id.editTextFuncionarioNome).text.toString()
             }
+            else nome = "Default"
             if (findViewById<EditText>(R.id.editTextCodigoFuncionario).text.isEmpty() == false)
             {
                 codigo = findViewById<EditText>(R.id.editTextCodigoFuncionario).text.toString().toInt()
             }
+            else codigo = 0
             if (findViewById<RadioButton>(R.id.radioButton3).isChecked)
             {
                 is_admin = true

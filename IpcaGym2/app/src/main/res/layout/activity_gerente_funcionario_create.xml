@@ -131,8 +131,9 @@
         android:layout_marginTop="30dp"
         android:drawableLeft="@drawable/ic_baseline_person_24"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="Name"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -142,11 +143,12 @@
         android:id="@+id/editTextCodigoFuncionario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:drawableLeft="@drawable/ic_baseline_qr_code_2_24"
         android:ems="10"
-        android:layout_marginTop="10dp"
         android:hint="Code"
         android:inputType="number"
+        android:minHeight="48dp"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -161,9 +163,10 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
+        android:minHeight="48dp"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextCodigoFuncionario" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

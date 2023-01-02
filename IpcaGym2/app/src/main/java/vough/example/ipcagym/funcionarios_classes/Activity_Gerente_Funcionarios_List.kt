@@ -20,7 +20,9 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gerente_funcionarios_list)
 
-        //list_funcionario.add(Cliente(1,1,1,"Joaquim","gtgtgt@tgtg.tgtg",253440656,"","",76.6,176,54.4,null,"Ativo"))
+        //Hardcode
+        list_funcionario.add(Funcionario(1,1,"João",true,222,"","","Ativo"))
+        list_funcionario.add(Funcionario(1,1,"Pedro",false,333,"","","Ativo"))
 
         val image_view = findViewById<ImageView>(R.id.profile_pic)
 
