@@ -24,6 +24,7 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
     val listRefeicoes = arrayListOf<Refeicao>()
     val refeicaoAdapter = RefeicoesAdapter()
     var receiverNewData : ActivityResultLauncher<Intent>? = null
+    var receiverEditData : ActivityResultLauncher<Intent>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,13 +60,39 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
                 val hora_minute = it.data?.getIntExtra("hora_minute", -1)
                 var foto_refeicao = it.data?.getStringExtra("foto_refeicao")
 
-                Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, foto_refeicao, Toast.LENGTH_SHORT).show()
-
                 if(foto_refeicao == "")
                     foto_refeicao = null
 
                 //Inserir dados na nova refeicao
                 listRefeicoes.add(Refeicao(id_refeicao,id_plano_nutricional,descricao, LocalTime.of(hora_hour!!, hora_minute!!), foto_refeicao))
+                refeicaoAdapter.notifyDataSetChanged()
+            }
+        }
+
+        receiverEditData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+
+            if(it.resultCode == Activity.RESULT_OK){
+                //Buscar dados no intent
+                val id_refeicao = it.data?.getIntExtra("id_refeicao", -1)
+                val id_plano_nutricional = it.data?.getIntExtra("id_plano_nutricional", -1)
+                val descricao = it.data?.getStringExtra("descricao")
+                val hora_hour = it.data?.getIntExtra("hora_hour", -1)
+                val hora_minute = it.data?.getIntExtra("hora_minute", -1)
+                var foto_refeicao = it.data?.getStringExtra("foto_refeicao")
+
+                if(foto_refeicao == "")
+                    foto_refeicao = null
+
+                //Atualizar dados na refeicao
+                for(refeicao in listRefeicoes){
+                    if(refeicao.id_refeicao == id_refeicao && refeicao.id_plano_nutricional == id_plano_nutricional){
+                        refeicao.descricao = descricao
+                        refeicao.hora = LocalTime.of(hora_hour!!, hora_minute!!)
+                        refeicao.foto_refeicao = foto_refeicao
+                        break;
+                    }
+                }
+
                 refeicaoAdapter.notifyDataSetChanged()
             }
         }
@@ -93,7 +120,6 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
         findViewById<Button>(R.id.addNewRefeicaoButton).setOnClickListener{
             receiverNewData?.launch(Intent(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, Activity_Funcionario_Plano_Nutricional_Refeicao_Add::class.java))
         }
-
 
         image_view.setOnClickListener {
             spinner.performClick()
@@ -136,6 +162,19 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
             rootView.findViewById<Button>(R.id.buttonDeleteRefeicao).setOnClickListener{
                 listRefeicoes.remove(listRefeicoes[position])
                 refeicaoAdapter.notifyDataSetChanged()
+            }
+
+            rootView.findViewById<Button>(R.id.buttonEditRefeicao).setOnClickListener{
+                val intentEdit = Intent(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, Activity_Funcionario_Plano_Nutricional_Refeicao_Edit::class.java)
+
+                intentEdit.putExtra("id_plano_nutricional", listRefeicoes[position].id_plano_nutricional)
+                intentEdit.putExtra("id_refeicao", listRefeicoes[position].id_refeicao)
+                intentEdit.putExtra("descricao", listRefeicoes[position].descricao)
+                intentEdit.putExtra("hora_hora", listRefeicoes[position].hora?.hour)
+                intentEdit.putExtra("hora_minute", listRefeicoes[position].hora?.minute)
+                intentEdit.putExtra("foto_refeicao", listRefeicoes[position].foto_refeicao)
+
+                receiverEditData?.launch(intentEdit)
             }
 
             return rootView
