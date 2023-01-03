@@ -11,9 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
-import vough.example.ipcagym.data_classes.Carrinho_Pedido
-import vough.example.ipcagym.funcionarios_classes.Activity_Funcionario_Cliente_Edit
-import vough.example.ipcagym.funcionarios_classes.Activity_Funcionario_Clientes_List
 
 class Activity_Cliente_Loja_Produto_Details : AppCompatActivity() {
 
@@ -53,7 +50,7 @@ class Activity_Cliente_Loja_Produto_Details : AppCompatActivity() {
         findViewById<TextView>(R.id.Descricao).text = descricao
 
         findViewById<Button>(R.id.buttonBuy).setOnClickListener {
-            val newIntent = Intent(this@Activity_Cliente_Loja_Produto_Details, Activity_Cliente_Loja::class.java)
+            val newIntent = Intent(this@Activity_Cliente_Loja_Produto_Details, Activity_Cliente_Loja_Produtos::class.java)
 
             var quantidadeComprada = findViewById<EditText>(R.id.editTextQuantity).text.toString().toInt()
 
@@ -73,7 +70,7 @@ class Activity_Cliente_Loja_Produto_Details : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.buttonCancel).setOnClickListener{
-            val newIntent = Intent(this@Activity_Cliente_Loja_Produto_Details, Activity_Cliente_Loja::class.java)
+            val newIntent = Intent(this@Activity_Cliente_Loja_Produto_Details, Activity_Cliente_Loja_Produtos::class.java)
             setResult(RESULT_CANCELED, newIntent)
             finish()
         }
