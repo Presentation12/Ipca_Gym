@@ -93,7 +93,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/button6"
+        app:layout_constraintBottom_toTopOf="@+id/buttonEntregar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardViewUserRequest" />
@@ -141,7 +141,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
     <TextView
-        android:id="@+id/textView35"
+        android:id="@+id/textViewIDCliente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
@@ -162,7 +162,7 @@
         app:layout_constraintTop_toBottomOf="@+id/listviewProdutos" />
 
     <TextView
-        android:id="@+id/textView37"
+        android:id="@+id/textViewTotalPreco"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -173,18 +173,39 @@
         app:layout_constraintTop_toBottomOf="@+id/listviewProdutos" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/buttonEntregar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
         android:backgroundTint="@android:color/transparent"
-        android:text="Confirmar"
+        android:text="Entregar"
+        android:visibility="invisible"
         android:textColor="#A5A5A5"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:strokeColor="#A5A5A5"
         app:strokeWidth="2dp" />
+
+    <TextView
+        android:id="@+id/textViewDataPedido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewEstadoPedido"
+        app:layout_constraintEnd_toEndOf="@+id/cardView"
+        app:layout_constraintTop_toTopOf="@+id/textViewEstadoPedido"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textViewEstadoPedido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewIDPedido"
+        app:layout_constraintStart_toEndOf="@+id/textViewIDPedido"
+        app:layout_constraintTop_toTopOf="@+id/textViewIDPedido" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -41,7 +41,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/activityClienteName"
+        android:id="@+id/dataPedido"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -49,12 +49,11 @@
         android:layout_marginEnd="32dp"
         android:elevation="10dp"
         android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/cardView6"
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="@+id/cardView5" />
 
     <TextView
-        android:id="@+id/activityClienteID"
+        android:id="@+id/estadoPedido"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
