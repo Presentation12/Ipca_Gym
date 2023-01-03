@@ -53,43 +53,30 @@
         app:layout_constraintStart_toStartOf="@+id/tableRow2"
         app:layout_constraintTop_toTopOf="@+id/tableRow2" />
 
-    <TableRow
-        android:layout_width="195dp"
-        android:layout_height="31dp"
+    <TextView
+        android:id="@+id/textView65"
+        android:layout_width="36dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/grey_shape_background"
+        android:text="x"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/tableRow2"
-        app:layout_constraintEnd_toEndOf="@+id/tableRow2"
-        app:layout_constraintStart_toStartOf="@+id/tableRow2"
-        app:layout_constraintTop_toBottomOf="@+id/textView13">
+        app:layout_constraintEnd_toStartOf="@+id/textView69"
+        app:layout_constraintStart_toEndOf="@+id/cardView" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="39dp"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/btn_star" />
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="39dp"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/btn_star" />
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="39dp"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/btn_star" />
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="39dp"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/btn_star" />
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="39dp"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/btn_star" />
-    </TableRow>
+    <TextView
+        android:id="@+id/textView69"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/gray_background"
+        android:text="Estrelas"
+        android:textColor="#F1EAEA"
+        app:layout_constraintBottom_toBottomOf="@+id/tableRow2"
+        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintTop_toTopOf="@+id/textView65" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
