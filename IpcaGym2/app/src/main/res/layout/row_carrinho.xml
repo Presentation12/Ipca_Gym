@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/text_view_nome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:elevation="10dp"
+        android:text="Nome do produto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_view_preco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:text="Preço"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/text_view_nome"
+        app:layout_constraintStart_toEndOf="@+id/text_view_nome"
+        app:layout_constraintTop_toTopOf="@+id/text_view_nome" />
+
+    <TextView
+        android:id="@+id/textViewSymbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:layout_marginStart="5dp"
+        android:text="$"
+        app:layout_constraintBottom_toBottomOf="@+id/text_view_preco"
+        app:layout_constraintStart_toEndOf="@+id/text_view_preco"
+        app:layout_constraintTop_toTopOf="@+id/text_view_preco" />
+
+    <TextView
+        android:id="@+id/textViewQt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewSymbol"
+        app:layout_constraintStart_toEndOf="@+id/textViewSymbol"
+        app:layout_constraintTop_toTopOf="@+id/textViewSymbol" />
+
+    <TextView
+        android:id="@+id/textView68"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Uni."
+        android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewQt"
+        app:layout_constraintStart_toEndOf="@+id/textViewQt"
+        app:layout_constraintTop_toTopOf="@+id/textViewQt" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

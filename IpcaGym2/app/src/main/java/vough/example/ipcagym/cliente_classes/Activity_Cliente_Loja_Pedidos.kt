@@ -1,4 +1,4 @@
 package vough.example.ipcagym.cliente_classes
 
-class LojaHistoricoClienteActivity {
+class Activity_Cliente_Loja_Pedidos {
 }
