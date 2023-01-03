@@ -117,7 +117,7 @@
     </androidx.cardview.widget.CardView>
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/editTextNomeProduto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -130,7 +130,7 @@
         app:layout_constraintTop_toTopOf="@+id/cardViewBig" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName4"
+        android:id="@+id/editTextTipoProduto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -140,10 +140,10 @@
         android:inputType="textPersonName"
         android:outlineProvider="none"
         app:layout_constraintEnd_toEndOf="@+id/cardViewBig"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextNomeProduto" />
 
     <EditText
-        android:id="@+id/editTextNumberDecimal2"
+        android:id="@+id/editTextPrecoProduto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="10dp"
@@ -151,12 +151,12 @@
         android:hint="Price"
         android:inputType="numberDecimal"
         android:outlineProvider="none"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName5"
+        app:layout_constraintBottom_toTopOf="@+id/editTextDescricaoProduto"
         app:layout_constraintEnd_toEndOf="@+id/cardViewBig"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName4" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextTipoProduto" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName5"
+        android:id="@+id/editTextDescricaoProduto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
@@ -165,11 +165,11 @@
         android:hint="Description"
         android:inputType="textPersonName"
         android:outlineProvider="none"
-        app:layout_constraintBottom_toTopOf="@+id/editTextNumber4"
+        app:layout_constraintBottom_toTopOf="@+id/editTextQuantidadeProduto"
         app:layout_constraintEnd_toEndOf="@+id/cardViewBig" />
 
     <EditText
-        android:id="@+id/editTextNumber4"
+        android:id="@+id/editTextQuantidadeProduto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
@@ -179,18 +179,6 @@
         android:inputType="number"
         android:outlineProvider="none"
         app:layout_constraintBottom_toBottomOf="@+id/cardViewBig"
-        app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName5" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/transparent"
-        android:elevation="10dp"
-        android:outlineProvider="none"
-        app:layout_constraintEnd_toEndOf="@+id/cardViewBig2"
-        app:layout_constraintStart_toStartOf="@+id/cardViewBig2"
-        app:layout_constraintTop_toBottomOf="@+id/cardViewBig2"
-        app:srcCompat="@drawable/ic_baseline_edit_note_24" />
+        app:layout_constraintEnd_toEndOf="@+id/editTextDescricaoProduto" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
