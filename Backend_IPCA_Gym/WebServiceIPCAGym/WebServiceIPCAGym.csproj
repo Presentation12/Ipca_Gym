@@ -67,28 +67,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Services\ClassificacaoWS.asmx" />
-    <Content Include="Services\ClientesWS.asmx" />
-    <Content Include="Services\GinasioWS.asmx" />
-    <Content Include="Services\LoginWS.asmx" />
+    <Content Include="Services\IPCAGymWS.asmx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ClassificacaoWS.asmx.cs">
-      <DependentUpon>ClassificacaoWS.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Services\ClientesWS.asmx.cs">
-      <DependentUpon>ClientesWS.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Services\GinasioWS.asmx.cs">
-      <DependentUpon>GinasioWS.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Services\LoginWS.asmx.cs">
-      <DependentUpon>LoginWS.asmx</DependentUpon>
+    <Compile Include="Services\IPCAGymWS.asmx.cs">
+      <DependentUpon>IPCAGymWS.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>

@@ -27,6 +27,7 @@ class LoginClienteActivity : AppCompatActivity() {
                     Intent(this@LoginClienteActivity,
                         PaginaInicialClienteActivity::class.java)
                 )
+                else Toast.makeText(this@LoginClienteActivity, result, Toast.LENGTH_LONG).show()
             }
         }
 

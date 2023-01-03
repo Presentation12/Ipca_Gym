@@ -7,8 +7,11 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Classificacao
+import vough.example.ipcagym.data_classes.Cliente
 import vough.example.ipcagym.data_classes.Funcionario
+import vough.example.ipcagym.funcionarios_classes.Activity_Funcionario_Clientes_List
 import vough.example.ipcagym.funcionarios_classes.Activity_Funcionario_Planos_Treino
+import vough.example.ipcagym.funcionarios_classes.PaginaInicialFuncionarioActivity
 
 class Cliente_classificacao_activity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,28 +38,28 @@ class Cliente_classificacao_activity : AppCompatActivity(){
             startActivity(Intent(this@Cliente_classificacao_activity, AccountClienteActivity::class.java))
         }
 
-        // butao de adicionar avaliação nova, e volta para o perfil do cliente
+
         findViewById<Button>(R.id.button_avaliar_ginasio).setOnClickListener {
-            val intent = Intent(this@Cliente_classificacao_activity,AccountClienteActivity::class.java)
+            val intent = Intent(this@Cliente_classificacao_activity, PaginaInicialFuncionarioActivity::class.java)
 
-            //TODO: trocar por condições de verificacao de campos preenchidos
-            var rating : Int
-            var comentary : String
+            var comentario : String = ""
+            var estrelas : Int = 0
 
-            if (findViewById<EditText>(R.id.campo_comentario).text.isEmpty() == false )
+            if (findViewById<EditText>(R.id.campo_comentario).text.isEmpty() == false)
             {
-                comentary = findViewById<EditText>(R.id.campo_comentario).text.toString()
+                comentario = findViewById<EditText>(R.id.campo_comentario).text.toString()
             }
-            else comentary = "Default"
-
             if (findViewById<EditText>(R.id.campo_rating).text.isEmpty() == false)
             {
-                rating = findViewById<EditText>(R.id.campo_rating).text.toString().toInt()
+                estrelas = findViewById<EditText>(R.id.campo_rating).text.toString().toInt()
             }
-            else rating = 0
 
-            // TODO: Manda objeto com novas mudanças para o patch do backend e trocar os nulos
-            var classificacao = Classificacao(null,null,null,rating,comentary,null)
+            //Todo acrescentar condições de campos nulos
+
+            // TODO: SUBSTITUIR OS NULOS e hardcodes DO OBJETO ABAIXO
+            // objeto enviado para o backend
+            var newAvaliation = Classificacao(8,1,1,estrelas,comentario,null)
+
             startActivity(intent)
         }
     }

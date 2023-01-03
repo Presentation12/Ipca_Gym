@@ -128,7 +128,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/textView_medium_rating"
         android:layout_width="30dp"
         android:layout_height="26dp"
         android:layout_marginTop="14dp"
@@ -198,17 +198,18 @@
         app:srcCompat="@drawable/ic_baseline_person_24" />
 
     <TextView
-        android:elevation="10dp"
-        android:id="@+id/textView9"
+        android:id="@+id/textView_total_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="120dp"
+        android:elevation="10dp"
         android:text="1215"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textSize="21sp"
         app:layout_constraintBottom_toBottomOf="@+id/cardView4"
         app:layout_constraintEnd_toEndOf="@+id/cardView4"
+        app:layout_constraintStart_toEndOf="@+id/imageView13"
         app:layout_constraintTop_toTopOf="@+id/cardView4" />
 
     <ListView
