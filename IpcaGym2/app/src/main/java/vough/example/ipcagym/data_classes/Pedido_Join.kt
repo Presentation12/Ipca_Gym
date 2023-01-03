@@ -2,7 +2,7 @@ package vough.example.ipcagym.data_classes
 
 import java.time.LocalDateTime
 
-class Carrinho_Pedido {
+class Pedido_Join {
     var id_pedido : Int? = null
     var id_cliente: Int? = null
     var id_ginasio: Int? = null

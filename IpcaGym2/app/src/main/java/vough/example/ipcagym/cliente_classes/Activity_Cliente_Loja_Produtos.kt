@@ -13,13 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.*
-import vough.example.ipcagym.funcionarios_classes.Activity_Funcionario_Plano_Nutricional_Refeicao_Add
 import java.time.LocalDateTime
-import java.time.LocalTime
 
-class Activity_Cliente_Loja : AppCompatActivity() {
+class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
 
-    var carrinho = ArrayList<Carrinho_Pedido>()
+    var carrinho = ArrayList<Pedido_Join>()
     var carrinho_adapter = AdapterCarrinho()
 
     var produtos_list = arrayListOf<Loja>()
@@ -36,14 +34,6 @@ class Activity_Cliente_Loja : AppCompatActivity() {
 
         val carrinho_view = findViewById<ImageView>(R.id.imageViewCarrinho)
         val spinner_carrinho = findViewById<Spinner>(R.id.spinnerCarrinho)
-        //var linesCarrinho = ArrayList<String>()
-        //for (produto in carrinho)
-        //{
-        //    var string = produto.id_produto.toString() + " / " + produto.nome + " / " + produto.quantidade_pedido.toString()
-        //    linesCarrinho.add(string)
-        //}
-        //val adapter_carrinho = ArrayAdapter(this, android.R.layout.simple_spinner_item, linesCarrinho)
-        //adapter_carrinho.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner_carrinho.adapter = carrinho_adapter
         spinner_carrinho.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -73,11 +63,14 @@ class Activity_Cliente_Loja : AppCompatActivity() {
                     var foto_produto = it.data?.getStringExtra("foto_produto")
                     var quantidade_produto = it.data?.getIntExtra("quantidade_produto", -1)
 
-                    carrinho.add(Carrinho_Pedido(null, null, LocalDateTime.now(), "Ativo", id_produto, id_ginasio, nome, tipo_produto, preco, descricao, estado_produto, foto_produto, quantidade_produto, quantidadeComprada))
+                    carrinho.add(Pedido_Join(null, null, LocalDateTime.now(), "Ativo", id_produto, id_ginasio, nome, tipo_produto, preco, descricao, estado_produto, foto_produto, quantidade_produto, quantidadeComprada))
                     carrinho_adapter.notifyDataSetChanged()
                 }
             }
 
+        //TODO: butao de cancelar e remover artigos carrinho
+
+        //TODO: total preco
         //var total_price = 0.0
         //for (produto in carrinho) {
         //      total_price += produto.preco!!
@@ -98,7 +91,7 @@ class Activity_Cliente_Loja : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                Toast.makeText(this@Activity_Cliente_Loja, options[position], Toast.LENGTH_LONG)
+                Toast.makeText(this@Activity_Cliente_Loja_Produtos, options[position], Toast.LENGTH_LONG)
                     .show()
             }
 
@@ -117,26 +110,26 @@ class Activity_Cliente_Loja : AppCompatActivity() {
         bottom_navigation_view.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this@Activity_Cliente_Loja, "Main Menu", Toast.LENGTH_LONG)
+                    Toast.makeText(this@Activity_Cliente_Loja_Produtos, "Main Menu", Toast.LENGTH_LONG)
                         .show()
                     true
                 }
                 R.id.nav_fitness -> {
-                    Toast.makeText(this@Activity_Cliente_Loja, "Treino", Toast.LENGTH_LONG)
+                    Toast.makeText(this@Activity_Cliente_Loja_Produtos, "Treino", Toast.LENGTH_LONG)
                         .show()
                     true
                 }
                 R.id.nav_shopping -> {
-                    Toast.makeText(this@Activity_Cliente_Loja, "Loja", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Loja_Produtos, "Loja", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_diet -> {
-                    Toast.makeText(this@Activity_Cliente_Loja, "Refeicoes", Toast.LENGTH_LONG)
+                    Toast.makeText(this@Activity_Cliente_Loja_Produtos, "Refeicoes", Toast.LENGTH_LONG)
                         .show()
                     true
                 }
                 R.id.nav_history -> {
-                    Toast.makeText(this@Activity_Cliente_Loja, "Atividades", Toast.LENGTH_LONG)
+                    Toast.makeText(this@Activity_Cliente_Loja_Produtos, "Atividades", Toast.LENGTH_LONG)
                         .show()
                     true
                 }
@@ -177,7 +170,7 @@ class Activity_Cliente_Loja : AppCompatActivity() {
             //Clicar num rootView abre os detalhes do produto
             root_view.setOnClickListener {
 
-                val intent = Intent(this@Activity_Cliente_Loja, Activity_Cliente_Loja_Produto_Details::class.java)
+                val intent = Intent(this@Activity_Cliente_Loja_Produtos, Activity_Cliente_Loja_Produto_Details::class.java)
 
                 intent.putExtra("id_produto", produtos_list[position].id_produto)
                 intent.putExtra("id_ginasio", produtos_list[position].id_ginasio)
