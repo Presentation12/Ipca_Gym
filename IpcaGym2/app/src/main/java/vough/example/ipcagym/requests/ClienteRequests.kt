@@ -19,66 +19,82 @@ import vough.example.ipcagym.data_classes.Atividade
 import vough.example.ipcagym.data_classes.Atividade.Companion.fromJson
 import vough.example.ipcagym.data_classes.Cliente
 import vough.example.ipcagym.interfaces.ApiService
+import java.io.IOException
 
 object ClienteRequests {
     private val client = OkHttpClient()
 
     fun login(scope : CoroutineScope, mail: String?, pass: String?, callback: (String)->Unit){
         scope.launch(Dispatchers.IO){
-            val retrofit = Retrofit.Builder().baseUrl("https://localhost:7288").client(client).build()
-            val service = retrofit.create(ApiService::class.java)
             val json = """
             {
                 "mail": "$mail",
                 "password": "$pass"
             }
             """
+            val request = Request.Builder()
+                .url(UtilsForRequests.baseURL + "/Cliente/login")
+                .post(json.toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .build()
 
-            val body = RequestBody.create("application/json".toMediaTypeOrNull(), json)
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
 
-            val response = service.LoginCliente(body)
+                val result = response.body!!.string()
 
-            if(response.code() == 200){
-                val result = response.body()!!.toString()
                 val jsonObject = JSONObject(result)
+                if (jsonObject.getString("statusCode") == "200"){
+                    val JsonData = jsonObject.getJSONObject("data")
+                    val JsonValue = JsonData.getString("value")
 
-                scope.launch(Dispatchers.Main){ callback(result) }
-            }
-            else{
-                val tokenResult = ""
-                scope.launch(Dispatchers.Main){ callback(tokenResult) }
+                    UtilsForRequests.token = JsonValue
+
+                    scope.launch(Dispatchers.Main){
+                        callback(JsonValue)
+                    }
+                }
+                else
+                    scope.launch(Dispatchers.Main){
+                        callback("error")
+                    }
             }
         }
     }
 
-    /*fun login(username: String, password : String): String{
-        val json = """
-        {
-            "mail": "$username",
-            "password": "$password"
-        }
-    """
+    fun recoverPasswordCliente(scope : CoroutineScope, mail: String?, pass: String?, callback: (String)->Unit){
+        scope.launch(Dispatchers.IO){
+            val json = """
+            {
+                "mail": "$mail",
+                "password": "$pass"
+            }
+            """
+            val request = Request.Builder()
+                .url(UtilsForRequests.baseURL + "/Cliente/recoverpass")
+                .patch(json.toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .build()
 
-        // Build the request
-        val request = Request.Builder()
-            .url("http://127.0.0.1:4040/api/Cliente/login")
-            .post(json.toRequestBody("application/json".toMediaType()))
-            .build()
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
 
-        // Send the request and get the response
-        val response: Response = client.newCall(request).execute()
+                val result = response.body!!.string()
 
-        // Check the response code
-        if (response.code == 200) {
-            // Parse the response body as JSON
-            val json: JSONObject = JSONObject(response.body!!.string())
+                val jsonObject = JSONObject(result)
+                if (jsonObject.getString("statusCode") == "200"){
+                    val JsonData = jsonObject.getJSONObject("data")
+                    val JsonValue = JsonData.getString("value")
 
-            // Check if the login was successful
-            if (json.getBoolean("success")) {
-                return "Sucesso!"
+                    UtilsForRequests.token = JsonValue
+
+                    scope.launch(Dispatchers.Main){
+                        callback(JsonValue)
+                    }
+                }
+                else
+                    scope.launch(Dispatchers.Main){
+                        callback("error")
+                    }
             }
         }
-
-        return "Erro!"
-    }*/
+    }
 }

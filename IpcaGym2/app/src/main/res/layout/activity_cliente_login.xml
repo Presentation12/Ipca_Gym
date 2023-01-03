@@ -31,7 +31,7 @@
         android:drawableLeft="@drawable/ic_baseline_person_24"
         android:drawablePadding="20dp"
         android:hint="Mail"
-        android:inputType="number"
+        android:inputType="text"
         android:padding="10dp"
 
         android:textColor="@color/white"

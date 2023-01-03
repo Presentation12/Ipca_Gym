@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.GlobalScope
 import vough.example.ipcagym.R
 import vough.example.ipcagym.requests.ClienteRequests
@@ -20,19 +22,12 @@ class LoginClienteActivity : AppCompatActivity() {
         val pass = findViewById<EditText>(R.id.password)
 
         loginbutton.setOnClickListener{
-            ClienteRequests.login(GlobalScope, mail.text.toString(), pass.text.toString()){ result ->
-                if(result != ""){
-                    Toast.makeText(this@LoginClienteActivity, result, Toast.LENGTH_SHORT).show()
-
-                    //startActivity(Intent(this@LoginClienteActivity, PaginaInicialClienteActivity::class.java))
-                }
-                else{
-                    Toast.makeText(this@LoginClienteActivity, "erro", Toast.LENGTH_SHORT).show()
-                }
-
+            ClienteRequests.login(lifecycleScope, mail.text.toString(), pass.text.toString()){ result ->
+                if(result != "error") startActivity(
+                    Intent(this@LoginClienteActivity,
+                        PaginaInicialClienteActivity::class.java)
+                )
             }
-
-
         }
 
         findViewById<Button>(R.id.forgetpassword).setOnClickListener {
