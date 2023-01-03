@@ -37,7 +37,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// Método http get para retornar os clientes da base de dados
         /// </summary>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de clientes em formato Json</returns>
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -53,7 +53,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do cliente que é pretendido ser retornado</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a cliente em formato Json</returns>
-        [HttpGet("{targetID}")]
+        [HttpGet("{targetID}"), Authorize(Roles = "Admin, Cliente")]
         public async Task<IActionResult> GetByID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -136,7 +136,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="mail">Mail do cliente que se pretende recuperar a password</param>
         /// <param name="password">Nova password</param>
         /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
-        [HttpPatch("recoverpass"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
+        [HttpPatch("recoverpass")]
         public async Task<IActionResult> RecoverPassword(string mail, string password)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");

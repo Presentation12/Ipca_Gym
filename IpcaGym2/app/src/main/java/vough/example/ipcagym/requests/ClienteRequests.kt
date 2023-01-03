@@ -40,18 +40,25 @@ object ClienteRequests {
             client.newCall(request).execute().use { response ->
                 if (!response.isSuccessful) throw IOException("Unexpected code $response")
 
-                val result = response.body!!.string()
+                val statusCode = response.code
 
-                val jsonObject = JSONObject(result)
-                if (jsonObject.getString("statusCode") == "200"){
-                    val JsonData = jsonObject.getJSONObject("data")
-                    val JsonValue = JsonData.getString("value")
+                if(statusCode == 200){
+                    val result = response.body!!.string()
+                    val jsonObject = JSONObject(result)
+                    if (jsonObject.getString("statusCode") == "200"){
+                        val JsonData = jsonObject.getJSONObject("data")
+                        val JsonValue = JsonData.getString("value")
 
-                    UtilsForRequests.token = JsonValue
+                        UtilsForRequests.token = JsonValue
 
-                    scope.launch(Dispatchers.Main){
-                        callback(JsonValue)
+                        scope.launch(Dispatchers.Main){
+                            callback(JsonValue)
+                        }
                     }
+                    else
+                        scope.launch(Dispatchers.Main){
+                            callback("error")
+                        }
                 }
                 else
                     scope.launch(Dispatchers.Main){
@@ -63,15 +70,9 @@ object ClienteRequests {
 
     fun recoverPasswordCliente(scope : CoroutineScope, mail: String?, pass: String?, callback: (String)->Unit){
         scope.launch(Dispatchers.IO){
-            val json = """
-            {
-                "mail": "$mail",
-                "password": "$pass"
-            }
-            """
             val request = Request.Builder()
-                .url(UtilsForRequests.baseURL + "/Cliente/recoverpass")
-                .patch(json.toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .url(UtilsForRequests.baseURL + "/Cliente/recoverpass?mail=$mail&password=$pass")
+                .patch(RequestBody.create(null, ByteArray(0)))
                 .build()
 
             client.newCall(request).execute().use { response ->
@@ -84,15 +85,13 @@ object ClienteRequests {
                     val JsonData = jsonObject.getJSONObject("data")
                     val JsonValue = JsonData.getString("value")
 
-                    UtilsForRequests.token = JsonValue
-
                     scope.launch(Dispatchers.Main){
                         callback(JsonValue)
                     }
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("error")
+                        callback("Utilizador não encontrado")
                     }
             }
         }
