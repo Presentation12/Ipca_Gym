@@ -1,5 +1,7 @@
 package vough.example.ipcagym.data_classes
 
+import org.json.JSONObject
+
 class Ginasio {
     var id_ginasio: Int? = null
     var instituicao: String? = null
@@ -26,5 +28,33 @@ class Ginasio {
         this.contacto  = contacto
         this.lotacao  = lotacao
         this.lotacaoMax  = lotacaoMax
+    }
+
+    fun toJson() : JSONObject {
+        val jsonObj = JSONObject()
+
+        jsonObj.put("id_ginasio", id_ginasio)
+        jsonObj.put("instituicao", instituicao)
+        jsonObj.put("estado", estado)
+        jsonObj.put("foto_ginasio", foto_ginasio)
+        jsonObj.put("contacto", contacto)
+        jsonObj.put("lotacao", lotacao)
+        jsonObj.put("lotacaoMax", lotacaoMax)
+
+        return jsonObj
+    }
+
+    companion object{
+        fun fromJson(jsonObject: JSONObject) : Ginasio {
+            return Ginasio(
+                jsonObject.getInt("id_ginasio"),
+                jsonObject.getString("instituicao"),
+                jsonObject.getString("estado"),
+                jsonObject.getString("foto_ginasio"),
+                jsonObject.getInt("contacto"),
+                jsonObject.getInt("lotacao"),
+                jsonObject.getInt("lotacaoMax")
+            )
+        }
     }
 }

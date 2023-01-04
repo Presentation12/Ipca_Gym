@@ -195,7 +195,11 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("id_ginasio", newAtividade.id_ginasio);
                         myCommand.Parameters.AddWithValue("id_cliente", newAtividade.id_cliente);
                         myCommand.Parameters.AddWithValue("data_entrada", Convert.ToDateTime(newAtividade.data_entrada));
-                        myCommand.Parameters.AddWithValue("data_saida", Convert.ToDateTime(newAtividade.data_saida));
+                        if(newAtividade.data_saida != null)
+                            myCommand.Parameters.AddWithValue("data_saida", Convert.ToDateTime(newAtividade.data_saida));
+                        else
+                            myCommand.Parameters.AddWithValue("data_saida", null);
+
                         dataReader = myCommand.ExecuteReader();
 
                         dataReader.Close();

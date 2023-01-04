@@ -25,7 +25,7 @@ class Atividade {
         this.data_saida = data_saida
     }
 
-    fun toJSON() : JSONObject{
+    fun toJson() : JSONObject{
         val jsonObj = JSONObject()
 
         jsonObj.put("id_atividade", id_atividade)
@@ -37,14 +37,15 @@ class Atividade {
         return jsonObj
     }
 
+    //TODO: VER O PARSE DE DATA_SAIDA (PODE SER NULL)
     companion object{
         fun fromJson(jsonObject: JSONObject) : Atividade {
             return Atividade(
                 jsonObject.getInt("id_atividade"),
                 jsonObject.getInt("id_ginasio"),
                 jsonObject.getInt("id_cliente"),
-                LocalDateTime.parse(jsonObject.getString("data_entrada"), DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                LocalDateTime.parse(jsonObject.getString("data_saida"), DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                LocalDateTime.parse(jsonObject.getString("data_entrada")),
+                LocalDateTime.parse(jsonObject.getString("data_saida"))
             )
         }
     }

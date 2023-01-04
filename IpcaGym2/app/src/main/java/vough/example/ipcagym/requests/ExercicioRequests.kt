@@ -1,25 +1,22 @@
 package vough.example.ipcagym.requests
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
-import retrofit2.Retrofit
-import retrofit2.http.PATCH
-import vough.example.ipcagym.MainActivity
 import vough.example.ipcagym.data_classes.Atividade
-import vough.example.ipcagym.data_classes.Cliente
+import vough.example.ipcagym.data_classes.Exercicio
 import java.io.IOException
 
-object AtividadeRequests {
+object ExercicioRequests {
     private val client = OkHttpClient()
 
-    fun GetAll(scope: CoroutineScope, token : String?, callback: (ArrayList<Atividade>) -> Unit){
+    fun GetAll(scope: CoroutineScope, token : String?, callback: (ArrayList<Exercicio>) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()
-                .url(UtilsForRequests.baseURL + "/api/Atividade")
+                .url(UtilsForRequests.baseURL + "/api/Exercicio")
                 .get()
                 .header("Authorization", "Bearer $token")
                 .build()
@@ -28,7 +25,7 @@ object AtividadeRequests {
                 if (!response.isSuccessful) throw IOException("Unexpected code $response")
 
                 val statusCode = response.code
-                var atividades = arrayListOf<Atividade>()
+                var exercicios = arrayListOf<Exercicio>()
 
                 if(statusCode == 200) {
                     val result = response.body!!.string()
@@ -39,23 +36,23 @@ object AtividadeRequests {
 
                     for (i in 0 until JSONList.length()) {
                         val item = JSONList.getJSONObject(i)
-                        val atividade = Atividade.fromJson(item)
-                        atividades.add(atividade)
+                        val exercicio = Exercicio.fromJson(item)
+                        exercicios.add(exercicio)
                     }
 
                     scope.launch(Dispatchers.Main){
-                        callback(atividades)
+                        callback(exercicios)
                     }
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback(atividades)
+                        callback(exercicios)
                     }
             }
         }
     }
 
-    fun GetByID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (Atividade) -> Unit){
+    fun GetByID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (Exercicio) -> Unit){
         //TODO: POR IMPLEMENTAR
     }
 
@@ -68,6 +65,10 @@ object AtividadeRequests {
     }
 
     fun Delete(scope: CoroutineScope, token : String?, targetID : Int?, callback: (Boolean) -> Unit){
+        //TODO: POR IMPLEMENTAR
+    }
+
+    fun GetAllByPlanoID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (ArrayList<Exercicio>) -> Unit){
         //TODO: POR IMPLEMENTAR
     }
 }

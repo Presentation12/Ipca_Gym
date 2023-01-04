@@ -1,5 +1,7 @@
 package vough.example.ipcagym.data_classes
 
+import org.json.JSONObject
+
 class Funcionario {
     var id_funcionario : Int? = null
     var id_ginasio: Int? = null
@@ -29,5 +31,35 @@ class Funcionario {
         this.pass_salt   = pass_salt
         this.pass_hash   = pass_hash
         this.estado   = estado
+    }
+
+    fun toJson() : JSONObject {
+        val jsonObj = JSONObject()
+
+        jsonObj.put("id_funcionario", id_funcionario)
+        jsonObj.put("id_ginasio", id_ginasio)
+        jsonObj.put("nome", nome)
+        jsonObj.put("is_admin", is_admin)
+        jsonObj.put("codigo", codigo)
+        jsonObj.put("pass_salt", pass_salt)
+        jsonObj.put("pass_hash", pass_hash)
+        jsonObj.put("estado", estado)
+
+        return jsonObj
+    }
+
+    companion object{
+        fun fromJson(jsonObject: JSONObject) : Funcionario {
+            return Funcionario(
+                jsonObject.getInt("id_funcionario"),
+                jsonObject.getInt("id_ginasio"),
+                jsonObject.getString("nome"),
+                jsonObject.getBoolean("is_admin"),
+                jsonObject.getInt("codigo"),
+                jsonObject.getString("pass_salt"),
+                jsonObject.getString("pass_hash"),
+                jsonObject.getString("estado")
+             )
+        }
     }
 }

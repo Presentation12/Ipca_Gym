@@ -65,7 +65,7 @@ class Cliente{
         this.estado = estado
     }
 
-    fun toJSON() : JSONObject {
+    fun toJson() : JSONObject {
         val jsonObj = JSONObject()
 
         jsonObj.put("id_cliente", id_cliente)
@@ -91,15 +91,15 @@ class Cliente{
             return Cliente(
                 jsonObject.getInt("id_cliente"),
                 jsonObject.getInt("id_ginasio"),
-                jsonObject.getInt("id_plano_nutricional"),
+                jsonObject.optInt("id_plano_nutricional"),
                 jsonObject.getString("nome"),
                 jsonObject.getString("mail"),
                 jsonObject.getInt("telemovel"),
                 jsonObject.getString("pass_salt"),
                 jsonObject.getString("pass_hash"),
-                jsonObject.getDouble("peso"),
-                jsonObject.getInt("altura"),
-                jsonObject.getDouble("gordura"),
+                jsonObject.optDouble("peso"),
+                jsonObject.optInt("altura"),
+                jsonObject.optDouble("gordura"),
                 jsonObject.getString("foto_perfil"),
                 jsonObject.getString("estado")
             )

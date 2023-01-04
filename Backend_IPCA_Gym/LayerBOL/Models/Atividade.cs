@@ -31,6 +31,6 @@
         /// Data de saída do cliente no ginásio
         /// </summary>
         /// <example>12-12-2010T12:12:00</example>
-        public DateTime data_saida { get; set; }
+        public DateTime? data_saida { get; set; }
     }
 }

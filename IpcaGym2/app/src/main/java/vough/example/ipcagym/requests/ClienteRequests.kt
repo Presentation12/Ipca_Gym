@@ -13,10 +13,31 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import vough.example.ipcagym.data_classes.Cliente
 import java.io.IOException
 
 object ClienteRequests {
     private val client = OkHttpClient()
+
+    fun GetAll(scope: CoroutineScope, token : String?, callback: (ArrayList<Cliente>) -> Unit){
+        //TODO: POR IMPLEMENTAR
+    }
+
+    fun GettByID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (Cliente) -> Unit){
+        //TODO: POR IMPLEMENTAR
+    }
+
+    fun Post(scope: CoroutineScope, token : String?, jsonRequestBody : String?, callback: (Boolean) -> Unit){
+        //TODO: POR IMPLEMENTAR
+    }
+
+    fun Patch(scope: CoroutineScope, token : String?, jsonRequestBody : String?, targetID : Int?, callback: (Boolean) -> Unit){
+        //TODO: POR IMPLEMENTAR
+    }
+
+    fun Delete(scope: CoroutineScope, token : String?, targetID : Int?, callback: (Boolean) -> Unit){
+        //TODO: POR IMPLEMENTAR
+    }
 
     fun login(scope : CoroutineScope, mail: String?, pass: String?, callback: (String)->Unit){
         scope.launch(Dispatchers.IO){
@@ -85,5 +106,9 @@ object ClienteRequests {
                     }
             }
         }
+    }
+
+    fun DeleteCliente(scope: CoroutineScope, token : String?, targetID : Int?, callback: (Boolean) -> Unit){
+        //TODO: POR IMPLEMENTAR
     }
 }

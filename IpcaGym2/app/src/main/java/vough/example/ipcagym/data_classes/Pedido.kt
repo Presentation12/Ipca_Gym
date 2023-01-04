@@ -1,5 +1,6 @@
 package vough.example.ipcagym.data_classes
 
+import org.json.JSONObject
 import java.time.LocalDateTime
 
 class Pedido {
@@ -19,5 +20,28 @@ class Pedido {
         this.id_cliente = id_cliente
         this.data_pedido  = data_pedido
         this.estado_pedido  = estado_pedido
+    }
+
+    fun toJson() : JSONObject {
+        val jsonObj = JSONObject()
+
+        jsonObj.put("id_pedido", id_pedido)
+        jsonObj.put("id_cliente", id_cliente)
+        jsonObj.put("data_pedido", data_pedido)
+        jsonObj.put("estado_pedido", estado_pedido)
+
+
+        return jsonObj
+    }
+
+    companion object{
+        fun fromJson(jsonObject: JSONObject) : Pedido {
+            return Pedido(
+                jsonObject.getInt("id_pedido"),
+                jsonObject.getInt("id_cliente"),
+                LocalDateTime.parse(jsonObject.getString("data_pedido")),
+                jsonObject.getString("estado_pedido")
+            )
+        }
     }
 }
