@@ -195,8 +195,6 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
-
-
         /// <summary>
         /// Método http para editar um cliente por parte do funcionario
         /// </summary>
@@ -244,7 +242,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="targetID">ID do produto pretendido a mudar</param>
         /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
         [HttpPatch("edit/product/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionário")]
-        public async Task<IActionResult> EditLoja(int targetID, Loja produto)
+        public async Task<IActionResult> EditLoja(int targetID, [FromBody] Loja produto)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
 

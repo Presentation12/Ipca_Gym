@@ -47,6 +47,7 @@ object ClienteRequests {
                 "password": "$pass"
             }
             """
+
             val request = Request.Builder()
                 .url(UtilsForRequests.baseURL + "/api/Cliente/login")
                 .post(json.toRequestBody("application/json; charset=utf-8".toMediaType()))
