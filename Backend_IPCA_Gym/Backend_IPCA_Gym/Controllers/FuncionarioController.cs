@@ -162,7 +162,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// <param name="codigo">Codigo do funcionario que se pretende recuperar a password</param>
         /// <param name="password">Nova password</param>
         /// <returns>Resposta do request que contém a sua mensagem e o seu código em formato json</returns>
-        [HttpPatch("recoverpass"), Authorize(Roles = "Admin, Gerente, Funcionario")]
+        [HttpPatch("recoverpass")]
         public async Task<IActionResult> RecoverPassword(int codigo, string password)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");

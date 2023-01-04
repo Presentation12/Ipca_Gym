@@ -24,18 +24,15 @@ class LoginClienteActivity : AppCompatActivity() {
 
         loginbutton.setOnClickListener{
             if(mail.text.toString() == "" || pass.text.toString() == "")
-            {
                 Toast.makeText(this@LoginClienteActivity, "Insert all fields!", Toast.LENGTH_SHORT).show()
-            }
             else{
                 ClienteRequests.login(lifecycleScope, mail.text.toString(), pass.text.toString()){ result ->
-                    if(result != "error") {
+                    if(result != "User not found") {
                         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
                         val editor = preferences.edit()
                         editor.putString("session_token", result)
 
                         editor.apply()
-                        Toast.makeText(this@LoginClienteActivity, preferences.getString("session_token", null), Toast.LENGTH_LONG).show()
 
                         startActivity(Intent(this@LoginClienteActivity,PaginaInicialClienteActivity::class.java))
                     }
