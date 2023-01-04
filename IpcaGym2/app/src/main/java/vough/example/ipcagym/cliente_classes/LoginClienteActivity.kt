@@ -1,5 +1,6 @@
 package vough.example.ipcagym.cliente_classes
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -22,12 +23,26 @@ class LoginClienteActivity : AppCompatActivity() {
         val pass = findViewById<EditText>(R.id.password)
 
         loginbutton.setOnClickListener{
-            ClienteRequests.login(lifecycleScope, mail.text.toString(), pass.text.toString()){ result ->
-                if(result != "error") startActivity(
-                    Intent(this@LoginClienteActivity,
-                        PaginaInicialClienteActivity::class.java)
-                )
-                else Toast.makeText(this@LoginClienteActivity, result, Toast.LENGTH_LONG).show()
+            if(mail.text.toString() == "" || pass.text.toString() == "")
+            {
+                Toast.makeText(this@LoginClienteActivity, "Insert all fields!", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                ClienteRequests.login(lifecycleScope, mail.text.toString(), pass.text.toString()){ result ->
+                    if(result != "error") {
+                        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+                        val editor = preferences.edit()
+                        editor.putString("session_token", result)
+
+                        editor.apply()
+                        Toast.makeText(this@LoginClienteActivity, preferences.getString("session_token", null), Toast.LENGTH_LONG).show()
+
+                        startActivity(Intent(this@LoginClienteActivity,PaginaInicialClienteActivity::class.java))
+                    }
+                    else {
+                        Toast.makeText(this@LoginClienteActivity, result, Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         }
 

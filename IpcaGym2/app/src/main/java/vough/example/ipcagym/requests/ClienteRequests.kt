@@ -33,7 +33,7 @@ object ClienteRequests {
             }
             """
             val request = Request.Builder()
-                .url(UtilsForRequests.baseURL + "/Cliente/login")
+                .url(UtilsForRequests.baseURL + "/api/Cliente/login")
                 .post(json.toRequestBody("application/json; charset=utf-8".toMediaType()))
                 .build()
 
@@ -55,14 +55,10 @@ object ClienteRequests {
                             callback(JsonValue)
                         }
                     }
-                    else
-                        scope.launch(Dispatchers.Main){
-                            callback("error")
-                        }
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("error")
+                        callback("User not found")
                     }
             }
         }
@@ -71,7 +67,7 @@ object ClienteRequests {
     fun recoverPasswordCliente(scope : CoroutineScope, mail: String?, pass: String?, callback: (String)->Unit){
         scope.launch(Dispatchers.IO){
             val request = Request.Builder()
-                .url(UtilsForRequests.baseURL + "/Cliente/recoverpass?mail=$mail&password=$pass")
+                .url(UtilsForRequests.baseURL + "/api/Cliente/recoverpass?mail=$mail&password=$pass")
                 .patch(RequestBody.create(null, ByteArray(0)))
                 .build()
 
@@ -91,7 +87,7 @@ object ClienteRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("Utilizador não encontrado")
+                        callback("User not found")
                     }
             }
         }
