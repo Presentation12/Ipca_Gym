@@ -295,16 +295,18 @@ namespace WebServiceIPCAGym.Services
                     {
                         myCommand.Parameters.AddWithValue("id_ginasio", targetID);
                         myCommand.Parameters.AddWithValue("instituicao", !string.IsNullOrEmpty(instituicao) ? instituicao : instituicaoAtual);
-                        myCommand.Parameters.AddWithValue("contacto", contacto == null ? contacto : contactoAtual);
+                        myCommand.Parameters.AddWithValue("contacto", contacto);
 
-                        if (!string.IsNullOrEmpty(foto) && !string.IsNullOrEmpty(foto_ginasioAtual))
-                            myCommand.Parameters.AddWithValue("foto_ginasio", !string.IsNullOrEmpty(foto) ? foto : foto_ginasioAtual);
+                        if (!string.IsNullOrEmpty(foto))
+                            myCommand.Parameters.AddWithValue("foto_ginasio", foto);
+                        else if(!string.IsNullOrEmpty(foto_ginasioAtual))
+                            myCommand.Parameters.AddWithValue("foto_ginasio", foto_ginasioAtual);
                         else
                             myCommand.Parameters.AddWithValue("foto_ginasio", DBNull.Value);
 
                         myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(estado) ? estado : estadoAtual);
-                        myCommand.Parameters.AddWithValue("lotacao", lotacao == null ? lotacao : lotacaoAtual);
-                        myCommand.Parameters.AddWithValue("lotacaoMax", lotacaoMax == null ? lotacaoMax : lotacaoMaxAtual);
+                        myCommand.Parameters.AddWithValue("lotacao", lotacao);
+                        myCommand.Parameters.AddWithValue("lotacaoMax", lotacaoMax);
 
                         dataReader = myCommand.ExecuteReader();
 
