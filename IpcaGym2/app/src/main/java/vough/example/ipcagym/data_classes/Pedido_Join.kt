@@ -50,4 +50,6 @@ class Pedido_Join {
         this.quantidade_produto = quantidade_produto
         this.quantidade_pedido  = quantidade_pedido
     }
+
+    //TODO: FAZER FROMJSON() E TOJSON()
 }
