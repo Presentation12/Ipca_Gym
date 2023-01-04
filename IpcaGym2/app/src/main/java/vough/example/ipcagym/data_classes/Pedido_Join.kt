@@ -1,5 +1,6 @@
 package vough.example.ipcagym.data_classes
 
+import org.json.JSONObject
 import java.time.LocalDateTime
 
 class Pedido_Join {
@@ -51,5 +52,45 @@ class Pedido_Join {
         this.quantidade_pedido  = quantidade_pedido
     }
 
-    //TODO: FAZER FROMJSON() E TOJSON()
+    fun toJson() : JSONObject {
+        val jsonObj = JSONObject()
+
+        jsonObj.put("id_pedido", id_pedido)
+        jsonObj.put("id_cliente", id_cliente)
+        jsonObj.put("data_pedido", data_pedido)
+        jsonObj.put("estado_pedido", estado_pedido)
+        jsonObj.put("id_produto", id_produto)
+        jsonObj.put("id_ginasio", id_ginasio)
+        jsonObj.put("nome", nome)
+        jsonObj.put("tipo_produto", tipo_produto)
+        jsonObj.put("preco", preco)
+        jsonObj.put("descricao", descricao)
+        jsonObj.put("estado_produto", estado_produto)
+        jsonObj.put("foto_produto", foto_produto)
+        jsonObj.put("quantidade_produto", quantidade_produto)
+        jsonObj.put("quantidade_pedido", quantidade_pedido)
+
+        return jsonObj
+    }
+
+    companion object{
+        fun fromJson(jsonObject: JSONObject) : Pedido_Join {
+            return Pedido_Join(
+                jsonObject.getInt("id_pedido"),
+                jsonObject.getInt("id_cliente"),
+                LocalDateTime.parse(jsonObject.getString("data_pedido")),
+                jsonObject.getString("estado_pedido"),
+                jsonObject.getInt("id_produto"),
+                jsonObject.getInt("id_ginasio"),
+                jsonObject.getString("nome"),
+                jsonObject.getString("tipo_produto"),
+                jsonObject.getDouble("preco"),
+                jsonObject.getString("descricao"),
+                jsonObject.getString("estado_produto"),
+                jsonObject.getString("foto_produto"),
+                jsonObject.getInt("quantidade_produto"),
+                jsonObject.getInt("quantidade_pedido")
+            )
+        }
+    }
 }

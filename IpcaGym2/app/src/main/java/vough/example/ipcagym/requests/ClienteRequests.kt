@@ -13,6 +13,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import vough.example.ipcagym.data_classes.Atividade
 import vough.example.ipcagym.data_classes.Cliente
 import java.io.IOException
 
@@ -20,23 +21,208 @@ object ClienteRequests {
     private val client = OkHttpClient()
 
     fun GetAll(scope: CoroutineScope, token : String?, callback: (ArrayList<Cliente>) -> Unit){
-        //TODO: POR IMPLEMENTAR
+        scope.launch(Dispatchers.IO) {
+            val request = Request.Builder()
+                .url(UtilsForRequests.baseURL + "/api/Cliente")
+                .get()
+                .header("Authorization", "Bearer $token")
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                val statusCode = response.code
+                var clientes = arrayListOf<Cliente>()
+
+                if(statusCode == 200) {
+                    val result = response.body!!.string()
+
+                    val jsonObject = JSONObject(result)
+                    val JSONData = jsonObject.getJSONObject("data")
+                    val JSONList = JSONData.getJSONArray("value")
+
+                    for (i in 0 until JSONList.length()) {
+                        val item = JSONList.getJSONObject(i)
+                        val cliente = Cliente.fromJson(item)
+                        clientes.add(cliente)
+                    }
+
+                    scope.launch(Dispatchers.Main){
+                        callback(clientes)
+                    }
+                }
+                else
+                    scope.launch(Dispatchers.Main){
+                        callback(clientes)
+                    }
+            }
+        }
     }
 
-    fun GettByID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (Cliente) -> Unit){
-        //TODO: POR IMPLEMENTAR
+    //TODO: por verificar
+    fun GetByID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (Cliente?) -> Unit){
+        scope.launch(Dispatchers.IO) {
+            val request = Request.Builder()
+                .url(UtilsForRequests.baseURL + "/api/Cliente/$targetID")
+                .get()
+                .header("Authorization", "Bearer $token")
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                val statusCode = response.code
+                var cliente : Cliente? = null
+
+                if(statusCode == 200) {
+                    val result = response.body!!.string()
+
+                    val jsonObject = JSONObject(result)
+                    val JSONData = jsonObject.getJSONObject("data")
+                    val item = JSONData.getJSONObject("value")
+
+                    cliente = Cliente.fromJson(item)
+
+                    scope.launch(Dispatchers.Main){
+                        callback(cliente)
+                    }
+                }
+                else
+                    scope.launch(Dispatchers.Main){
+                        callback(cliente)
+                    }
+            }
+        }
     }
 
-    fun Post(scope: CoroutineScope, token : String?, jsonRequestBody : String?, callback: (Boolean) -> Unit){
-        //TODO: POR IMPLEMENTAR
+    fun Post(scope: CoroutineScope, token : String?, newCliente : Cliente, callback: (String) -> Unit){
+        scope.launch(Dispatchers.IO) {
+            val jsonBody = """
+                {
+                    "id_ginasio": ${newCliente.id_ginasio},
+                    "id_plano_nutricional": ${newCliente.id_plano_nutricional},
+                    "nome": "${newCliente.nome}",
+                    "mail": "${newCliente.mail}",
+                    "telemovel": ${newCliente.telemovel},
+                    "pass_salt": "${newCliente.pass_salt}",
+                    "peso": ${newCliente.peso},
+                    "altura": ${newCliente.altura},
+                    "gordura": ${newCliente.gordura},
+                    "foto_perfil": "${newCliente.foto_perfil}",
+                    "estado": "${newCliente.estado}" 
+                }
+            """
+
+            val request = Request.Builder()
+                .url(UtilsForRequests.baseURL + "/api/Cliente")
+                .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .header("Authorization", "Bearer $token")
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                val statusCode = response.code
+
+                if(statusCode == 200) {
+                    val result = response.body!!.string()
+
+                    val jsonObject = JSONObject(result)
+                    val JsonData = jsonObject.getJSONObject("data")
+                    val JsonValue = JsonData.getString("value")
+
+                    scope.launch(Dispatchers.Main){
+                        callback(JsonValue)
+                    }
+                }
+                else
+                    scope.launch(Dispatchers.Main){
+                        callback("User not found")
+                    }
+            }
+        }
     }
 
-    fun Patch(scope: CoroutineScope, token : String?, jsonRequestBody : String?, targetID : Int?, callback: (Boolean) -> Unit){
-        //TODO: POR IMPLEMENTAR
+    fun Patch(scope: CoroutineScope, token : String?, targetID: Int, editCliente : Cliente, callback: (String) -> Unit){
+        scope.launch(Dispatchers.IO) {
+            val jsonBody = """
+                {
+                    "id_cliente": ${editCliente.id_cliente},
+                    "id_ginasio": ${editCliente.id_ginasio},
+                    "id_plano_nutricional": ${editCliente.id_plano_nutricional},
+                    "nome": "${editCliente.nome}",
+                    "mail": "${editCliente.mail}",
+                    "telemovel": ${editCliente.telemovel},
+                    "pass_salt": "${editCliente.pass_salt}",
+                    "peso": ${editCliente.peso},
+                    "altura": ${editCliente.altura},
+                    "gordura": ${editCliente.gordura},
+                    "foto_perfil": "${editCliente.foto_perfil}",
+                    "estado": "${editCliente.estado}"
+                }
+            """
+
+            val request = Request.Builder()
+                .url(UtilsForRequests.baseURL + "/api/Cliente/$targetID")
+                .patch(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .header("Authorization", "Bearer $token")
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                val statusCode = response.code
+
+                if(statusCode == 200) {
+                    val result = response.body!!.string()
+
+                    val jsonObject = JSONObject(result)
+                    val JsonData = jsonObject.getJSONObject("data")
+                    val JsonValue = JsonData.getString("value")
+
+                    scope.launch(Dispatchers.Main){
+                        callback(JsonValue)
+                    }
+                }
+                else
+                    scope.launch(Dispatchers.Main){
+                        callback("User not found")
+                    }
+            }
+        }
     }
 
-    fun Delete(scope: CoroutineScope, token : String?, targetID : Int?, callback: (Boolean) -> Unit){
-        //TODO: POR IMPLEMENTAR
+    fun Delete(scope: CoroutineScope, token : String?, targetID: Int, callback: (String) -> Unit){
+        scope.launch(Dispatchers.IO) {
+
+            val request = Request.Builder()
+                .url(UtilsForRequests.baseURL + "/api/Cliente/$targetID")
+                .delete()
+                .header("Authorization", "Bearer $token")
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                val statusCode = response.code
+
+                if(statusCode == 200) {
+                    val result = response.body!!.string()
+
+                    val jsonObject = JSONObject(result)
+                    val JsonData = jsonObject.getJSONObject("data")
+                    val JsonValue = JsonData.getString("value")
+
+                    scope.launch(Dispatchers.Main){
+                        callback(JsonValue)
+                    }
+                }
+                else
+                    scope.launch(Dispatchers.Main){
+                        callback("User not found")
+                    }
+            }
+        }
     }
 
     fun login(scope : CoroutineScope, mail: String?, pass: String?, callback: (String)->Unit){
@@ -109,7 +295,36 @@ object ClienteRequests {
         }
     }
 
-    fun DeleteCliente(scope: CoroutineScope, token : String?, targetID : Int?, callback: (Boolean) -> Unit){
-        //TODO: POR IMPLEMENTAR
+    fun DeleteCliente(scope: CoroutineScope, token : String?, targetID : Int?, callback: (String) -> Unit){
+        scope.launch(Dispatchers.IO) {
+
+            val request = Request.Builder()
+                .url(UtilsForRequests.baseURL + "/api/Cliente/remove/cliente/$targetID")
+                .delete()
+                .header("Authorization", "Bearer $token")
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                val statusCode = response.code
+
+                if(statusCode == 200) {
+                    val result = response.body!!.string()
+
+                    val jsonObject = JSONObject(result)
+                    val JsonData = jsonObject.getJSONObject("data")
+                    val JsonValue = JsonData.getString("value")
+
+                    scope.launch(Dispatchers.Main){
+                        callback(JsonValue)
+                    }
+                }
+                else
+                    scope.launch(Dispatchers.Main){
+                        callback("User not found")
+                    }
+            }
+        }
     }
 }
