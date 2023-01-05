@@ -327,4 +327,39 @@ object ClienteRequests {
             }
         }
     }
+
+    fun GetByToken(scope: CoroutineScope, token : String?, callback: (Cliente?) -> Unit){
+        scope.launch(Dispatchers.IO) {
+            val request = Request.Builder()
+                .url(UtilsForRequests.baseURL + "/api/Cliente/getbytoken")
+                .get()
+                .header("Authorization", "Bearer $token")
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                val statusCode = response.code
+                var cliente : Cliente? = null
+
+                if(statusCode == 200) {
+                    val result = response.body!!.string()
+
+                    val jsonObject = JSONObject(result)
+                    val JSONData = jsonObject.getJSONObject("data")
+                    val item = JSONData.getJSONObject("value")
+
+                    cliente = Cliente.fromJson(item)
+
+                    scope.launch(Dispatchers.Main){
+                        callback(cliente)
+                    }
+                }
+                else
+                    scope.launch(Dispatchers.Main){
+                        callback(cliente)
+                    }
+            }
+        }
+    }
 }
