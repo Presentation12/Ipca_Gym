@@ -1,0 +1,16 @@
+{
+  "ConnectionStrings": {
+    "DatabaseLink": "data source=DESKTOP-8AIBMTC;initial catalog=ipcagym;trusted_connection=true"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*",
+  "AppSettings": {
+    "Token": "my top secret key"
+  }
+}
