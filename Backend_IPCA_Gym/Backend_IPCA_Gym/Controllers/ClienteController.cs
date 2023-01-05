@@ -11,6 +11,7 @@ using LayerBLL.Logics;
 using Swashbuckle.AspNetCore.Annotations;
 using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Backend_IPCA_Gym.Controllers
 {
@@ -52,7 +53,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// Método http get para retornar um cliente através do seu id
         /// </summary>
         /// <param name="targetID">ID do cliente que é pretendido ser retornado</param>
-        /// <returns>Resposta do request que contém a sua mensagem, seu código e a cliente em formato Json</returns>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e o cliente em formato Json</returns>
         [HttpGet("{targetID}"), Authorize(Roles = "Admin, Cliente")]
         public async Task<IActionResult> GetByID(int targetID)
         {
@@ -179,6 +180,23 @@ namespace Backend_IPCA_Gym.Controllers
             //Verificar se Gerente e Funcionario pertencem ao ginasio ao qual o cliente pertence
 
             Response response = await ClienteLogic.DeleteClienteLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        /// <summary>
+        /// Método http get para retornar um cliente através da sua token de sessão
+        /// </summary>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e o cliente em formato Json</returns>
+        [HttpGet("getbytoken"), Authorize(Roles = "Admin, Cliente")]
+        public async Task<IActionResult> GetClienteByToken()
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            string emailCliente = User.FindFirstValue(ClaimTypes.Email);
+            
+            Response response = await ClienteLogic.GetClienteByTokenLogic(sqlDataSource, emailCliente);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
 

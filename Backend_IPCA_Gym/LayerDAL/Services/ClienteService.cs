@@ -753,6 +753,135 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Retorna um cliente que possui a token de sessão atual no seu dispositivo
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="mail">Mail registado na token de sessão</param>
+        /// <returns>Cliente se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<Cliente> GetClienteByTokenService(string sqlDataSource, string mail)
+        {
+            string query = @"select * from dbo.Cliente where mail = @mail";
+            try
+            {
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("mail", mail);
+
+                        using (SqlDataReader reader = myCommand.ExecuteReader())
+                        {
+                            reader.Read();
+
+                            Cliente targetCliente = new Cliente();
+                            targetCliente.id_cliente = reader.GetInt32(0);
+                            targetCliente.id_ginasio = reader.GetInt32(1);
+                            if (!Convert.IsDBNull(reader["id_plano_nutricional"]))
+                            {
+                                targetCliente.id_plano_nutricional = reader.GetInt32(2);
+                            }
+                            else
+                            {
+                                targetCliente.id_plano_nutricional = null;
+                            }
+                            targetCliente.nome = reader.GetString(3);
+                            targetCliente.mail = reader.GetString(4);
+                            targetCliente.telemovel = reader.GetInt32(5);
+                            targetCliente.pass_salt = reader.GetString(6);
+                            targetCliente.pass_hash = reader.GetString(7);
+
+                            if (!Convert.IsDBNull(reader["peso"]))
+                            {
+                                targetCliente.peso = reader.GetDouble(8);
+                            }
+                            else
+                            {
+                                targetCliente.peso = null;
+                            }
+
+                            if (!Convert.IsDBNull(reader["altura"]))
+                            {
+                                targetCliente.altura = reader.GetInt32(9);
+                            }
+                            else
+                            {
+                                targetCliente.altura = null;
+                            }
+
+                            if (!Convert.IsDBNull(reader["gordura"]))
+                            {
+                                targetCliente.gordura = reader.GetDouble(10);
+                            }
+                            else
+                            {
+                                targetCliente.gordura = null;
+                            }
+
+                            if (!Convert.IsDBNull(reader["foto_perfil"]))
+                            {
+                                targetCliente.foto_perfil = reader.GetString(11);
+                            }
+                            else
+                            {
+                                targetCliente.foto_perfil = null;
+                            }
+                            targetCliente.estado = reader.GetString(12);
+
+                            reader.Close();
+                            databaseConnection.Close();
+
+                            return targetCliente;
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
         #endregion
     }
 }
