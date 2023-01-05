@@ -78,36 +78,14 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
     <TextView
-        android:id="@+id/textView11"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="ID_Ginásio"
-        app:layout_constraintBottom_toBottomOf="@+id/newIDGymActivity"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/newIDGymActivity" />
-
-    <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:text="ID_Cliente"
+        android:text="Client_ID"
         app:layout_constraintBottom_toBottomOf="@+id/newIDClienteActivity"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/newIDClienteActivity" />
-
-    <EditText
-        android:id="@+id/newIDGymActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newActivityTitle"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <EditText
         android:id="@+id/newIDClienteActivity"
@@ -118,7 +96,7 @@
         android:ems="10"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newIDGymActivity"
+        app:layout_constraintTop_toBottomOf="@+id/newActivityTitle"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <Button
@@ -141,7 +119,7 @@
         android:backgroundTint="#C30B0B"
         android:text="Exit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newIDClienteActivity" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <Button
         android:id="@+id/buttonAddActivity"
@@ -152,5 +130,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/exitButton" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Client activity:"
+        app:layout_constraintEnd_toEndOf="@+id/entryButton"
+        app:layout_constraintStart_toEndOf="@+id/entryButton"
+        app:layout_constraintTop_toBottomOf="@+id/newIDClienteActivity" />
+
+    <TextView
+        android:id="@+id/textViewCurrentState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="none"
+        app:layout_constraintBottom_toBottomOf="@+id/textView8"
+        app:layout_constraintStart_toEndOf="@+id/textView8"
+        app:layout_constraintTop_toTopOf="@+id/textView8" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

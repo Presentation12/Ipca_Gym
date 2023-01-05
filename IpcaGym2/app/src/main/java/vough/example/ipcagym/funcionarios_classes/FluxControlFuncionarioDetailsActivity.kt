@@ -14,7 +14,7 @@ class FluxControlFuncionarioDetailsActivity : AppCompatActivity() {
 
         //fazer na outra activity
         val id_atividade = intent.getIntExtra("id_atividade", -1)
-        val id_ginasio = intent.getIntExtra("id_atividade", -1)
+        val id_ginasio = intent.getIntExtra("id_ginasio", -1)
         val id_cliente = intent.getIntExtra("id_cliente", -1)
         val data = intent.getStringExtra("data")
         val data_E = intent.getStringExtra("data_E")

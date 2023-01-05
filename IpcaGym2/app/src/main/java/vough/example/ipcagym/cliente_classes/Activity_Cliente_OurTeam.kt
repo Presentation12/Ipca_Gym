@@ -1,14 +1,19 @@
 package vough.example.ipcagym.cliente_classes
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Funcionario
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.GinasioRequests
 
 class Activity_Cliente_OurTeam : AppCompatActivity() {
     var ourTeamList = arrayListOf<Funcionario>()
@@ -18,21 +23,31 @@ class Activity_Cliente_OurTeam : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_ourteam)
 
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = arrayOf("Conta", "Definições", "Sair")
         val listViewFuncionarios= findViewById<ListView>(R.id.listview_funcionarios)
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
-
+        ourTeamList.add(Funcionario(1,1,"boas",true,1,"bpas","dasd","Ativo"))
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
         listViewFuncionarios.adapter = adapterTeam
 
+        ClienteRequests.GetByToken(lifecycleScope, sessionToken){
+            FuncionarioRequests.GetAllByGym(lifecycleScope, sessionToken, it?.id_ginasio){
+                if(!it.isEmpty()) ourTeamList = it
+                adapterTeam.notifyDataSetChanged()
+            }
+        }
+
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(this@Activity_Cliente_OurTeam,options[position], Toast.LENGTH_LONG).show()
+                // Do nothing
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {

@@ -35,6 +35,7 @@ class LoginClienteActivity : AppCompatActivity() {
                         editor.apply()
 
                         startActivity(Intent(this@LoginClienteActivity,PaginaInicialClienteActivity::class.java))
+                        //startActivity(Intent(this@LoginClienteActivity, Activity_Cliente_OurTeam::class.java))
                     }
                     else {
                         Toast.makeText(this@LoginClienteActivity, result, Toast.LENGTH_LONG).show()

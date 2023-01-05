@@ -17,24 +17,27 @@ class FluxControlFuncionarioAddActivity : AppCompatActivity() {
         val buttonAdd = findViewById<Button>(R.id.buttonAddActivity)
         val buttonEntry = findViewById<Button>(R.id.entryButton)
         val buttonExit = findViewById<Button>(R.id.exitButton)
-        val id_ginasio = findViewById<EditText>(R.id.newIDGymActivity)
         val id_cliente = findViewById<EditText>(R.id.newIDClienteActivity)
         var state = true
 
         buttonEntry.setOnClickListener{
             state = true
+            findViewById<TextView>(R.id.textViewCurrentState).text = "Entry"
             Toast.makeText(this@FluxControlFuncionarioAddActivity,"Activity marked as entry!", Toast.LENGTH_SHORT).show()
         }
 
         buttonExit.setOnClickListener{
             state = false
+            findViewById<TextView>(R.id.textViewCurrentState).text = "Exit"
             Toast.makeText(this@FluxControlFuncionarioAddActivity,"Activity marked as exit!", Toast.LENGTH_SHORT).show()
         }
 
         buttonAdd.setOnClickListener{
             val intent = Intent()
 
-            intent.putExtra("id_ginasio", id_ginasio.text.toString().toInt())
+            //BUSCAR CLIENTE PELO ID INSERIDO, CASO NAO EXISTA, LANÇAR TOAST
+            //CASO EXISTA MANDAR INFORMACAO
+
             intent.putExtra("id_cliente", id_cliente.text.toString().toInt())
             intent.putExtra("state", state)
 

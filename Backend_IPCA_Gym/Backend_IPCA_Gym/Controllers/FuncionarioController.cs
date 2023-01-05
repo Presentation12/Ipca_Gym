@@ -325,5 +325,21 @@ namespace Backend_IPCA_Gym.Controllers
 
             return new JsonResult(response);
         }
+
+        /// <summary>
+        /// Método http get para retornar uma lista de funcionarios pertencentes a um ginasio
+        /// </summary>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de funcionarios em formato Json</returns>
+        [HttpGet("allbygym/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
+        public async Task<IActionResult> GetAllByGym(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            Response response = await FuncionarioLogic.GetAllByIDGinasioLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
     }
 }

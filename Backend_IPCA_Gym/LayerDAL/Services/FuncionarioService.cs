@@ -175,7 +175,7 @@ namespace LayerDAL.Services
         /// </summary>
         /// <param name="sqlDataSource">String de conexão á base de dados</param>
         /// <param name="targetID">ID do funcionário a ser lido</param>
-        /// <returns>Atividade se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <returns>Funcionario se uma leitura bem sucedida, ou null em caso de erro</returns>
         /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
         /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
         /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
@@ -852,7 +852,7 @@ namespace LayerDAL.Services
         /// </summary>
         /// <param name="sqlDataSource">String de conexão á base de dados</param>
         /// <param name="codigo">Codigo registado na token de sessão</param>
-        /// <returns>Atividade se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <returns>Funcionario se uma leitura bem sucedida, ou null em caso de erro</returns>
         /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
         /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
         /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
@@ -894,6 +894,95 @@ namespace LayerDAL.Services
                         }
                     }
                 }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Leitura dos dados de uma funcionário através do id do ginasio
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID">ID do ginasio do qual os funcionarios pertencem</param>
+        /// <returns>Lista de Funcionarios se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<List<Funcionario>> GetAllByIDGinasioService(string sqlDataSource, int targetID)
+        {
+            string query = @"select * from dbo.Funcionario where id_ginasio = @id_ginasio and estado = 'Ativo'";
+
+            try
+            {
+                List<Funcionario> funcionarios = new List<Funcionario>();
+                SqlDataReader dataReader;
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("id_ginasio", targetID);
+
+                        dataReader = myCommand.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            Funcionario funcionario = new Funcionario();
+
+                            funcionario.id_funcionario = Convert.ToInt32(dataReader["id_funcionario"]);
+                            funcionario.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
+                            funcionario.nome = dataReader["nome"].ToString();
+                            funcionario.is_admin = Convert.ToBoolean(dataReader["is_admin"]);
+                            funcionario.codigo = Convert.ToInt32(dataReader["codigo"]);
+                            funcionario.pass_salt = dataReader["pass_salt"].ToString();
+                            funcionario.pass_hash = dataReader["pass_hash"].ToString();
+                            funcionario.estado = dataReader["estado"].ToString();
+
+                            funcionarios.Add(funcionario);
+                        }
+
+                        dataReader.Close();
+                        databaseConnection.Close();
+                    }
+                }
+                return funcionarios;
             }
             catch (SqlException ex)
             {

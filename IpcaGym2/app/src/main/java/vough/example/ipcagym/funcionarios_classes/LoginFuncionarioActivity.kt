@@ -39,7 +39,8 @@ class LoginFuncionarioActivity : AppCompatActivity() {
 
                         editor.apply()
 
-                        startActivity(Intent(this@LoginFuncionarioActivity, PaginaInicialFuncionarioActivity::class.java))
+                        startActivity(Intent(this@LoginFuncionarioActivity, FluxControlFuncionarioActivity::class.java))
+                        //startActivity(Intent(this@LoginFuncionarioActivity, PaginaInicialFuncionarioActivity::class.java))
                     } else {
                         Toast.makeText(this@LoginFuncionarioActivity, result, Toast.LENGTH_LONG).show()
                     }

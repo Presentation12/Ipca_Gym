@@ -1262,6 +1262,75 @@ namespace LayerBLL.Logics
                 return response;
             }
         }
+
+        /// <summary>
+        /// Método que recebe os dados do serviço de obter todos os funcionarios de um ginasio
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do ginasio do qual os funcionarios pertencem</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<Response> GetAllByIDGinasioLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+
+            try
+            {
+                List<Funcionario> funcionarioList = await FuncionarioService.GetAllByIDGinasioService(sqlDataSource, targetID);
+
+                if (funcionarioList.Count != 0)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Lista de funcionarios obtida com sucesso";
+                    response.Data = new JsonResult(funcionarioList);
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
         #endregion
     }
 }

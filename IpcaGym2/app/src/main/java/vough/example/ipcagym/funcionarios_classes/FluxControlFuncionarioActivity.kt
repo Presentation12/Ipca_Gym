@@ -1,6 +1,7 @@
 package vough.example.ipcagym.funcionarios_classes
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -10,8 +11,11 @@ import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Atividade
+import vough.example.ipcagym.requests.AtividadeRequests
+import vough.example.ipcagym.requests.ClienteRequests
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -28,15 +32,18 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_flux_control)
 
-        activityList.add(Atividade(1,1,1,
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
+        /*activityList.add(Atividade(1,1,1,
             LocalDateTime.now(), LocalDateTime.of(2022,12,11,11,10,10)))
         activityList.add(Atividade(2,1,1,
             LocalDateTime.of(2022,12,11,10,10,10),
             null))
         activityList.add(Atividade(3,1,2,
             LocalDateTime.of(2022,12,19,10,10,10),
-            LocalDateTime.of(2022,12,19,11,10,10)))
-
+            LocalDateTime.of(2022,12,19,11,10,10)))*/
 
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
         val spinner = findViewById<Spinner>(R.id.spinner)
@@ -50,6 +57,12 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
 
         val listViewActivities = findViewById<ListView>(R.id.listByDate)
         listViewActivities.adapter = client_adapter
+
+        AtividadeRequests.GetAll(lifecycleScope, sessionToken){
+            activityList = it
+
+            client_adapter.notifyDataSetChanged()
+        }
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -162,8 +175,11 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
             val rootView = layoutInflater.inflate(R.layout.row_activities_by_date,parent,false)
             val rootView2 = layoutInflater.inflate(R.layout.row_activities_on_date,parent,false)
 
-            //TODO: Dependendo de ser entrada ou saida, escolher o icone respetivo
-            //TODO: Associar perfil do cliente pelo id_Cliente
+            //Buscar token
+            val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+            val sessionToken = preferences.getString("session_token", null)
+
+            //TODO: Dependendo de ser entrada ou saida, escolher o icone respetivo e organizar variaveis para o layout
 
             val date = rootView.findViewById<TextView>(R.id.activityDate)
             //val listbydate = rootView.findViewById<ListView>(R.id.listByDate)
@@ -186,8 +202,11 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
                 date.setTextColor(Color.RED)
             }
 
-            id_ginasio.text = activityList[position].id_ginasio?.toString()
-            id_cliente.text = activityList[position].id_cliente?.toString()
+
+            ClienteRequests.GetByID(lifecycleScope, sessionToken, activityList[position].id_cliente){
+                id_ginasio.text = it?.nome
+                id_cliente.text = activityList[position].id_cliente?.toString()
+            }
 
             rootView.setOnClickListener {
                 val intent = Intent(this@FluxControlFuncionarioActivity, FluxControlFuncionarioDetailsActivity::class.java)
