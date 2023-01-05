@@ -308,5 +308,22 @@ namespace Backend_IPCA_Gym.Controllers
 
             return new JsonResult(response);
         }
+
+        /// <summary>
+        /// Método http get para retornar um funcionário através da sua token de sessão
+        /// </summary>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e o funcionario em formato Json</returns>
+        [HttpGet("getbytoken"), Authorize(Roles = "Admin, Gerente, Funcionario")]
+        public async Task<IActionResult> GetFuncionarioByToken()
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            string codigo = User.FindFirstValue(ClaimTypes.Email);
+
+            Response response = await FuncionarioLogic.GetFuncionarioByTokenLogic(sqlDataSource, codigo);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
     }
 }

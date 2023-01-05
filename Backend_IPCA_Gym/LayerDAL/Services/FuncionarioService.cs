@@ -847,6 +847,92 @@ namespace LayerDAL.Services
             }
         }
 
+        /// <summary>
+        /// Leitura dos dados de uma funcionário através da sua token de sessão
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="codigo">Codigo registado na token de sessão</param>
+        /// <returns>Atividade se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<Funcionario> GetFuncionarioByTokenService(string sqlDataSource, string codigo)
+        {
+            string query = @"select * from dbo.Funcionario where codigo = @codigo and estado != 'Inativo'";
+
+            try
+            {
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("codigo", codigo);
+
+                        using (SqlDataReader reader = myCommand.ExecuteReader())
+                        {
+                            reader.Read();
+
+                            Funcionario targetFuncionario = new Funcionario();
+                            targetFuncionario.id_funcionario = reader.GetInt32(0);
+                            targetFuncionario.id_ginasio = reader.GetInt32(1);
+                            targetFuncionario.nome = reader.GetString(2);
+                            targetFuncionario.is_admin = reader.GetBoolean(3);
+                            targetFuncionario.codigo = reader.GetInt32(4);
+                            targetFuncionario.pass_salt = reader.GetString(5);
+                            targetFuncionario.pass_hash = reader.GetString(6);
+                            targetFuncionario.estado = reader.GetString(7);
+
+                            reader.Close();
+                            databaseConnection.Close();
+
+                            return targetFuncionario;
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
         #endregion
     }
 }

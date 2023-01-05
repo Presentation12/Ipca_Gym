@@ -1174,6 +1174,94 @@ namespace LayerBLL.Logics
                 return response;
             }
         }
+
+        /// <summary>
+        /// Método que recebe os dados do serviço de obter um funcionario em específico a partir da sua token de sessão
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="codigo">Codigo registado na token de sessão</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<Response> GetFuncionarioByTokenLogic(string sqlDataSource, string codigo)
+        {
+            Response response = new Response();
+
+            try
+            {
+                Funcionario funcionario = await FuncionarioService.GetFuncionarioByTokenService(sqlDataSource, codigo);
+
+                if (funcionario != null)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Funcionario obtido com sucesso";
+                    response.Data = new JsonResult(funcionario);
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de leitura dos dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de acesso a uma coluna da base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+        }
         #endregion
     }
 }
