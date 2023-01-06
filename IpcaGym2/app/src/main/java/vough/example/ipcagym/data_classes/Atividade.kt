@@ -40,12 +40,18 @@ class Atividade {
     //TODO: VER O PARSE DE DATA_SAIDA (PODE SER NULL)
     companion object{
         fun fromJson(jsonObject: JSONObject) : Atividade {
+            val data_saida: LocalDateTime? = if (jsonObject.isNull("data_saida")) {
+                null
+            } else {
+                LocalDateTime.parse(jsonObject.getString("data_saida"))
+            }
+
             return Atividade(
                 jsonObject.getInt("id_atividade"),
                 jsonObject.getInt("id_ginasio"),
                 jsonObject.getInt("id_cliente"),
                 LocalDateTime.parse(jsonObject.getString("data_entrada")),
-                LocalDateTime.parse(jsonObject.getString("data_saida"))
+                data_saida
             )
         }
     }

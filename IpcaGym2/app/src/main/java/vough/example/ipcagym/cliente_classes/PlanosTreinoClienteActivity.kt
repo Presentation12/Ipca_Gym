@@ -33,7 +33,7 @@ class PlanosTreinoClienteActivity : AppCompatActivity() {
         var image_view = findViewById<ImageView>(R.id.profile_pic)
 
         ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
-            if(resultCliente?.id_cliente != null) clienteRefresh = resultCliente
+            if(resultCliente != null) clienteRefresh = resultCliente
 
             PlanoTreinoRequests.GetAllByGinasioID(lifecycleScope, sessionToken, resultCliente?.id_ginasio) { resultGym ->
                 planos_treino_list = resultGym
@@ -42,6 +42,8 @@ class PlanosTreinoClienteActivity : AppCompatActivity() {
                     val imageUri: Uri = Uri.parse(clienteRefresh?.foto_perfil)
                     image_view.setImageURI(imageUri)
                 }
+
+                plano_adapter.notifyDataSetChanged()
             }
         }
 

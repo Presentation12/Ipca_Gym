@@ -100,7 +100,7 @@ object AtividadeRequests {
                   "id_ginasio": ${newAtividade.id_ginasio},
                   "id_cliente": ${newAtividade.id_cliente},
                   "data_entrada": "${newAtividade.data_entrada}",
-                  "data_saida": "${newAtividade.data_saida}"
+                  "data_saida": null
                 }
             """
 
@@ -138,7 +138,6 @@ object AtividadeRequests {
         scope.launch(Dispatchers.IO) {
             val jsonBody = """
                 {
-                  "id_atividade": ${editAtividade.id_atividade},
                   "id_ginasio": ${editAtividade.id_ginasio},
                   "id_cliente": ${editAtividade.id_cliente},
                   "data_entrada": "${editAtividade.data_entrada}",

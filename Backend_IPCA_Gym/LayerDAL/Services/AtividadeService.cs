@@ -41,7 +41,10 @@ namespace LayerDAL.Services
                             atividade.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
                             atividade.id_cliente = Convert.ToInt32(dataReader["id_cliente"]);
                             atividade.data_entrada = Convert.ToDateTime(dataReader["data_entrada"]);
-                            atividade.data_saida = Convert.ToDateTime(dataReader["data_saida"]);
+                          
+                            if (dataReader["data_saida"] == DBNull.Value) atividade.data_saida = null;
+                            else atividade.data_saida = Convert.ToDateTime(dataReader["data_saida"]);
+
 
                             atividades.Add(atividade);
                         }
@@ -121,7 +124,9 @@ namespace LayerDAL.Services
                             targetAtividade.id_ginasio = reader.GetInt32(1);
                             targetAtividade.id_cliente = reader.GetInt32(2);
                             targetAtividade.data_entrada = reader.GetDateTime(3);
-                            targetAtividade.data_saida = reader.GetDateTime(4);
+
+                            if (reader["data_saida"] == DBNull.Value) targetAtividade.data_saida = null;
+                            else targetAtividade.data_saida = reader.GetDateTime(4);
 
                             reader.Close();
                             databaseConnection.Close();
@@ -195,10 +200,11 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("id_ginasio", newAtividade.id_ginasio);
                         myCommand.Parameters.AddWithValue("id_cliente", newAtividade.id_cliente);
                         myCommand.Parameters.AddWithValue("data_entrada", Convert.ToDateTime(newAtividade.data_entrada));
+                        
                         if(newAtividade.data_saida != null)
                             myCommand.Parameters.AddWithValue("data_saida", Convert.ToDateTime(newAtividade.data_saida));
                         else
-                            myCommand.Parameters.AddWithValue("data_saida", null);
+                            myCommand.Parameters.AddWithValue("data_saida", DBNull.Value);
 
                         dataReader = myCommand.ExecuteReader();
 
@@ -260,6 +266,9 @@ namespace LayerDAL.Services
             try
             {
                 Atividade atividadeAtual = await GetByIDService(sqlDataSource, targetID);
+
+                if (atividadeAtual == null) throw new ArgumentException("Erro ao alterar a atividade", "targetID");
+
                 SqlDataReader dataReader;
 
                 using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
@@ -267,7 +276,7 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        myCommand.Parameters.AddWithValue("id_atividade", atividade.id_atividade != 0 ? atividade.id_atividade : atividadeAtual.id_atividade);
+                        myCommand.Parameters.AddWithValue("id_atividade", atividadeAtual.id_atividade);
                         myCommand.Parameters.AddWithValue("id_ginasio", atividade.id_ginasio != 0 ? atividade.id_ginasio : atividadeAtual.id_ginasio);
                         myCommand.Parameters.AddWithValue("id_cliente", atividade.id_cliente != 0 ? atividade.id_cliente : atividadeAtual.id_cliente);
                         myCommand.Parameters.AddWithValue("data_entrada", atividade.data_entrada != DateTime.MinValue ? Convert.ToDateTime(atividade.data_entrada) : Convert.ToDateTime(atividadeAtual.data_entrada));

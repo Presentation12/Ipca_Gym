@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -14,14 +16,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Atividade
+import vough.example.ipcagym.data_classes.Funcionario
 import vough.example.ipcagym.requests.AtividadeRequests
 import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class FluxControlFuncionarioActivity : AppCompatActivity() {
 
     var activityList = arrayListOf<Atividade>()
+    var funcionarioRefresh : Funcionario? = null
     var client_adapter = FuncionarioActivityAdapter()
     val date_formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy")
     val date_formatter_compact = DateTimeFormatter.ofPattern("dd-MM-yyyy")
@@ -36,14 +41,9 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
-        /*activityList.add(Atividade(1,1,1,
-            LocalDateTime.now(), LocalDateTime.of(2022,12,11,11,10,10)))
-        activityList.add(Atividade(2,1,1,
-            LocalDateTime.of(2022,12,11,10,10,10),
-            null))
-        activityList.add(Atividade(3,1,2,
-            LocalDateTime.of(2022,12,19,10,10,10),
-            LocalDateTime.of(2022,12,19,11,10,10)))*/
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
+            if(result != null) funcionarioRefresh = result
+        }
 
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
         val spinner = findViewById<Spinner>(R.id.spinner)
@@ -66,7 +66,7 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(this@FluxControlFuncionarioActivity,options[position], Toast.LENGTH_LONG).show()
+                // Do nothing
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -80,51 +80,57 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
 
         receiverNewActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode == Activity.RESULT_OK){
-                //Verificar dados e adicionar na base de dados
-                var betterID : Long = -2
-
-                for(atividade in activityList){
-                    if((atividade.id_atividade?:-2) > betterID){
-                        betterID = atividade.id_atividade!!.toLong()
-                    }
-                }
-
-                val id_atividade = (betterID + 1).toInt()
-                val id_ginasio = it.data?.getIntExtra("id_ginasio", -1)
+                val id_ginasio = funcionarioRefresh?.id_ginasio
                 val id_cliente = it.data?.getIntExtra("id_cliente", -1)
 
                 val state = it.data?.getBooleanExtra("state", true)
                 var biggestDate = LocalDateTime.MIN
+                var isNewClient = true
 
                 if(state == true){
                     for(activity in activityList){
                         if(id_ginasio == activity.id_ginasio && id_cliente == activity.id_cliente
-                            && (biggestDate.compareTo(activity.data_entrada) > 0)){
+                            && (biggestDate < activity.data_entrada)){
                             biggestDate = activity.data_entrada
+                            isNewClient = false
                         }
                     }
 
                     for(activity in activityList){
-                        if(id_ginasio == activity.id_ginasio && id_cliente == activity.id_cliente
-                            && (biggestDate.compareTo(activity.data_entrada) > 0)){
+                        if((id_ginasio == activity.id_ginasio && id_cliente == activity.id_cliente &&
+                            (biggestDate == activity.data_entrada && !isNewClient)) || isNewClient){
+
                             if(activity.data_saida == null){
                                 Toast.makeText(this@FluxControlFuncionarioActivity,"This client needs to exit first!", Toast.LENGTH_LONG).show()
                             }
                             else
                             {
-                                activityList.add(Atividade(id_atividade, id_ginasio, id_cliente, LocalDateTime.now(), null))
-                                Toast.makeText(this@FluxControlFuncionarioActivity,"Activity added successfully", Toast.LENGTH_LONG).show()
+                                AtividadeRequests.Post(lifecycleScope, sessionToken, Atividade(
+                                    null,
+                                    id_ginasio,
+                                    id_cliente,
+                                    LocalDateTime.now(),
+                                    null
+                                )){ response ->
+                                    if(response == "User not found") Toast.makeText(this@FluxControlFuncionarioActivity, "ERROR", Toast.LENGTH_SHORT).show()
+                                    else{
+                                        Toast.makeText(this@FluxControlFuncionarioActivity,"Activity added successfully", Toast.LENGTH_SHORT).show()
+                                        AtividadeRequests.GetAll(lifecycleScope, sessionToken){
+                                            activityList = it
+
+                                            client_adapter.notifyDataSetChanged()
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
-
-
                 }
                 else
                 {
                     for(activity in activityList){
                         if(id_ginasio == activity.id_ginasio && id_cliente == activity.id_cliente
-                            && biggestDate > activity.data_entrada){
+                            && biggestDate < activity.data_entrada){
                                 biggestDate = activity.data_entrada
                         }
                     }
@@ -133,8 +139,22 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
                         if(id_ginasio == activity.id_ginasio && id_cliente == activity.id_cliente
                             && biggestDate == activity.data_entrada){
                             if(activity.data_saida == null){
-                                activity.data_saida = LocalDateTime.now()
-                                Toast.makeText(this@FluxControlFuncionarioActivity,"Activity added successfully", Toast.LENGTH_LONG).show()
+                                AtividadeRequests.Patch(lifecycleScope, sessionToken, activity.id_atividade!!, Atividade(
+                                    null,
+                                    activity.id_ginasio,
+                                    activity.id_cliente,
+                                    activity.data_entrada,
+                                    LocalDateTime.now())){ result ->
+                                    if(result != "User not found") {
+                                        Toast.makeText(this@FluxControlFuncionarioActivity,"Activity added successfully", Toast.LENGTH_LONG).show()
+                                        AtividadeRequests.GetAll(lifecycleScope, sessionToken){
+                                            activityList = it
+
+                                            client_adapter.notifyDataSetChanged()
+                                        }
+                                    }
+                                    else Toast.makeText(this@FluxControlFuncionarioActivity,"ERROR", Toast.LENGTH_LONG).show()
+                                }
                             }
                             else
                             {
@@ -142,10 +162,7 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
                             }
                         }
                     }
-
                 }
-
-                client_adapter.notifyDataSetChanged()
             }
             else
             {

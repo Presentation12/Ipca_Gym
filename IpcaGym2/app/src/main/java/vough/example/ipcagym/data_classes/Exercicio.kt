@@ -59,6 +59,12 @@ class Exercicio {
     //TODO: VERIFICAR TEMPO
     companion object{
         fun fromJson(jsonObject: JSONObject) : Exercicio {
+            val tempo: LocalTime? = if (jsonObject.isNull("tempo")) {
+                null
+            } else {
+                LocalTime.parse(jsonObject.getString("tempo"))
+            }
+
             return Exercicio(
                 jsonObject.getInt("id_exercicio"),
                 jsonObject.getInt("id_plano_treino"),
@@ -66,7 +72,7 @@ class Exercicio {
                 jsonObject.getString("descricao"),
                 jsonObject.getString("tipo"),
                 jsonObject.optInt("series"),
-                jsonObject["tempo"]?.let { LocalTime.parse(it.toString()) } ?: null,
+                tempo,
                 jsonObject.optInt("repeticoes"),
                 jsonObject.getString("foto_exercicio")
             )

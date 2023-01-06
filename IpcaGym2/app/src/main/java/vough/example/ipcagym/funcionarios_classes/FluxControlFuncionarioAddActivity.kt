@@ -1,17 +1,23 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
+import vough.example.ipcagym.requests.ClienteRequests
 
 class FluxControlFuncionarioAddActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_flux_control_add)
+
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
         //Botao de concluir criação
         val buttonAdd = findViewById<Button>(R.id.buttonAddActivity)
@@ -35,18 +41,21 @@ class FluxControlFuncionarioAddActivity : AppCompatActivity() {
         buttonAdd.setOnClickListener{
             val intent = Intent()
 
-            //BUSCAR CLIENTE PELO ID INSERIDO, CASO NAO EXISTA, LANÇAR TOAST
-            //CASO EXISTA MANDAR INFORMACAO
+            ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente.text.toString().toInt()){ response ->
+                if (response == null) Toast.makeText(this@FluxControlFuncionarioAddActivity, "User not found!", Toast.LENGTH_SHORT).show()
+                else{
+                    intent.putExtra("id_cliente", id_cliente.text.toString().toInt())
+                    intent.putExtra("state", state)
 
-            intent.putExtra("id_cliente", id_cliente.text.toString().toInt())
-            intent.putExtra("state", state)
+                    setResult(RESULT_OK, intent)
+                    finish()
+                }
+            }
 
-            setResult(RESULT_OK, intent)
-            finish()
         }
 
         val spinner = findViewById<Spinner>(R.id.spinner)
-        val options = arrayOf("Conta", "Definições", "Sair")
+        val options = arrayOf("Account", "Settings", "Logout")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -54,7 +63,7 @@ class FluxControlFuncionarioAddActivity : AppCompatActivity() {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(this@FluxControlFuncionarioAddActivity,options[position], Toast.LENGTH_LONG).show()
+                // Do nothing
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {

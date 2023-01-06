@@ -48,6 +48,8 @@ class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
                     val imageUri: Uri = Uri.parse(clienteRefresh?.foto_perfil)
                     image_view.setImageURI(imageUri)
                 }
+
+                exercicio_adapter.notifyDataSetChanged()
             }
         }
         findViewById<TextView>(R.id.textViewType).text = tipo
@@ -117,7 +119,7 @@ class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
         //api para usar o Duration.ZERO
         @RequiresApi(Build.VERSION_CODES.O)
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            val rootView = layoutInflater.inflate(R.layout.row_exercicio,parent,false)
+            val rootView = layoutInflater.inflate(R.layout.row_exercicio_cliente,parent,false)
 
             val exercicio_nome_view = rootView.findViewById<TextView>(R.id.textViewNomeExercicios)
             exercicio_nome_view.text = exercicios_plano_list[position].nome

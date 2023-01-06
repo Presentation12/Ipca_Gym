@@ -21,6 +21,15 @@ class LoginClienteActivity : AppCompatActivity() {
         val loginbutton = findViewById<Button>(R.id.button)
         val mail = findViewById<EditText>(R.id.mail)
         val pass = findViewById<EditText>(R.id.password)
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
+        //Caso a token de sessão estiver ativa, passar login a frente
+        if(sessionToken != "") {
+            val intentStart = Intent(this@LoginClienteActivity, PlanosTreinoClienteActivity::class.java)
+            finish()
+            startActivity(intentStart)
+        }
 
         loginbutton.setOnClickListener{
             if(mail.text.toString() == "" || pass.text.toString() == "")
@@ -34,8 +43,10 @@ class LoginClienteActivity : AppCompatActivity() {
 
                         editor.apply()
 
-                        startActivity(Intent(this@LoginClienteActivity,PaginaInicialClienteActivity::class.java))
-                        //startActivity(Intent(this@LoginClienteActivity, Activity_Cliente_OurTeam::class.java))
+                        //val intentStart = Intent(this@LoginClienteActivity,PaginaInicialClienteActivity::class.java)
+                        val intentStart = Intent(this@LoginClienteActivity, PlanosTreinoClienteActivity::class.java)
+                        finish()
+                        startActivity(intentStart)
                     }
                     else {
                         Toast.makeText(this@LoginClienteActivity, result, Toast.LENGTH_LONG).show()
