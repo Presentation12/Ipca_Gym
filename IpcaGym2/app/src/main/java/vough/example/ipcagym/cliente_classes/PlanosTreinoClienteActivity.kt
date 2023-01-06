@@ -1,5 +1,6 @@
 package vough.example.ipcagym.cliente_classes
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,11 +10,15 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Cliente
 import vough.example.ipcagym.data_classes.Plano_Treino
-import java.time.format.DateTimeFormatter
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.PlanoTreinoRequests
+import androidx.lifecycle.lifecycleScope
 
 class PlanosTreinoClienteActivity : AppCompatActivity() {
 
+    var clienteRefresh : Cliente? = null
     var planos_treino_list = arrayListOf<Plano_Treino>()
     var plano_adapter = AdapterPlanosTreino()
 
@@ -21,21 +26,30 @@ class PlanosTreinoClienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_treino_planos)
 
-            planos_treino_list.add(Plano_Treino(1,1,"Emagrecer",null))
-            planos_treino_list.add(Plano_Treino(2,1,"Atletico",null))
-            planos_treino_list.add(Plano_Treino(3,1,"Definir",null))
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
-        val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
-        val image_view = findViewById<ImageView>(R.id.profile_pic)
+        var image_view = findViewById<ImageView>(R.id.profile_pic)
+
+        ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
+            if(resultCliente?.id_cliente != null) clienteRefresh = resultCliente
+
+            PlanoTreinoRequests.GetAllByGinasioID(lifecycleScope, sessionToken, resultCliente?.id_ginasio) { resultGym ->
+                planos_treino_list = resultGym
+                if (clienteRefresh?.foto_perfil != null)
+                {
+                    val imageUri: Uri = Uri.parse(clienteRefresh?.foto_perfil)
+                    image_view.setImageURI(imageUri)
+                }
+            }
+        }
+
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = arrayOf("Conta", "Definições", "Sair")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
-
-        val list_view_planos_treino = findViewById<ListView>(R.id.listviewPlanosTreino)
-        list_view_planos_treino.adapter = plano_adapter
-
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 Toast.makeText(this@PlanosTreinoClienteActivity,options[position], Toast.LENGTH_LONG).show()
@@ -45,11 +59,14 @@ class PlanosTreinoClienteActivity : AppCompatActivity() {
                 // Do nothing
             }
         }
-
         image_view.setOnClickListener {
             spinner.performClick()
         }
 
+        val list_view_planos_treino = findViewById<ListView>(R.id.listviewPlanosTreino)
+        list_view_planos_treino.adapter = plano_adapter
+
+        val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
         bottom_navigation_view.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {

@@ -1,5 +1,6 @@
 package vough.example.ipcagym.cliente_classes
 
+import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -8,14 +9,17 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Exercicio
-import vough.example.ipcagym.data_classes.Plano_Treino
-import java.time.LocalTime
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.data_classes.Cliente
+import vough.example.ipcagym.requests.ExercicioRequests
 
 class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
 
+    var clienteRefresh : Cliente? = null
     var exercicios_plano_list = arrayListOf<Exercicio>()
     var exercicio_adapter = AdapterExercicios()
 
@@ -23,27 +27,36 @@ class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_treino_plano_exercicios)
 
-        // hardcode
-        //exercicios_plano_list.add(Exercicio(1,1,"Flexoes","90 graus de flexao","Braços",1,null,10,null))
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
         val id_plano_treino = intent.getIntExtra("id_plano_treino", -1)
         val id_ginasio = intent.getIntExtra("id_ginasio", -1)
         val tipo = intent.getStringExtra("tipo")
         val foto_plano_treino = intent.getStringExtra("foto_plano_treino")
 
+        val image_view = findViewById<ImageView>(R.id.profile_pic)
+
+        ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
+            if(resultCliente?.id_cliente != null) clienteRefresh = resultCliente
+
+            ExercicioRequests.GetAllByPlanoID(lifecycleScope, sessionToken, id_plano_treino) { resultExercicio ->
+                exercicios_plano_list = resultExercicio
+                if (clienteRefresh?.foto_perfil != null)
+                {
+                    val imageUri: Uri = Uri.parse(clienteRefresh?.foto_perfil)
+                    image_view.setImageURI(imageUri)
+                }
+            }
+        }
         findViewById<TextView>(R.id.textViewType).text = tipo
 
-        val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
-        val image_view = findViewById<ImageView>(R.id.profile_pic)
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = arrayOf("Conta", "Definições", "Sair")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
-
-        val list_view_exercicios = findViewById<ListView>(R.id.listview_exercicios)
-        list_view_exercicios.adapter = exercicio_adapter
-
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 Toast.makeText(this@PlanoTreinoExerciciosClienteActivity,options[position], Toast.LENGTH_LONG).show()
@@ -53,11 +66,14 @@ class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
                 // Do nothing
             }
         }
-
         image_view.setOnClickListener {
             spinner.performClick()
         }
 
+        val list_view_exercicios = findViewById<ListView>(R.id.listview_exercicios)
+        list_view_exercicios.adapter = exercicio_adapter
+
+        val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
         bottom_navigation_view.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
