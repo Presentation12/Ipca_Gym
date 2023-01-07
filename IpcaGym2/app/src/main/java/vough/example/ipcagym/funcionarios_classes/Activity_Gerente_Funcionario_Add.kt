@@ -1,30 +1,42 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Cliente
 import vough.example.ipcagym.data_classes.Funcionario
+import vough.example.ipcagym.requests.FuncionarioRequests
 
 class Activity_Gerente_Funcionario_Add : AppCompatActivity() {
+
+    var gerenteRefresh : Funcionario? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gerente_funcionario_create)
 
-        // TODO: funcionario sem atributo foto para o gerente e funcionario a editar
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
         val imageView = findViewById<ImageView>(R.id.profile_pic)
-        /*
-        if (foto_perfil != null)
-        {
-            val cliente_image_view = findViewById<ImageView>(R.id.profile_pic)
-            val imageUri: Uri = Uri.parse(foto_perfil)
-            cliente_image_view.setImageURI(imageUri)
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
+            if(resultGerente != null) gerenteRefresh = resultGerente
+            /* TODO: foto do gerente
+            if (gerenteRefresh?.foto_perfil != null)
+            {
+                val imageUri: Uri = Uri.parse(gerenteRefresh?)
+                imageView.setImageURI(imageUri)
+            }
+            */
         }
-        */
 
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = arrayOf("Conta", "Definições", "Sair")
@@ -72,31 +84,39 @@ class Activity_Gerente_Funcionario_Add : AppCompatActivity() {
         // butao de adicionar funcionario novo, e volta a página ida lista de funcionários
         findViewById<Button>(R.id.buttonAddFuncionario).setOnClickListener {
             val intent = Intent(this@Activity_Gerente_Funcionario_Add, Activity_Gerente_Funcionarios_List::class.java)
-            
-            //TODO: trocar por condições de verificacao de campos preenchidos
-            var nome : String
-            var codigo : Int
-            var is_admin : Boolean
 
-            if (findViewById<EditText>(R.id.editTextFuncionarioNome).text.isEmpty() == false )
+            var emptyFields = false
+            var nome = ""
+            var codigo : Int = -1
+
+            if (!findViewById<EditText>(R.id.editTextFuncionarioNome).text.isEmpty())
             {
                 nome = findViewById<EditText>(R.id.editTextFuncionarioNome).text.toString()
             }
-            else nome = "Default"
-            if (findViewById<EditText>(R.id.editTextCodigoFuncionario).text.isEmpty() == false)
+            else emptyFields = true
+            if (!findViewById<EditText>(R.id.editTextCodigoFuncionario).text.isEmpty())
             {
                 codigo = findViewById<EditText>(R.id.editTextCodigoFuncionario).text.toString().toInt()
             }
-            else codigo = 0
-            if (findViewById<RadioButton>(R.id.radioButton3).isChecked)
-            {
-                is_admin = true
-            }
-            else is_admin = false
+            else emptyFields = true
+            val isAdmin = findViewById<RadioButton>(R.id.radioButton3).isChecked
 
-            // TODO: Manda objeto com novas mudanças para o patch do backend e trocar os nulos
-            var funcionarioEditado = Funcionario(null,null,nome,is_admin,codigo,null,null,"Ativo")
-            startActivity(intent)
+            if (!emptyFields)
+            {
+                val newFuncionario = Funcionario(null,gerenteRefresh?.id_ginasio,nome,isAdmin,codigo,codigo.toString(),null,"Ativo")
+                FuncionarioRequests.Post(lifecycleScope,sessionToken,newFuncionario){ resultEditFuncionario ->
+                    if (resultEditFuncionario == "User not found")
+                    {
+                        Toast.makeText(this@Activity_Gerente_Funcionario_Add, "Error on create an employee", Toast.LENGTH_LONG).show()
+                    }
+                    else
+                    {
+                        finish()
+                        startActivity(intent)
+                    }
+                }
+            }
+            else Toast.makeText(this@Activity_Gerente_Funcionario_Add,"Error: Empty fields",Toast.LENGTH_LONG).show()
         }
     }
 }

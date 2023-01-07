@@ -110,7 +110,7 @@ class Activity_Cliente_Marcacao_Consulta : AppCompatActivity() {
             MarcacaoRequests.PostChecked(lifecycleScope, sessionToken, newMarcacao) { resultMarcacao ->
                 if (resultMarcacao == "User not found")
                 {
-                    Toast.makeText(this@Activity_Cliente_Marcacao_Consulta, "Error on marking an appointment", Toast.LENGTH_LONG)
+                    Toast.makeText(this@Activity_Cliente_Marcacao_Consulta, "Error on marking an appointment", Toast.LENGTH_LONG).show()
                 }
                 else
                 {

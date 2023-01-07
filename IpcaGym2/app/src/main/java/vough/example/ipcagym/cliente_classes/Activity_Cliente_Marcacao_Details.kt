@@ -116,7 +116,7 @@ class Activity_Cliente_Marcacao_Details : AppCompatActivity() {
             MarcacaoRequests.PatchCancelMarcacao(lifecycleScope, sessionToken, id_marcacao, editMarcacao) { resultCancelMarcacao ->
                 if (resultCancelMarcacao == "User not found")
                 {
-                    Toast.makeText(this@Activity_Cliente_Marcacao_Details, "Error on canceling an appointment", Toast.LENGTH_LONG)
+                    Toast.makeText(this@Activity_Cliente_Marcacao_Details, "Error on canceling an appointment", Toast.LENGTH_LONG).show()
                 }
                 else
                 {

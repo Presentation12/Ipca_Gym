@@ -1,5 +1,6 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,24 +9,57 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Funcionario
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.GinasioRequests
 
 class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
+
+    var gerenteRefresh : Funcionario? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gerente_funcionario_details)
 
-        var id_funcionario = intent.getIntExtra("id_funcionario", -1)
-        var id_ginasio = intent.getIntExtra("id_ginasio", -1)
-        var nome = intent.getStringExtra("nome")
-        var is_admin = intent.getBooleanExtra("is_admin",false)
-        var codigo = intent.getIntExtra("codigo",-1)
-        var pass_salt = intent.getStringExtra("pass_salt")
-        var pass_hash = intent.getStringExtra("pass_hash")
-        var estado = intent.getStringExtra("estado")
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
+        val id_funcionario = intent.getIntExtra("id_funcionario", -1)
+        val id_ginasio = intent.getIntExtra("id_ginasio", -1)
+        val nome = intent.getStringExtra("nome")
+        val is_admin = intent.getBooleanExtra("is_admin",false)
+        val codigo = intent.getIntExtra("codigo",-1)
+        val pass_salt = intent.getStringExtra("pass_salt")
+        val pass_hash = intent.getStringExtra("pass_hash")
+        val estado = intent.getStringExtra("estado")
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
+            if(resultGerente != null) gerenteRefresh = resultGerente
+            /* TODO: foto do gerente
+            if (gerenteRefresh?.foto_perfil != null)
+            {
+                val imageUri: Uri = Uri.parse(gerenteRefresh?)
+                imageView.setImageURI(imageUri)
+            }
+            */
+        }
+
+        GinasioRequests.GetByID(lifecycleScope,sessionToken,id_ginasio){ resultGinasio ->
+            val nomeGinasio = findViewById<TextView>(R.id.GinasioNome)
+            nomeGinasio.text = resultGinasio?.instituicao.toString()
+        }
+        val nomeFuncionario = findViewById<TextView>(R.id.nomeFuncionario)
+        nomeFuncionario.text = nome
+        val idFuncionario = findViewById<TextView>(R.id.IdFuncionario)
+        idFuncionario.text = id_funcionario.toString()
+        val codigoFuncionario = findViewById<TextView>(R.id.Codigo)
+        codigoFuncionario.text = codigo.toString()
+        val estadoFuncionario = findViewById<TextView>(R.id.Estado)
+        estadoFuncionario.text = estado
         // TODO: funcionario sem atributo foto
         /*
         if (foto_perfil != null)
@@ -39,21 +73,23 @@ class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
         // TODO: quando houver linkagem alterar aqui para remover funcionario
         findViewById<Button>(R.id.buttonRemover).setOnClickListener {
             val intent = Intent(this@Activity_Gerente_Funcionario_Details, Activity_Gerente_Funcionarios_List::class.java)
-            estado = "Inativo"
+            // ele altera o estado no backend
+            FuncionarioRequests.DeleteFuncionario(lifecycleScope,sessionToken,id_funcionario){ resultRemoveFuncionario ->
+                if (resultRemoveFuncionario == "User not found")
+                {
+                    Toast.makeText(this@Activity_Gerente_Funcionario_Details, "Error on remove an employee", Toast.LENGTH_LONG).show()
+                }
+                else
+                {
+                    finish()
+                    startActivity(intent)
+                }
+            }
+
             startActivity(intent)
         }
 
-        val nomeFuncionario = findViewById<TextView>(R.id.nomeFuncionario)
-        nomeFuncionario.text = nome
-        val idFuncionario = findViewById<TextView>(R.id.IdFuncionario)
-        idFuncionario.text = id_funcionario.toString()
-        //TODO: trocar id ginasio por nome quando houver link
-        val nomeGinasio = findViewById<TextView>(R.id.GinasioNome)
-        nomeGinasio.text = id_ginasio.toString()
-        val codigoFuncionario = findViewById<TextView>(R.id.Codigo)
-        codigoFuncionario.text = codigo.toString()
-        val estadoFuncionario = findViewById<TextView>(R.id.Estado)
-        estadoFuncionario.text = estado
+
 
         // TODO: linkagem
         findViewById<Button>(R.id.buttonEditar).setOnClickListener {

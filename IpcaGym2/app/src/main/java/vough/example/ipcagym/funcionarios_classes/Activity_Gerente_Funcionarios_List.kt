@@ -1,5 +1,6 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -7,12 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Funcionario
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.MarcacaoRequests
 
 class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
 
+    var gerenteRefresh : Funcionario? = null
     var list_funcionario = arrayListOf<Funcionario>()
     var funcionarios_adapter = AdapterFuncionario()
 
@@ -20,11 +26,29 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gerente_funcionarios_list)
 
-        //Hardcode
-        list_funcionario.add(Funcionario(1,1,"João",true,222,"","","Ativo"))
-        list_funcionario.add(Funcionario(1,1,"Pedro",false,333,"","","Ativo"))
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
         val image_view = findViewById<ImageView>(R.id.profile_pic)
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
+            if(resultGerente != null) gerenteRefresh = resultGerente
+
+            FuncionarioRequests.GetAllByGym(lifecycleScope, sessionToken, resultGerente?.id_ginasio) { resultFuncionarios ->
+
+                /* TODO: foto do gerente
+                if (gerenteRefresh?.foto_perfil != null)
+                {
+                    val imageUri: Uri = Uri.parse(gerenteRefresh?)
+                    imageView.setImageURI(imageUri)
+                }
+                */
+
+                list_funcionario = resultFuncionarios
+                funcionarios_adapter.notifyDataSetChanged()
+            }
+        }
 
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = arrayOf("Conta", "Definições", "Sair")
@@ -44,17 +68,45 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
             spinner.performClick()
         }
 
-        //TODO: Search view
-        var searchFuncionarioBar = findViewById<SearchView>(R.id.searchView)
+        val list_view_funcionario = findViewById<ListView>(R.id.listviewFuncionarios)
+        list_view_funcionario.adapter = funcionarios_adapter
 
-        //TODO: Enviar lista?
+        //TODO: Search view
+        val searchFuncionarioBar = findViewById<SearchView>(R.id.searchView)
+        searchFuncionarioBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+
+                val searchResults = ArrayList<Funcionario>()
+
+                for (func in list_funcionario) {
+                    if (func.nome?.contains(query ?: "") == true) {
+                        searchResults.add(func)
+                    }
+                }
+
+                list_funcionario = searchResults
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                val searchResults = ArrayList<Funcionario>()
+
+                for (func in list_funcionario) {
+                    if (func.nome?.contains(newText ?: "") == true) {
+                        searchResults.add(func)
+                    }
+                }
+
+                list_funcionario = searchResults
+                return true
+            }
+        })
+
         findViewById<Button>(R.id.buttonAddFuncionario).setOnClickListener {
             val intent = Intent(this@Activity_Gerente_Funcionarios_List, Activity_Gerente_Funcionario_Add::class.java)
             startActivity(intent)
         }
-
-        val list_view_funcionario = findViewById<ListView>(R.id.listviewFuncionarios)
-        list_view_funcionario.adapter = funcionarios_adapter
 
         val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
         bottom_navigation_view.setOnItemSelectedListener{ item ->
