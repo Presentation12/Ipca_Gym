@@ -1,5 +1,6 @@
 package vough.example.ipcagym.cliente_classes
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -7,52 +8,78 @@ import android.os.Bundle
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
-import vough.example.ipcagym.data_classes.Cliente
+import vough.example.ipcagym.data_classes.Atividade
+import vough.example.ipcagym.requests.AtividadeRequests
+import vough.example.ipcagym.requests.ClienteRequests
 import java.time.format.DateTimeFormatter
 
 class Activity_Cliente_Account : AppCompatActivity(){
 
         @RequiresApi(Build.VERSION_CODES.O)
         val date_time_formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
-        //TODO: Substituir hardcode
-        var cliente = Cliente(1,1,1,"Pedro Crista","pedrinho@gmail.com",933933933,"null","null",70.4,187,20.5,null,"Ativo")
+        val date_formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy")
+        val time_formatter = DateTimeFormatter.ofPattern("hh:mm")
 
         @RequiresApi(Build.VERSION_CODES.O)
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_cliente_account)
 
-            if (cliente.foto_perfil != null)
-            {
-                val image_view = findViewById<ImageView>(R.id.profile_pic)
-                val imageUri: Uri = Uri.parse(cliente.foto_perfil)
-                image_view.setImageURI(imageUri)
+            //Buscar token
+            val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+            val sessionToken = preferences.getString("session_token", null)
+
+            val imageView = findViewById<ImageView>(R.id.profile_pic)
+
+            ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
+
+                if (resultCliente?.foto_perfil != null)
+                {
+                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
+                    imageView.setImageURI(imageUri)
+                }
+                val name_view = findViewById<TextView>(R.id.textNome)
+                name_view.text = resultCliente?.nome
+                val mail_view = findViewById<TextView>(R.id.textMail)
+                mail_view.text = resultCliente?.mail
+                val peso_view = findViewById<TextView>(R.id.textViewValueWeight)
+                peso_view.text = resultCliente?.peso.toString()
+                val altura_view = findViewById<TextView>(R.id.textViewValueHeight)
+                altura_view.text = resultCliente?.altura.toString()
+                val gordura_view = findViewById<TextView>(R.id.textViewValueFat)
+                gordura_view.text = resultCliente?.gordura.toString()
+
+                var lastWorkout : Atividade? = null
+                AtividadeRequests.GetAllByClienteID(lifecycleScope,sessionToken, resultCliente?.id_cliente){ resultAtividades ->
+                    lastWorkout = resultAtividades.last()
+                }
+                val data_ultima_entrada_view = findViewById<TextView>(R.id.textViewDateLastWorkout)
+                data_ultima_entrada_view.text = lastWorkout?.data_entrada?.format(date_time_formatter)
+
+                findViewById<Button>(R.id.buttonLastWorkoutDetails).setOnClickListener {
+                    AtividadeRequests.GetByID(lifecycleScope,sessionToken,lastWorkout?.id_atividade){ resultLastActivity ->
+                        val intent = Intent(this@Activity_Cliente_Account, ActivityDetailClienteActivity::class.java)
+
+                        intent.putExtra("id_atividade", lastWorkout?.id_atividade)
+                        intent.putExtra("data", lastWorkout?.data_saida?.format(date_formatter))
+                        intent.putExtra("hora_entrada", lastWorkout?.data_entrada?.format(time_formatter))
+                        intent.putExtra("hora_saida", lastWorkout?.data_saida?.format(time_formatter))
+
+                        startActivity(intent)
+                    }
+                }
+
             }
-            val name_view = findViewById<TextView>(R.id.textNome)
-            name_view.text = cliente.nome
-            val mail_view = findViewById<TextView>(R.id.textMail)
-            mail_view.text = cliente.mail
-            val peso_view = findViewById<TextView>(R.id.textViewValueWeight)
-            peso_view.text = cliente.peso.toString()
-            val altura_view = findViewById<TextView>(R.id.textViewValueHeight)
-            altura_view.text = cliente.altura.toString()
-            val gordura_view = findViewById<TextView>(R.id.textViewValueFat)
-            gordura_view.text = cliente.gordura.toString()
+
+            //TODO: calculo
             val media_entradas_anual_view = findViewById<TextView>(R.id.textViewValueAnnualEntries)
             val media_entradas_mensal_view = findViewById<TextView>(R.id.textViewValueMontlyEntries)
-            val data_ultima_entrada_view = findViewById<TextView>(R.id.textViewDateLastWorkout)
-            val tipo_treino_view = findViewById<TextView>(R.id.textViewTipoTreino)
 
             findViewById<Button>(R.id.buttonMarcarConsulta).setOnClickListener {
                 val intent = Intent(this@Activity_Cliente_Account, Activity_Cliente_Marcacao_Consulta::class.java)
                 startActivity(intent)
-            }
-            findViewById<Button>(R.id.changeDetails).setOnClickListener {
-                //TODO: butao para detalhes das medidas do cliente ?Fazer?
-            }
-            findViewById<Button>(R.id.buttonLastWorkoutDetails).setOnClickListener {
-                //TODO: butao para detalhes da ultima atividade do cliente
             }
         }
 }

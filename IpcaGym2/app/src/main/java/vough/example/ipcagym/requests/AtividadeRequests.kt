@@ -12,6 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.http.PATCH
 import vough.example.ipcagym.MainActivity
 import vough.example.ipcagym.data_classes.Atividade
+import vough.example.ipcagym.data_classes.Cliente
 import vough.example.ipcagym.data_classes.StatsModel
 import java.io.IOException
 
@@ -240,6 +241,45 @@ object AtividadeRequests {
                 else
                     scope.launch(Dispatchers.Main){
                         callback(stats!!)
+                    }
+            }
+        }
+    }
+
+    fun GetAllByClienteID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (ArrayList<Atividade>) -> Unit){
+        scope.launch(Dispatchers.IO) {
+            val request = Request.Builder()
+                .url(UtilsForRequests.baseURL + "/api/Atividade/Cliente/$targetID")
+                .get()
+                .header("Authorization", "Bearer $token")
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                val statusCode = response.code
+                var atividades = arrayListOf<Atividade>()
+
+                if(statusCode == 200) {
+                    val result = response.body!!.string()
+
+                    val jsonObject = JSONObject(result)
+                    val JSONData = jsonObject.getJSONObject("data")
+                    val JSONList = JSONData.getJSONArray("value")
+
+                    for (i in 0 until JSONList.length()) {
+                        val item = JSONList.getJSONObject(i)
+                        val atividade = Atividade.fromJson(item)
+                        atividades.add(atividade)
+                    }
+
+                    scope.launch(Dispatchers.Main){
+                        callback(atividades)
+                    }
+                }
+                else
+                    scope.launch(Dispatchers.Main){
+                        callback(atividades)
                     }
             }
         }

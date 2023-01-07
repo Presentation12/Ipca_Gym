@@ -219,27 +219,13 @@
         android:id="@+id/buttonMarcarConsulta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
         android:backgroundTint="@android:color/transparent"
         android:text="Mark"
         android:textColor="#A5A5A5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/placeholderFuncionarioInfo"
-        app:strokeColor="#A5A5A5"
-        app:strokeWidth="2dp" />
-
-    <Button
-        android:id="@+id/changeDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="48dp"
-        android:backgroundTint="@android:color/transparent"
-        android:text="Details"
-        android:textColor="#A5A5A5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardViewFat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCM"
         app:strokeColor="#A5A5A5"
         app:strokeWidth="2dp" />
 
@@ -439,18 +425,19 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/textViewDateLastWorkout"
+        android:id="@+id/TextViewLastWorkout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:elevation="10dp"
-        android:text="TextView"
+        android:textStyle="bold"
+        android:text="Last Workout"
         app:layout_constraintEnd_toEndOf="@+id/cardViewLastWorkout"
         app:layout_constraintStart_toStartOf="@+id/cardViewLastWorkout"
         app:layout_constraintTop_toTopOf="@+id/cardViewLastWorkout" />
 
     <TextView
-        android:id="@+id/textViewTipoTreino"
+        android:id="@+id/textViewDateLastWorkout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="10dp"
@@ -459,7 +446,7 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonLastWorkoutDetails"
         app:layout_constraintEnd_toEndOf="@+id/cardViewLastWorkout"
         app:layout_constraintStart_toStartOf="@+id/cardViewLastWorkout"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDateLastWorkout" />
+        app:layout_constraintTop_toBottomOf="@+id/TextViewLastWorkout" />
 
     <Button
         android:id="@+id/buttonLastWorkoutDetails"
