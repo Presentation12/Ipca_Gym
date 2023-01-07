@@ -3,13 +3,10 @@ package vough.example.ipcagym.funcionarios_classes
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
-import vough.example.ipcagym.cliente_classes.MarcacaoHistoricoClienteActivity
-import vough.example.ipcagym.data_classes.Cliente
 
 class Activity_Funcionario_Cliente_Details : AppCompatActivity() {
 

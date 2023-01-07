@@ -4,16 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Cliente
-import vough.example.ipcagym.data_classes.Marcacao
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class AccountClienteActivity : AppCompatActivity(){
@@ -50,7 +45,7 @@ class AccountClienteActivity : AppCompatActivity(){
             val tipo_treino_view = findViewById<TextView>(R.id.textViewTipoTreino)
 
             findViewById<Button>(R.id.buttonMarcarConsulta).setOnClickListener {
-                val intent = Intent(this@AccountClienteActivity, MarcacaoClienteActivity::class.java)
+                val intent = Intent(this@AccountClienteActivity, Activity_Cliente_Marcacao_Consulta::class.java)
                 startActivity(intent)
             }
             findViewById<Button>(R.id.changeDetails).setOnClickListener {

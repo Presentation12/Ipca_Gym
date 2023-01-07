@@ -17,7 +17,7 @@ import vough.example.ipcagym.requests.ClienteRequests
 import vough.example.ipcagym.data_classes.Cliente
 import vough.example.ipcagym.requests.ExercicioRequests
 
-class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
+class Activity_Cliente_Plano_Treino_Exercicios : AppCompatActivity() {
 
     var clienteRefresh : Cliente? = null
     var exercicios_plano_list = arrayListOf<Exercicio>()
@@ -61,7 +61,7 @@ class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
         spinner.adapter = adapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(this@PlanoTreinoExerciciosClienteActivity,options[position], Toast.LENGTH_LONG).show()
+                Toast.makeText(this@Activity_Cliente_Plano_Treino_Exercicios,options[position], Toast.LENGTH_LONG).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -79,23 +79,23 @@ class PlanoTreinoExerciciosClienteActivity : AppCompatActivity() {
         bottom_navigation_view.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this@PlanoTreinoExerciciosClienteActivity,"Main Menu", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Plano_Treino_Exercicios,"Main Menu", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_fitness -> {
-                    Toast.makeText(this@PlanoTreinoExerciciosClienteActivity,"Treino", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Plano_Treino_Exercicios,"Treino", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_shopping -> {
-                    Toast.makeText(this@PlanoTreinoExerciciosClienteActivity,"Loja", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Plano_Treino_Exercicios,"Loja", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_diet -> {
-                    Toast.makeText(this@PlanoTreinoExerciciosClienteActivity,"Refeicoes", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Plano_Treino_Exercicios,"Refeicoes", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_history -> {
-                    Toast.makeText(this@PlanoTreinoExerciciosClienteActivity,"Atividades", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Plano_Treino_Exercicios,"Atividades", Toast.LENGTH_LONG).show()
                     true
                 }
                 else -> false

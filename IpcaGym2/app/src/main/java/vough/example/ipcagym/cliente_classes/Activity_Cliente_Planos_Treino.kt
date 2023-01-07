@@ -16,7 +16,7 @@ import vough.example.ipcagym.requests.ClienteRequests
 import vough.example.ipcagym.requests.PlanoTreinoRequests
 import androidx.lifecycle.lifecycleScope
 
-class PlanosTreinoClienteActivity : AppCompatActivity() {
+class Activity_Cliente_Planos_Treino : AppCompatActivity() {
 
     var clienteRefresh : Cliente? = null
     var planos_treino_list = arrayListOf<Plano_Treino>()
@@ -54,7 +54,7 @@ class PlanosTreinoClienteActivity : AppCompatActivity() {
         spinner.adapter = adapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(this@PlanosTreinoClienteActivity,options[position], Toast.LENGTH_LONG).show()
+                Toast.makeText(this@Activity_Cliente_Planos_Treino,options[position], Toast.LENGTH_LONG).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -72,23 +72,23 @@ class PlanosTreinoClienteActivity : AppCompatActivity() {
         bottom_navigation_view.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this@PlanosTreinoClienteActivity,"Main Menu", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Planos_Treino,"Main Menu", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_fitness -> {
-                    Toast.makeText(this@PlanosTreinoClienteActivity,"Treino", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Planos_Treino,"Treino", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_shopping -> {
-                    Toast.makeText(this@PlanosTreinoClienteActivity,"Loja", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Planos_Treino,"Loja", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_diet -> {
-                    Toast.makeText(this@PlanosTreinoClienteActivity,"Refeicoes", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Planos_Treino,"Refeicoes", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_history -> {
-                    Toast.makeText(this@PlanosTreinoClienteActivity,"Atividades", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Planos_Treino,"Atividades", Toast.LENGTH_LONG).show()
                     true
                 }
                 else -> false
@@ -124,7 +124,7 @@ class PlanosTreinoClienteActivity : AppCompatActivity() {
 
             //Clicar num rootView abre o plano de treino
             root_view.setOnClickListener {
-                val intent = Intent(this@PlanosTreinoClienteActivity, PlanoTreinoExerciciosClienteActivity::class.java)
+                val intent = Intent(this@Activity_Cliente_Planos_Treino, Activity_Cliente_Plano_Treino_Exercicios::class.java)
 
                 intent.putExtra("id_plano_treino", planos_treino_list[position].id_plano_treino)
                 intent.putExtra("id_ginasio", planos_treino_list[position].id_ginasio)

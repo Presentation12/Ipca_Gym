@@ -14,11 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import vough.example.ipcagym.R
-import vough.example.ipcagym.cliente_classes.PlanoTreinoExerciciosClienteActivity
-import vough.example.ipcagym.data_classes.Exercicio
 import vough.example.ipcagym.data_classes.Plano_Treino
-import java.net.URI
-import java.time.LocalTime
 
 class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
     var planos_treino_list = arrayListOf<Plano_Treino>()

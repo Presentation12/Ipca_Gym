@@ -5,11 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.GlobalScope
 import vough.example.ipcagym.R
 import vough.example.ipcagym.requests.ClienteRequests
 
@@ -26,7 +24,7 @@ class LoginClienteActivity : AppCompatActivity() {
 
         //Caso a token de sessão estiver ativa, passar login a frente
         if(sessionToken != "") {
-            val intentStart = Intent(this@LoginClienteActivity, PlanosTreinoClienteActivity::class.java)
+            val intentStart = Intent(this@LoginClienteActivity, Activity_Cliente_Planos_Treino::class.java)
             finish()
             startActivity(intentStart)
         }
@@ -44,7 +42,7 @@ class LoginClienteActivity : AppCompatActivity() {
                         editor.apply()
 
                         //val intentStart = Intent(this@LoginClienteActivity,PaginaInicialClienteActivity::class.java)
-                        val intentStart = Intent(this@LoginClienteActivity, PlanosTreinoClienteActivity::class.java)
+                        val intentStart = Intent(this@LoginClienteActivity, Activity_Cliente_Planos_Treino::class.java)
                         finish()
                         startActivity(intentStart)
                     }
