@@ -129,21 +129,8 @@ object ExercicioRequests {
         }
     }
 
-    fun Post(scope: CoroutineScope, token : String?, newExercicio : Exercicio, callback: (String) -> Unit){
+    fun Post(scope: CoroutineScope, token : String?, jsonBody: String , callback: (String) -> Unit){
         scope.launch(Dispatchers.IO) {
-            val jsonBody = """
-                {
-                  "id_plano_treino": ${newExercicio.id_plano_treino},
-                  "nome": "${newExercicio.nome}",
-                  "descricao": "${newExercicio.descricao}",
-                  "tipo": "${newExercicio.tipo}",
-                  "series": ${newExercicio.series},
-                  "tempo": ${newExercicio.tempo},
-                  "repeticoes": ${newExercicio.repeticoes},
-                  "foto_exercicio": "${newExercicio.foto_exercicio}"
-                }
-            """
-
             val request = Request.Builder()
                 .url(UtilsForRequests.baseURL + "/api/Exercicio")
                 .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))

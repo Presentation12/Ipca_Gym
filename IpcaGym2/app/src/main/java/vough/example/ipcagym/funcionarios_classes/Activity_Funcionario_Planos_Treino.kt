@@ -57,33 +57,31 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
 
         receiverNewData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if(it.resultCode == Activity.RESULT_OK){
-                val id_plano_treino = it.data?.getIntExtra("id_plano_treino", 0)
-                val id_ginasio = it.data?.getIntExtra("id_ginasio", 0)
-                val tipo = it.data?.getStringExtra("tipo")
-                var foto_plano_treino = it.data?.getStringExtra("foto_plano_treino")
-
-                if(foto_plano_treino == "")
-                    foto_plano_treino = null
-
-                planos_treino_list.add(Plano_Treino(id_plano_treino, id_ginasio, tipo, foto_plano_treino))
-                plano_adapter.notifyDataSetChanged()
+                FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+                    if(it != null){
+                        PlanoTreinoRequests.GetAllByGinasioID(lifecycleScope, sessionToken, it?.id_ginasio!!){ result ->
+                            if(!result.isEmpty()){
+                                planos_treino_list = result
+                                plano_adapter.notifyDataSetChanged()
+                            }
+                        }
+                    }
+                }
             }
         }
 
         receiverDeleteData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if(it.resultCode == Activity.RESULT_OK){
-
-                val id_remove = it.data?.getIntExtra("id_remove", 0)
-                val tipo_remove = it.data?.getStringExtra("tipo_remove")
-
-                for(p in planos_treino_list){
-                    if(p.id_plano_treino == id_remove && p.tipo == tipo_remove){
-                        planos_treino_list.remove(p)
-                        break
+                FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+                    if(it != null){
+                        PlanoTreinoRequests.GetAllByGinasioID(lifecycleScope, sessionToken, it?.id_ginasio!!){ result ->
+                            if(!result.isEmpty()){
+                                planos_treino_list = result
+                                plano_adapter.notifyDataSetChanged()
+                            }
+                        }
                     }
                 }
-
-                plano_adapter.notifyDataSetChanged()
             }
         }
 

@@ -1,11 +1,16 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Plano_Treino
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.PlanoTreinoRequests
 
 class Activity_Funcionario_Planos_Treino_Add : AppCompatActivity() {
     var newImageValue = ""
@@ -14,9 +19,13 @@ class Activity_Funcionario_Planos_Treino_Add : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_planos_treino_add)
 
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
         val image_view = findViewById<ImageView>(R.id.profile_pic)
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = arrayOf("Conta", "Definições", "Sair")
+
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
@@ -31,10 +40,17 @@ class Activity_Funcionario_Planos_Treino_Add : AppCompatActivity() {
         findViewById<Button>(R.id.addNewPlanButton).setOnClickListener{
             val intent = Intent()
 
-            intent.putExtra("id_plano_treino", 55)
-            intent.putExtra("id_ginasio", 1)
-            intent.putExtra("foto_plano_treino", newImageValue)
-            intent.putExtra("tipo", findViewById<EditText>(R.id.typePlanoValue).text.toString())
+            FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+                if(it != null){
+                    PlanoTreinoRequests.Post(lifecycleScope, sessionToken, Plano_Treino(
+                        null,
+                        it?.id_ginasio!!,
+                        findViewById<EditText>(R.id.typePlanoValue).text.toString(),
+                        newImageValue
+                    )){
+                    }
+                }
+            }
 
             setResult(RESULT_OK, intent);
             finish()
@@ -51,6 +67,7 @@ class Activity_Funcionario_Planos_Treino_Add : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.CancelAddNewPlanButton).setOnClickListener{
+            finish()
             startActivity(Intent(this@Activity_Funcionario_Planos_Treino_Add, Activity_Funcionario_Planos_Treino::class.java))
         }
 

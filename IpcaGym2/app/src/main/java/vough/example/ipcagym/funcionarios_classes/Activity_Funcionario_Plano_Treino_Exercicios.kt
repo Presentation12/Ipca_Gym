@@ -15,6 +15,7 @@ import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Exercicio
 import vough.example.ipcagym.requests.ExercicioRequests
 import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.PlanoTreinoRequests
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -28,11 +29,6 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_plano_exercicios)
 
-        /*listExercicios.add(Exercicio(1,1,"Exercicios",
-            "hnviousgfiosbfkljsdhbvipdfbvopsdfbokvusdbiohjcbaoilhvcbsodbviasdhvcoiuhsdhfojsdbpiovsouhcvhpisdfjbv+<osdbf <odsihgfloiusdrwhgoipwesrbvojswberopigbsd<pivfh","tipo",3, null,3,null))
-        listExercicios.add(Exercicio(2,1,"Exercicios1", "descricao","tipo",4, null,5,null))
-        listExercicios.add(Exercicio(3,1,"Exercicios2", "descricao","tipo",3, LocalTime.of(0,30,0),6,null))
-        listExercicios.add(Exercicio(4,1,"Exercicios3", "descricao","tipo",null, LocalTime.parse("00:45:00"),null,null))*/
         //Buscar token
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
@@ -62,67 +58,37 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
         receiverNewData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
 
             if(it.resultCode == Activity.RESULT_OK){
-                val id_exercicio = it.data?.getIntExtra("id_exercicio", 0)
-                val id_plano_treino = it.data?.getIntExtra("id_plano_treino", 0)
-                val nome = it.data?.getStringExtra("nome")
-                val descricao = it.data?.getStringExtra("descricao")
-                val tipo = it.data?.getStringExtra("tipo")
-                val series = it.data?.getIntExtra("series", 0)
-                val repeticoes = it.data?.getIntExtra("repeticoes", 0)
-                val tempoMin = it.data?.getStringExtra("tempoMin")
-                val tempoSec = it.data?.getStringExtra("tempoSec")
-                val foto_exercicio = it.data?.getStringExtra("foto_exercicio")
-                val typeOfSet = it.data?.getStringExtra("aux")
+                FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+                    ExercicioRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_treino", -1)){ result ->
+                        if(result.isNotEmpty()) {
+                            listExercicios = result
 
-                if(typeOfSet == "time"){
-                    listExercicios.add(Exercicio(id_exercicio, id_plano_treino, nome, descricao, tipo, null,
-                        LocalTime.of(0, tempoMin.toString().toInt(), tempoSec.toString().toInt()), null, foto_exercicio))
+                            exercicio_adapter.notifyDataSetChanged()
+                            if(exercicio_adapter.count > 0) findViewById<TextView>(R.id.textView9).text = ""
+                        }
+                        else{
+                            findViewById<TextView>(R.id.textView9).text = "This Plan is empty\nAdd some exercises!"
+                        }
+                    }
                 }
-                else{
-                    listExercicios.add(Exercicio(id_exercicio, id_plano_treino, nome, descricao, tipo, series, null, repeticoes, foto_exercicio))
-                }
-
-                exercicio_adapter.notifyDataSetChanged()
             }
         }
 
         receiverEditData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if(it.resultCode == Activity.RESULT_OK){
-                val id_exercicio = it.data?.getIntExtra("id_exercicio", 0)
-                val id_plano_treino = it.data?.getIntExtra("id_plano_treino", 0)
-                val nome = it.data?.getStringExtra("nome")
-                Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios, id_exercicio.toString(), Toast.LENGTH_SHORT).show()
+                FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+                    ExercicioRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_treino", -1)){ result ->
+                        if(result.isNotEmpty()) {
+                            listExercicios = result
 
-                val descricao = it.data?.getStringExtra("descricao")
-                val tipo = it.data?.getStringExtra("tipo")
-                val series = it.data?.getIntExtra("series", -2)
-                val repeticoes = it.data?.getIntExtra("repeticoes", -2)
-                val tempoMin = it.data?.getIntExtra("tempoMin", -1)
-                val tempoSec = it.data?.getIntExtra("tempoSec", -1)
-                val foto_exercicio = it.data?.getStringExtra("foto_exercicio")
-                val typeOfSet = it.data?.getStringExtra("aux")
-
-                for(exercicio in listExercicios){
-                    if(exercicio.id_exercicio == id_exercicio && exercicio.id_plano_treino == id_plano_treino){
-                        exercicio.nome = nome
-                        exercicio.descricao = descricao
-                        exercicio.tipo = tipo
-                        exercicio.foto_exercicio = foto_exercicio
-
-                        if(typeOfSet == "time"){
-                            exercicio.tempo = LocalTime.of(0, tempoMin!!.toInt(), tempoSec!!.toInt())
-                            exercicio.repeticoes = null
-                            exercicio.series = null
+                            exercicio_adapter.notifyDataSetChanged()
+                            if(exercicio_adapter.count > 0) findViewById<TextView>(R.id.textView9).text = ""
                         }
                         else{
-                            exercicio.tempo = null
-                            exercicio.series = series
-                            exercicio.repeticoes = repeticoes
+                            findViewById<TextView>(R.id.textView9).text = "This Plan is empty\nAdd some exercises!"
                         }
                     }
                 }
-
-                exercicio_adapter.notifyDataSetChanged()
             }
         }
 
@@ -143,15 +109,21 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
         findViewById<Button>(R.id.deletePlanoButton).setOnClickListener{
             val deleteIntent = Intent()
 
-            deleteIntent.putExtra("id_remove", intent.getIntExtra("id_plano_treino", -1))
-            deleteIntent.putExtra("tipo_remove", intent.getStringExtra("tipo"))
+            PlanoTreinoRequests.DeleteChecked(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_treino", -1)){
+                if(it != "User not found") Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios, "Plan removed successfully", Toast.LENGTH_LONG).show()
+                else Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios, "Error on removing plan", Toast.LENGTH_LONG).show()
+            }
 
             setResult(RESULT_OK, deleteIntent)
             finish()
         }
 
         findViewById<Button>(R.id.addExercicioButton).setOnClickListener{
-            receiverNewData?.launch(Intent(this@Activity_Funcionario_Plano_Treino_Exercicios, Activity_Funcionario_Plano_Treino_Exercicio_Add::class.java))
+            val newIntent = Intent(this@Activity_Funcionario_Plano_Treino_Exercicios, Activity_Funcionario_Plano_Treino_Exercicio_Add::class.java)
+
+            newIntent.putExtra("id_plano_treino", intent.getIntExtra("id_plano_treino", -1))
+
+            receiverNewData?.launch(newIntent)
         }
     }
 
@@ -216,22 +188,24 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
             }
 
             rootView.findViewById<Button>(R.id.apagarExercicioButton).setOnClickListener{
-                ExercicioRequests.Delete(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_treino", -1)){ result ->
+                ExercicioRequests.Delete(lifecycleScope, sessionToken, listExercicios[position].id_exercicio!!){ result ->
                     if(result == "User not found"){
                         Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios, "Error removing the exercise", Toast.LENGTH_SHORT).show()
                     }
                     else{
-                        Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios, "Success", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios, "Exercise removed successfully", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
                     ExercicioRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_treino", -1)){ result ->
-                        if(!result.isEmpty()) {
+                        if(result.isNotEmpty()) {
                             listExercicios = result
                             exercicio_adapter.notifyDataSetChanged()
                         }
                         else{
+                            listExercicios.clear()
+                            exercicio_adapter.notifyDataSetChanged()
                             findViewById<TextView>(R.id.textView9).text = "This Plan is empty\nAdd some exercises!"
                         }
                     }
