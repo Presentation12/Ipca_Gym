@@ -721,6 +721,94 @@ namespace LayerBLL.Logics
             }
         }
 
+        /// <summary>
+        /// Método que recebe os dados do serviço a partir do id do ginásio
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do ginásio que se pretende obter os clientes</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<Response> GetAllByGymIDLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+
+            try
+            {
+                List<Cliente> clienteList = await ClienteService.GetAllByGymIDService(sqlDataSource, targetID);
+
+                if (clienteList.Count != 0)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Lista de clientes obtidos com sucesso";
+                    response.Data = new JsonResult(clienteList);
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de leitura dos dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de acesso a uma coluna da base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (ArgumentNullException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de parametro inserido nulo: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+        }
+
         #endregion
     }
 }

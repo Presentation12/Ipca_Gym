@@ -203,6 +203,18 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        [HttpGet("Gym/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
+        public async Task<IActionResult> GetAllByGymID(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+
+            Response response = await ClienteLogic.GetAllByGymIDLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
         #endregion
     }
 }

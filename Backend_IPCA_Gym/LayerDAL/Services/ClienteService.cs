@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.Extensions.Configuration;
+using System.Reflection.PortableExecutable;
 
 namespace LayerDAL.Services
 {
@@ -873,6 +874,130 @@ namespace LayerDAL.Services
             catch (ArgumentNullException ex)
             {
                 Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Retornar uma lista de clientes de um ginásio especifico
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID">ID do ginásio ao qual pertencem os clientes a ser lidos</param>
+        /// <returns>Clientes se uma leitura bem sucedida, ou null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<List<Cliente>> GetAllByGymIDService(string sqlDataSource, int targetID)
+        {
+            string query = @"select * from dbo.Cliente where id_ginasio = @targetID";
+
+            try
+            {
+                List<Cliente> clientesGinasio = new List<Cliente>();
+                SqlDataReader dataReader;
+
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("targetID", targetID);
+                        dataReader = myCommand.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            Cliente cliente = new Cliente();
+
+                            cliente.id_cliente = Convert.ToInt32(dataReader["id_cliente"]);
+                            cliente.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
+                            if (!Convert.IsDBNull(dataReader["id_plano_nutricional"]))
+                            {
+                                cliente.id_plano_nutricional = Convert.ToInt32(dataReader["id_plano_nutricional"]);
+                            }
+                            else
+                            {
+                                cliente.id_plano_nutricional = null;
+                            }
+                            cliente.nome = dataReader["nome"].ToString();
+                            cliente.mail = dataReader["mail"].ToString();
+                            cliente.telemovel = Convert.ToInt32(dataReader["telemovel"]);
+                            cliente.pass_salt = dataReader["pass_salt"].ToString();
+                            cliente.pass_hash = dataReader["pass_hash"].ToString();
+                            if (!Convert.IsDBNull(dataReader["peso"]))
+                            {
+                                cliente.peso = Convert.ToDouble(dataReader["peso"]);
+                            }
+                            else
+                            {
+                                cliente.peso = null;
+                            }
+                            if (!Convert.IsDBNull(dataReader["altura"]))
+                            {
+                                cliente.altura = Convert.ToInt32(dataReader["altura"]);
+                            }
+                            else
+                            {
+                                cliente.altura = null;
+                            }
+                            if (!Convert.IsDBNull(dataReader["gordura"]))
+                            {
+                                cliente.gordura = Convert.ToDouble(dataReader["gordura"]);
+                            }
+                            else
+                            {
+                                cliente.gordura = null;
+                            }
+                            if (!Convert.IsDBNull(dataReader["foto_perfil"]))
+                            {
+                                cliente.foto_perfil = dataReader["foto_perfil"].ToString();
+                            }
+                            else
+                            {
+                                cliente.foto_perfil = null;
+                            }
+                            cliente.estado = dataReader["estado"].ToString();
+
+                            clientesGinasio.Add(cliente);
+                        }
+
+                        dataReader.Close();
+                        databaseConnection.Close();
+                    }
+                }
+
+                return clientesGinasio;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
                 return null;
             }
             catch (Exception ex)
