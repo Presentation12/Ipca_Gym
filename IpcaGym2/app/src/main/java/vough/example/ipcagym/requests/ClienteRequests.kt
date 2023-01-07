@@ -143,22 +143,22 @@ object ClienteRequests {
         }
     }
 
-    fun Patch(scope: CoroutineScope, token : String?, targetID: Int, editCliente : Cliente, callback: (String) -> Unit){
+    fun Patch(scope: CoroutineScope, token : String?, targetID: Int?, editCliente : Cliente?, callback: (String) -> Unit){
         scope.launch(Dispatchers.IO) {
             val jsonBody = """
                 {
-                    "id_cliente": ${editCliente.id_cliente},
-                    "id_ginasio": ${editCliente.id_ginasio},
-                    "id_plano_nutricional": ${editCliente.id_plano_nutricional},
-                    "nome": "${editCliente.nome}",
-                    "mail": "${editCliente.mail}",
-                    "telemovel": ${editCliente.telemovel},
-                    "pass_salt": "${editCliente.pass_salt}",
-                    "peso": ${editCliente.peso},
-                    "altura": ${editCliente.altura},
-                    "gordura": ${editCliente.gordura},
-                    "foto_perfil": "${editCliente.foto_perfil}",
-                    "estado": "${editCliente.estado}"
+                    "id_cliente": ${editCliente?.id_cliente},
+                    "id_ginasio": ${editCliente?.id_ginasio},
+                    "id_plano_nutricional": ${editCliente?.id_plano_nutricional},
+                    "nome": "${editCliente?.nome}",
+                    "mail": "${editCliente?.mail}",
+                    "telemovel": ${editCliente?.telemovel},
+                    "pass_salt": "${editCliente?.pass_salt}",
+                    "peso": ${editCliente?.peso},
+                    "altura": ${editCliente?.altura},
+                    "gordura": ${editCliente?.gordura},
+                    "foto_perfil": "${editCliente?.foto_perfil}",
+                    "estado": "${editCliente?.estado}"
                 }
             """
 

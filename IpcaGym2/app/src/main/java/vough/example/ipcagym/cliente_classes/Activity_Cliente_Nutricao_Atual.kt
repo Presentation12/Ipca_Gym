@@ -1,5 +1,6 @@
 package vough.example.ipcagym.cliente_classes
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -9,21 +10,22 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Cliente
 import vough.example.ipcagym.data_classes.Plano_Nutricional
 import vough.example.ipcagym.data_classes.Refeicao
+import vough.example.ipcagym.requests.*
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class NutricaoClienteActivity : AppCompatActivity() {
+class Activity_Cliente_Nutricao_Atual : AppCompatActivity() {
 
         @RequiresApi(Build.VERSION_CODES.O)
         val time_formatter = DateTimeFormatter.ofPattern("HH:mm")
         var list_refeicoes = arrayListOf<Refeicao>()
-        // Hardcode
-        var plano_nutricional_atual = Plano_Nutricional(1,1,"Emagrecer",2500,null)
-        var nutricao_adapter = AdapterNutricao()
+        var refeicao_adapter = AdapterRefeicao()
 
         //api para tempo
         @RequiresApi(Build.VERSION_CODES.O)
@@ -31,59 +33,78 @@ class NutricaoClienteActivity : AppCompatActivity() {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_cliente_nutricao)
 
-            // Hardcode
-            list_refeicoes.add(Refeicao(1,1,"Banana", LocalTime.of(10,30,0),null))
-            list_refeicoes.add(Refeicao(2,1,"Rojão",LocalTime.of(12,30,0),null))
-            list_refeicoes.add(Refeicao(3,1,"Bife",LocalTime.of(16,30,0),null))
+            //Buscar token
+            val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+            val sessionToken = preferences.getString("session_token", null)
 
-            findViewById<TextView>(R.id.textViewCalorias).text = plano_nutricional_atual.calorias.toString()
-            findViewById<TextView>(R.id.textViewTipoNutricao).text = plano_nutricional_atual.tipo
+            val imageView = findViewById<ImageView>(R.id.profile_pic_cliente_nutricao)
 
-            val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
-            val image_view = findViewById<ImageView>(R.id.profile_pic_cliente_nutricao)
+            ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
+
+                if (resultCliente?.foto_perfil != null)
+                {
+                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
+                    imageView.setImageURI(imageUri)
+                }
+
+                if (resultCliente?.id_plano_nutricional != null)
+                {
+                    PlanoNutricionalRequests.GetByID(lifecycleScope, sessionToken, resultCliente.id_plano_nutricional) { resultPlanoAtual ->
+
+                        findViewById<TextView>(R.id.textViewCalorias).text = resultPlanoAtual?.calorias.toString()
+                        findViewById<TextView>(R.id.textViewTipoNutricao).text = resultPlanoAtual?.tipo
+
+                        RefeicaoRequests.GetAllByPlanoID(lifecycleScope,sessionToken,resultPlanoAtual?.id_plano_nutricional){ resultRefeicoes ->
+
+                            list_refeicoes = resultRefeicoes
+                            refeicao_adapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+            }
+
             val spinner = findViewById<Spinner>(R.id.spinner)
             val options = arrayOf("Conta", "Definições", "Sair")
             val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
-
-            val list_view_refeicoes = findViewById<ListView>(R.id.listviewRefeicoes)
-            list_view_refeicoes.adapter = nutricao_adapter
-
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                    Toast.makeText(this@NutricaoClienteActivity,options[position], Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Nutricao_Atual,options[position], Toast.LENGTH_LONG).show()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
                     // Do nothing
                 }
             }
-
-            image_view.setOnClickListener {
+            imageView.setOnClickListener {
                 spinner.performClick()
             }
 
+            val list_view_refeicoes = findViewById<ListView>(R.id.listviewRefeicoes)
+            list_view_refeicoes.adapter = refeicao_adapter
+
+            val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
             bottom_navigation_view.setOnItemSelectedListener{ item ->
                 when (item.itemId) {
                     R.id.nav_home -> {
-                        Toast.makeText(this@NutricaoClienteActivity,"Main Menu", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@Activity_Cliente_Nutricao_Atual,"Main Menu", Toast.LENGTH_LONG).show()
                         true
                     }
                     R.id.nav_fitness -> {
-                        Toast.makeText(this@NutricaoClienteActivity,"Treino", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@Activity_Cliente_Nutricao_Atual,"Treino", Toast.LENGTH_LONG).show()
                         true
                     }
                     R.id.nav_shopping -> {
-                        Toast.makeText(this@NutricaoClienteActivity,"Loja", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@Activity_Cliente_Nutricao_Atual,"Loja", Toast.LENGTH_LONG).show()
                         true
                     }
                     R.id.nav_diet -> {
-                        Toast.makeText(this@NutricaoClienteActivity,"Refeicoes", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@Activity_Cliente_Nutricao_Atual,"Refeicoes", Toast.LENGTH_LONG).show()
                         true
                     }
                     R.id.nav_history -> {
-                        Toast.makeText(this@NutricaoClienteActivity,"Atividades", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@Activity_Cliente_Nutricao_Atual,"Atividades", Toast.LENGTH_LONG).show()
                         true
                     }
                     else -> false
@@ -91,12 +112,12 @@ class NutricaoClienteActivity : AppCompatActivity() {
             }
 
             findViewById<Button>(R.id.buttonPlanosNutricao).setOnClickListener {
-                val intent = Intent(this@NutricaoClienteActivity, NutricaoPlanosClienteActivity::class.java)
+                val intent = Intent(this@Activity_Cliente_Nutricao_Atual, Activity_Cliente_Nutricao_Planos::class.java)
                 startActivity(intent)
             }
         }
 
-        inner class AdapterNutricao : BaseAdapter(){
+        inner class AdapterRefeicao : BaseAdapter(){
             override fun getCount(): Int {
                 return list_refeicoes.size
             }
@@ -125,7 +146,7 @@ class NutricaoClienteActivity : AppCompatActivity() {
 
                 //Clicar num rootView abre o plano de treino
                 root_view.setOnClickListener {
-                    val intent = Intent(this@NutricaoClienteActivity, NutricaoRefeicaoClienteActivity::class.java)
+                    val intent = Intent(this@Activity_Cliente_Nutricao_Atual, Activity_Cliente_Nutricao_Atual_Refeicao::class.java)
 
                     intent.putExtra("id_refeicao", list_refeicoes[position].id_refeicao)
                     intent.putExtra("id_plano_nutricional", list_refeicoes[position].id_plano_nutricional)

@@ -1,5 +1,6 @@
 package vough.example.ipcagym.cliente_classes
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -9,20 +10,23 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
-import vough.example.ipcagym.data_classes.Plano_Nutricional
+import vough.example.ipcagym.data_classes.Cliente
 import vough.example.ipcagym.data_classes.Refeicao
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.PlanoNutricionalRequests
+import vough.example.ipcagym.requests.RefeicaoRequests
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class NutricaoPlanoDetalhesClienteActivity : AppCompatActivity() {
+class Activity_Cliente_Nutricao_Plano_Details : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     val time_formatter = DateTimeFormatter.ofPattern("HH:mm")
     var refeicoes_adapter = AdapterRefeicao()
     var list_refeicoes = arrayListOf<Refeicao>()
-    // Hardcode
 
     //api para tempo
     @RequiresApi(Build.VERSION_CODES.O)
@@ -30,70 +34,96 @@ class NutricaoPlanoDetalhesClienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_nutricao_plano_details)
 
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
         val id_plano_nutricional = intent.getIntExtra("id_plano_nutricional", -1)
         val id_ginasio = intent.getIntExtra("id_ginasio", -1)
         val tipo = intent.getStringExtra("tipo")
         val calorias = intent.getIntExtra("calorias",-1)
         val foto_plano_nutricional = intent.getStringExtra("foto_plano_nutricional")
 
-        // Hardcode
-        list_refeicoes.add(Refeicao(1,1,"Banana", LocalTime.of(10,30,0),null))
-        list_refeicoes.add(Refeicao(2,1,"Rojão", LocalTime.of(12,30,0),null))
-        list_refeicoes.add(Refeicao(3,1,"Bife", LocalTime.of(16,30,0),null))
+        val imageView = findViewById<ImageView>(R.id.profile_pic_cliente_nutricao)
 
-        findViewById<TextView>(R.id.textViewCalorias).text = calorias.toString()
-        findViewById<TextView>(R.id.textViewTipoNutricao).text = tipo
+        ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
 
-        val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
-        val image_view = findViewById<ImageView>(R.id.profile_pic_cliente_nutricao)
+            if (resultCliente?.foto_perfil != null)
+            {
+                val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
+                imageView.setImageURI(imageUri)
+            }
+
+            findViewById<Button>(R.id.buttonSubmeterNovoPlanoCliente).setOnClickListener {
+                resultCliente?.id_plano_nutricional = id_plano_nutricional
+                ClienteRequests.Patch(lifecycleScope,sessionToken,resultCliente?.id_cliente,resultCliente){ resultEditCliente ->
+                    if (resultEditCliente == "User not found")
+                    {
+                        Toast.makeText(this@Activity_Cliente_Nutricao_Plano_Details, "Error on edit a client", Toast.LENGTH_LONG).show()
+                    }
+                    else
+                    {
+                        finish()
+                        startActivity(intent)
+                    }
+                }
+            }
+
+            PlanoNutricionalRequests.GetByID(lifecycleScope, sessionToken, id_plano_nutricional) { resultPlanoSelecionado ->
+
+                findViewById<TextView>(R.id.textViewCalorias).text = resultPlanoSelecionado?.calorias.toString()
+                findViewById<TextView>(R.id.textViewTipoNutricao).text = resultPlanoSelecionado?.tipo
+
+                RefeicaoRequests.GetAllByPlanoID(lifecycleScope,sessionToken,resultPlanoSelecionado?.id_plano_nutricional){ resultRefeicoes ->
+
+                    list_refeicoes = resultRefeicoes
+                    refeicoes_adapter.notifyDataSetChanged()
+                }
+            }
+        }
+
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = arrayOf("Conta", "Definições", "Sair")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
-
-        //TODO: fazer troca de plano do cliente neste butao
-        findViewById<Button>(R.id.buttonSubmeterNovoPlanoCliente).setOnClickListener {
-            // tem de se passar o cliente atual ou aceder a ele para leterar o id do plano nutricional
-        }
-
-        val list_view_refeicoes = findViewById<ListView>(R.id.listviewRefeicoes)
-        list_view_refeicoes.adapter = refeicoes_adapter
-
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(this@NutricaoPlanoDetalhesClienteActivity,options[position], Toast.LENGTH_LONG).show()
+                Toast.makeText(this@Activity_Cliente_Nutricao_Plano_Details,options[position], Toast.LENGTH_LONG).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Do nothing
             }
         }
-
-        image_view.setOnClickListener {
+        imageView.setOnClickListener {
             spinner.performClick()
         }
 
+        val list_view_refeicoes = findViewById<ListView>(R.id.listviewRefeicoes)
+        list_view_refeicoes.adapter = refeicoes_adapter
+
+        val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
         bottom_navigation_view.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this@NutricaoPlanoDetalhesClienteActivity,"Main Menu", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Nutricao_Plano_Details,"Main Menu", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_fitness -> {
-                    Toast.makeText(this@NutricaoPlanoDetalhesClienteActivity,"Treino", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Nutricao_Plano_Details,"Treino", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_shopping -> {
-                    Toast.makeText(this@NutricaoPlanoDetalhesClienteActivity,"Loja", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Nutricao_Plano_Details,"Loja", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_diet -> {
-                    Toast.makeText(this@NutricaoPlanoDetalhesClienteActivity,"Refeicoes", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Nutricao_Plano_Details,"Refeicoes", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_history -> {
-                    Toast.makeText(this@NutricaoPlanoDetalhesClienteActivity,"Atividades", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Nutricao_Plano_Details,"Atividades", Toast.LENGTH_LONG).show()
                     true
                 }
                 else -> false
@@ -130,7 +160,7 @@ class NutricaoPlanoDetalhesClienteActivity : AppCompatActivity() {
 
             //Clicar num rootView abre o plano de treino
             root_view.setOnClickListener {
-                val intent = Intent(this@NutricaoPlanoDetalhesClienteActivity, NutricaoRefeicaoClienteActivity::class.java)
+                val intent = Intent(this@Activity_Cliente_Nutricao_Plano_Details, Activity_Cliente_Nutricao_Atual_Refeicao::class.java)
 
                 intent.putExtra("id_refeicao", list_refeicoes[position].id_refeicao)
                 intent.putExtra("id_plano_nutricional", list_refeicoes[position].id_plano_nutricional)
