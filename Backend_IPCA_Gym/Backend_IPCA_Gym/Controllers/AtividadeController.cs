@@ -40,11 +40,27 @@ namespace Backend_IPCA_Gym.Controllers
         }
 
         /// <summary>
+        /// Método http get para retornar as atividades de um ginasio
+        /// </summary>
+        /// <param name="targetID">ID do ginasio em causa</param>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de atividades em formato Json</returns>
+        [HttpGet("getbygym/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
+        public async Task<IActionResult> GetbyGymAll(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await AtividadeLogic.GetAllbyGymLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        /// <summary>
         /// Método http get para retornar uma atividade através do seu id
         /// </summary>
         /// <param name="targetID">ID da atividade que é pretendida ser retornada</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a Atividade em formato Json</returns>
-        [HttpGet("{targetID}"), Authorize(Roles = "Admin")]
+        [HttpGet("{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
         public async Task<IActionResult> GetByID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -99,6 +115,22 @@ namespace Backend_IPCA_Gym.Controllers
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
             Response response = await AtividadeLogic.DeleteLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
+        /// <summary>
+        /// Método http get para obter estatísticas de um ginásio
+        /// </summary>
+        /// <param name="targetID">ID do ginasio em causa</param>
+        /// <returns></returns>
+        [HttpGet("getgymstats/{targetID}"), Authorize(Roles = "Admin, Funcionario, Gerente")]
+        public async Task<IActionResult> GetGymStats(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await AtividadeLogic.GetGymStatsLogic(sqlDataSource, targetID);
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
 

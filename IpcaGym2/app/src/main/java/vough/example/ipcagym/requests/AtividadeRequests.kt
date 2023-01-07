@@ -12,6 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.http.PATCH
 import vough.example.ipcagym.MainActivity
 import vough.example.ipcagym.data_classes.Atividade
+import vough.example.ipcagym.data_classes.StatsModel
 import java.io.IOException
 
 object AtividadeRequests {
@@ -203,6 +204,42 @@ object AtividadeRequests {
                 else
                     scope.launch(Dispatchers.Main){
                         callback("User not found")
+                    }
+            }
+        }
+    }
+
+    fun getGymStats(scope: CoroutineScope, token : String?, targetID: Int, callback: (StatsModel) -> Unit){
+        scope.launch(Dispatchers.IO) {
+            val request = Request.Builder()
+                .url(UtilsForRequests.baseURL + "/api/Atividade/getgymstats/$targetID")
+                .get()
+                .header("Authorization", "Bearer $token")
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                val statusCode = response.code
+                var stats : StatsModel? = null
+
+                if(statusCode == 200) {
+                    val result = response.body!!.string()
+
+                    val jsonObject = JSONObject(result)
+                    val JSONData = jsonObject.getJSONObject("data")
+                    val item = JSONData.getJSONObject("value")
+
+                    //val item = JSONList.getJSONObject(0)
+                    stats = StatsModel.fromJson(item)
+
+                    scope.launch(Dispatchers.Main){
+                        callback(stats)
+                    }
+                }
+                else
+                    scope.launch(Dispatchers.Main){
+                        callback(stats!!)
                     }
             }
         }

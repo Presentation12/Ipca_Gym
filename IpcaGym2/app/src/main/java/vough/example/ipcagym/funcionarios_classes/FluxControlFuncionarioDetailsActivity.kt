@@ -1,16 +1,24 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Cliente
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.GinasioRequests
 
 class FluxControlFuncionarioDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_flux_control_details)
+
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
         //fazer na outra activity
         val id_atividade = intent.getIntExtra("id_atividade", -1)
@@ -23,9 +31,17 @@ class FluxControlFuncionarioDetailsActivity : AppCompatActivity() {
         val state = intent.getBooleanExtra("state", true)
 
         //Escrever no layout detalhado
+
         findViewById<TextView>(R.id.idAtividadeAtividadeDetailFuncionario).text = id_atividade.toString()
-        findViewById<TextView>(R.id.idGinasioAtividadeDetailFuncionario).text = id_ginasio.toString()
-        findViewById<TextView>(R.id.idClienteAtividadeDetailFuncionario).text = id_cliente.toString()
+
+        GinasioRequests.GetByID(lifecycleScope, sessionToken, id_ginasio){ response ->
+            if(response != null) findViewById<TextView>(R.id.idGinasioAtividadeDetailFuncionario).text = response.instituicao.toString()
+        }
+
+        ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente){ response ->
+            if(response != null) findViewById<TextView>(R.id.idClienteAtividadeDetailFuncionario).text = response.nome.toString()
+        }
+
         val dataView = findViewById<TextView>(R.id.dataAtividadeDetailFuncionario)
         val hora = findViewById<TextView>(R.id.horaAtividadeDetailFuncionario)
 

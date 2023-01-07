@@ -89,6 +89,88 @@ namespace LayerDAL.Services
         }
 
         /// <summary>
+        /// Leitura dos dados de todas as atividades de um ginasio
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID">ID do ginasio em causa</param>
+        /// <returns>Lista de atividades se uma leitura bem sucedida, null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<List<Atividade>> GetAllbyGymService(string sqlDataSource, int targetID)
+        {
+            string query = @"select * from dbo.Atividade where id_ginasio = @id_ginasio";
+            List<Atividade> atividades = new List<Atividade>();
+
+            try
+            {
+                SqlDataReader dataReader;
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("id_ginasio", targetID);
+                        dataReader = myCommand.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            Atividade atividade = new Atividade();
+
+                            atividade.id_atividade = Convert.ToInt32(dataReader["id_atividade"]);
+                            atividade.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
+                            atividade.id_cliente = Convert.ToInt32(dataReader["id_cliente"]);
+                            atividade.data_entrada = Convert.ToDateTime(dataReader["data_entrada"]);
+
+                            if (dataReader["data_saida"] == DBNull.Value) atividade.data_saida = null;
+                            else atividade.data_saida = Convert.ToDateTime(dataReader["data_saida"]);
+
+
+                            atividades.Add(atividade);
+                        }
+
+                        dataReader.Close();
+                        databaseConnection.Close();
+                    }
+                }
+
+                return atividades;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Leitura dos dados de uma atividade através do seu id na base de dados
         /// </summary>
         /// <param name="sqlDataSource">String de conexão á base de dados</param>
@@ -366,6 +448,148 @@ namespace LayerDAL.Services
             {
                 Console.WriteLine(ex.ToString());
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Calculo de estatísticas do ginásio
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID">ID do ginasio em causa</param>
+        /// <returns>Lista de atividades se uma leitura bem sucedida, null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<StatsModel> GetGymStatsService(string sqlDataSource, int targetID)
+        {
+            try
+            {
+                List<Atividade> list = new List<Atividade>();
+                StatsModel stats = new StatsModel();
+
+                list = await GetAllbyGymService(sqlDataSource, targetID);
+
+                //Calcular current, exits e entries today
+                int totalInTodayCounter = 0;
+                int totalOutTodayCounter = 0;
+                foreach (Atividade a in list)
+                {
+                    if (a.data_entrada >= DateTime.Today && a.data_entrada < DateTime.Today.AddDays(1))
+                    {
+                        if (a.data_saida == null)
+                        {
+                            totalInTodayCounter++;
+                        }
+                        else
+                        {
+                            totalInTodayCounter++;
+                            totalOutTodayCounter++;
+                        }
+                    }
+                    
+                }
+                stats.exits = totalOutTodayCounter;
+                stats.today = totalInTodayCounter;
+                stats.current = totalInTodayCounter - totalOutTodayCounter;
+
+                //Calcular dailyAverage
+                List<Atividade> orderedListDays = list.OrderBy(x => x.data_entrada).ToList();
+
+                TimeSpan diff = DateTime.Today.Subtract(orderedListDays[0].data_entrada);
+                double diffDays = diff.TotalDays;
+
+                if (diffDays < 1) diffDays = 1.0;
+
+                stats.dailyAverage = list.Count() / diffDays;
+
+                //Calcular monthlyAverage
+                List<Atividade> orderedListMonths = list.OrderBy(x => x.data_entrada).ToList();
+
+                TimeSpan diffAux = DateTime.Today.Subtract(orderedListMonths[0].data_entrada);
+                double diffDaysMonths = diffAux.TotalDays;
+                double diffMonths = diffDaysMonths / 30.44;
+                
+                if (diffMonths < 1) diffMonths = 1.0;
+
+                stats.monthlyAverage = list.Count() / diffMonths;
+
+                //Calcular yearTotal
+                int totalYearCounter = 0;
+                foreach (Atividade a in list)
+                {
+                    if (a.data_entrada.Year == DateTime.Today.Year)
+                        totalYearCounter++;
+                }
+
+                stats.yearTotal = totalYearCounter;
+
+                //Calcular maxDay
+                int auxCounter = 0;
+                int currentMax = 0;
+
+                for (int i = 0; i < list.Count(); i++)
+                {
+                    if (i + 1 < list.Count)
+                    {
+                        if (list[i].data_entrada.Date.CompareTo(list[i + 1].data_entrada.Date) == 0)
+                            auxCounter++;
+                        else
+                        {
+                            auxCounter++;
+
+                            if (currentMax < auxCounter)
+                                currentMax = auxCounter;
+
+                            auxCounter = 0;
+                        }
+                    }
+                    else
+                    {
+                        auxCounter++;
+
+                        if (currentMax < auxCounter)
+                            currentMax = auxCounter;
+                    }
+                }
+                stats.maxDay = currentMax;
+
+                //Calcular maxMonth
+
+
+                return stats;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
             }
         }
 

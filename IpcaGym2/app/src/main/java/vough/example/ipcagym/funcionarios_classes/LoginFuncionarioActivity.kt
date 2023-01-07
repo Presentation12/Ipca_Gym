@@ -19,6 +19,16 @@ class LoginFuncionarioActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_login)
 
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
+        if(sessionToken != "") {
+            //val intentStart = Intent(this@LoginFuncionarioActivity, PaginaInicialFuncionarioActivity::class.java)
+            val intentStart = Intent(this@LoginFuncionarioActivity, CapacityManagementActivity::class.java)
+            finish()
+            startActivity(intentStart)
+        }
+
         //TODO: CERTIFICAR QUE O QUE O CODE NÃO SEJA LONG (VER TAMANHO DO CODE)
         val code = findViewById<AppCompatEditText>(R.id.mail).text
         val pass = findViewById<AppCompatEditText>(R.id.password).text
@@ -39,8 +49,10 @@ class LoginFuncionarioActivity : AppCompatActivity() {
 
                         editor.apply()
 
-                        startActivity(Intent(this@LoginFuncionarioActivity, FluxControlFuncionarioActivity::class.java))
-                        //startActivity(Intent(this@LoginFuncionarioActivity, PaginaInicialFuncionarioActivity::class.java))
+                        //val intentStart = Intent(this@LoginFuncionarioActivity, PaginaInicialFuncionarioActivity::class.java)
+                        val intentStart = Intent(this@LoginFuncionarioActivity, FluxControlFuncionarioActivity::class.java)
+                        finish()
+                        startActivity(intentStart)
                     } else {
                         Toast.makeText(this@LoginFuncionarioActivity, result, Toast.LENGTH_LONG).show()
                     }

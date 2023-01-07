@@ -1,25 +1,38 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomappbar.BottomAppBar
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Exercicio
+import vough.example.ipcagym.data_classes.Funcionario
 import vough.example.ipcagym.data_classes.Ginasio
 import vough.example.ipcagym.data_classes.Plano_Treino
+import vough.example.ipcagym.requests.AtividadeRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
 import java.util.zip.Inflater
 
 class CapacityManagementActivity : AppCompatActivity() {
     val listAux = arrayListOf<Plano_Treino>()
     val adapterAux = CapacityManagementApapter()
+    var funcionarioRefresh : Funcionario? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_capacity)
+
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
+            if(result != null) funcionarioRefresh = result
+        }
 
         val listViewAux = findViewById<ListView>(R.id.auxListView)
         listViewAux.adapter = adapterAux
@@ -65,7 +78,23 @@ class CapacityManagementActivity : AppCompatActivity() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val rootView = layoutInflater.inflate(R.layout.row_funcionario_capacity_aux,parent,false)
 
-            //TODO: Inserir valores calculados Stats
+            val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+            val sessionToken = preferences.getString("session_token", null)
+
+            FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){  result ->
+                AtividadeRequests.getGymStats(lifecycleScope, sessionToken, result?.id_ginasio!!){ result2 ->
+                    rootView.findViewById<TextView>(R.id.capacityCurrentValue).text = result2.current.toString()
+                    rootView.findViewById<TextView>(R.id.capacityExitsValue).text = result2.exits.toString()
+                    rootView.findViewById<TextView>(R.id.capacityTodayValue).text = result2.today.toString()
+                    rootView.findViewById<TextView>(R.id.capacityDailyThisOne).text = String.format("%.2f", result2.dailyAverage)
+                    rootView.findViewById<TextView>(R.id.capacityMonthlyValue).text = String.format("%.2f", result2.monthlyAverage)
+                    rootView.findViewById<TextView>(R.id.capacityYearValue).text = result2.yearTotal.toString()
+                    rootView.findViewById<TextView>(R.id.capacityMaxDayValue).text = result2.maxDay.toString()
+                    rootView.findViewById<TextView>(R.id.capacityMaxMonthCurrentValue).text = result2.maxMonth.toString()
+                }
+            }
+
+
 
             return rootView
         }
