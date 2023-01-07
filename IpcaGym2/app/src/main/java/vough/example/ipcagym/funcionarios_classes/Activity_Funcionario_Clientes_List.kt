@@ -1,14 +1,21 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Cliente
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.PlanoNutricionalRequests
+import vough.example.ipcagym.requests.RefeicaoRequests
 
 class Activity_Funcionario_Clientes_List : AppCompatActivity() {
 
@@ -19,9 +26,27 @@ class Activity_Funcionario_Clientes_List : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_clientes_list)
 
-        list_clientes.add(Cliente(1,1,1,"Joaquim","gtgtgt@tgtg.tgtg",253440656,"","",76.6,176,54.4,null,"Ativo"))
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
-        val image_view = findViewById<ImageView>(R.id.profile_pic_funcionario_list_clientes)
+        val imageView = findViewById<ImageView>(R.id.profile_pic_funcionario_list_clientes)
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultFuncionario ->
+
+            //TODO: foto gerente
+            /*
+            if (resultFuncionario?.foto_perfil != null)
+            {
+                val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
+                imageView.setImageURI(imageUri)
+            }
+            */
+            ClienteRequests.GetAllByGymID(lifecycleScope, sessionToken, resultFuncionario?.id_ginasio) {resultClientes ->
+                list_clientes = resultClientes
+                clientes_adapter.notifyDataSetChanged()
+            }
+        }
 
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = arrayOf("Conta", "Definições", "Sair")
@@ -37,11 +62,10 @@ class Activity_Funcionario_Clientes_List : AppCompatActivity() {
                 // Do nothing
             }
         }
-        image_view.setOnClickListener {
+        imageView.setOnClickListener {
             spinner.performClick()
         }
 
-        //TODO: Enviar lista?
         findViewById<Button>(R.id.buttonAddCliente).setOnClickListener {
             val intent = Intent(this@Activity_Funcionario_Clientes_List, Activity_Funcionario_Cliente_Add::class.java)
             startActivity(intent)

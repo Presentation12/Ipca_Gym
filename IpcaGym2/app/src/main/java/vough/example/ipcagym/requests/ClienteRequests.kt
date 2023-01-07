@@ -15,6 +15,7 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import vough.example.ipcagym.data_classes.Atividade
 import vough.example.ipcagym.data_classes.Cliente
+import vough.example.ipcagym.data_classes.Exercicio
 import java.io.IOException
 
 object ClienteRequests {
@@ -358,6 +359,45 @@ object ClienteRequests {
                 else
                     scope.launch(Dispatchers.Main){
                         callback(cliente)
+                    }
+            }
+        }
+    }
+
+    fun GetAllByGymID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (ArrayList<Cliente>) -> Unit){
+        scope.launch(Dispatchers.IO) {
+            val request = Request.Builder()
+                .url(UtilsForRequests.baseURL + "/api/Cliente/Gym/$targetID")
+                .get()
+                .header("Authorization", "Bearer $token")
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                val statusCode = response.code
+                var clientes = arrayListOf<Cliente>()
+
+                if(statusCode == 200) {
+                    val result = response.body!!.string()
+
+                    val jsonObject = JSONObject(result)
+                    val JSONData = jsonObject.getJSONObject("data")
+                    val JSONList = JSONData.getJSONArray("value")
+
+                    for (i in 0 until JSONList.length()) {
+                        val item = JSONList.getJSONObject(i)
+                        val cliente = Cliente.fromJson(item)
+                        clientes.add(cliente)
+                    }
+
+                    scope.launch(Dispatchers.Main){
+                        callback(clientes)
+                    }
+                }
+                else
+                    scope.launch(Dispatchers.Main){
+                        callback(clientes)
                     }
             }
         }
