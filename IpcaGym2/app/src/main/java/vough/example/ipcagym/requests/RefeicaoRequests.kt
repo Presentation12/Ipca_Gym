@@ -90,7 +90,7 @@ object RefeicaoRequests {
     }
 
     //TODO: por verificar
-    fun GetAllByGinasioID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (ArrayList<Refeicao>) -> Unit){
+    fun GetAllByPlanoID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (ArrayList<Refeicao>) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()
                 .url(UtilsForRequests.baseURL + "/api/Loja/Refeicao/$targetID")
