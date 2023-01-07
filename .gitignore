@@ -2,3 +2,6 @@
 appsettings.json
 Backend_IPCA_Gym/Backend_IPCA_Gym/appsettings.json
 IpcaGym2/app/src/main/res/layout/activity_funcionario_capacity.xml
+Backend_IPCA_Gym/LayerDAL/obj/Release/net6.0/LayerDAL.csproj.AssemblyReference.cache
+Backend_IPCA_Gym/LayerDAL/obj/Release/net6.0/LayerDAL.GeneratedMSBuildEditorConfig.editorconfig
+Backend_IPCA_Gym/LayerDAL/obj/Release/net6.0/LayerDAL.GlobalUsings.g.cs

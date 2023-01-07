@@ -25,6 +25,7 @@ import java.time.format.DateTimeFormatter
 
 class FluxControlFuncionarioActivity : AppCompatActivity() {
 
+    private var selectedPosition: Int = 0
     var activityList = arrayListOf<Atividade>()
     var funcionarioRefresh : Funcionario? = null
     var client_adapter = FuncionarioActivityAdapter()
@@ -40,6 +41,7 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
         //Buscar token
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
+        var counter = 0
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
             if(result != null) funcionarioRefresh = result
@@ -49,14 +51,18 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
         val spinner = findViewById<Spinner>(R.id.spinner)
         val addButton = findViewById<Button>(R.id.buttonAddNewActivity)
 
-        val options = arrayOf("Account", "Settings", "Logout")
+        val options = listOf("Account", "Settings", "Logout", "")
 
-        val adapter = ArrayAdapter(this@FluxControlFuncionarioActivity, android.R.layout.simple_spinner_item, options)
+        class MyAdapter(context: Context, items: List<String>) : ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, items) {
+            override fun getCount(): Int {
+                return 3
+            }
+        }
+
+        val adapter = MyAdapter(this@FluxControlFuncionarioActivity, options)
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
-
-        // Prevent the first item from being selected by default
-        spinner.setSelection(-1)
 
         val listViewActivities = findViewById<ListView>(R.id.listByDate)
         listViewActivities.adapter = client_adapter
@@ -71,10 +77,18 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 when (position) {
                     0 -> {
-                        startActivity(Intent(this@FluxControlFuncionarioActivity, Activity_Funcionario_Perfil_Edit::class.java))
+                        if(counter == 0){
+                            counter+=1
+                            spinner.setSelection(3)
+                        }
+                        else{
+                            startActivity(Intent(this@FluxControlFuncionarioActivity, Activity_Funcionario_Perfil_Edit::class.java))
+                            spinner.setSelection(3)
+                        }
                     }
                     1 -> {
                         startActivity(Intent(this@FluxControlFuncionarioActivity, Activity_Funcionario_Settings::class.java))
+                        spinner.setSelection(3)
                     }
                     2 -> {
                         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
@@ -82,13 +96,14 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
                         editor.putString("session_token", "")
 
                         editor.apply()
+                        finish()
                         startActivity(Intent(this@FluxControlFuncionarioActivity, LoginFuncionarioActivity::class.java))
                     }
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
-                // Do nothing
+                spinner.setSelection(3)
             }
         }
 
@@ -268,6 +283,5 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
 
             return rootView
         }
-
     }
 }
