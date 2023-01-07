@@ -53,7 +53,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID da ginásio que é pretendido ser retornado</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e o ginásio em formato Json</returns>
-        [HttpGet("{targetID}"), Authorize(Roles = "Admin")]
+        [HttpGet("{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
         public async Task<IActionResult> GetByID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
@@ -103,7 +103,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do ginásio pretendido para ser removido</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpDelete("{targetID}"), Authorize(Roles = "Admin")]
+        [HttpDelete("{targetID}"), Authorize(Roles = "Admin, Gerente, FuncionarioC")]
         public async Task<IActionResult> Delete(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");

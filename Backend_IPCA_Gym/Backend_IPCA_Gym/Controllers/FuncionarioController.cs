@@ -71,7 +71,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do funcionário que é pretendido ser retornado</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e o funcionario em formato Json</returns>
-        [HttpGet("{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
+        [HttpGet("{targetID}"), Authorize(Roles = "Admin, Cliente,Gerente, Funcionario")]
         public async Task<IActionResult> GetByID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");

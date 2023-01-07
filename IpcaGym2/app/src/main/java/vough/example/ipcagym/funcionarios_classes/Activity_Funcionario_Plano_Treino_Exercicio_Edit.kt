@@ -1,12 +1,18 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Exercicio
+import vough.example.ipcagym.requests.ExercicioRequests
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,6 +21,10 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
         //TODO: CASO AMBAS AS CAIXAS SEJAM DESATIVADAS
         var isSet = findViewById<CheckBox>(R.id.isSets)
         var isTime = findViewById<CheckBox>(R.id.isTime)
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
 
         findViewById<CheckBox>(R.id.timeMinExerciseValue).isInvisible = true
         findViewById<CheckBox>(R.id.timeSecsExerciseValue).isInvisible = true
@@ -96,6 +106,29 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
 
                 intentEditIn.putExtra("aux","set")
 
+                val jsonBody = """
+                    {
+                      "id_exercicio": ${intentEditIn.getIntExtra("id_exercicio", -1)},
+                      "id_plano_treino": ${intentEditIn.getIntExtra("id_plano_treino", -1)},
+                      "nome": "${intentEditIn.getStringExtra("nome")}",
+                      "descricao": "${intentEditIn.getStringExtra("descricao")}",
+                      "tipo": "${intentEditIn.getStringExtra("tipo")}",
+                      "series": ${intentEditIn.getIntExtra("series", -1)},
+                      "tempo": null,
+                      "repeticoes": ${intentEditIn.getIntExtra("repeticoes", -1)},
+                      "foto_exercicio": "${intentEditIn.getStringExtra("foto_exercicio")}"
+                    }
+                """
+
+                ExercicioRequests.Patch(lifecycleScope, sessionToken, intent.getIntExtra("id_exercicio", -1), jsonBody){ result ->
+                    if(result != "User not found"){
+                        setResult(RESULT_OK, intentEditIn);
+                        finish()
+                    }
+                    else
+                        Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Edit, "Error on editing exercise", Toast.LENGTH_SHORT).show()
+                }
+
                 setResult(RESULT_OK, intentEditIn);
                 finish()
             }
@@ -108,11 +141,49 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
 
                 intentEditIn.putExtra("aux", "time")
 
-                setResult(RESULT_OK, intentEditIn);
-                finish()
-            }else{
-                Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Edit, "You need to insert more information!", Toast.LENGTH_LONG).show()
+                var minAuxInt = intentEditIn.getIntExtra("tempoMin",-1)
+                var secAuxInt = intentEditIn.getIntExtra("tempoSec",-1)
+
+                var minAuxString : String?
+                var secAuxString : String?
+
+                if(minAuxInt < 10)
+                    minAuxString = "0$minAuxInt"
+                else
+                    minAuxString = minAuxInt.toString()
+
+                if(secAuxInt < 10)
+                    secAuxString = "0$secAuxInt"
+                else
+                    secAuxString = secAuxInt.toString()
+
+                val tempoToPatch = LocalTime.parse("00:$minAuxString:$secAuxString", DateTimeFormatter.ofPattern("HH:mm:ss"))
+
+                val jsonBody = """
+                    {
+                      "id_exercicio": ${intentEditIn.getIntExtra("id_exercicio", -1)},
+                      "id_plano_treino": ${intentEditIn.getIntExtra("id_plano_treino", -1)},
+                      "nome": "${intentEditIn.getStringExtra("nome")}",
+                      "descricao": "${intentEditIn.getStringExtra("descricao")}",
+                      "tipo": "${intentEditIn.getStringExtra("tipo")}",
+                      "series": null,
+                      "tempo": "$tempoToPatch",
+                      "repeticoes": null,
+                      "foto_exercicio": "${intentEditIn.getStringExtra("foto_exercicio")}"
+                    }
+                """
+
+                ExercicioRequests.Patch(lifecycleScope, sessionToken, intent.getIntExtra("id_exercicio", -1), jsonBody){ result ->
+                    if(result != "User not found"){
+                        setResult(RESULT_OK, intentEditIn);
+                        finish()
+                    }
+                    else
+                        Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Edit, "Error on editing exercise", Toast.LENGTH_SHORT).show()
+                }
             }
+            else
+                Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Edit, "You need to insert more information!", Toast.LENGTH_LONG).show()
         }
 
         isSet.setOnClickListener{

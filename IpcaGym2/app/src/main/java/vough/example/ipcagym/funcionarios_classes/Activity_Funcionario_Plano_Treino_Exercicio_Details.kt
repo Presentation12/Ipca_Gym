@@ -1,6 +1,7 @@
 package vough.example.ipcagym.funcionarios_classes
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,7 +10,9 @@ import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
+import vough.example.ipcagym.requests.ExercicioRequests
 
 class Activity_Funcionario_Plano_Treino_Exercicio_Details : AppCompatActivity() {
     var receiverEditData : ActivityResultLauncher<Intent>? = null
@@ -23,6 +26,10 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Details : AppCompatActivity() 
         val descricao = intent.getStringExtra("descricao")
         val tipo = intent.getStringExtra("tipo")
         val series = intent.getStringExtra("series")
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
 
         findViewById<TextView>(R.id.exercicioNome).text = nome
         findViewById<TextView>(R.id.descricaoExercicioValue).text = descricao
@@ -39,12 +46,19 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Details : AppCompatActivity() 
         receiverEditData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if(it.resultCode == Activity.RESULT_OK){
 
-                exercicio_adapter.notifyDataSetChanged()
+                ExercicioRequests.GetByID(lifecycleScope, sessionToken, it?.data?.getIntExtra("id_exericio", -1)){ result ->
+                    if(result != null){
+                         findViewById<TextView>(R.id.exercicioNome).text = result.nome.toString()
+                         findViewById<TextView>(R.id.descricaoExercicioValue).text =  result.descricao.toString()
+                         findViewById<TextView>(R.id.tipoExercicioValue).text =  result.tipo.toString()
+                         findViewById<TextView>(R.id.seriesExercicioValue).text =  result.tempo.toString()
+                    }
+                }
             }
         }
 
         findViewById<Button>(R.id.returnButton).setOnClickListener{
-            startActivity(Intent(this@Activity_Funcionario_Plano_Treino_Exercicio_Details,Activity_Funcionario_Plano_Treino_Exercicios::class.java))
+            finish()
         }
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

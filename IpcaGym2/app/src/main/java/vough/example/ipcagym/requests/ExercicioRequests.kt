@@ -174,22 +174,8 @@ object ExercicioRequests {
         }
     }
 
-    fun Patch(scope: CoroutineScope, token : String?, targetID: Int, editExercicio : Exercicio, callback: (String) -> Unit){
+    fun Patch(scope: CoroutineScope, token : String?, targetID: Int, jsonBody : String, callback: (String) -> Unit){
         scope.launch(Dispatchers.IO) {
-            val jsonBody = """
-                {
-                  "id_exercicio": ${editExercicio.id_exercicio},
-                  "id_plano_treino": ${editExercicio.id_plano_treino},
-                  "nome": "${editExercicio.nome}",
-                  "descricao": "${editExercicio.descricao}",
-                  "tipo": "${editExercicio.tipo}",
-                  "series": ${editExercicio.series},
-                  "tempo": ${editExercicio.tempo},
-                  "repeticoes": ${editExercicio.repeticoes},
-                  "foto_exercicio": "${editExercicio.foto_exercicio}"
-                }
-            """
-
             val request = Request.Builder()
                 .url(UtilsForRequests.baseURL + "/api/Exercicio/$targetID")
                 .patch(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))

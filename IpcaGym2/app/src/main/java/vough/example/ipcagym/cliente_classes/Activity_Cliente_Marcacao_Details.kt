@@ -49,6 +49,10 @@ class Activity_Cliente_Marcacao_Details : AppCompatActivity() {
             {
                 val imageUri: Uri = Uri.parse(resultCliente?.foto_perfil)
                 imageView.setImageURI(imageUri)
+
+                GinasioRequests.GetByID(lifecycleScope,sessionToken,clienteRefresh?.id_ginasio){ resultGinasio ->
+                    findViewById<TextView>(R.id.GinasioNome).text = resultGinasio?.instituicao
+                }
             }
         }
 
@@ -56,11 +60,7 @@ class Activity_Cliente_Marcacao_Details : AppCompatActivity() {
             findViewById<TextView>(R.id.FuncionarioNome).text = resultFuncionaio?.nome
         }
 
-        GinasioRequests.GetByID(lifecycleScope,sessionToken,clienteRefresh?.id_ginasio){ resultGinasio ->
-            findViewById<TextView>(R.id.GinasioNome).text = resultGinasio?.instituicao
-        }
-
-        findViewById<TextView>(R.id.data).text = data_marcacao?.format(date_time_formatter)
+        findViewById<TextView>(R.id.data).text = data_marcacao_formatado?.format(date_time_formatter)
         findViewById<TextView>(R.id.Descricao).text = descricao
 
         val spinner = findViewById<Spinner>(R.id.spinner)
@@ -120,12 +120,9 @@ class Activity_Cliente_Marcacao_Details : AppCompatActivity() {
                 }
                 else
                 {
-                    finish()
                     startActivity(intent)
                 }
             }
-
-            startActivity(intent)
         }
     }
 }

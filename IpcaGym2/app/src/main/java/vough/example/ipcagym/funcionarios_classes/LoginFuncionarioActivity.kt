@@ -24,7 +24,7 @@ class LoginFuncionarioActivity : AppCompatActivity() {
 
         if(sessionToken != "") {
             //val intentStart = Intent(this@LoginFuncionarioActivity, PaginaInicialFuncionarioActivity::class.java)
-            val intentStart = Intent(this@LoginFuncionarioActivity, FluxControlFuncionarioActivity::class.java)
+            val intentStart = Intent(this@LoginFuncionarioActivity, Activity_Funcionario_Planos_Treino::class.java)
             finish()
             startActivity(intentStart)
         }
@@ -50,7 +50,7 @@ class LoginFuncionarioActivity : AppCompatActivity() {
                         editor.apply()
 
                         //val intentStart = Intent(this@LoginFuncionarioActivity, PaginaInicialFuncionarioActivity::class.java)
-                        val intentStart = Intent(this@LoginFuncionarioActivity, FluxControlFuncionarioActivity::class.java)
+                        val intentStart = Intent(this@LoginFuncionarioActivity, Activity_Funcionario_Planos_Treino::class.java)
                         finish()
                         startActivity(intentStart)
                     } else {

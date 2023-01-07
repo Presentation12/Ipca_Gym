@@ -1,6 +1,7 @@
 package vough.example.ipcagym.funcionarios_classes
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,13 +10,16 @@ import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Exercicio
+import vough.example.ipcagym.requests.ExercicioRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
-    val listExercicios = arrayListOf<Exercicio>()
+    var listExercicios = arrayListOf<Exercicio>()
     val exercicio_adapter = ExercicioAdapter()
     var receiverNewData : ActivityResultLauncher<Intent>? = null
     var receiverEditData : ActivityResultLauncher<Intent>? = null
@@ -24,11 +28,26 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_plano_exercicios)
 
-        listExercicios.add(Exercicio(1,1,"Exercicios",
+        /*listExercicios.add(Exercicio(1,1,"Exercicios",
             "hnviousgfiosbfkljsdhbvipdfbvopsdfbokvusdbiohjcbaoilhvcbsodbviasdhvcoiuhsdhfojsdbpiovsouhcvhpisdfjbv+<osdbf <odsihgfloiusdrwhgoipwesrbvojswberopigbsd<pivfh","tipo",3, null,3,null))
         listExercicios.add(Exercicio(2,1,"Exercicios1", "descricao","tipo",4, null,5,null))
         listExercicios.add(Exercicio(3,1,"Exercicios2", "descricao","tipo",3, LocalTime.of(0,30,0),6,null))
-        listExercicios.add(Exercicio(4,1,"Exercicios3", "descricao","tipo",null, LocalTime.parse("00:45:00"),null,null))
+        listExercicios.add(Exercicio(4,1,"Exercicios3", "descricao","tipo",null, LocalTime.parse("00:45:00"),null,null))*/
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+            ExercicioRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_treino", -1)){ result ->
+                if(!result.isEmpty()) {
+                    listExercicios = result
+                    exercicio_adapter.notifyDataSetChanged()
+                }
+                else{
+                    findViewById<TextView>(R.id.textView9).text = "This Plan is empty\nAdd some exercises!"
+                }
+            }
+        }
 
         val image_view = findViewById<ImageView>(R.id.profile_pic)
         val spinner = findViewById<Spinner>(R.id.spinner)
@@ -151,6 +170,9 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val rootView = layoutInflater.inflate(R.layout.row_exercicio, parent, false)
+            //Buscar token
+            val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+            val sessionToken = preferences.getString("session_token", null)
 
             //Guardar elementos em variaveis
             val exercicio_nome_view = rootView.findViewById<TextView>(R.id.textViewNomeExercicios)
@@ -194,8 +216,26 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
             }
 
             rootView.findViewById<Button>(R.id.apagarExercicioButton).setOnClickListener{
-                listExercicios.remove(listExercicios[position])
-                exercicio_adapter.notifyDataSetChanged()
+                ExercicioRequests.Delete(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_treino", -1)){ result ->
+                    if(result == "User not found"){
+                        Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios, "Error removing the exercise", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios, "Success", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+                    ExercicioRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_treino", -1)){ result ->
+                        if(!result.isEmpty()) {
+                            listExercicios = result
+                            exercicio_adapter.notifyDataSetChanged()
+                        }
+                        else{
+                            findViewById<TextView>(R.id.textView9).text = "This Plan is empty\nAdd some exercises!"
+                        }
+                    }
+                }
             }
 
             rootView.findViewById<Button>(R.id.patchExercicioButton).setOnClickListener{

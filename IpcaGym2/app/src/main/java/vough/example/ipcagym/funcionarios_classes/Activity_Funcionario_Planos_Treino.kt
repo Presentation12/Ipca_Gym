@@ -2,6 +2,7 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -13,8 +14,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Plano_Treino
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.PlanoTreinoRequests
 
 class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
     var planos_treino_list = arrayListOf<Plano_Treino>()
@@ -26,15 +30,20 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_planos_treino)
 
-        planos_treino_list.add(Plano_Treino(1,1,"Treino X", "Descrição"))
-        planos_treino_list.add(Plano_Treino(1,1,"Treino Y", "Descrição"))
-        planos_treino_list.add(Plano_Treino(1,1,"Treino W", "Descrição"))
-        planos_treino_list.add(Plano_Treino(1,1,"Treino Z", "Descrição"))
-        planos_treino_list.add(Plano_Treino(1,1,"Treino A", "Descrição"))
-        planos_treino_list.add(Plano_Treino(1,1,"Treino F", "Descrição"))
-        planos_treino_list.add(Plano_Treino(1,1,"Treino E", "Descrição"))
-        planos_treino_list.add(Plano_Treino(1,1,"Treino R", "Descrição"))
-        planos_treino_list.add(Plano_Treino(1,1,"Treino T", "Descrição"))
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+            if(it != null){
+                PlanoTreinoRequests.GetAllByGinasioID(lifecycleScope, sessionToken, it?.id_ginasio!!){ result ->
+                    if(!result.isEmpty()){
+                        planos_treino_list = result
+                        plano_adapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
 
         val image_view = findViewById<ImageView>(R.id.profile_pic)
         val spinner = findViewById<Spinner>(R.id.spinner)

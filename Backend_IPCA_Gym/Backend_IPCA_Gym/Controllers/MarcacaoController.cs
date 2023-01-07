@@ -54,7 +54,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID da marcação que é pretendida ser retornada</param>
         /// <returns>Resposta do request que contém a sua mensagem, seu código e a marcação em formato Json</returns>
-        [HttpGet("{targetID}"), Authorize(Roles = "Admin")]
+        [HttpGet("{targetID}"), Authorize(Roles = "Admin, Funcionario, Gerente, Cliente")]
         public async Task<IActionResult> GetByID(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");

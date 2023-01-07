@@ -132,7 +132,7 @@ class Activity_Cliente_Marcacoes : AppCompatActivity() {
                 intent.putExtra("id_marcacao", list_marcacoes[position].id_marcacao)
                 intent.putExtra("id_funcionario", list_marcacoes[position].id_funcionario)
                 intent.putExtra("id_cliente", list_marcacoes[position].id_cliente)
-                intent.putExtra("data_marcacao", list_marcacoes[position].data_marcacao)
+                intent.putExtra("data_marcacao", list_marcacoes[position].data_marcacao?.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                 intent.putExtra("descricao", list_marcacoes[position].descricao)
                 intent.putExtra("estado", list_marcacoes[position].estado)
 
