@@ -54,6 +54,22 @@ namespace Backend_IPCA_Gym.Controllers
 
             return new JsonResult(response);
         }
+     
+        /// <summary>
+        /// Método http get para retornar as atividades de um cliente
+        /// </summary>
+        /// <param name="targetID">ID do cliente em causa</param>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a lista de atividades em formato Json</returns>
+        [HttpGet("Cliente/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
+        public async Task<IActionResult> GetAllByClienteID(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await AtividadeLogic.GetAllByClienteIDLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
 
         /// <summary>
         /// Método http get para retornar uma atividade através do seu id

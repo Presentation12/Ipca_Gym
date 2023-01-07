@@ -90,6 +90,86 @@ namespace LayerBLL.Logics
         }
 
         /// <summary>
+        /// Método que recebe os dados do serviço de obter todas as atividades de um cliente
+        /// </summary>
+        /// <param name="sqlDataSource">String de Conexão à database</param>
+        /// <param name="targetID">ID do cliente a retornar as atividades</param>
+        /// <returns>Resposta do pedido feito no serviço</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<Response> GetAllByClienteIDLogic(string sqlDataSource, int targetID)
+        {
+            Response response = new Response();
+
+            try
+            {
+                List<Atividade> atividadeList = await AtividadeService.GetAllByClienteIDService(sqlDataSource, targetID);
+
+                if (atividadeList.Count != 0)
+                {
+                    response.StatusCode = StatusCodes.SUCCESS;
+                    response.Message = "Lista de atividades obtida com sucesso";
+                    response.Data = new JsonResult(atividadeList);
+                }
+
+                return response;
+            }
+            catch (SqlException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conexão com a base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidCastException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro na conversão de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de leitura dos dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (FormatException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de tipo de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = "Erro de acesso a uma coluna da base de dados: " + ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = StatusCodes.NOCONTENT;
+                response.Message = ex.Message;
+                response.Data = new JsonResult(null);
+
+                return response;
+            }
+        }
+
+
+        /// <summary>
         /// Método que recebe os dados do serviço de obter todas as atividades de um ginasio
         /// </summary>
         /// <param name="sqlDataSource">String de Conexão à database</param>

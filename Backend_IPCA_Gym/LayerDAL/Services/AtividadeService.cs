@@ -89,88 +89,6 @@ namespace LayerDAL.Services
         }
 
         /// <summary>
-        /// Leitura dos dados de todas as atividades de um ginasio
-        /// </summary>
-        /// <param name="sqlDataSource">String de conexão á base de dados</param>
-        /// <param name="targetID">ID do ginasio em causa</param>
-        /// <returns>Lista de atividades se uma leitura bem sucedida, null em caso de erro</returns>
-        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
-        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
-        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
-        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
-        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
-        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
-        public static async Task<List<Atividade>> GetAllbyGymService(string sqlDataSource, int targetID)
-        {
-            string query = @"select * from dbo.Atividade where id_ginasio = @id_ginasio";
-            List<Atividade> atividades = new List<Atividade>();
-
-            try
-            {
-                SqlDataReader dataReader;
-                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
-                {
-                    databaseConnection.Open();
-                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
-                    {
-                        myCommand.Parameters.AddWithValue("id_ginasio", targetID);
-                        dataReader = myCommand.ExecuteReader();
-                        while (dataReader.Read())
-                        {
-                            Atividade atividade = new Atividade();
-
-                            atividade.id_atividade = Convert.ToInt32(dataReader["id_atividade"]);
-                            atividade.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
-                            atividade.id_cliente = Convert.ToInt32(dataReader["id_cliente"]);
-                            atividade.data_entrada = Convert.ToDateTime(dataReader["data_entrada"]);
-
-                            if (dataReader["data_saida"] == DBNull.Value) atividade.data_saida = null;
-                            else atividade.data_saida = Convert.ToDateTime(dataReader["data_saida"]);
-
-
-                            atividades.Add(atividade);
-                        }
-
-                        dataReader.Close();
-                        databaseConnection.Close();
-                    }
-                }
-
-                return atividades;
-            }
-            catch (SqlException ex)
-            {
-                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
-                return null;
-            }
-            catch (InvalidCastException ex)
-            {
-                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
-                return null;
-            }
-            catch (InvalidOperationException ex)
-            {
-                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
-                return null;
-            }
-            catch (FormatException ex)
-            {
-                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
-                return null;
-            }
-            catch (IndexOutOfRangeException ex)
-            {
-                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return null;
-            }
-        }
-
-        /// <summary>
         /// Leitura dos dados de uma atividade através do seu id na base de dados
         /// </summary>
         /// <param name="sqlDataSource">String de conexão á base de dados</param>
@@ -451,6 +369,94 @@ namespace LayerDAL.Services
             }
         }
 
+
+
+        #endregion
+
+        #region BACKLOG REQUESTS
+
+        /// <summary>
+        /// Leitura dos dados de todas as atividades de um ginasio
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID">ID do ginasio em causa</param>
+        /// <returns>Lista de atividades se uma leitura bem sucedida, null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<List<Atividade>> GetAllbyGymService(string sqlDataSource, int targetID)
+        {
+            string query = @"select * from dbo.Atividade where id_ginasio = @id_ginasio";
+            List<Atividade> atividades = new List<Atividade>();
+
+            try
+            {
+                SqlDataReader dataReader;
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("id_ginasio", targetID);
+                        dataReader = myCommand.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            Atividade atividade = new Atividade();
+
+                            atividade.id_atividade = Convert.ToInt32(dataReader["id_atividade"]);
+                            atividade.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
+                            atividade.id_cliente = Convert.ToInt32(dataReader["id_cliente"]);
+                            atividade.data_entrada = Convert.ToDateTime(dataReader["data_entrada"]);
+
+                            if (dataReader["data_saida"] == DBNull.Value) atividade.data_saida = null;
+                            else atividade.data_saida = Convert.ToDateTime(dataReader["data_saida"]);
+
+
+                            atividades.Add(atividade);
+                        }
+
+                        dataReader.Close();
+                        databaseConnection.Close();
+                    }
+                }
+
+                return atividades;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
         /// <summary>
         /// Calculo de estatísticas do ginásio
         /// </summary>
@@ -489,7 +495,7 @@ namespace LayerDAL.Services
                             totalOutTodayCounter++;
                         }
                     }
-                    
+
                 }
                 stats.exits = totalOutTodayCounter;
                 stats.today = totalInTodayCounter;
@@ -511,7 +517,7 @@ namespace LayerDAL.Services
                 TimeSpan diffAux = DateTime.Today.Subtract(orderedListMonths[0].data_entrada);
                 double diffDaysMonths = diffAux.TotalDays;
                 double diffMonths = diffDaysMonths / 30.44;
-                
+
                 if (diffMonths < 1) diffMonths = 1.0;
 
                 stats.monthlyAverage = list.Count() / diffMonths;
@@ -560,6 +566,88 @@ namespace LayerDAL.Services
 
 
                 return stats;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine("Erro na conversão de dados: " + ex.Message);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Erro de leitura dos dados: " + ex.Message);
+                return null;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Erro de tipo de dados: " + ex.Message);
+                return null;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Erro de acesso a uma coluna da base de dados: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Leitura dos dados de todas as atividades de um cliente
+        /// </summary>
+        /// <param name="sqlDataSource">String de conexão á base de dados</param>
+        /// <param name="targetID">ID do cliente em causa</param>
+        /// <returns>Lista de atividades se uma leitura bem sucedida, null em caso de erro</returns>
+        /// <exception cref="SqlException">Ocorre quando há um erro na conexão com a base de dados.</exception>
+        /// <exception cref="InvalidCastException">Ocorre quando há um erro na conversão de dados.</exception>
+        /// <exception cref="InvalidOperationException">Trata o caso em que ocorreu um erro de leitura dos dados</exception>
+        /// <exception cref="FormatException">Ocorre quando há um erro de tipo de dados.</exception>
+        /// <exception cref="IndexOutOfRangeException">Trata o caso em que o índice da coluna da base de dados acessado é inválido</exception>
+        /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
+        public static async Task<List<Atividade>> GetAllByClienteIDService(string sqlDataSource, int targetID)
+        {
+            string query = @"select * from dbo.Atividade where id_cliente = @id_cliente";
+            List<Atividade> atividades = new List<Atividade>();
+
+            try
+            {
+                SqlDataReader dataReader;
+                using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
+                {
+                    databaseConnection.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
+                    {
+                        myCommand.Parameters.AddWithValue("id_cliente", targetID);
+                        dataReader = myCommand.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            Atividade atividade = new Atividade();
+
+                            atividade.id_atividade = Convert.ToInt32(dataReader["id_atividade"]);
+                            atividade.id_ginasio = Convert.ToInt32(dataReader["id_ginasio"]);
+                            atividade.id_cliente = Convert.ToInt32(dataReader["id_cliente"]);
+                            atividade.data_entrada = Convert.ToDateTime(dataReader["data_entrada"]);
+
+                            if (dataReader["data_saida"] == DBNull.Value) atividade.data_saida = null;
+                            else atividade.data_saida = Convert.ToDateTime(dataReader["data_saida"]);
+
+
+                            atividades.Add(atividade);
+                        }
+
+                        dataReader.Close();
+                        databaseConnection.Close();
+                    }
+                }
+
+                return atividades;
             }
             catch (SqlException ex)
             {
