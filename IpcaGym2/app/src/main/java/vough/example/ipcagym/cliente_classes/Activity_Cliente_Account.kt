@@ -13,7 +13,11 @@ import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Atividade
 import vough.example.ipcagym.requests.AtividadeRequests
 import vough.example.ipcagym.requests.ClienteRequests
+import java.time.LocalDate
+import java.time.Period
 import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.*
 
 class Activity_Cliente_Account : AppCompatActivity(){
 
@@ -54,6 +58,34 @@ class Activity_Cliente_Account : AppCompatActivity(){
                 var lastWorkout : Atividade? = null
                 AtividadeRequests.GetAllByClienteID(lifecycleScope,sessionToken, resultCliente?.id_cliente){ resultAtividades ->
                     lastWorkout = resultAtividades.last()
+
+                    //TODO: calculo
+
+                    val mes_atual_view = findViewById<TextView>(R.id.textViewValueMonth)
+                    mes_atual_view.text = LocalDate.now().month.getDisplayName(TextStyle.FULL, Locale.getDefault()).toString()
+
+                    val media_entradas_anual_view = findViewById<TextView>(R.id.textViewValueAnnualEntries)
+                    val media_entradas_mensal_view = findViewById<TextView>(R.id.textViewValueMontlyEntries)
+                    val entradas_mes_atual_view = findViewById<TextView>(R.id.textViewMonth)
+
+                    var countEntradasMesAtual = 0
+                    for (x in resultAtividades)
+                    {
+                        if (x.data_entrada?.month == LocalDate.now().month)
+                        {
+                            countEntradasMesAtual++
+                        }
+                    }
+                    entradas_mes_atual_view.text = countEntradasMesAtual.toString()
+
+                    val diffAux = Period.between(resultAtividades.first().data_entrada?.toLocalDate(), LocalDate.now())
+                    val diffDaysMonths = diffAux.toTotalMonths()
+                    val countMesesDesdeEntrada = diffDaysMonths / 30.44
+                    val countAnosDesdeEntrada = countMesesDesdeEntrada / 365
+
+                    media_entradas_anual_view.text = (resultAtividades.count()/countAnosDesdeEntrada).toString()
+                    media_entradas_mensal_view.text = (resultAtividades.count()/countMesesDesdeEntrada).toString()
+
                 }
                 val data_ultima_entrada_view = findViewById<TextView>(R.id.textViewDateLastWorkout)
                 data_ultima_entrada_view.text = lastWorkout?.data_entrada?.format(date_time_formatter)
@@ -72,10 +104,6 @@ class Activity_Cliente_Account : AppCompatActivity(){
                 }
 
             }
-
-            //TODO: calculo
-            val media_entradas_anual_view = findViewById<TextView>(R.id.textViewValueAnnualEntries)
-            val media_entradas_mensal_view = findViewById<TextView>(R.id.textViewValueMontlyEntries)
 
             findViewById<Button>(R.id.buttonMarcarConsulta).setOnClickListener {
                 val intent = Intent(this@Activity_Cliente_Account, Activity_Cliente_Marcacao_Consulta::class.java)
