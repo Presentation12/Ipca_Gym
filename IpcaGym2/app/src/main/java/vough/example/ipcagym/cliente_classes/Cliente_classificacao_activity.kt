@@ -7,10 +7,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Classificacao
-import vough.example.ipcagym.data_classes.Cliente
-import vough.example.ipcagym.data_classes.Funcionario
-import vough.example.ipcagym.funcionarios_classes.Activity_Funcionario_Clientes_List
-import vough.example.ipcagym.funcionarios_classes.Activity_Funcionario_Planos_Treino
 import vough.example.ipcagym.funcionarios_classes.PaginaInicialFuncionarioActivity
 
 class Cliente_classificacao_activity : AppCompatActivity(){
@@ -35,7 +31,7 @@ class Cliente_classificacao_activity : AppCompatActivity(){
         }
 
         findViewById<Button>(R.id.buttom_starts_gym).setOnClickListener() {
-            startActivity(Intent(this@Cliente_classificacao_activity, AccountClienteActivity::class.java))
+            startActivity(Intent(this@Cliente_classificacao_activity, Activity_Cliente_Account::class.java))
         }
 
 

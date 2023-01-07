@@ -12,7 +12,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Cliente
-import vough.example.ipcagym.funcionarios_classes.Activity_Funcionario_Clientes_List
 
 class Activity_Cliente_Edit_Account : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +72,7 @@ class Activity_Cliente_Edit_Account : AppCompatActivity() {
 
         // butao de guardar cliente editado, e volta a página ida lista de clientes
         findViewById<Button>(R.id.buttonSave).setOnClickListener {
-            val intent = Intent(this@Activity_Cliente_Edit_Account, AccountClienteActivity::class.java)
+            val intent = Intent(this@Activity_Cliente_Edit_Account, Activity_Cliente_Account::class.java)
 
             //TODO: edit foto
             /*

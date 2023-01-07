@@ -11,7 +11,7 @@ import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Cliente
 import java.time.format.DateTimeFormatter
 
-class AccountClienteActivity : AppCompatActivity(){
+class Activity_Cliente_Account : AppCompatActivity(){
 
         @RequiresApi(Build.VERSION_CODES.O)
         val date_time_formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
@@ -45,7 +45,7 @@ class AccountClienteActivity : AppCompatActivity(){
             val tipo_treino_view = findViewById<TextView>(R.id.textViewTipoTreino)
 
             findViewById<Button>(R.id.buttonMarcarConsulta).setOnClickListener {
-                val intent = Intent(this@AccountClienteActivity, Activity_Cliente_Marcacao_Consulta::class.java)
+                val intent = Intent(this@Activity_Cliente_Account, Activity_Cliente_Marcacao_Consulta::class.java)
                 startActivity(intent)
             }
             findViewById<Button>(R.id.changeDetails).setOnClickListener {
