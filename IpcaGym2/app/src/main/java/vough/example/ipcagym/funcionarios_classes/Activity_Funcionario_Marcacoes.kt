@@ -1,41 +1,55 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Funcionario
 import vough.example.ipcagym.data_classes.Marcacao
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.MarcacaoRequests
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class Activity_Funcionario_Marcacoes : AppCompatActivity() {
-    val marcacoesList = arrayListOf<Marcacao>()
+    var marcacoesList = arrayListOf<Marcacao>()
     var marcacao_adapter = MarcacaoFuncionarioAdapter()
     val date_formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy")
     val date_formatter_compact = DateTimeFormatter.ofPattern("dd-MM-yyyy")
     val time_formatter = DateTimeFormatter.ofPattern("hh:mm")
+    var funcionarioRefresh : Funcionario? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_marcacoes)
 
-        marcacoesList.add(Marcacao(marcacoesList.size+1,1,1,LocalDateTime.now(),"Consulta","Ativo"))
-        marcacoesList.add(Marcacao(marcacoesList.size+1,2,3,
-            LocalDateTime.of(2022,2,24,10,15,12),"Preparação Física","Ativo"))
-        marcacoesList.add(Marcacao(marcacoesList.size+1,3,4,
-            LocalDateTime.of(2021,3,24,11,13,15),"Consulta","Inativa"))
-        marcacoesList.add(Marcacao(marcacoesList.size+1,7,3,
-            LocalDateTime.of(2022,2,11,16,43,23),"Consulta","Ativo"))
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+        val listViewMarcacoes = findViewById<ListView>(R.id.listViewMarcacoes)
+
+        listViewMarcacoes.adapter = marcacao_adapter
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
+            if(result != null) funcionarioRefresh = result
+
+            MarcacaoRequests.GetAllByFuncionarioID(lifecycleScope, sessionToken, funcionarioRefresh?.id_funcionario!!){
+                if(!it.isEmpty()) {
+                    marcacoesList = it
+                    marcacao_adapter.notifyDataSetChanged()
+                }
+            }
+        }
+
 
 
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
         val spinner = findViewById<Spinner>(R.id.spinner)
-        val listViewMarcacoes = findViewById<ListView>(R.id.listViewMarcacoes)
-
-        listViewMarcacoes.adapter = marcacao_adapter
 
         val options = arrayOf("Conta", "Definições", "Sair")
 

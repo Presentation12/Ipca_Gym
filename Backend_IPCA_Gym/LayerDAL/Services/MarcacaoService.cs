@@ -1,4 +1,5 @@
 ﻿using LayerBOL.Models;
+using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -392,7 +393,7 @@ namespace LayerDAL.Services
             {
                 List<Marcacao> marcacoes = new List<Marcacao>();
                 SqlDataReader dataReader;
-
+                
                 using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
                 {
                     databaseConnection.Open();

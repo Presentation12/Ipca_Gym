@@ -138,7 +138,7 @@ namespace Backend_IPCA_Gym.Controllers
             //Se for de um gerente, certificar que esse funcionario pertence ao ginasio
 
             if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
-
+            
             return new JsonResult(response);
         }
 

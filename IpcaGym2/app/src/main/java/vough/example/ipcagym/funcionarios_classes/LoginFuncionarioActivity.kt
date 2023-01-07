@@ -24,7 +24,7 @@ class LoginFuncionarioActivity : AppCompatActivity() {
 
         if(sessionToken != "") {
             //val intentStart = Intent(this@LoginFuncionarioActivity, PaginaInicialFuncionarioActivity::class.java)
-            val intentStart = Intent(this@LoginFuncionarioActivity, CapacityManagementActivity::class.java)
+            val intentStart = Intent(this@LoginFuncionarioActivity, FluxControlFuncionarioActivity::class.java)
             finish()
             startActivity(intentStart)
         }

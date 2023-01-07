@@ -1,18 +1,24 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
 
 class Activity_Funcionario_Marcacoes_Details: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_marcacoes_details)
 
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
         val id_marcacao = intent.getIntExtra("id_marcacao", -1)
         val id_funcionario = intent.getIntExtra("id_funcionario", -1)
         val id_cliente = intent.getIntExtra("id_cliente", -1)
@@ -23,8 +29,16 @@ class Activity_Funcionario_Marcacoes_Details: AppCompatActivity() {
         val buttonCancelar = findViewById<Button>(R.id.buttonCancelar)
 
         findViewById<TextView>(R.id.marcacaoidmarcacaovalue).text = id_marcacao.toString()
-        findViewById<TextView>(R.id.marcacaoclientevalue).text = id_cliente.toString()
-        findViewById<TextView>(R.id.marcacaofuncionariovalue).text = id_funcionario.toString()
+
+        ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente){
+            findViewById<TextView>(R.id.marcacaoclientevalue).text = it?.nome.toString()
+        }
+
+        FuncionarioRequests.GetByID(lifecycleScope, sessionToken, id_funcionario){
+            findViewById<TextView>(R.id.marcacaofuncionariovalue).text = it?.nome.toString()
+
+        }
+
         findViewById<TextView>(R.id.marcacaodatavalue).text = data_marcacao
         findViewById<TextView>(R.id.marcacaodescricaovalue).text = descricao
         findViewById<TextView>(R.id.marcacaoestadovalue).text = estado

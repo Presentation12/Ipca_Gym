@@ -49,11 +49,14 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
         val spinner = findViewById<Spinner>(R.id.spinner)
         val addButton = findViewById<Button>(R.id.buttonAddNewActivity)
 
-        val options = arrayOf("Conta", "Definições", "Sair")
+        val options = arrayOf("Account", "Settings", "Logout")
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        val adapter = ArrayAdapter(this@FluxControlFuncionarioActivity, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
+
+        // Prevent the first item from being selected by default
+        spinner.setSelection(-1)
 
         val listViewActivities = findViewById<ListView>(R.id.listByDate)
         listViewActivities.adapter = client_adapter
@@ -66,7 +69,22 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                // Do nothing
+                when (position) {
+                    0 -> {
+                        startActivity(Intent(this@FluxControlFuncionarioActivity, Activity_Funcionario_Perfil_Edit::class.java))
+                    }
+                    1 -> {
+                        startActivity(Intent(this@FluxControlFuncionarioActivity, Activity_Funcionario_Settings::class.java))
+                    }
+                    2 -> {
+                        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+                        val editor = preferences.edit()
+                        editor.putString("session_token", "")
+
+                        editor.apply()
+                        startActivity(Intent(this@FluxControlFuncionarioActivity, LoginFuncionarioActivity::class.java))
+                    }
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
