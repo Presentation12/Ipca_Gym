@@ -1,14 +1,18 @@
 package vough.example.ipcagym.cliente_classes
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Atividade
+import vough.example.ipcagym.requests.AtividadeRequests
+import vough.example.ipcagym.requests.ClienteRequests
 import java.time.format.DateTimeFormatter
 
 class ActivitiesClienteActivity : AppCompatActivity(){
@@ -21,20 +25,19 @@ class ActivitiesClienteActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_activities)
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
-        /* HARDCODELIST
-        activityList.add(Atividade(1,1,1,
-            LocalDateTime.now(),
-            LocalDateTime.now()))
-            activityList.add(Atividade(3,2,4,
-            LocalDateTime.of(2022,10,10,10,10,10),
-            LocalDateTime.of(2022,10,10,11,10,10)))
-        activityList.add(Atividade(2,2,3,
-            LocalDateTime.now(),
-            LocalDateTime.now()))
-         */
-
-        //activityList = getAllAtividade(AtividadeRequests.token)
+        ClienteRequests.GetByToken(lifecycleScope, sessionToken){
+            if(it != null)
+                AtividadeRequests.GetAllByClienteID(lifecycleScope, sessionToken, it?.id_cliente!!){ response ->
+                    if(response.isNotEmpty()){
+                        activityList = response
+                        client_adapter.notifyDataSetChanged()
+                    }
+                }
+        }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
 

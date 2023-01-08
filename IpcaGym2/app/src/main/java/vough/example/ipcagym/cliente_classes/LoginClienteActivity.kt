@@ -23,8 +23,8 @@ class LoginClienteActivity : AppCompatActivity() {
         val sessionToken = preferences.getString("session_token", null)
 
         //Caso a token de sessão estiver ativa, passar login a frente
-        if(sessionToken != "") {
-            val intentStart = Intent(this@LoginClienteActivity, Activity_Cliente_Marcacoes::class.java)
+        if (sessionToken != "") {
+            val intentStart = Intent(this@LoginClienteActivity, ActivitiesClienteActivity::class.java)
             finish()
             startActivity(intentStart)
         }
@@ -42,7 +42,7 @@ class LoginClienteActivity : AppCompatActivity() {
                         editor.apply()
 
                         //val intentStart = Intent(this@LoginClienteActivity,PaginaInicialClienteActivity::class.java)
-                        val intentStart = Intent(this@LoginClienteActivity, Activity_Cliente_Marcacoes::class.java)
+                        val intentStart = Intent(this@LoginClienteActivity, ActivitiesClienteActivity::class.java)
                         finish()
                         startActivity(intentStart)
                     }
