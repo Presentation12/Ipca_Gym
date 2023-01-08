@@ -16,6 +16,7 @@ import vough.example.ipcagym.data_classes.Ginasio
 import vough.example.ipcagym.data_classes.Plano_Treino
 import vough.example.ipcagym.requests.AtividadeRequests
 import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.GinasioRequests
 import vough.example.ipcagym.views.VerticalBarCapacityView
 import java.util.zip.Inflater
 
@@ -50,7 +51,7 @@ class CapacityManagementActivity : AppCompatActivity() {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(this@CapacityManagementActivity,options[position], Toast.LENGTH_LONG).show()
+                //Do nothing
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -83,24 +84,29 @@ class CapacityManagementActivity : AppCompatActivity() {
             val sessionToken = preferences.getString("session_token", null)
 
             FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){  result ->
-                AtividadeRequests.getGymStats(lifecycleScope, sessionToken, result?.id_ginasio!!){ result2 ->
-                    rootView.findViewById<TextView>(R.id.capacityCurrentValue).text = result2.current.toString()
-                    rootView.findViewById<TextView>(R.id.capacityExitsValue).text = result2.exits.toString()
-                    rootView.findViewById<TextView>(R.id.capacityTodayValue).text = result2.today.toString()
-                    rootView.findViewById<TextView>(R.id.capacityDailyThisOne).text = String.format("%.2f", result2.dailyAverage)
-                    rootView.findViewById<TextView>(R.id.capacityMonthlyValue).text = String.format("%.2f", result2.monthlyAverage)
-                    rootView.findViewById<TextView>(R.id.capacityYearValue).text = result2.yearTotal.toString()
-                    rootView.findViewById<TextView>(R.id.capacityMaxDayValue).text = result2.maxDay.toString()
-                    rootView.findViewById<TextView>(R.id.capacityMaxMonthCurrentValue).text = result2.maxMonth.toString()
+                if(result != null)
+                    GinasioRequests.GetByID(lifecycleScope, sessionToken, result?.id_ginasio!!){ resultGym ->
+                        if(resultGym != null)
+                            AtividadeRequests.getGymStats(lifecycleScope, sessionToken, result?.id_ginasio!!){ result2 ->
+                                if(result2 != null)
+                                    rootView.findViewById<TextView>(R.id.capacityCurrentValue).text = result2.current.toString()
+                                    rootView.findViewById<TextView>(R.id.capacityExitsValue).text = result2.exits.toString()
+                                    rootView.findViewById<TextView>(R.id.capacityTodayValue).text = result2.today.toString()
+                                    rootView.findViewById<TextView>(R.id.capacityDailyThisOne).text = String.format("%.2f", result2.dailyAverage)
+                                    rootView.findViewById<TextView>(R.id.capacityMonthlyValue).text = String.format("%.2f", result2.monthlyAverage)
+                                    rootView.findViewById<TextView>(R.id.capacityYearValue).text = result2.yearTotal.toString()
+                                    rootView.findViewById<TextView>(R.id.capacityMaxDayValue).text = result2.maxDay.toString()
+                                    rootView.findViewById<TextView>(R.id.capacityMaxMonthCurrentValue).text = result2.maxMonth.toString()
 
-                    //Preencher as barras
-                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityMonday).setPercentagem(result2.averageMonday!!.toFloat())
-                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityTuesday).setPercentagem(result2.averageTuesday!!.toFloat())
-                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityWednesday).setPercentagem(result2.averageWednesday!!.toFloat())
-                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityThrusday).setPercentagem(result2.averageThursday!!.toFloat())
-                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityFriday).setPercentagem(result2.averageFriday!!.toFloat())
-                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacitySaturday).setPercentagem(result2.averageSaturday!!.toFloat())
-                }
+                                    //Preencher as barras
+                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityMonday).setPercentagem(result2.averageMonday!!.toFloat() / resultGym.lotacaoMax!!)
+                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityTuesday).setPercentagem(result2.averageTuesday!!.toFloat() / resultGym.lotacaoMax!!)
+                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityWednesday).setPercentagem(result2.averageWednesday!!.toFloat() / resultGym.lotacaoMax!!)
+                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityThrusday).setPercentagem(result2.averageThursday!!.toFloat() / resultGym.lotacaoMax!!)
+                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityFriday).setPercentagem(result2.averageFriday!!.toFloat() / resultGym.lotacaoMax!!)
+                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacitySaturday).setPercentagem(result2.averageSaturday!!.toFloat() / resultGym.lotacaoMax!!)
+                            }
+                    }
             }
 
             return rootView
