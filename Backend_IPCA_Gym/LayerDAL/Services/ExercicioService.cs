@@ -141,7 +141,6 @@ namespace LayerDAL.Services
                     databaseConnection.Open();
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
-                        Console.WriteLine(targetID);
                         myCommand.Parameters.AddWithValue("id_exercicio", targetID);
 
                         using (SqlDataReader reader = myCommand.ExecuteReader())
@@ -345,7 +344,7 @@ namespace LayerDAL.Services
             {
                 Exercicio exercicioAtual = await GetByIDService(sqlDataSource, targetID);
                 SqlDataReader dataReader;
-                Console.WriteLine(TimeSpan.Zero);
+
                 using (SqlConnection databaseConnection = new SqlConnection(sqlDataSource))
                 {
                     databaseConnection.Open();
@@ -356,10 +355,10 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("nome", !string.IsNullOrEmpty(exercicio.nome) ? exercicio.nome : exercicioAtual.nome);
                         myCommand.Parameters.AddWithValue("descricao", !string.IsNullOrEmpty(exercicio.descricao) ? exercicio.descricao : exercicioAtual.descricao);
                         myCommand.Parameters.AddWithValue("tipo", !string.IsNullOrEmpty(exercicio.tipo) ? exercicio.tipo : exercicioAtual.tipo);
-                        myCommand.Parameters.AddWithValue("series", exercicio.series != null ? exercicio.series : exercicioAtual.series);
-                        myCommand.Parameters.AddWithValue("tempo", exercicio.tempo != null ? exercicio.tempo : exercicioAtual.tempo);
-                        myCommand.Parameters.AddWithValue("repeticoes", exercicio.repeticoes != null ? exercicio.repeticoes : exercicioAtual.repeticoes);
-                        myCommand.Parameters.AddWithValue("foto_exercicio", !string.IsNullOrEmpty(exercicio.foto_exercicio) ? exercicio.foto_exercicio : exercicioAtual.foto_exercicio);
+                        myCommand.Parameters.AddWithValue("series", exercicio.series.HasValue ? exercicio.series : DBNull.Value);
+                        myCommand.Parameters.AddWithValue("tempo", exercicio.tempo.HasValue ? exercicio.tempo : DBNull.Value);
+                        myCommand.Parameters.AddWithValue("repeticoes", exercicio.repeticoes.HasValue ? exercicio.repeticoes : DBNull.Value);
+                        myCommand.Parameters.AddWithValue("foto_exercicio", !string.IsNullOrEmpty(exercicio.foto_exercicio) ? exercicio.foto_exercicio : DBNull.Value);
 
                         dataReader = myCommand.ExecuteReader();
 
