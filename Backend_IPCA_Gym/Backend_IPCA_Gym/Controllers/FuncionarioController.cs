@@ -297,7 +297,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">Id do funcionário que faz o request</param>
         /// <returns>Resposta do request que contém a sua mensagem, o seu código e a lista de avaliacoes em formato json</returns>
-        [HttpGet("delete/{targetID}"), Authorize(Roles = "Admin, Gerente")]
+        [HttpDelete("delete/{targetID}"), Authorize(Roles = "Admin, Gerente")]
         public async Task<IActionResult> DeleteFuncionario(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");

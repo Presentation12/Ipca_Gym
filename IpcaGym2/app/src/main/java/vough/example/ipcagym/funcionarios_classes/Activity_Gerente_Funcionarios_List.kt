@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -31,6 +32,7 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
         val sessionToken = preferences.getString("session_token", null)
 
         val image_view = findViewById<ImageView>(R.id.profile_pic)
+        var listFuncAux = arrayListOf<Funcionario>()
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
             if(resultGerente != null) gerenteRefresh = resultGerente
@@ -46,6 +48,8 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
                 */
 
                 list_funcionario = resultFuncionarios
+                listFuncAux = resultFuncionarios
+
                 funcionarios_adapter.notifyDataSetChanged()
             }
         }
@@ -71,17 +75,21 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
         val list_view_funcionario = findViewById<ListView>(R.id.listviewFuncionarios)
         list_view_funcionario.adapter = funcionarios_adapter
 
-        //TODO: Search view
+        //TODO: Search view, quando se carrega fora do teclado, crasha
         val searchFuncionarioBar = findViewById<SearchView>(R.id.searchView)
         searchFuncionarioBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
 
-                val searchResults = ArrayList<Funcionario>()
+                var searchResults = ArrayList<Funcionario>()
 
                 for (func in list_funcionario) {
                     if (func.nome?.contains(query ?: "") == true) {
                         searchResults.add(func)
                     }
+                }
+
+                if(query.toString() == ""){
+                    searchResults = listFuncAux
                 }
 
                 list_funcionario = searchResults
@@ -90,12 +98,16 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
 
-                val searchResults = ArrayList<Funcionario>()
+                var searchResults = ArrayList<Funcionario>()
 
                 for (func in list_funcionario) {
                     if (func.nome?.contains(newText ?: "") == true) {
                         searchResults.add(func)
                     }
+                }
+
+                if(newText.toString() == ""){
+                    searchResults = listFuncAux
                 }
 
                 list_funcionario = searchResults

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -54,30 +55,47 @@ class Activity_Cliente_Nutricao_Plano_Details : AppCompatActivity() {
                 imageView.setImageURI(imageUri)
             }
 
-            findViewById<Button>(R.id.buttonSubmeterNovoPlanoCliente).setOnClickListener {
-                resultCliente?.id_plano_nutricional = id_plano_nutricional
-                ClienteRequests.Patch(lifecycleScope,sessionToken,resultCliente?.id_cliente,resultCliente){ resultEditCliente ->
-                    if (resultEditCliente == "User not found")
-                    {
-                        Toast.makeText(this@Activity_Cliente_Nutricao_Plano_Details, "Error on edit a client", Toast.LENGTH_LONG).show()
-                    }
-                    else
-                    {
-                        finish()
-                        startActivity(intent)
-                    }
-                }
+
+        }
+
+        PlanoNutricionalRequests.GetByID(lifecycleScope, sessionToken, id_plano_nutricional) { resultPlanoSelecionado ->
+
+            findViewById<TextView>(R.id.textViewCalorias).text = resultPlanoSelecionado?.calorias.toString()
+            findViewById<TextView>(R.id.textViewTipoNutricao).text = resultPlanoSelecionado?.tipo
+
+            RefeicaoRequests.GetAllByPlanoID(lifecycleScope,sessionToken,resultPlanoSelecionado?.id_plano_nutricional){ resultRefeicoes ->
+
+                list_refeicoes = resultRefeicoes
+                refeicoes_adapter.notifyDataSetChanged()
             }
+        }
 
-            PlanoNutricionalRequests.GetByID(lifecycleScope, sessionToken, id_plano_nutricional) { resultPlanoSelecionado ->
+        findViewById<Button>(R.id.buttonSubmeterNovoPlanoCliente).setOnClickListener {
+            ClienteRequests.GetByToken(lifecycleScope, sessionToken) { resultCliente ->
+                if(resultCliente != null){
+                    resultCliente?.id_plano_nutricional = id_plano_nutricional
 
-                findViewById<TextView>(R.id.textViewCalorias).text = resultPlanoSelecionado?.calorias.toString()
-                findViewById<TextView>(R.id.textViewTipoNutricao).text = resultPlanoSelecionado?.tipo
+                    if(resultCliente?.peso.toString() == "NaN") resultCliente?.peso = null
+                    if(resultCliente?.altura == 0) resultCliente?.altura = null
+                    if(resultCliente?.gordura.toString() == "NaN") resultCliente?.gordura = null
 
-                RefeicaoRequests.GetAllByPlanoID(lifecycleScope,sessionToken,resultPlanoSelecionado?.id_plano_nutricional){ resultRefeicoes ->
-
-                    list_refeicoes = resultRefeicoes
-                    refeicoes_adapter.notifyDataSetChanged()
+                    ClienteRequests.Patch(
+                    lifecycleScope,
+                    sessionToken,
+                    resultCliente?.id_cliente,
+                    resultCliente
+                ) { resultEditCliente ->
+                        if (resultEditCliente == "User not found")
+                            Toast.makeText(
+                                this@Activity_Cliente_Nutricao_Plano_Details,
+                                "Error on edit a client",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        else {
+                            finish()
+                            startActivity(Intent(this@Activity_Cliente_Nutricao_Plano_Details, Activity_Cliente_Nutricao_Atual::class.java))
+                        }
+                    }
                 }
             }
         }
@@ -146,7 +164,7 @@ class Activity_Cliente_Nutricao_Plano_Details : AppCompatActivity() {
 
         @RequiresApi(Build.VERSION_CODES.O)
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            val root_view = layoutInflater.inflate(R.layout.row_refeicao,parent,false)
+            val root_view = layoutInflater.inflate(R.layout.row_refeicao_cliente,parent,false)
 
             val refeicao_text_view = root_view.findViewById<TextView>(R.id.textViewHoraRefeicao)
             refeicao_text_view.text = list_refeicoes[position].hora.toString()

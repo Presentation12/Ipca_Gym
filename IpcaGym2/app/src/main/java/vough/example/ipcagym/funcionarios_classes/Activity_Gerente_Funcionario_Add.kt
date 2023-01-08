@@ -99,7 +99,7 @@ class Activity_Gerente_Funcionario_Add : AppCompatActivity() {
                 codigo = findViewById<EditText>(R.id.editTextCodigoFuncionario).text.toString().toInt()
             }
             else emptyFields = true
-            val isAdmin = findViewById<RadioButton>(R.id.radioButton3).isChecked
+            val isAdmin = findViewById<CheckBox>(R.id.checkBoxisAdmin).isChecked
 
             if (!emptyFields)
             {

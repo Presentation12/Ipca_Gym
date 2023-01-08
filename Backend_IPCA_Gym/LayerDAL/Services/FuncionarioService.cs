@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System.Data.SqlClient;
 using System.Security.Claims;
 
@@ -668,31 +669,38 @@ namespace LayerDAL.Services
         {
             try
             {
+                Console.WriteLine("boas");
                 // Inativar todas as suas marcações
                 List<Marcacao> marcacoesFuncionario = await MarcacaoService.GetAllByFuncionarioIDService(sqlDataSource, targetID);
-                foreach (Marcacao marcacao in marcacoesFuncionario)
+                if (marcacoesFuncionario.Count != 0)
                 {
-                    if (marcacao.estado == "Ativo")
+                    foreach (Marcacao marcacao in marcacoesFuncionario)
                     {
-                        marcacao.estado = "Inativo";
-                        MarcacaoService.PatchService(sqlDataSource, marcacao, marcacao.id_marcacao);
+                        if (marcacao.estado == "Ativo")
+                        {
+                            marcacao.estado = "Inativo";
+                            MarcacaoService.PatchService(sqlDataSource, marcacao, marcacao.id_marcacao);
+                        }
                     }
                 }
-
+                Console.WriteLine("boas");
                 // Remover o seu horario todo
                 List<HorarioFuncionario> horarioFuncionario = await HorarioFuncionarioService.GetAllByFuncionarioIDService(sqlDataSource, targetID);
-                foreach (HorarioFuncionario dia in horarioFuncionario)
+                if (horarioFuncionario.Count != 0)
                 {
-                    HorarioFuncionarioService.DeleteService(sqlDataSource, dia.id_funcionario_horario);
+                    foreach (HorarioFuncionario dia in horarioFuncionario)
+                    {
+                        HorarioFuncionarioService.DeleteService(sqlDataSource, dia.id_funcionario_horario);
+                    }
                 }
-
+                Console.WriteLine("boas");
                 // Inativar funcionário
                 Funcionario funcionario = await GetByIDService(sqlDataSource, targetID);
-
+                Console.WriteLine("boas");
                 if (funcionario == null || funcionario.is_admin == true) return false;
 
                 funcionario.estado = "Inativo";
-
+                Console.WriteLine("boas");
                 return await PatchService(sqlDataSource, funcionario, targetID);
             }
             catch (InvalidOperationException ex)

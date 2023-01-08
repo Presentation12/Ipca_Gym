@@ -1,15 +1,18 @@
 package vough.example.ipcagym.cliente_classes
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
@@ -28,6 +31,7 @@ class Activity_Cliente_Nutricao_Atual : AppCompatActivity() {
         var refeicao_adapter = AdapterRefeicao()
 
         //api para tempo
+        @SuppressLint("CutPasteId")
         @RequiresApi(Build.VERSION_CODES.O)
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -36,6 +40,7 @@ class Activity_Cliente_Nutricao_Atual : AppCompatActivity() {
             //Buscar token
             val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
             val sessionToken = preferences.getString("session_token", null)
+            findViewById<TextView>(R.id.textView13).isInvisible = true
 
             val imageView = findViewById<ImageView>(R.id.profile_pic_cliente_nutricao)
 
@@ -47,9 +52,9 @@ class Activity_Cliente_Nutricao_Atual : AppCompatActivity() {
                     imageView.setImageURI(imageUri)
                 }
 
-                if (resultCliente?.id_plano_nutricional != null)
+                if (resultCliente?.id_plano_nutricional != 0 && resultCliente?.id_plano_nutricional != null)
                 {
-                    PlanoNutricionalRequests.GetByID(lifecycleScope, sessionToken, resultCliente.id_plano_nutricional) { resultPlanoAtual ->
+                    PlanoNutricionalRequests.GetByID(lifecycleScope, sessionToken, resultCliente?.id_plano_nutricional) { resultPlanoAtual ->
 
                         findViewById<TextView>(R.id.textViewCalorias).text = resultPlanoAtual?.calorias.toString()
                         findViewById<TextView>(R.id.textViewTipoNutricao).text = resultPlanoAtual?.tipo
@@ -60,6 +65,15 @@ class Activity_Cliente_Nutricao_Atual : AppCompatActivity() {
                             refeicao_adapter.notifyDataSetChanged()
                         }
                     }
+                }
+                else{
+                    findViewById<TextView>(R.id.textViewCalorias).isInvisible = true
+                    findViewById<TextView>(R.id.textViewTipoNutricao).isInvisible = true
+                    findViewById<TextView>(R.id.textView13).isInvisible = false
+                    findViewById<Button>(R.id.buttonPlanosNutricao).setText("Add")
+
+                    findViewById<TextView>(R.id.textViewMeal).isInvisible = true
+                    findViewById<ListView>(R.id.listviewRefeicoes).isInvisible = true
                 }
             }
 
@@ -132,7 +146,7 @@ class Activity_Cliente_Nutricao_Atual : AppCompatActivity() {
 
             @RequiresApi(Build.VERSION_CODES.O)
             override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-                val root_view = layoutInflater.inflate(R.layout.row_refeicao,parent,false)
+                val root_view = layoutInflater.inflate(R.layout.row_refeicao_cliente,parent,false)
 
                 val refeicao_text_view = root_view.findViewById<TextView>(R.id.textViewHoraRefeicao)
                 refeicao_text_view.text = list_refeicoes[position].hora.toString()

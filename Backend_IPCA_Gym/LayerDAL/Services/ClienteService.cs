@@ -392,8 +392,11 @@ namespace LayerDAL.Services
                     {
                         myCommand.Parameters.AddWithValue("id_cliente", cliente.id_cliente != 0 ? cliente.id_cliente : clienteAtual.id_cliente);
                         myCommand.Parameters.AddWithValue("id_ginasio", cliente.id_ginasio != 0 ? cliente.id_ginasio : clienteAtual.id_ginasio);
-                        if(clienteAtual.id_plano_nutricional != null && cliente.id_plano_nutricional != null)
-                            myCommand.Parameters.AddWithValue("id_plano_nutricional", cliente.id_plano_nutricional == null ? cliente.id_plano_nutricional : clienteAtual.id_plano_nutricional);
+                        
+                        Console.WriteLine($"Boas -> {cliente.id_plano_nutricional}");
+                        
+                        if(cliente.id_plano_nutricional != null)
+                            myCommand.Parameters.AddWithValue("id_plano_nutricional", cliente.id_plano_nutricional != null ? cliente.id_plano_nutricional : clienteAtual.id_plano_nutricional);
                         else
                             myCommand.Parameters.AddWithValue("id_plano_nutricional", DBNull.Value);
 

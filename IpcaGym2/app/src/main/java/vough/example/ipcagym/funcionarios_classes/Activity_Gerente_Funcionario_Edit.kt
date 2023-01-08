@@ -78,18 +78,18 @@ class Activity_Gerente_Funcionario_Edit : AppCompatActivity() {
         editNomeFuncionario.hint = nome
         val editCodigoFuncionario = findViewById<TextView>(R.id.editTextCodigoFuncionario)
         editCodigoFuncionario.hint = codigo.toString()
-        val editIsAdmin = findViewById<RadioButton>(R.id.radioButton3)
+        val editIsAdmin = findViewById<CheckBox>(R.id.checkBoxIsAdminEdit)
         if(is_admin == true) editIsAdmin.isChecked = true
 
         // butao de guardar funcionário editado, e volta a página ida lista de funcionarios
         findViewById<Button>(R.id.buttonSave).setOnClickListener {
             val intent = Intent(this@Activity_Gerente_Funcionario_Edit, Activity_Gerente_Funcionarios_List::class.java)
 
-            if (findViewById<EditText>(R.id.editTextNomeFuncionario).text.isEmpty() == false)
+            if (!findViewById<EditText>(R.id.editTextNomeFuncionario).text.isEmpty())
             {
                 nome = editNomeFuncionario.text.toString()
             }
-            if (findViewById<EditText>(R.id.editTextCodigoFuncionario).text.isEmpty() == false)
+            if (!findViewById<EditText>(R.id.editTextCodigoFuncionario).text.isEmpty())
             {
                 codigo = editCodigoFuncionario.text.toString().toInt()
             }

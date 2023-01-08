@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -29,15 +30,15 @@ class Activity_Cliente_Edit_Account : AppCompatActivity() {
 
         var id_cliente = intent.getIntExtra("id_cliente", -1)
         var id_ginasio = intent.getIntExtra("id_ginasio", -1)
-        var id_plano_nutricional = intent.getIntExtra("id_plano_nutricional", -1)
+        var id_plano_nutricional : Int? = intent.getIntExtra("id_plano_nutricional", 0)
         var nome = intent.getStringExtra("nome")
         var mail = intent.getStringExtra("mail")
         var telemovel = intent.getIntExtra("telemovel",-1)
         var pass_salt = intent.getStringExtra("pass_salt")
         var pass_hash = intent.getStringExtra("pass_hash")
-        var peso = intent.getDoubleExtra("peso",0.0)
-        var altura = intent.getIntExtra("altura",-1)
-        var gordura = intent.getDoubleExtra("gordura",0.0)
+        var peso : Double? = intent.getDoubleExtra("peso",0.0)
+        var altura : Int?  = intent.getIntExtra("altura",-1)
+        var gordura : Double?  = intent.getDoubleExtra("gordura",0.0)
         var foto_perfil = intent.getStringExtra("foto_perfil")
         var estado = intent.getStringExtra("estado")
 
@@ -111,6 +112,11 @@ class Activity_Cliente_Edit_Account : AppCompatActivity() {
             {
                 newPass = findViewById<EditText>(R.id.editTextPasswordCliente).text.toString()
             }
+
+            if(id_plano_nutricional == 0) id_plano_nutricional = null
+            if(peso.toString() == "NaN") peso = null
+            if(altura == 0) altura = null
+            if(gordura.toString() == "NaN") gordura = null
 
             var editCliente = Cliente(id_cliente,id_ginasio,id_plano_nutricional,nome,mail,telemovel,pass_salt,pass_hash,peso,altura,gordura,foto_perfil,estado)
             ClienteRequests.Patch(lifecycleScope,sessionToken,id_cliente, editCliente) { resultEditcliente ->

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -34,8 +35,8 @@ class Activity_Cliente_Account : AppCompatActivity(){
             //Buscar token
             val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
             val sessionToken = preferences.getString("session_token", null)
-
             val imageView = findViewById<ImageView>(R.id.profile_pic)
+            val editButton = findViewById<ImageButton>(R.id.editButton)
 
             ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
 
@@ -48,25 +49,36 @@ class Activity_Cliente_Account : AppCompatActivity(){
                 name_view.text = resultCliente?.nome
                 val mail_view = findViewById<TextView>(R.id.textMail)
                 mail_view.text = resultCliente?.mail
+
                 val peso_view = findViewById<TextView>(R.id.textViewValueWeight)
-                peso_view.text = resultCliente?.peso.toString()
+                if(resultCliente?.peso.toString() != "NaN")
+                    peso_view.text = resultCliente?.peso.toString()
+                else
+                    peso_view.text = "---"
+
                 val altura_view = findViewById<TextView>(R.id.textViewValueHeight)
-                altura_view.text = resultCliente?.altura.toString()
+                if(resultCliente?.altura != 0)
+                    altura_view.text = resultCliente?.altura.toString()
+                else
+                    altura_view.text = "---"
+
                 val gordura_view = findViewById<TextView>(R.id.textViewValueFat)
-                gordura_view.text = resultCliente?.gordura.toString()
+                if(resultCliente?.gordura.toString() != "NaN")
+                    gordura_view.text = resultCliente?.gordura.toString()
+                else
+                    gordura_view.text = "---"
 
                 var lastWorkout : Atividade? = null
                 AtividadeRequests.GetAllByClienteID(lifecycleScope,sessionToken, resultCliente?.id_cliente){ resultAtividades ->
                     lastWorkout = resultAtividades.last()
 
                     //TODO: calculo
-
-                    val mes_atual_view = findViewById<TextView>(R.id.textViewValueMonth)
+                    val mes_atual_view = findViewById<TextView>(R.id.textViewMonth)
                     mes_atual_view.text = LocalDate.now().month.getDisplayName(TextStyle.FULL, Locale.getDefault()).toString()
 
                     val media_entradas_anual_view = findViewById<TextView>(R.id.textViewValueAnnualEntries)
                     val media_entradas_mensal_view = findViewById<TextView>(R.id.textViewValueMontlyEntries)
-                    val entradas_mes_atual_view = findViewById<TextView>(R.id.textViewMonth)
+                    val entradas_mes_atual_view = findViewById<TextView>(R.id.textViewValueMonth)
 
                     var countEntradasMesAtual = 0
                     for (x in resultAtividades)
@@ -76,12 +88,16 @@ class Activity_Cliente_Account : AppCompatActivity(){
                             countEntradasMesAtual++
                         }
                     }
+
                     entradas_mes_atual_view.text = countEntradasMesAtual.toString()
 
                     val diffAux = Period.between(resultAtividades.first().data_entrada?.toLocalDate(), LocalDate.now())
                     val diffDaysMonths = diffAux.toTotalMonths()
-                    val countMesesDesdeEntrada = diffDaysMonths / 30.44
-                    val countAnosDesdeEntrada = countMesesDesdeEntrada / 365
+                    var countMesesDesdeEntrada = diffDaysMonths / 30.44
+                    var countAnosDesdeEntrada = countMesesDesdeEntrada / 365
+
+                    if(countMesesDesdeEntrada < 1) countMesesDesdeEntrada++
+                    if(countAnosDesdeEntrada < 1) countAnosDesdeEntrada++
 
                     media_entradas_anual_view.text = (resultAtividades.count()/countAnosDesdeEntrada).toString()
                     media_entradas_mensal_view.text = (resultAtividades.count()/countMesesDesdeEntrada).toString()
@@ -103,6 +119,29 @@ class Activity_Cliente_Account : AppCompatActivity(){
                     }
                 }
 
+            }
+
+            editButton.setOnClickListener{
+                val intentNew = Intent(this@Activity_Cliente_Account, Activity_Cliente_Edit_Account::class.java)
+
+                ClienteRequests.GetByToken(lifecycleScope, sessionToken) { resultCliente ->
+                    intentNew.putExtra("id_cliente", resultCliente?.id_cliente!!)
+
+                    intentNew.putExtra("id_ginasio", resultCliente?.id_ginasio!!)
+                    intentNew.putExtra("id_plano_nutricional", resultCliente?.id_plano_nutricional!!)
+                    intentNew.putExtra("nome", resultCliente?.nome!!)
+                    intentNew.putExtra("mail", resultCliente?.mail!!)
+                    intentNew.putExtra("pass_hash", resultCliente?.pass_hash!!)
+                    intentNew.putExtra("pass_salt", resultCliente?.pass_salt!!)
+                    intentNew.putExtra("foto_perfil", resultCliente?.foto_perfil!!)
+                    intentNew.putExtra("altura", resultCliente?.altura!!)
+                    intentNew.putExtra("estado", resultCliente?.estado!!)
+                    intentNew.putExtra("telemovel", resultCliente?.telemovel!!)
+                    intentNew.putExtra("gordura", resultCliente?.gordura!!)
+                    intentNew.putExtra("peso", resultCliente?.peso!!)
+
+                    startActivity(intentNew)
+                }
             }
 
             findViewById<Button>(R.id.buttonMarcarConsulta).setOnClickListener {
