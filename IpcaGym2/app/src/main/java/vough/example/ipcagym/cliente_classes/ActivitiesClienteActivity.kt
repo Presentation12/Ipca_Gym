@@ -114,7 +114,7 @@ class ActivitiesClienteActivity : AppCompatActivity(){
             val date = rootView.findViewById<TextView>(R.id.activityTextView)
 
             //Adicionar os textos
-            date.text = activityList[position].data_saida?.format(date_formatter)
+            date.text = activityList[position].data_entrada?.format(date_formatter)
 
             //Clicar num rootView abre detalhes
             rootView.setOnClickListener {

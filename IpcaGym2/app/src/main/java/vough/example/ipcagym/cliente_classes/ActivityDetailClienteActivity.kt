@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import vough.example.ipcagym.R
 
 class ActivityDetailClienteActivity : AppCompatActivity() {
@@ -21,8 +22,14 @@ class ActivityDetailClienteActivity : AppCompatActivity() {
         //Escrever no layout detalhado
         findViewById<TextView>(R.id.activityDetailIDValue).text = id_atividade.toString()
         findViewById<TextView>(R.id.activityDetailHourEntradaValue).text = hora_entrada
-        findViewById<TextView>(R.id.activityDetailHourExitValue).text = hora_saida
         findViewById<TextView>(R.id.activityDetailDate).text = data
+
+        if(hora_saida != null){
+            findViewById<TextView>(R.id.activityDetailHourExitValue).text = hora_saida
+        }
+        else{
+            findViewById<TextView>(R.id.activityDetailHourExitValue).text = "Currently on the gym"
+        }
 
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = arrayOf("Conta", "Definições", "Sair")

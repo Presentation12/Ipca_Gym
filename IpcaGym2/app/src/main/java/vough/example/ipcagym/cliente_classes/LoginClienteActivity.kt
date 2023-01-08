@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
+import vough.example.ipcagym.funcionarios_classes.LoginFuncionarioActivity
 import vough.example.ipcagym.requests.ClienteRequests
 
 class LoginClienteActivity : AppCompatActivity() {
@@ -23,11 +24,11 @@ class LoginClienteActivity : AppCompatActivity() {
         val sessionToken = preferences.getString("session_token", null)
 
         //Caso a token de sessão estiver ativa, passar login a frente
-        if (sessionToken != "") {
+        /*if (sessionToken != "") {
             val intentStart = Intent(this@LoginClienteActivity, ActivitiesClienteActivity::class.java)
             finish()
             startActivity(intentStart)
-        }
+        }*/
 
         loginbutton.setOnClickListener{
             if(mail.text.toString() == "" || pass.text.toString() == "")
@@ -52,6 +53,15 @@ class LoginClienteActivity : AppCompatActivity() {
                 }
             }
         }
+
+        findViewById<Button>(R.id.imFuncionario).setOnClickListener {
+            val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+            val editor = preferences.edit()
+            editor.putString("session_token", "")
+            finish()
+            startActivity(Intent(this@LoginClienteActivity, LoginFuncionarioActivity::class.java))
+        }
+
 
         findViewById<Button>(R.id.forgetpassword).setOnClickListener {
             startActivity(

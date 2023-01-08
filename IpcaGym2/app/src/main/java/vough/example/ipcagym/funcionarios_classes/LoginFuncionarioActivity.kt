@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
+import vough.example.ipcagym.cliente_classes.LoginClienteActivity
 import vough.example.ipcagym.cliente_classes.PaginaInicialClienteActivity
 import vough.example.ipcagym.requests.FuncionarioRequests
 
@@ -22,12 +23,12 @@ class LoginFuncionarioActivity : AppCompatActivity() {
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
-        if(sessionToken != "") {
+        /*if(sessionToken != "") {
             //val intentStart = Intent(this@LoginFuncionarioActivity, PaginaInicialFuncionarioActivity::class.java)
-            val intentStart = Intent(this@LoginFuncionarioActivity, Activity_Funcionario_Planos_Nutricionais::class.java)
+            val intentStart = Intent(this@LoginFuncionarioActivity, Activity_Funcionario_Perfil_Edit::class.java)
             finish()
             startActivity(intentStart)
-        }
+        }*/
 
         //TODO: CERTIFICAR QUE O QUE O CODE NÃO SEJA LONG (VER TAMANHO DO CODE)
         val code = findViewById<AppCompatEditText>(R.id.mail).text
@@ -50,7 +51,7 @@ class LoginFuncionarioActivity : AppCompatActivity() {
                         editor.apply()
 
                         //val intentStart = Intent(this@LoginFuncionarioActivity, PaginaInicialFuncionarioActivity::class.java)
-                        val intentStart = Intent(this@LoginFuncionarioActivity, Activity_Funcionario_Planos_Nutricionais::class.java)
+                        val intentStart = Intent(this@LoginFuncionarioActivity,Activity_Gerente_Ginasio_Patch::class.java)
                         finish()
                         startActivity(intentStart)
                     } else {
@@ -58,6 +59,14 @@ class LoginFuncionarioActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+
+        findViewById<Button>(R.id.imClient).setOnClickListener {
+            val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+            val editor = preferences.edit()
+            editor.putString("session_token", "")
+            finish()
+            startActivity(Intent(this@LoginFuncionarioActivity, LoginClienteActivity::class.java))
         }
 
         findViewById<Button>(R.id.forgetpassword).setOnClickListener {

@@ -563,7 +563,12 @@ namespace LayerDAL.Services
                 stats.maxDay = currentMax;
 
                 //Calcular maxMonth
+                var monthlyMax = list.GroupBy(a => a.data_entrada.Month)
+                .Select(g => new { Month = g.Key, Max = g.Count() })
+                .OrderBy(x => x.Month)
+                .ToList();
 
+                stats.maxMonth = monthlyMax.Max(m => m.Max);
 
                 return stats;
             }
