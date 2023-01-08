@@ -93,7 +93,7 @@ object RefeicaoRequests {
     fun GetAllByPlanoID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (ArrayList<Refeicao>) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()
-                .url(UtilsForRequests.baseURL + "/api/Loja/Refeicao/$targetID")
+                .url(UtilsForRequests.baseURL + "/api/Refeicao/plan/$targetID")
                 .get()
                 .header("Authorization", "Bearer $token")
                 .build()

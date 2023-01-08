@@ -1,5 +1,6 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -9,22 +10,35 @@ import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Plano_Nutricional
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.PlanoNutricionalRequests
 
 class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
-    val listPlanosNutricionais = arrayListOf<Plano_Nutricional>()
+    var listPlanosNutricionais = arrayListOf<Plano_Nutricional>()
     val adapter_nutri = PlanNutriAdapter()
     var newPlanReceiver : ActivityResultLauncher<Intent>? = null
     var deletePlanReceiver : ActivityResultLauncher<Intent>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_planos_nutricionais)
 
-        listPlanosNutricionais.add(Plano_Nutricional(1,1, "Emagrecer", 2500, "photo"))
-        listPlanosNutricionais.add(Plano_Nutricional(2,1, "Engordar", 5500, "photo2"))
-        listPlanosNutricionais.add(Plano_Nutricional(3,1, "Definir", 3500, null))
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+            PlanoNutricionalRequests.GetAllByGinasioID(lifecycleScope, sessionToken, it?.id_ginasio!!){ result ->
+                if(result.isNotEmpty()){
+                    listPlanosNutricionais = result
+                    adapter_nutri.notifyDataSetChanged()
+                }
+            }
+        }
 
         val image_view = findViewById<ImageView>(R.id.profile_pic)
         val spinner = findViewById<Spinner>(R.id.spinner)

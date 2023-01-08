@@ -1,6 +1,7 @@
 package vough.example.ipcagym.funcionarios_classes
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -13,15 +14,18 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import org.w3c.dom.Text
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Exercicio
 import vough.example.ipcagym.data_classes.Refeicao
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.RefeicaoRequests
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
-    val listRefeicoes = arrayListOf<Refeicao>()
+    var listRefeicoes = arrayListOf<Refeicao>()
     val refeicaoAdapter = RefeicoesAdapter()
     var receiverNewData : ActivityResultLauncher<Intent>? = null
     var receiverEditData : ActivityResultLauncher<Intent>? = null
@@ -36,14 +40,22 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
-        listRefeicoes.add(Refeicao(1,1, "Refeicao Yoigfhaloigheouibgoipuerahbgiurewaghiouaehrwighapeoriuhgfoipaerhigrehioghaerohgfoipurehgoierhioupgh erou opig opifdopih gfopaerh gopuhera9po upoug heouipr hopre hopuahre o paoreg r eerçk dhgi eriou ghoeur h9opiearyh gpoiuerho ugheraopiug heoripua ghpoiuaer hoipugerh ipuge rpiou hpohgare uoherpog hogre hgoerih wr", LocalTime.now(), "photo"))
-        listRefeicoes.add(Refeicao(2,1, "Refeicao X", LocalTime.of(14,30), "photo2"))
-        listRefeicoes.add(Refeicao(3,1, "Refeicao W", LocalTime.of(20,0), "happymeal.png"))
-        listRefeicoes.add(Refeicao(4,1, "Refeicao >", LocalTime.of(9,45), null))
+        RefeicaoRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_nutricional", -1)){
+            if(it.isNotEmpty()){
+                listRefeicoes = it
+                refeicaoAdapter.notifyDataSetChanged()
+                findViewById<TextView>(R.id.textView11).text = ""
+            }
+            else{
+                findViewById<TextView>(R.id.textView11).text = "Empty plan, add some meals!"
+            }
+        }
 
         findViewById<TextView>(R.id.planoNutriTipoTitle).text = intent.getStringExtra("tipo")
-        //TODO: PERDE VALORES DA LISTA AO FAZER DETAILS, OU EDIT
         findViewById<TextView>(R.id.planoNutriCaloriasTitle).text = intent.getIntExtra("calorias", -1).toString() + " KCal"
 
         val listView = findViewById<ListView>(R.id.listViewRefeicoes)
