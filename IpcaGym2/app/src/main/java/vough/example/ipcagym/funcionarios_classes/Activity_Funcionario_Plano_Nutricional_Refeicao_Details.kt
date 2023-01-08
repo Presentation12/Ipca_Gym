@@ -37,6 +37,12 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Details : AppCompatActivit
 
         findViewById<Button>(R.id.buttonReturnDetailsMeal).setOnClickListener{
             val auxIntent = Intent(this@Activity_Funcionario_Plano_Nutricional_Refeicao_Details, Activity_Funcionario_Plano_Nutricional_Refeicoes::class.java)
+
+            auxIntent.putExtra("calorias", intent.getIntExtra("calorias", -1))
+            auxIntent.putExtra("id_plano_nutricional", intent.getIntExtra("id_plano_nutricional", -1))
+            auxIntent.putExtra("tipo", intent.getStringExtra("tipo"))
+
+            finish()
             startActivity(auxIntent)
         }
 

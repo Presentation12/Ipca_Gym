@@ -1,17 +1,15 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
+import vough.example.ipcagym.requests.RefeicaoRequests
 
 class Activity_Funcionario_Plano_Nutricional_Refeicao_Edit: AppCompatActivity() {
     var newImageValue = ""
@@ -19,6 +17,10 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Edit: AppCompatActivity() 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_plano_nutricional_refeicao_edit)
+
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
         findViewById<TextView>(R.id.refeicaoEditDescriptionValue).text = intent.getStringExtra("descricao")
         findViewById<TextView>(R.id.refeicaoEditHourHourValue).text = intent.getIntExtra("hora_hora", -1).toString()
@@ -52,13 +54,45 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Edit: AppCompatActivity() 
         findViewById<Button>(R.id.editMealButton).setOnClickListener{
             val editIntent = Intent()
 
-            editIntent.putExtra("id_refeicao", intent.getIntExtra("id_refeicao", -1))
-            editIntent.putExtra("id_plano_nutricional", intent.getIntExtra("id_plano_nutricional", -1))
-            editIntent.putExtra("descricao", findViewById<TextView>(R.id.refeicaoEditDescriptionValue).text.toString())
-            editIntent.putExtra("hora_hour", findViewById<TextView>(R.id.refeicaoEditHourHourValue).text.toString().toInt())
-            editIntent.putExtra("hora_minute", findViewById<TextView>(R.id.refeicaoEditHourMinuteValue).text.toString().toInt())
-            if(newImageValue != "") editIntent.putExtra("foto_refeicao", newImageValue)
-            else editIntent.putExtra("foto_refeicao", intent.getStringExtra("foto_refeicao"))
+            var minAuxInt = findViewById<TextView>(R.id.refeicaoEditHourHourValue).text.toString().toInt()
+            var secAuxInt = findViewById<TextView>(R.id.refeicaoEditHourMinuteValue).text.toString().toInt()
+
+            var photo : String?
+
+            if(newImageValue != "") photo = newImageValue
+            else photo = intent.getStringExtra("foto_refeicao")
+
+            var minAuxString : String?
+            var secAuxString : String?
+
+            if(minAuxInt < 10)
+                minAuxString = "0$minAuxInt"
+            else
+                minAuxString = minAuxInt.toString()
+
+            if(secAuxInt < 10)
+                secAuxString = "0$secAuxInt"
+            else
+                secAuxString = secAuxInt.toString()
+
+            val tempoToPatch = "$minAuxString:$secAuxString:00"
+
+            val jsonBody = """
+                {
+                  "id_refeicao": ${intent.getIntExtra("id_refeicao", -1)},
+                  "id_plano_nutricional": ${intent.getIntExtra("id_plano_nutricional", -1)},
+                  "descricao": "${findViewById<TextView>(R.id.refeicaoEditDescriptionValue).text}",
+                  "hora": "$tempoToPatch",
+                  "foto_refeicao": "$photo"
+                }
+            """
+
+            RefeicaoRequests.Patch(lifecycleScope, sessionToken, intent.getIntExtra("id_refeicao", -1) , jsonBody){
+                if(it != "User not found")
+                    Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicao_Edit, "Meal added sucessfully", Toast.LENGTH_LONG).show()
+                else
+                    Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicao_Edit, "Error on adding meal", Toast.LENGTH_LONG).show()
+            }
 
             setResult(RESULT_OK, editIntent)
             finish()

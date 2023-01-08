@@ -52,37 +52,27 @@ class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
 
         newPlanReceiver = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()) {
             if(it.resultCode == android.app.Activity.RESULT_OK){
-                //buscar dados no intent
-                val id_plano_nutricional = it.data?.getIntExtra("id_plano_treino", -1)
-                val id_ginasio = it.data?.getIntExtra("id_ginasio", -1)
-                val tipo = it.data?.getStringExtra("tipo")
-                val calorias = it.data?.getIntExtra("calorias", -1)
-                var foto_plano_nutricional = it.data?.getStringExtra("foto_plano_nutricional")
-
-                if(foto_plano_nutricional == "" || foto_plano_nutricional == null){
-                    foto_plano_nutricional = null
+                FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+                    PlanoNutricionalRequests.GetAllByGinasioID(lifecycleScope, sessionToken, it?.id_ginasio!!){ result ->
+                        if(result.isNotEmpty()){
+                            listPlanosNutricionais = result
+                            adapter_nutri.notifyDataSetChanged()
+                        }
+                    }
                 }
-
-                //criar plano_nutricional
-                listPlanosNutricionais.add(Plano_Nutricional(id_plano_nutricional, id_ginasio, tipo, calorias, foto_plano_nutricional))
-
-                adapter_nutri.notifyDataSetChanged()
             }
         }
 
         deletePlanReceiver = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()) {
             if(it.resultCode == android.app.Activity.RESULT_OK){
-                val id_remove = it.data?.getIntExtra("id_remove", 0)
-                val tipo_remove = it.data?.getStringExtra("tipo_remove")
-
-                for(p in listPlanosNutricionais){
-                    if(p.id_plano_nutricional == id_remove && p.tipo == tipo_remove){
-                        listPlanosNutricionais.remove(p)
-                        break
+                FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+                    PlanoNutricionalRequests.GetAllByGinasioID(lifecycleScope, sessionToken, it?.id_ginasio!!){ result ->
+                        if(result.isNotEmpty()){
+                            listPlanosNutricionais = result
+                            adapter_nutri.notifyDataSetChanged()
+                        }
                     }
                 }
-
-                adapter_nutri.notifyDataSetChanged()
             }
         }
 

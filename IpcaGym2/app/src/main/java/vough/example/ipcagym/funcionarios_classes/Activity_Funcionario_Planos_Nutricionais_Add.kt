@@ -1,12 +1,18 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Funcionario
+import vough.example.ipcagym.data_classes.Plano_Nutricional
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.PlanoNutricionalRequests
 
 class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
     var newImageValue = ""
@@ -19,6 +25,9 @@ class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = arrayOf("Conta", "Definições", "Sair")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
@@ -40,7 +49,8 @@ class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.CancelAddNewPlanNutriButton).setOnClickListener{
-            startActivity(Intent(this@Activity_Funcionario_Planos_Nutricionais_Add, Activity_Funcionario_Planos_Treino::class.java))
+            finish()
+            startActivity(Intent(this@Activity_Funcionario_Planos_Nutricionais_Add, Activity_Funcionario_Planos_Nutricionais::class.java))
         }
 
         image_view.setOnClickListener {
@@ -50,16 +60,26 @@ class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
         findViewById<Button>(R.id.addNewPlanNutriButton).setOnClickListener{
             val intent = Intent()
 
-            intent.putExtra("id_plano_nutricional", 55)
-            intent.putExtra("id_ginasio", 1)
-            intent.putExtra("foto_plano_nutricional", newImageValue)
-            intent.putExtra("tipo", findViewById<EditText>(R.id.tipoPlanoNutriValue).text.toString())
-
             if(findViewById<EditText>(R.id.caloriasPlanoNutriValue).text.toString() == ""){
-                Toast.makeText(this@Activity_Funcionario_Planos_Nutricionais_Add, "Insira uma quantia de calorias", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@Activity_Funcionario_Planos_Nutricionais_Add, "Insert ammount of calories", Toast.LENGTH_SHORT).show()
             }
             else{
-                intent.putExtra("calorias", findViewById<EditText>(R.id.caloriasPlanoNutriValue).text.toString().toInt())
+
+                FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+                    PlanoNutricionalRequests.Post(lifecycleScope, sessionToken, Plano_Nutricional(
+                        null,
+                        it?.id_ginasio!!,
+                        findViewById<EditText>(R.id.tipoPlanoNutriValue).text.toString(),
+                        findViewById<EditText>(R.id.caloriasPlanoNutriValue).text.toString().toInt(),
+                        newImageValue
+                    )){ response ->
+                        if(response == "User not found")
+                            Toast.makeText(this@Activity_Funcionario_Planos_Nutricionais_Add, "Error on adding plan", Toast.LENGTH_SHORT).show()
+                        else
+                            Toast.makeText(this@Activity_Funcionario_Planos_Nutricionais_Add, "Plan added successfully", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
                 setResult(RESULT_OK, intent);
                 finish()
             }

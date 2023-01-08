@@ -129,17 +129,8 @@ object RefeicaoRequests {
         }
     }
 
-    fun Post(scope: CoroutineScope, token : String?, newRefeicao : Refeicao, callback: (String) -> Unit){
+    fun Post(scope: CoroutineScope, token : String?, jsonBody : String, callback: (String) -> Unit){
         scope.launch(Dispatchers.IO) {
-            val jsonBody = """
-                {
-                  "id_plano_nutricional": ${newRefeicao.id_plano_nutricional},
-                  "descricao": "${newRefeicao.descricao}",
-                  "hora": ${newRefeicao.hora},
-                  "foto_refeicao": "${newRefeicao.foto_refeicao}"
-                }
-            """
-
             val request = Request.Builder()
                 .url(UtilsForRequests.baseURL + "/api/Refeicao")
                 .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
@@ -170,18 +161,8 @@ object RefeicaoRequests {
         }
     }
 
-    fun Patch(scope: CoroutineScope, token : String?, targetID: Int, editRefeicao : Refeicao, callback: (String) -> Unit){
+    fun Patch(scope: CoroutineScope, token : String?, targetID: Int, jsonBody: String, callback: (String) -> Unit){
         scope.launch(Dispatchers.IO) {
-            val jsonBody = """
-                {
-                  "id_refeicao": ${editRefeicao.id_refeicao},
-                  "id_plano_nutricional": ${editRefeicao.id_plano_nutricional},
-                  "descricao": "${editRefeicao.descricao}",
-                  "hora": ${editRefeicao.hora},
-                  "foto_refeicao": "${editRefeicao.foto_refeicao}"
-                }
-            """
-
             val request = Request.Builder()
                 .url(UtilsForRequests.baseURL + "/api/Refeicao/$targetID")
                 .patch(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))

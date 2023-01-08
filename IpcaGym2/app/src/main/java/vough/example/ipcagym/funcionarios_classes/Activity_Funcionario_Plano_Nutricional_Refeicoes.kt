@@ -20,6 +20,7 @@ import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Exercicio
 import vough.example.ipcagym.data_classes.Refeicao
 import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.PlanoNutricionalRequests
 import vough.example.ipcagym.requests.RefeicaoRequests
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -62,50 +63,32 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
         listView.adapter = refeicaoAdapter
 
         receiverNewData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-
             if(it.resultCode == Activity.RESULT_OK){
-                //Buscar dados no intent
-                val id_refeicao = it.data?.getIntExtra("id_refeicao", -1)
-                val id_plano_nutricional = it.data?.getIntExtra("id_plano_nutricional", -1)
-                val descricao = it.data?.getStringExtra("descricao")
-                val hora_hour = it.data?.getIntExtra("hora_hour", -1)
-                val hora_minute = it.data?.getIntExtra("hora_minute", -1)
-                var foto_refeicao = it.data?.getStringExtra("foto_refeicao")
-
-                if(foto_refeicao == "")
-                    foto_refeicao = null
-
-                //Inserir dados na nova refeicao
-                listRefeicoes.add(Refeicao(id_refeicao,id_plano_nutricional,descricao, LocalTime.of(hora_hour!!, hora_minute!!), foto_refeicao))
-                refeicaoAdapter.notifyDataSetChanged()
+                RefeicaoRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_nutricional", -1)){
+                    if(it.isNotEmpty()){
+                        listRefeicoes = it
+                        refeicaoAdapter.notifyDataSetChanged()
+                        findViewById<TextView>(R.id.textView11).text = ""
+                    }
+                    else{
+                        findViewById<TextView>(R.id.textView11).text = "Empty plan, add some meals!"
+                    }
+                }
             }
         }
 
         receiverEditData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-
             if(it.resultCode == Activity.RESULT_OK){
-                //Buscar dados no intent
-                val id_refeicao = it.data?.getIntExtra("id_refeicao", -1)
-                val id_plano_nutricional = it.data?.getIntExtra("id_plano_nutricional", -1)
-                val descricao = it.data?.getStringExtra("descricao")
-                val hora_hour = it.data?.getIntExtra("hora_hour", -1)
-                val hora_minute = it.data?.getIntExtra("hora_minute", -1)
-                var foto_refeicao = it.data?.getStringExtra("foto_refeicao")
-
-                if(foto_refeicao == "")
-                    foto_refeicao = null
-
-                //Atualizar dados na refeicao
-                for(refeicao in listRefeicoes){
-                    if(refeicao.id_refeicao == id_refeicao && refeicao.id_plano_nutricional == id_plano_nutricional){
-                        refeicao.descricao = descricao
-                        refeicao.hora = LocalTime.of(hora_hour!!, hora_minute!!)
-                        refeicao.foto_refeicao = foto_refeicao
-                        break;
+                RefeicaoRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_nutricional", -1)){
+                    if(it.isNotEmpty()){
+                        listRefeicoes = it
+                        refeicaoAdapter.notifyDataSetChanged()
+                        findViewById<TextView>(R.id.textView11).text = ""
+                    }
+                    else{
+                        findViewById<TextView>(R.id.textView11).text = "Empty plan, add some meals!"
                     }
                 }
-
-                refeicaoAdapter.notifyDataSetChanged()
             }
         }
 
@@ -122,15 +105,23 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
         findViewById<Button>(R.id.removePlanButton).setOnClickListener {
             val deleteIntent = Intent()
 
-            deleteIntent.putExtra("id_remove", intent.getIntExtra("id_plano_nutricional", -1))
-            deleteIntent.putExtra("tipo_remove", intent.getStringExtra("tipo"))
+            PlanoNutricionalRequests.DeleteChecked(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_nutricional", -1)){
+                if(it != "User not found")
+                    Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, "Plan removed successfully", Toast.LENGTH_LONG).show()
+                else
+                    Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, "Error on removing plan", Toast.LENGTH_LONG).show()
+            }
 
             setResult(RESULT_OK, deleteIntent)
             finish()
         }
 
         findViewById<Button>(R.id.addNewRefeicaoButton).setOnClickListener{
-            receiverNewData?.launch(Intent(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, Activity_Funcionario_Plano_Nutricional_Refeicao_Add::class.java))
+            val intentAdd = Intent(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, Activity_Funcionario_Plano_Nutricional_Refeicao_Add::class.java)
+
+            intentAdd.putExtra("id_plano_nutricional", intent.getIntExtra("id_plano_nutricional", -1))
+
+            receiverNewData?.launch(intentAdd)
         }
 
         image_view.setOnClickListener {
@@ -154,26 +145,44 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val rootView = layoutInflater.inflate(R.layout.row_refeicao, parent, false)
+            //Buscar token
+            val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+            val sessionToken = preferences.getString("session_token", null)
 
             rootView.findViewById<TextView>(R.id.textViewHoraRefeicao).text = listRefeicoes[position].hora?.format(
                 DateTimeFormatter.ofPattern("HH:mm"))
             rootView.findViewById<ImageView>(R.id.imageViewRefeicao).setImageURI(listRefeicoes[position].foto_refeicao?.toUri())
 
             rootView.setOnClickListener{
-                val intent = Intent(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, Activity_Funcionario_Plano_Nutricional_Refeicao_Details::class.java)
+                val intent2 = Intent(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, Activity_Funcionario_Plano_Nutricional_Refeicao_Details::class.java)
 
-                intent.putExtra("id_plano_nutricional", listRefeicoes[position].id_plano_nutricional)
-                intent.putExtra("id_refeicao", listRefeicoes[position].id_refeicao)
-                intent.putExtra("descricao", listRefeicoes[position].descricao)
-                intent.putExtra("hora", listRefeicoes[position].hora?.format(DateTimeFormatter.ofPattern("HH:mm")))
-                intent.putExtra("foto_refeicao", listRefeicoes[position].foto_refeicao)
+                intent2.putExtra("calorias", intent.getIntExtra("calorias", -1))
+                intent2.putExtra("tipo", intent.getStringExtra("tipo"))
 
-                startActivity(intent)
+                intent2.putExtra("id_plano_nutricional", listRefeicoes[position].id_plano_nutricional)
+                intent2.putExtra("id_refeicao", listRefeicoes[position].id_refeicao)
+                intent2.putExtra("descricao", listRefeicoes[position].descricao)
+                intent2.putExtra("hora", listRefeicoes[position].hora?.format(DateTimeFormatter.ofPattern("HH:mm")))
+                intent2.putExtra("foto_refeicao", listRefeicoes[position].foto_refeicao)
+
+                startActivity(intent2)
             }
 
             rootView.findViewById<Button>(R.id.buttonDeleteRefeicao).setOnClickListener{
-                listRefeicoes.remove(listRefeicoes[position])
-                refeicaoAdapter.notifyDataSetChanged()
+                RefeicaoRequests.Delete(lifecycleScope, sessionToken, listRefeicoes[position].id_refeicao!!){
+                    if(it != "User not found"){
+                        RefeicaoRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_nutricional", -1)){
+                            if(it.isNotEmpty()){
+                                listRefeicoes = it
+                                refeicaoAdapter.notifyDataSetChanged()
+                                findViewById<TextView>(R.id.textView11).text = ""
+                            }
+                            else{
+                                findViewById<TextView>(R.id.textView11).text = "Empty plan, add some meals!"
+                            }
+                        }
+                    }
+                }
             }
 
             rootView.findViewById<Button>(R.id.buttonEditRefeicao).setOnClickListener{
