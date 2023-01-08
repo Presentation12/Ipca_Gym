@@ -570,6 +570,93 @@ namespace LayerDAL.Services
 
                 stats.maxMonth = monthlyMax.Max(m => m.Max);
 
+                //Calcular average por dias da semana
+                int counterMonPeople = 0;
+                int counterTuePeople = 0;
+                int counterWedPeople = 0;
+                int counterThuPeople = 0;
+                int counterFriPeople = 0;
+                int counterSatPeople = 0;
+                int counterMonNum = 0;
+                int counterTueNum = 0;
+                int counterWedNum = 0;
+                int counterThuNum = 0;
+                int counterFriNum = 0;
+                int counterSatNum = 0;
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].data_entrada.DayOfWeek == DayOfWeek.Monday)
+                    {
+                        counterMonPeople++;
+                    }
+                    else if (list[i].data_entrada.DayOfWeek == DayOfWeek.Tuesday)
+                    {
+                        counterTuePeople++;
+                    }
+                    else if (list[i].data_entrada.DayOfWeek == DayOfWeek.Wednesday)
+                    {
+                        counterWedPeople++;
+                    }
+                    else if (list[i].data_entrada.DayOfWeek == DayOfWeek.Thursday)
+                    {
+                        counterThuPeople++;
+                    }
+                    else if (list[i].data_entrada.DayOfWeek == DayOfWeek.Friday)
+                    {
+                        counterFriPeople++;
+                    }
+                    else if (list[i].data_entrada.DayOfWeek == DayOfWeek.Saturday)
+                    {
+                        counterSatPeople++;
+                    }
+                }
+
+                DateTime startDate = orderedListMonths[0].data_entrada;
+                DateTime endDate = DateTime.Today;
+
+                for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                {
+                    if (date.DayOfWeek == DayOfWeek.Monday)
+                    {
+                        counterMonNum++;
+                    }
+                    if (date.DayOfWeek == DayOfWeek.Tuesday)
+                    {
+                        counterTueNum++;
+                    }
+                    if (date.DayOfWeek == DayOfWeek.Wednesday)
+                    {
+                        counterWedNum++;
+                    }
+                    if (date.DayOfWeek == DayOfWeek.Thursday)
+                    {
+                        counterThuNum++;
+                    }
+                    if (date.DayOfWeek == DayOfWeek.Friday)
+                    {
+                        counterFriNum++;
+                    }
+                    if (date.DayOfWeek == DayOfWeek.Saturday)
+                    {
+                        counterSatNum++;
+                    }
+                }
+
+                if (counterMonNum == 0) counterMonNum++;
+                if (counterTueNum == 0) counterTueNum++;
+                if (counterWedNum == 0) counterWedNum++;
+                if (counterThuNum == 0) counterThuNum++;
+                if (counterFriNum == 0) counterFriNum++;
+                if (counterSatNum == 0) counterSatNum++;
+
+                stats.averageMonday = (float)counterMonPeople / counterMonNum;
+                stats.averageTuesday = (float)counterTuePeople / counterTueNum;
+                stats.averageWednesday = (float)counterWedPeople / counterWedNum;
+                stats.averageThursday = (float)counterThuPeople / counterThuNum;
+                stats.averageFriday = (float)counterFriPeople / counterFriNum;
+                stats.averageSaturday = (float)counterSatPeople / counterSatNum;
+
                 return stats;
             }
             catch (SqlException ex)

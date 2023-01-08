@@ -16,6 +16,12 @@ namespace LayerBOL.Models
         public int yearTotal { get; set; }
         public int maxDay { get; set; }
         public int maxMonth { get; set; }
+        public float averageMonday { get; set; }
+        public float averageTuesday { get; set; }
+        public float averageWednesday { get; set; }
+        public float averageThursday { get; set; }
+        public float averageFriday { get; set; }
+        public float averageSaturday { get; set; }
 
     }
 }

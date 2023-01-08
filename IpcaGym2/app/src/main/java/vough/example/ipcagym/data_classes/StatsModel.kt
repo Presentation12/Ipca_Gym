@@ -13,6 +13,12 @@ class StatsModel{
     var yearTotal: Int? = null
     var maxDay: Int? = null
     var maxMonth: Int? = null
+    var averageMonday: Double? = null
+    var averageTuesday: Double? = null
+    var averageWednesday: Double? = null
+    var averageThursday: Double? = null
+    var averageFriday: Double? = null
+    var averageSaturday: Double? = null
 
     constructor(
         current : Int?,
@@ -22,17 +28,28 @@ class StatsModel{
         monthlyAverage : Double?,
         yearTotal  : Int?,
         maxDay  : Int?,
-        maxMonth  : Int?
+        averageMonday  : Double?,
+        averageTuesday  : Double?,
+        averageWednesday  : Double?,
+        averageThursday  : Double?,
+        averageFriday  : Double?,
+        averageSaturday  : Double?
     ) {
         this.current  = current
         this.exits = exits
         this.today = today
-        this.dailyAverage  = dailyAverage
-        this.monthlyAverage  = monthlyAverage
-        this.yearTotal   = yearTotal
-        this.yearTotal   = yearTotal
-        this.maxDay   = maxDay
-        this.maxMonth   = maxMonth
+        this.dailyAverage = dailyAverage
+        this.monthlyAverage = monthlyAverage
+        this.yearTotal = yearTotal
+        this.yearTotal = yearTotal
+        this.maxDay = maxDay
+        this.maxMonth = maxMonth
+        this.averageMonday = averageMonday
+        this.averageTuesday = averageTuesday
+        this.averageWednesday = averageWednesday
+        this.averageThursday = averageThursday
+        this.averageFriday = averageFriday
+        this.averageSaturday = averageSaturday
     }
 
     fun toJSON() : JSONObject {
@@ -46,6 +63,12 @@ class StatsModel{
         jsonObj.put("yearTotal", yearTotal)
         jsonObj.put("maxDay", maxDay)
         jsonObj.put("maxMonth", maxMonth)
+        jsonObj.put("averageMonday", averageMonday)
+        jsonObj.put("averageTuesday", averageTuesday)
+        jsonObj.put("averageWednesday", averageWednesday)
+        jsonObj.put("averageThursday", averageThursday)
+        jsonObj.put("averageFriday", averageFriday)
+        jsonObj.put("averageSaturday", averageSaturday)
 
         return jsonObj
     }
@@ -60,7 +83,12 @@ class StatsModel{
                 jsonObject.getDouble("monthlyAverage"),
                 jsonObject.getInt("yearTotal"),
                 jsonObject.getInt("maxDay"),
-                jsonObject.getInt("maxMonth"),
+                jsonObject.optDouble("averageMonday", 0.0),
+                jsonObject.optDouble("averageTuesday", 0.0),
+                jsonObject.optDouble("averageWednesday", 0.0),
+                jsonObject.optDouble("averageThursday", 0.0),
+                jsonObject.optDouble("averageFriday", 0.0),
+                jsonObject.optDouble("averageSaturday", 0.0)
             )
         }
     }
