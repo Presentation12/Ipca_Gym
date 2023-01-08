@@ -1,22 +1,31 @@
 package vough.example.ipcagym.cliente_classes
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Atividade
 import vough.example.ipcagym.data_classes.Cliente
+import vough.example.ipcagym.requests.AtividadeRequests
+import vough.example.ipcagym.requests.ClienteRequests
+import java.time.LocalDate
+import java.time.Period
+import java.time.format.TextStyle
+import java.util.*
 
 class Activity_Cliente_Edit_Account : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_edit_account)
+
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
         var id_cliente = intent.getIntExtra("id_cliente", -1)
         var id_ginasio = intent.getIntExtra("id_ginasio", -1)
@@ -84,7 +93,6 @@ class Activity_Cliente_Edit_Account : AppCompatActivity() {
             }
             */
 
-            //TODO: trocar por condições de verificacao de campos preenchidos
             if (findViewById<EditText>(R.id.editTextNomeCliente).text.isEmpty() == false)
             {
                 nome = findViewById<EditText>(R.id.editTextNomeCliente).text.toString()
@@ -98,15 +106,38 @@ class Activity_Cliente_Edit_Account : AppCompatActivity() {
                 telemovel = findViewById<EditText>(R.id.editTextContactoCliente).text.toString().toInt()
             }
 
-            //TODO: mandar para funçao de criar pass e verificações
+            var newPass : String? = null
             if (findViewById<EditText>(R.id.editTextPasswordCliente).text.isEmpty() == false && findViewById<EditText>(R.id.editTextPasswordCliente).text.toString() == findViewById<EditText>(R.id.editTextPasswordCliente2).text.toString())
             {
-                pass_salt = findViewById<EditText>(R.id.editTextPasswordCliente).text.toString()
+                newPass = findViewById<EditText>(R.id.editTextPasswordCliente).text.toString()
             }
 
-            // TODO: Mandar objeto com novas mudanças para o patch do backend
-            var clienteEditado = Cliente(id_cliente,id_ginasio,id_plano_nutricional,nome,mail,telemovel,pass_salt,pass_hash,peso,altura,gordura,foto_perfil,estado)
-            startActivity(intent)
+            var editCliente = Cliente(id_cliente,id_ginasio,id_plano_nutricional,nome,mail,telemovel,pass_salt,pass_hash,peso,altura,gordura,foto_perfil,estado)
+            ClienteRequests.Patch(lifecycleScope,sessionToken,id_cliente, editCliente) { resultEditcliente ->
+                if (resultEditcliente == "User not found")
+                {
+                    Toast.makeText(this@Activity_Cliente_Edit_Account, "Error on editting client account", Toast.LENGTH_LONG).show()
+                }
+                else
+                {
+                    finish()
+                    startActivity(intent)
+                }
+            }
+            if(newPass != null)
+            {
+                ClienteRequests.recoverPasswordCliente(lifecycleScope, mail, newPass) { resultNewPassCliente ->
+                    if (resultNewPassCliente == "error")
+                    {
+                        Toast.makeText(this@Activity_Cliente_Edit_Account, "Error on change client password", Toast.LENGTH_LONG).show()
+                    }
+                    else
+                    {
+                        finish()
+                        startActivity(intent)
+                    }
+                }
+            }
         }
     }
 }
