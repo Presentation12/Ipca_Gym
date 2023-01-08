@@ -1,414 +1,490 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/capacityTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Capacity"
-        android:textColor="#FFFFFF"
-        android:textSize="21dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView8"
-        android:layout_width="93dp"
-        android:layout_height="97dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/capacityTitle">
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView10"
-        android:layout_width="93dp"
-        android:layout_height="97dp"
-        android:layout_marginEnd="32dp"
-        app:cardCornerRadius="20dp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cardView9" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView9"
-        android:layout_width="93dp"
-        android:layout_height="97dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/cardView10"
-        app:layout_constraintStart_toEndOf="@+id/cardView8"
-        app:layout_constraintTop_toTopOf="@+id/cardView8">
-
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:elevation="10dp"
-        android:text="Today"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView10"
-        app:layout_constraintStart_toStartOf="@+id/cardView10"
-        app:layout_constraintTop_toTopOf="@+id/cardView10" />
-
-    <TextView
-        android:id="@+id/textView15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:elevation="10dp"
-        android:text="Current"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView8"
-        app:layout_constraintStart_toStartOf="@+id/cardView8"
-        app:layout_constraintTop_toTopOf="@+id/cardView8" />
-
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:elevation="10dp"
-        android:text="Exits"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView9"
-        app:layout_constraintStart_toStartOf="@+id/cardView9"
-        app:layout_constraintTop_toTopOf="@+id/cardView9" />
-
-    <TextView
-        android:id="@+id/capacityCurrentValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
-        android:text="TextView"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView8"
-        app:layout_constraintEnd_toEndOf="@+id/cardView8"
-        app:layout_constraintStart_toStartOf="@+id/cardView8"
-        app:layout_constraintTop_toTopOf="@+id/cardView8" />
-
-    <TextView
-        android:id="@+id/capacityExitsValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
-        android:text="TextView"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView9"
-        app:layout_constraintEnd_toEndOf="@+id/cardView9"
-        app:layout_constraintStart_toStartOf="@+id/cardView9"
-        app:layout_constraintTop_toTopOf="@+id/cardView9" />
-
-    <TextView
-        android:id="@+id/capacityTodayValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
-        android:text="TextView"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView10"
-        app:layout_constraintEnd_toEndOf="@+id/cardView10"
-        app:layout_constraintStart_toStartOf="@+id/cardView10"
-        app:layout_constraintTop_toTopOf="@+id/cardView10" />
-
-    <TextView
-        android:id="@+id/statsTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Stats"
-        android:textColor="#FFFFFF"
-        android:textSize="21dp"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView8" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView12"
-        android:layout_width="93dp"
-        android:layout_height="97dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statsTitle">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView15"
+                android:layout_width="93dp"
+                android:layout_height="97dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView16"
+                app:layout_constraintEnd_toStartOf="@+id/cardView16"
+                app:layout_constraintStart_toEndOf="@+id/cardView14" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView13"
-        android:layout_width="93dp"
-        android:layout_height="97dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/cardView16"
-        app:layout_constraintStart_toEndOf="@+id/cardView12"
-        app:layout_constraintTop_toTopOf="@+id/cardView12">
+            <TextView
+                android:id="@+id/textView29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:elevation="10dp"
+                android:text="Daily Average"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="@+id/cardView12"
+                app:layout_constraintStart_toStartOf="@+id/cardView12"
+                app:layout_constraintTop_toTopOf="@+id/cardView12" />
 
-    </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/capacityDailyThisOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                android:text="TextView"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView12"
+                app:layout_constraintEnd_toEndOf="@+id/cardView12"
+                app:layout_constraintStart_toStartOf="@+id/cardView12"
+                app:layout_constraintTop_toTopOf="@+id/cardView12" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView14"
-        android:layout_width="93dp"
-        android:layout_height="97dp"
-        android:layout_marginStart="32dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView15"
-        app:layout_constraintStart_toStartOf="parent">
+            <TextView
+                android:id="@+id/textView30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:elevation="10dp"
+                android:text="Monthly Average"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="@+id/cardView13"
+                app:layout_constraintStart_toStartOf="@+id/cardView13"
+                app:layout_constraintTop_toTopOf="@+id/cardView13" />
 
-    </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/capacityExitsValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                android:text="TextView"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView9"
+                app:layout_constraintEnd_toEndOf="@+id/cardView9"
+                app:layout_constraintStart_toStartOf="@+id/cardView9"
+                app:layout_constraintTop_toTopOf="@+id/cardView9" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView15"
-        android:layout_width="93dp"
-        android:layout_height="97dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView16"
-        app:layout_constraintEnd_toStartOf="@+id/cardView16"
-        app:layout_constraintStart_toEndOf="@+id/cardView14">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView9"
+                android:layout_width="93dp"
+                android:layout_height="97dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintEnd_toStartOf="@+id/cardView10"
+                app:layout_constraintStart_toEndOf="@+id/cardView8"
+                app:layout_constraintTop_toTopOf="@+id/cardView8" />
 
-    </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/capacityTodayValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                android:text="TextView"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView10"
+                app:layout_constraintEnd_toEndOf="@+id/cardView10"
+                app:layout_constraintStart_toStartOf="@+id/cardView10"
+                app:layout_constraintTop_toTopOf="@+id/cardView10" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView16"
-        android:layout_width="93dp"
-        android:layout_height="210dp"
-        android:layout_marginEnd="32dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cardView13" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView14"
+                android:layout_width="93dp"
+                android:layout_height="97dp"
+                android:layout_marginStart="32dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView15"
+                app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView29"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:elevation="10dp"
-        android:text="Daily Average"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView12"
-        app:layout_constraintStart_toStartOf="@+id/cardView12"
-        app:layout_constraintTop_toTopOf="@+id/cardView12" />
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:elevation="10dp"
+                android:text="Exits"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="@+id/cardView9"
+                app:layout_constraintStart_toStartOf="@+id/cardView9"
+                app:layout_constraintTop_toTopOf="@+id/cardView9" />
 
-    <TextView
-        android:id="@+id/textView30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:elevation="10dp"
-        android:text="Monthly Average"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView13"
-        app:layout_constraintStart_toStartOf="@+id/cardView13"
-        app:layout_constraintTop_toTopOf="@+id/cardView13" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView16"
+                android:layout_width="93dp"
+                android:layout_height="210dp"
+                android:layout_marginEnd="32dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/cardView13" />
 
-    <TextView
-        android:id="@+id/capacityDailyThisOne"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
-        android:text="TextView"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView12"
-        app:layout_constraintEnd_toEndOf="@+id/cardView12"
-        app:layout_constraintStart_toStartOf="@+id/cardView12"
-        app:layout_constraintTop_toTopOf="@+id/cardView12" />
+            <TextView
+                android:id="@+id/capacityMonthlyValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                android:text="TextView"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView13"
+                app:layout_constraintEnd_toEndOf="@+id/cardView13"
+                app:layout_constraintStart_toStartOf="@+id/cardView13"
+                app:layout_constraintTop_toTopOf="@+id/cardView13" />
 
-    <TextView
-        android:id="@+id/textView32"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:elevation="10dp"
-        android:text="Max Day"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView14"
-        app:layout_constraintStart_toStartOf="@+id/cardView14"
-        app:layout_constraintTop_toTopOf="@+id/cardView14" />
+            <TextView
+                android:id="@+id/capacityMaxDayValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                android:text="TextView"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView14"
+                app:layout_constraintEnd_toEndOf="@+id/cardView14"
+                app:layout_constraintStart_toStartOf="@+id/cardView14"
+                app:layout_constraintTop_toTopOf="@+id/cardView14" />
 
-    <TextView
-        android:id="@+id/textView33"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:elevation="10dp"
-        android:text="Max Month"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView15"
-        app:layout_constraintStart_toStartOf="@+id/cardView15"
-        app:layout_constraintTop_toTopOf="@+id/cardView15" />
+            <TextView
+                android:id="@+id/textView33"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:elevation="10dp"
+                android:text="Max Month"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="@+id/cardView15"
+                app:layout_constraintStart_toStartOf="@+id/cardView15"
+                app:layout_constraintTop_toTopOf="@+id/cardView15" />
 
-    <TextView
-        android:id="@+id/textView34"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:elevation="10dp"
-        android:text="Current year"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView16"
-        app:layout_constraintStart_toStartOf="@+id/cardView16"
-        app:layout_constraintTop_toTopOf="@+id/cardView16" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView10"
+                android:layout_width="93dp"
+                android:layout_height="97dp"
+                android:layout_marginEnd="32dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/cardView9" />
 
-    <TextView
-        android:id="@+id/capacityMonthlyValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
-        android:text="TextView"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView13"
-        app:layout_constraintEnd_toEndOf="@+id/cardView13"
-        app:layout_constraintStart_toStartOf="@+id/cardView13"
-        app:layout_constraintTop_toTopOf="@+id/cardView13" />
 
-    <TextView
-        android:id="@+id/capacityMaxDayValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
-        android:text="TextView"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView14"
-        app:layout_constraintEnd_toEndOf="@+id/cardView14"
-        app:layout_constraintStart_toStartOf="@+id/cardView14"
-        app:layout_constraintTop_toTopOf="@+id/cardView14" />
+            <TextView
+                android:id="@+id/capacityMaxMonthCurrentValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                android:text="TextView"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView15"
+                app:layout_constraintEnd_toEndOf="@+id/cardView15"
+                app:layout_constraintStart_toStartOf="@+id/cardView15"
+                app:layout_constraintTop_toTopOf="@+id/cardView15" />
 
-    <TextView
-        android:id="@+id/capacityMaxMonthCurrentValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
-        android:text="TextView"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView15"
-        app:layout_constraintEnd_toEndOf="@+id/cardView15"
-        app:layout_constraintStart_toStartOf="@+id/cardView15"
-        app:layout_constraintTop_toTopOf="@+id/cardView15" />
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:elevation="10dp"
+                android:text="Current"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="@+id/cardView8"
+                app:layout_constraintStart_toStartOf="@+id/cardView8"
+                app:layout_constraintTop_toTopOf="@+id/cardView8" />
 
-    <TextView
-        android:id="@+id/capacityYearValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
-        android:text="TextView"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView16"
-        app:layout_constraintEnd_toEndOf="@+id/cardView16"
-        app:layout_constraintStart_toStartOf="@+id/cardView16"
-        app:layout_constraintTop_toTopOf="@+id/cardView16" />
+            <TextView
+                android:id="@+id/capacityYearValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                android:text="TextView"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView16"
+                app:layout_constraintEnd_toEndOf="@+id/cardView16"
+                app:layout_constraintStart_toStartOf="@+id/cardView16"
+                app:layout_constraintTop_toTopOf="@+id/cardView16" />
 
-    <TextView
-        android:id="@+id/textView39"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="This week"
-        android:textColor="#FFFFFF"
-        android:textSize="21sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView14" />
+            <TextView
+                android:id="@+id/statsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Stats"
+                android:textColor="#FFFFFF"
+                android:textSize="21dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView8" />
 
-    <Button
-        android:id="@+id/Thursday"
-        android:layout_width="65dp"
-        android:layout_height="28dp"
-        android:background="#00FFFFFF"
-        android:text="Thursday"
-        android:textColor="#FFFFFF"
-        android:textSize="6sp"
-        app:layout_constraintStart_toEndOf="@+id/Wednesday"
-        app:layout_constraintTop_toTopOf="@+id/Wednesday"
-        app:strokeColor="#000000"
-        app:strokeWidth="0dp" />
+            <TextView
+                android:id="@+id/textView39"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Average per weekday"
+                android:textColor="#FFFFFF"
+                android:textSize="21sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView14" />
 
-    <Button
-        android:id="@+id/Wednesday"
-        android:layout_width="70dp"
-        android:layout_height="28dp"
-        android:background="#00FFFFFF"
-        android:text="Wednesday"
-        android:textColor="#FFFFFF"
-        android:textSize="6sp"
-        app:layout_constraintStart_toEndOf="@+id/Tuesday"
-        app:layout_constraintTop_toTopOf="@+id/Tuesday"
-        app:strokeColor="#000000"
-        app:strokeWidth="0dp"/>
+            <TextView
+                android:id="@+id/capacityTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Capacity"
+                android:textColor="#FFFFFF"
+                android:textSize="21dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/Tuesday"
-        android:layout_width="65dp"
-        android:layout_height="28dp"
-        android:background="#00FFFFFF"
-        android:text="Tuesday"
-        android:textColor="#FFFFFF"
-        android:textSize="6sp"
-        app:layout_constraintStart_toEndOf="@+id/Monday"
-        app:layout_constraintTop_toTopOf="@+id/Monday"
-        app:strokeColor="#000000"
-        app:strokeWidth="0dp"/>
+            <TextView
+                android:id="@+id/textView34"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:elevation="10dp"
+                android:text="Current year"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="@+id/cardView16"
+                app:layout_constraintStart_toStartOf="@+id/cardView16"
+                app:layout_constraintTop_toTopOf="@+id/cardView16" />
 
-    <Button
-        android:id="@+id/Monday"
-        android:layout_width="65dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:background="#00FFFFFF"
-        android:text="Monday"
-        android:textColor="#FFFFFF"
-        android:textSize="6sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView39"
-        app:strokeColor="#000000"
-        app:strokeWidth="0dp"/>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView12"
+                android:layout_width="93dp"
+                android:layout_height="97dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/statsTitle" />
 
-    <Button
-        android:id="@+id/Friday"
-        android:layout_width="65dp"
-        android:layout_height="28dp"
-        android:background="#00FFFFFF"
-        android:text="Friday"
-        android:textColor="#FFFFFF"
-        android:textSize="6sp"
-        app:layout_constraintStart_toEndOf="@+id/Thursday"
-        app:layout_constraintTop_toTopOf="@+id/Thursday"
-        app:strokeColor="#000000"
-        app:strokeWidth="0dp"/>
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:elevation="10dp"
+                android:text="Today"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="@+id/cardView10"
+                app:layout_constraintStart_toStartOf="@+id/cardView10"
+                app:layout_constraintTop_toTopOf="@+id/cardView10" />
 
-    <Button
-        android:id="@+id/Saturday"
-        android:layout_width="65dp"
-        android:layout_height="28dp"
-        android:background="#00FFFFFF"
-        android:text="Saturday"
-        android:textColor="#FFFFFF"
-        android:textSize="6sp"
-        app:layout_constraintBottom_toBottomOf="@+id/Friday"
-        app:layout_constraintStart_toEndOf="@+id/Friday"
-        app:strokeColor="#000000"
-        app:strokeWidth="0dp"/>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView8"
+                android:layout_width="93dp"
+                android:layout_height="97dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/capacityTitle" />
 
-    <ImageView
-        android:id="@+id/imageView12"
-        android:layout_width="0dp"
-        android:layout_height="97dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_baseline_graphic_eq_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Wednesday"/>
+            <TextView
+                android:id="@+id/capacityCurrentValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                android:text="TextView"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView8"
+                app:layout_constraintEnd_toEndOf="@+id/cardView8"
+                app:layout_constraintStart_toStartOf="@+id/cardView8"
+                app:layout_constraintTop_toTopOf="@+id/cardView8" />
+
+            <TextView
+                android:id="@+id/textView32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:elevation="10dp"
+                android:text="Max Day"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="@+id/cardView14"
+                app:layout_constraintStart_toStartOf="@+id/cardView14"
+                app:layout_constraintTop_toTopOf="@+id/cardView14" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView13"
+                android:layout_width="93dp"
+                android:layout_height="97dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintEnd_toStartOf="@+id/cardView16"
+                app:layout_constraintStart_toEndOf="@+id/cardView12"
+                app:layout_constraintTop_toTopOf="@+id/cardView12">
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView39"
+                app:layout_constraintTop_toBottomOf="@+id/textView39">
+
+                <Button
+                    android:id="@+id/Wednesday"
+                    android:layout_width="55dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:background="#00FFFFFF"
+                    android:padding="0dp"
+                    android:text="Wednesday"
+                    android:textColor="#FFFFFF"
+                    android:textSize="8sp"
+                    app:layout_constraintStart_toEndOf="@+id/Tuesday"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0dp" />
+
+                <Button
+                    android:id="@+id/Monday"
+                    android:layout_width="50dp"
+                    android:layout_height="20dp"
+                    android:background="#00FFFFFF"
+                    android:padding="0dp"
+                    android:text="Monday"
+                    android:textColor="#FFFFFF"
+                    android:textSize="8sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0dp" />
+
+                <Button
+                    android:id="@+id/Saturday"
+                    android:layout_width="50dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:background="#00FFFFFF"
+                    android:padding="0dp"
+                    android:text="Saturday"
+                    android:textColor="#FFFFFF"
+                    android:textSize="8sp"
+                    app:layout_constraintStart_toEndOf="@+id/Friday"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0dp" />
+
+                <Button
+                    android:id="@+id/Thursday"
+                    android:layout_width="50dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:background="#00FFFFFF"
+                    android:padding="0dp"
+                    android:text="Thursday"
+                    android:textColor="#FFFFFF"
+                    android:textSize="8sp"
+                    app:layout_constraintStart_toEndOf="@+id/Wednesday"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0dp" />
+
+                <Button
+                    android:id="@+id/Tuesday"
+                    android:layout_width="50dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:background="#00FFFFFF"
+                    android:padding="0dp"
+                    android:text="Tuesday"
+                    android:textColor="#FFFFFF"
+                    android:textSize="8sp"
+                    app:layout_constraintStart_toEndOf="@+id/Monday"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0dp" />
+
+                <Button
+                    android:id="@+id/Friday"
+                    android:layout_width="50dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:background="#00FFFFFF"
+                    android:padding="0dp"
+                    android:text="Friday"
+                    android:textColor="#FFFFFF"
+                    android:textSize="8sp"
+                    app:layout_constraintStart_toEndOf="@+id/Thursday"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0dp" />
+
+                <vough.example.ipcagym.views.VerticalBarCapacityView
+                    android:id="@+id/capacityWednesday"
+                    android:layout_width="20dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/capacitySaturday"
+                    app:layout_constraintEnd_toEndOf="@+id/Wednesday"
+                    app:layout_constraintStart_toStartOf="@+id/Wednesday"
+                    app:layout_constraintTop_toTopOf="@+id/capacitySaturday" />
+
+                <vough.example.ipcagym.views.VerticalBarCapacityView
+                    android:id="@+id/capacityThrusday"
+                    android:layout_width="20dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/capacitySaturday"
+                    app:layout_constraintEnd_toEndOf="@+id/Thursday"
+                    app:layout_constraintStart_toStartOf="@+id/Thursday"
+                    app:layout_constraintTop_toTopOf="@+id/capacitySaturday" />
+
+                <vough.example.ipcagym.views.VerticalBarCapacityView
+                    android:id="@+id/capacityTuesday"
+                    android:layout_width="20dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/capacitySaturday"
+                    app:layout_constraintEnd_toEndOf="@+id/Tuesday"
+                    app:layout_constraintStart_toStartOf="@+id/Tuesday"
+                    app:layout_constraintTop_toTopOf="@+id/capacitySaturday" />
+
+                <vough.example.ipcagym.views.VerticalBarCapacityView
+                    android:id="@+id/capacityFriday"
+                    android:layout_width="20dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/capacitySaturday"
+                    app:layout_constraintEnd_toEndOf="@+id/Friday"
+                    app:layout_constraintStart_toStartOf="@+id/Friday"
+                    app:layout_constraintTop_toTopOf="@+id/capacitySaturday" />
+
+                <vough.example.ipcagym.views.VerticalBarCapacityView
+                    android:id="@+id/capacityMonday"
+                    android:layout_width="20dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/capacitySaturday"
+                    app:layout_constraintEnd_toEndOf="@+id/Monday"
+                    app:layout_constraintStart_toStartOf="@+id/Monday"
+                    app:layout_constraintTop_toTopOf="@+id/capacitySaturday" />
+
+                <vough.example.ipcagym.views.VerticalBarCapacityView
+                    android:id="@+id/capacitySaturday"
+                    android:layout_width="20dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:padding="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/Saturday"
+                    app:layout_constraintStart_toStartOf="@+id/Saturday"
+                    app:layout_constraintTop_toBottomOf="@+id/Saturday" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

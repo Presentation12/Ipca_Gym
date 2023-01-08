@@ -16,6 +16,7 @@ import vough.example.ipcagym.data_classes.Ginasio
 import vough.example.ipcagym.data_classes.Plano_Treino
 import vough.example.ipcagym.requests.AtividadeRequests
 import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.views.VerticalBarCapacityView
 import java.util.zip.Inflater
 
 class CapacityManagementActivity : AppCompatActivity() {
@@ -91,10 +92,16 @@ class CapacityManagementActivity : AppCompatActivity() {
                     rootView.findViewById<TextView>(R.id.capacityYearValue).text = result2.yearTotal.toString()
                     rootView.findViewById<TextView>(R.id.capacityMaxDayValue).text = result2.maxDay.toString()
                     rootView.findViewById<TextView>(R.id.capacityMaxMonthCurrentValue).text = result2.maxMonth.toString()
+
+                    //Preencher as barras
+                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityMonday).setPercentagem(result2.averageMonday!!.toFloat())
+                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityTuesday).setPercentagem(result2.averageTuesday!!.toFloat())
+                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityWednesday).setPercentagem(result2.averageWednesday!!.toFloat())
+                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityThrusday).setPercentagem(result2.averageThursday!!.toFloat())
+                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityFriday).setPercentagem(result2.averageFriday!!.toFloat())
+                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacitySaturday).setPercentagem(result2.averageSaturday!!.toFloat())
                 }
             }
-
-
 
             return rootView
         }
