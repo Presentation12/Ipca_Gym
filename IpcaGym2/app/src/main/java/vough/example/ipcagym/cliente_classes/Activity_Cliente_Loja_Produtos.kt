@@ -102,8 +102,8 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
                     }
                     else
                     {
-                        // buscar id do pedido criado
-                        PedidoRequests.GetAll(lifecycleScope,sessionToken){ resultPedidos ->
+                        // buscar id do pedido criado atraves do ultimo pedido dos pedidos do cliente
+                        PedidoRequests.GetAllByClienteID(lifecycleScope,sessionToken,resultCliente?.id_cliente){ resultPedidos ->
 
                             val lastPedido = resultPedidos.last()
 

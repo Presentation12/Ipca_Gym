@@ -135,6 +135,22 @@ namespace Backend_IPCA_Gym.Controllers
             return new JsonResult(response);
         }
 
+        /// <summary>
+        /// Método http get para receber os dados do serviço de obter todos os pedidos de um cliente
+        /// </summary>
+        /// <param name="targetID">ID do cliente que é pretendido ser retornado os dados</param>
+        /// <returns>Resposta do request que contém a sua mensagem, seu código e a pedido em formato Json</returns>
+        [HttpGet("Pedidos/Cliente/{targetID}"), Authorize(Roles = "Admin, Cliente")]
+        public async Task<IActionResult> GetAllByClienteID(int targetID)
+        {
+            string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");
+            Response response = await PedidoLogic.GetAllByClienteIDLogic(sqlDataSource, targetID);
+
+            if (response.StatusCode != LayerBLL.Utils.StatusCodes.SUCCESS) return StatusCode((int)response.StatusCode);
+
+            return new JsonResult(response);
+        }
+
         #endregion
     }
 }

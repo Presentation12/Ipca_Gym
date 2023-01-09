@@ -1,6 +1,8 @@
 package vough.example.ipcagym.cliente_classes
 
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -8,9 +10,13 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Pedido_Join
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.PedidoLojaRequests
+import vough.example.ipcagym.requests.PedidoRequests
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -26,15 +32,33 @@ class Activity_Cliente_Loja_Pedido_Details : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_loja_pedido_details)
 
-        list_produtos_pedido.add(Pedido_Join(1,1,null,null,1,1,"Batata","Food",12.3,"200gr","","",1,20))
-        list_produtos_pedido.add(Pedido_Join(1,1,null,null,1,1,"Rojão do bolso do pedro","Food",12.3,"200gr","","",1,20))
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
         val id_pedido = intent.getIntExtra("id_pedido", -1)
         val id_cliente = intent.getIntExtra("id_cliente", -1)
         val data_pedido = intent.getStringExtra("data_pedido")
         var estado_pedido = intent.getStringExtra("estado_pedido")
 
-        val image_view = findViewById<ImageView>(R.id.profile_pic)
+        val imageView = findViewById<ImageView>(R.id.profile_pic)
+
+        ClienteRequests.GetByToken(lifecycleScope,sessionToken){ resultCliente ->
+            if (resultCliente != null)
+            {
+                if (resultCliente?.foto_perfil != null)
+                {
+                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
+                    imageView.setImageURI(imageUri)
+                }
+
+                PedidoRequests.GetAllConnectionClient(lifecycleScope,sessionToken,id_pedido){ resultJoin ->
+                    list_produtos_pedido = resultJoin
+                    produto_pedido_adapter.notifyDataSetChanged()
+                }
+            }
+        }
+
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = arrayOf("Conta", "Definições", "Sair")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
@@ -49,7 +73,7 @@ class Activity_Cliente_Loja_Pedido_Details : AppCompatActivity() {
                 // Do nothing
             }
         }
-        image_view.setOnClickListener {
+        imageView.setOnClickListener {
             spinner.performClick()
         }
 
@@ -100,7 +124,17 @@ class Activity_Cliente_Loja_Pedido_Details : AppCompatActivity() {
         if (estado_pedido == "Ativo") botao_cancelar.visibility = View.VISIBLE
         botao_cancelar.setOnClickListener {
             val intent = Intent(this@Activity_Cliente_Loja_Pedido_Details, Activity_Cliente_Loja_Pedidos::class.java)
-            estado_pedido = "Cancelado"
+            // remove os pedidos loja e inativa pedido
+            PedidoLojaRequests.DeletePedidoLoja(lifecycleScope,sessionToken,id_pedido){ resultCancelarPedido ->
+                if (resultCancelarPedido == "User not found")
+                {
+                    // erro
+                }
+                else
+                {
+                    // certo
+                }
+            }
             startActivity(intent)
         }
     }

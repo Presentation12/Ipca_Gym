@@ -1,6 +1,8 @@
 package vough.example.ipcagym.cliente_classes
 
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -8,9 +10,12 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Pedido
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.PedidoRequests
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -26,11 +31,32 @@ class Activity_Cliente_Loja_Pedidos : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_loja_pedidos)
 
-        list_pedidos.add(Pedido(1,1, LocalDateTime.of(2023,1,20,16,30,0),"Ativo"))
-        list_pedidos.add(Pedido(1,1, LocalDateTime.of(2023,2,10,12,0,0),"Cancelado"))
-        list_pedidos.add(Pedido(1,1, LocalDateTime.of(2023,3,30,19,40,0),"Inativo"))
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
-        val image_view = findViewById<ImageView>(R.id.profile_pic)
+        val imageView = findViewById<ImageView>(R.id.profile_pic)
+
+        ClienteRequests.GetByToken(lifecycleScope,sessionToken){ resultCliente ->
+            if (resultCliente != null)
+            {
+                if (resultCliente?.foto_perfil != null)
+                {
+                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
+                    imageView.setImageURI(imageUri)
+                }
+
+                PedidoRequests.GetAllByClienteID(lifecycleScope, sessionToken, resultCliente.id_cliente){ resultPedidosCliente ->
+                    if (resultPedidosCliente.count() > 0)
+                    {
+                        list_pedidos = resultPedidosCliente
+                        pedidos_adapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
+
+
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = arrayOf("Conta", "Definições", "Sair")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
@@ -45,7 +71,7 @@ class Activity_Cliente_Loja_Pedidos : AppCompatActivity() {
                 // Do nothing
             }
         }
-        image_view.setOnClickListener {
+        imageView.setOnClickListener {
             spinner.performClick()
         }
 
@@ -106,8 +132,6 @@ class Activity_Cliente_Loja_Pedidos : AppCompatActivity() {
             //Clicar num rootView abre os detalhes do pedido
             root_view.setOnClickListener {
                 val intent = Intent(this@Activity_Cliente_Loja_Pedidos, Activity_Cliente_Loja_Pedido_Details::class.java)
-
-                //TODO: ?mandar o pedido_loja e loja junto?
 
                 intent.putExtra("id_pedido", list_pedidos[position].id_pedido)
                 intent.putExtra("id_cliente", list_pedidos[position].id_cliente)

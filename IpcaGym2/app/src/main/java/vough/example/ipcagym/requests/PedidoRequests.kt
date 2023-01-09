@@ -245,4 +245,43 @@ object PedidoRequests {
             }
         }
     }
+
+    fun GetAllByClienteID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (ArrayList<Pedido>) -> Unit){
+        scope.launch(Dispatchers.IO) {
+            val request = Request.Builder()
+                .url(UtilsForRequests.baseURL + "/api/Pedido/Pedidos/Cliente/$targetID")
+                .get()
+                .header("Authorization", "Bearer $token")
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                val statusCode = response.code
+                var pedidos = arrayListOf<Pedido>()
+
+                if(statusCode == 200) {
+                    val result = response.body!!.string()
+
+                    val jsonObject = JSONObject(result)
+                    val JSONData = jsonObject.getJSONObject("data")
+                    val JSONList = JSONData.getJSONArray("value")
+
+                    for (i in 0 until JSONList.length()) {
+                        val item = JSONList.getJSONObject(i)
+                        val pedido = Pedido.fromJson(item)
+                        pedidos.add(pedido)
+                    }
+
+                    scope.launch(Dispatchers.Main){
+                        callback(pedidos)
+                    }
+                }
+                else
+                    scope.launch(Dispatchers.Main){
+                        callback(pedidos)
+                    }
+            }
+        }
+    }
 }
