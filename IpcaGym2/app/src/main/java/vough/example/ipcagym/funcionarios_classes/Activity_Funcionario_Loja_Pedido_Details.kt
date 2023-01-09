@@ -2,6 +2,7 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -9,9 +10,17 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Funcionario
+import vough.example.ipcagym.data_classes.Pedido
 import vough.example.ipcagym.data_classes.Pedido_Join
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.PedidoLojaRequests
+import vough.example.ipcagym.requests.PedidoRequests
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class Activity_Funcionario_Loja_Pedido_Details : AppCompatActivity() {
@@ -26,12 +35,54 @@ class Activity_Funcionario_Loja_Pedido_Details : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_loja_pedido_details)
 
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
         val id_pedido = intent.getIntExtra("id_pedido", -1)
         val id_cliente = intent.getIntExtra("id_cliente", -1)
         val data_pedido = intent.getStringExtra("data_pedido")
         var estado_pedido = intent.getStringExtra("estado_pedido")
 
-        val image_view = findViewById<ImageView>(R.id.profile_pic)
+        var data_pedido_formatado = LocalDateTime.parse(data_pedido, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+
+        val imageView = findViewById<ImageView>(R.id.profile_pic)
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultFuncionario ->
+            if (resultFuncionario != null)
+            {
+                if (resultFuncionario.foto_funcionario != null)
+                {
+                    val imageUri: Uri = Uri.parse(resultFuncionario.foto_funcionario)
+                    imageView.setImageURI(imageUri)
+                }
+
+                ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente){ resultCliente ->
+
+                    var imageViewCliente = findViewById<ImageView>(R.id.profile_pic_user)
+                    if (resultCliente?.foto_perfil != null)
+                    {
+                        val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
+                        imageViewCliente.setImageURI(imageUri)
+                    }
+                    findViewById<TextView>(R.id.textViewNomeUser).text =  resultCliente?.nome
+                }
+
+                PedidoRequests.GetAllConnectionClient(lifecycleScope,sessionToken,id_cliente){ resultJoinsCliente ->
+                    if (resultJoinsCliente != null)
+                    {
+                        for (pedidoLoja in resultJoinsCliente)
+                        {
+                            if (pedidoLoja.id_pedido == id_pedido)
+                            {
+                                list_produtos_pedido.add(pedidoLoja)
+                            }
+                        }
+                        produto_pedido_adapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
+
         var counter = 0
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = listOf("Account", "Settings", "Logout", "")
@@ -79,7 +130,7 @@ class Activity_Funcionario_Loja_Pedido_Details : AppCompatActivity() {
                 spinner.setSelection(3)
             }
         }
-        image_view.setOnClickListener {
+        imageView.setOnClickListener {
             spinner.performClick()
         }
 
@@ -87,10 +138,6 @@ class Activity_Funcionario_Loja_Pedido_Details : AppCompatActivity() {
         var string : String = "(" + estado_pedido + ")"
         findViewById<TextView>(R.id.textViewEstadoPedido).text = string
         findViewById<TextView>(R.id.textViewDataPedido).text =  data_pedido?.format(date_time_formatter).toString()
-
-        //TODO: cliente
-        //image cliente
-        //findViewById<TextView>(R.id.textViewNomeUser).text =  nome_cliente
         findViewById<TextView>(R.id.textViewIDCliente).text =  id_cliente.toString()
 
         val list_view_produtos_pedido = findViewById<ListView>(R.id.listviewProdutos)
@@ -106,6 +153,18 @@ class Activity_Funcionario_Loja_Pedido_Details : AppCompatActivity() {
         if(estado_pedido == "Ativo") botao_entregar.visibility = View.VISIBLE
         botao_entregar.setOnClickListener {
             estado_pedido = "Inativo" //entregue
+            var editPedido = Pedido(id_pedido,id_cliente,data_pedido_formatado,estado_pedido)
+            PedidoRequests.Patch(lifecycleScope, sessionToken, id_pedido, editPedido){ resultEditPedido ->
+                if (resultEditPedido == "User not found")
+                {
+                    Toast.makeText(this@Activity_Funcionario_Loja_Pedido_Details, "Error: Edit fail", Toast.LENGTH_LONG).show()
+                }
+                else
+                {
+                    finish()
+                    startActivity(Intent(this@Activity_Funcionario_Loja_Pedido_Details, Activity_Funcionario_Loja_Pedidos::class.java))
+                }
+            }
         }
 
         val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)

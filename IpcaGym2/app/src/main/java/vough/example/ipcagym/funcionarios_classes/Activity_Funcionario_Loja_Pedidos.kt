@@ -2,14 +2,20 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Funcionario
 import vough.example.ipcagym.data_classes.Pedido
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.PedidoRequests
 import java.time.format.DateTimeFormatter
 
 class Activity_Funcionario_Loja_Pedidos : AppCompatActivity() {
@@ -18,11 +24,37 @@ class Activity_Funcionario_Loja_Pedidos : AppCompatActivity() {
     var list_pedidos = arrayListOf<Pedido>()
     var pedidos_adapter = AdapterPedido()
 
+    // TODO verificar
+    var sessionToken : String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_loja_pedidos_list)
 
-        val image_view = findViewById<ImageView>(R.id.profile_pic)
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        sessionToken = preferences.getString("session_token", null)
+
+        val imageView = findViewById<ImageView>(R.id.profile_pic)
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultFuncionario ->
+            if(resultFuncionario != null)
+            {
+                if (resultFuncionario.foto_funcionario != null)
+                {
+                    val imageUri: Uri = Uri.parse(resultFuncionario.foto_funcionario)
+                    imageView.setImageURI(imageUri)
+                }
+
+                PedidoRequests.GetAllByGinasioID(lifecycleScope, sessionToken, resultFuncionario.id_ginasio){ resultPedidos ->
+                    if (resultPedidos.count() > 0)
+                    {
+                        list_pedidos = resultPedidos
+                        pedidos_adapter.notifyDataSetChanged()
+                    }
+                }
+
+            }
+        }
 
         var counter = 0
         val spinner = findViewById<Spinner>(R.id.spinner)
@@ -119,8 +151,15 @@ class Activity_Funcionario_Loja_Pedidos : AppCompatActivity() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val root_view = layoutInflater.inflate(R.layout.row_pedido,parent,false)
 
-            val image_cliente_view = root_view.findViewById<TextView>(R.id.profile_pic_activity)
-            //TODO: image do cliente
+            val image_cliente_view = root_view.findViewById<ImageView>(R.id.profile_pic_activity)
+            ClienteRequests.GetByID(lifecycleScope, sessionToken, list_pedidos[position].id_cliente){ resultCliente ->
+                if (resultCliente != null && resultCliente.foto_perfil != null)
+                {
+                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
+                    image_cliente_view.setImageURI(imageUri)
+                }
+            }
+
             val data_pedido_view = root_view.findViewById<TextView>(R.id.dataPedido)
             data_pedido_view.text = list_pedidos[position].data_pedido?.format(date_time_formatter).toString() //TODO: substituir pelo nome quando link
             val estado_pedido_view = root_view.findViewById<TextView>(R.id.estadoPedido)
