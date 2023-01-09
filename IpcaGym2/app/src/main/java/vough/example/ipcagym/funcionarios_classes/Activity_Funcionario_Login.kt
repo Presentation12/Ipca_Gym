@@ -21,12 +21,12 @@ class Activity_Funcionario_Login : AppCompatActivity() {
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
-        /*if(sessionToken != "") {
+        if(sessionToken != "") {
             //val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Pagina_Inicial::class.java)
-            val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Capacity::class.java)
+            val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Marcacoes::class.java)
             finish()
             startActivity(intentStart)
-        }*/
+        }
 
         //TODO: CERTIFICAR QUE O QUE O CODE NÃO SEJA LONG (VER TAMANHO DO CODE)
         val code = findViewById<AppCompatEditText>(R.id.mail).text
@@ -48,7 +48,7 @@ class Activity_Funcionario_Login : AppCompatActivity() {
 
                         editor.apply()
 
-                        val intentStart = Intent(this@Activity_Funcionario_Login,Activity_Gerente_Funcionarios_List::class.java)
+                        val intentStart = Intent(this@Activity_Funcionario_Login,Activity_Funcionario_Flux_Control::class.java)
                         finish()
                         startActivity(intentStart)
                     } else {

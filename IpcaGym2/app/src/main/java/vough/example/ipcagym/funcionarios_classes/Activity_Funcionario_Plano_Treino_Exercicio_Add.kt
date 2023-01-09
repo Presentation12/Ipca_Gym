@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.requests.ExercicioRequests
 import java.time.LocalTime
@@ -182,6 +183,42 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Add : AppCompatActivity() {
                 }
             }else{
                 Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Add, "You need to insert more information!", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
+
+        bottomNavigationView.setOnItemSelectedListener{ item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    startActivity(Intent(this@Activity_Funcionario_Plano_Treino_Exercicio_Add, Activity_Funcionario_Pagina_Inicial::class.java))
+                    finish()
+
+                    true
+                }
+                R.id.nav_clients -> {
+                    startActivity(Intent(this@Activity_Funcionario_Plano_Treino_Exercicio_Add, Activity_Funcionario_Clientes_List::class.java))
+                    finish()
+
+                    true
+                }
+                R.id.nav_shopping -> {
+                    startActivity(Intent(this@Activity_Funcionario_Plano_Treino_Exercicio_Add, Activity_Funcionario_Loja_Produtos::class.java))
+                    finish()
+
+                    true
+                }
+                R.id.nav_capacity -> {
+                    startActivity(Intent(this@Activity_Funcionario_Plano_Treino_Exercicio_Add, Activity_Funcionario_Capacity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_history -> {
+                    startActivity(Intent(this@Activity_Funcionario_Plano_Treino_Exercicio_Add, Activity_Funcionario_Flux_Control::class.java))
+                    finish()
+                    true
+                }
+                else -> false
             }
         }
 

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -12,7 +13,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
+import vough.example.ipcagym.cliente_classes.*
 import vough.example.ipcagym.data_classes.Atividade
 import vough.example.ipcagym.data_classes.Funcionario
 import vough.example.ipcagym.requests.AtividadeRequests
@@ -108,6 +111,41 @@ class Activity_Funcionario_Flux_Control : AppCompatActivity() {
             spinner.performClick()
         }
 
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
+
+        bottomNavigationView.setSelectedItemId(R.id.nav_history);
+        bottomNavigationView.setOnItemSelectedListener{ item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Pagina_Inicial::class.java))
+                    finish()
+
+                    true
+                }
+                R.id.nav_clients -> {
+                    startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Clientes_List::class.java))
+                    finish()
+
+                    true
+                }
+                R.id.nav_shopping -> {
+                    startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Loja_Produtos::class.java))
+                    finish()
+
+                    true
+                }
+                R.id.nav_capacity -> {
+                    startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Capacity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_history -> {
+                    true
+                }
+                else -> false
+            }
+        }
+
         receiverNewActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode == Activity.RESULT_OK){
                 val id_ginasio = funcionarioRefresh?.id_ginasio
@@ -116,6 +154,7 @@ class Activity_Funcionario_Flux_Control : AppCompatActivity() {
                 val state = it.data?.getBooleanExtra("state", true)
                 var biggestDate = LocalDateTime.MIN
                 var isNewClient = true
+
 
                 if(state == true){
                     for(activity in activityList){
@@ -193,10 +232,6 @@ class Activity_Funcionario_Flux_Control : AppCompatActivity() {
                         }
                     }
                 }
-            }
-            else
-            {
-                Toast.makeText(this@Activity_Funcionario_Flux_Control,"Error on adding a new activity", Toast.LENGTH_LONG).show()
             }
         }
 

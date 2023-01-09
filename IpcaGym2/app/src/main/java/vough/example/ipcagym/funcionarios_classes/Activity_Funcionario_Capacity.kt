@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Funcionario
 import vough.example.ipcagym.data_classes.Plano_Treino
@@ -89,6 +90,41 @@ class Activity_Funcionario_Capacity : AppCompatActivity() {
 
         imageView.setOnClickListener {
             spinner.performClick()
+        }
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
+
+        bottomNavigationView.setSelectedItemId(R.id.nav_capacity);
+        bottomNavigationView.setOnItemSelectedListener{ item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    startActivity(Intent(this@Activity_Funcionario_Capacity, Activity_Funcionario_Pagina_Inicial::class.java))
+                    finish()
+
+                    true
+                }
+                R.id.nav_clients -> {
+                    startActivity(Intent(this@Activity_Funcionario_Capacity, Activity_Funcionario_Clientes_List::class.java))
+                    finish()
+
+                    true
+                }
+                R.id.nav_shopping -> {
+                    startActivity(Intent(this@Activity_Funcionario_Capacity, Activity_Funcionario_Loja_Produtos::class.java))
+                    finish()
+
+                    true
+                }
+                R.id.nav_capacity -> {
+                    true
+                }
+                R.id.nav_history -> {
+                    startActivity(Intent(this@Activity_Funcionario_Capacity, Activity_Funcionario_Flux_Control::class.java))
+                    finish()
+                    true
+                }
+                else -> false
+            }
         }
     }
 

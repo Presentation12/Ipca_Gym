@@ -3,14 +3,20 @@ package vough.example.ipcagym.funcionarios_classes
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Marcacao
 import vough.example.ipcagym.requests.ClienteRequests
 import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.MarcacaoRequests
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class Activity_Funcionario_Marcacoes_Details: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,8 +104,61 @@ class Activity_Funcionario_Marcacoes_Details: AppCompatActivity() {
             buttonCancelar.isVisible = false
         }
 
+
         buttonCancelar.setOnClickListener{
-            Toast.makeText(this@Activity_Funcionario_Marcacoes_Details, "Cancelar Consultar", Toast.LENGTH_LONG).show()
+           MarcacaoRequests.PatchCancelMarcacao(lifecycleScope, sessionToken, id_marcacao, Marcacao(
+                id_marcacao,
+                id_funcionario,
+                id_cliente,
+                LocalDateTime.parse(data_marcacao!! + ":00", DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")),
+                descricao,
+                estado)){ result ->
+               if(result != "User not found"){
+                   Toast.makeText(this@Activity_Funcionario_Marcacoes_Details, "Appointment cancelled successfully", Toast.LENGTH_SHORT).show()
+                   finish()
+                   startActivity(Intent(this@Activity_Funcionario_Marcacoes_Details, Activity_Funcionario_Marcacoes::class.java))
+               }
+               else
+                   Toast.makeText(this@Activity_Funcionario_Marcacoes_Details, "Error on cancelling appointment", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        //TODO: REMARCAR CONSULTA
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
+
+        bottomNavigationView.setOnItemSelectedListener{ item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    startActivity(Intent(this@Activity_Funcionario_Marcacoes_Details, Activity_Funcionario_Pagina_Inicial::class.java))
+                    finish()
+
+                    true
+                }
+                R.id.nav_clients -> {
+                    startActivity(Intent(this@Activity_Funcionario_Marcacoes_Details, Activity_Funcionario_Clientes_List::class.java))
+                    finish()
+
+                    true
+                }
+                R.id.nav_shopping -> {
+                    startActivity(Intent(this@Activity_Funcionario_Marcacoes_Details, Activity_Funcionario_Loja_Produtos::class.java))
+                    finish()
+
+                    true
+                }
+                R.id.nav_capacity -> {
+                    startActivity(Intent(this@Activity_Funcionario_Marcacoes_Details, Activity_Funcionario_Capacity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_history -> {
+                    startActivity(Intent(this@Activity_Funcionario_Marcacoes_Details, Activity_Funcionario_Flux_Control::class.java))
+                    finish()
+                    true
+                }
+                else -> false
+            }
         }
     }
 }

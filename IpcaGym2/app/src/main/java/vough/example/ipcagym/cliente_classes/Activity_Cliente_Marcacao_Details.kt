@@ -81,6 +81,8 @@ class Activity_Cliente_Marcacao_Details : AppCompatActivity() {
             spinner.performClick()
         }
 
+        //TODO: REMARCAR CONSULTA
+
         val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
         bottom_navigation_view.setOnItemSelectedListener{ item ->
             when (item.itemId) {

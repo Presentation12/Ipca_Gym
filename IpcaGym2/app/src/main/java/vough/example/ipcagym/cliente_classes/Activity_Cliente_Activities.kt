@@ -11,6 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Atividade
+import vough.example.ipcagym.funcionarios_classes.Activity_Funcionario_Login
+import vough.example.ipcagym.funcionarios_classes.Activity_Funcionario_Perfil_Edit
+import vough.example.ipcagym.funcionarios_classes.Activity_Funcionario_Planos_Nutricionais
+import vough.example.ipcagym.funcionarios_classes.Activity_Funcionario_Settings
 import vough.example.ipcagym.requests.AtividadeRequests
 import vough.example.ipcagym.requests.ClienteRequests
 import java.time.format.DateTimeFormatter
@@ -43,23 +47,52 @@ class Activity_Cliente_Activities : AppCompatActivity(){
 
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
         val spinner = findViewById<Spinner>(R.id.spinner)
+        var counter = 0
+        val options = listOf("Account", "Settings", "Logout", "")
 
-        val options = arrayOf("Conta", "Definições", "Sair")
+        class MyAdapter(context: Context, items: List<String>) : ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, items) {
+            override fun getCount(): Int {
+                return 3
+            }
+        }
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        val adapter = MyAdapter(this@Activity_Cliente_Activities, options)
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
-        val listViewClients = findViewById<ListView>(R.id.listview_funcionarios)
-        listViewClients.adapter = client_adapter
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(this@Activity_Cliente_Activities,options[position], Toast.LENGTH_LONG).show()
+                when (position) {
+                    0 -> {
+                        if(counter == 0){
+                            counter+=1
+                            spinner.setSelection(3)
+                        }
+                        else{
+                            startActivity(Intent(this@Activity_Cliente_Activities, Activity_Cliente_Account::class.java))
+                            spinner.setSelection(3)
+                        }
+                    }
+                    1 -> {
+                        startActivity(Intent(this@Activity_Cliente_Activities, Activity_Cliente_Definitions::class.java))
+                        spinner.setSelection(3)
+                    }
+                    2 -> {
+                        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+                        val editor = preferences.edit()
+                        editor.putString("session_token", "")
+
+                        editor.apply()
+                        finish()
+                        startActivity(Intent(this@Activity_Cliente_Activities, Activity_Cliente_Login::class.java))
+                    }
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
-                // Do nothing
+                spinner.setSelection(3)
             }
         }
 
@@ -67,26 +100,44 @@ class Activity_Cliente_Activities : AppCompatActivity(){
             spinner.performClick()
         }
 
+
+        val listViewClients = findViewById<ListView>(R.id.listview_funcionarios)
+        listViewClients.adapter = client_adapter
+
+        bottomNavigationView.setSelectedItemId(R.id.nav_history);
         bottomNavigationView.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this@Activity_Cliente_Activities,"Main Menu", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Activities, Activity_Cliente_Pagina_Inicial::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_fitness -> {
-                    Toast.makeText(this@Activity_Cliente_Activities,"Treino", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Activities, Activity_Cliente_Planos_Treino::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_shopping -> {
-                    Toast.makeText(this@Activity_Cliente_Activities,"Loja", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Activities, Activity_Cliente_Loja_Produtos::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_diet -> {
-                    Toast.makeText(this@Activity_Cliente_Activities,"Refeicoes", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Activities, Activity_Cliente_Nutricao_Atual::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_history -> {
-                    Toast.makeText(this@Activity_Cliente_Activities,"Atividades", Toast.LENGTH_LONG).show()
+                    val selectedItemId = bottomNavigationView.selectedItemId
+                    if (selectedItemId != R.id.nav_history){
+                        startActivity(Intent(this@Activity_Cliente_Activities, Activity_Cliente_Activities::class.java))
+                        finish()
+                    }
+
                     true
                 }
                 else -> false
