@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +35,7 @@ class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
         val estado = intent.getStringExtra("estado")
         val foto_funcionario = intent.getStringExtra("foto_funcionario")
 
+
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
             if(resultGerente != null)
             {
@@ -60,7 +62,7 @@ class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
 
         if (foto_funcionario != null)
         {
-            val funcionario_image_view = findViewById<ImageView>(R.id.profile_pic)
+            val funcionario_image_view = findViewById<ImageView>(R.id.imageView6)
             val imageUri: Uri = Uri.parse(foto_funcionario)
             funcionario_image_view.setImageURI(imageUri)
         }

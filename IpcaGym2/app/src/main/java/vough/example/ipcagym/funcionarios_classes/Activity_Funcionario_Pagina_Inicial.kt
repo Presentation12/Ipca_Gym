@@ -35,7 +35,7 @@ class Activity_Funcionario_Pagina_Inicial: AppCompatActivity() {
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
             if(result != null)
-                findViewById<TextView>(R.id.textView_funcionario_nome).text = result.nome
+                findViewById<TextView>(R.id.textView5).text = result.nome
         }
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){

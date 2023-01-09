@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -104,6 +105,8 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
         val list_view_funcionario = findViewById<ListView>(R.id.listviewFuncionarios)
         list_view_funcionario.adapter = funcionarios_adapter
 
+        var previousTextLength = 0
+
         //TODO: Search view, quando se carrega fora do teclado, crasha
         val searchFuncionarioBar = findViewById<SearchView>(R.id.searchView)
         searchFuncionarioBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
@@ -112,7 +115,7 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
                 var searchResults = ArrayList<Funcionario>()
 
                 for (func in list_funcionario) {
-                    if (func.nome?.contains(query ?: "") == true) {
+                    if (func.nome?.toLowerCase()?.contains(query?.toLowerCase() ?: "") == true) {
                         searchResults.add(func)
                     }
                 }
@@ -122,15 +125,17 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
                 }
 
                 list_funcionario = searchResults
+                runOnUiThread {
+                    funcionarios_adapter.notifyDataSetChanged()
+                }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-
                 var searchResults = ArrayList<Funcionario>()
 
                 for (func in list_funcionario) {
-                    if (func.nome?.contains(newText ?: "") == true) {
+                    if (func.nome?.toLowerCase()?.contains(newText?.toLowerCase() ?: "") == true) {
                         searchResults.add(func)
                     }
                 }
@@ -140,6 +145,10 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
                 }
 
                 list_funcionario = searchResults
+                runOnUiThread {
+                    funcionarios_adapter.notifyDataSetChanged()
+                }
+
                 return true
             }
         })
