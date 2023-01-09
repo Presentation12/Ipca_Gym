@@ -2,6 +2,7 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -14,8 +15,6 @@ import vough.example.ipcagym.requests.FuncionarioRequests
 
 class Activity_Gerente_Funcionario_Add : AppCompatActivity() {
 
-    var gerenteRefresh : Funcionario? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gerente_funcionario_create)
@@ -27,14 +26,13 @@ class Activity_Gerente_Funcionario_Add : AppCompatActivity() {
         val imageView = findViewById<ImageView>(R.id.profile_pic)
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
-            if(resultGerente != null) gerenteRefresh = resultGerente
-            /* TODO: foto do gerente
-            if (gerenteRefresh?.foto_perfil != null)
-            {
-                val imageUri: Uri = Uri.parse(gerenteRefresh?)
-                imageView.setImageURI(imageUri)
+            if(resultGerente != null) {
+                if (resultGerente.foto_funcionario != null)
+                {
+                    val imageUri: Uri = Uri.parse(resultGerente.foto_funcionario)
+                    imageView.setImageURI(imageUri)
+                }
             }
-            */
         }
 
         var counter = 0
@@ -135,16 +133,21 @@ class Activity_Gerente_Funcionario_Add : AppCompatActivity() {
 
             if (!emptyFields)
             {
-                val newFuncionario = Funcionario(null,gerenteRefresh?.id_ginasio,nome,isAdmin,codigo,codigo.toString(),null,"Ativo")
-                FuncionarioRequests.Post(lifecycleScope,sessionToken,newFuncionario){ resultEditFuncionario ->
-                    if (resultEditFuncionario == "User not found")
-                    {
-                        Toast.makeText(this@Activity_Gerente_Funcionario_Add, "Error on create an employee", Toast.LENGTH_LONG).show()
-                    }
-                    else
-                    {
-                        finish()
-                        startActivity(intent)
+                FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
+                    if(resultGerente != null) {
+                        //TODO: FALTA METER FOTO
+                        val newFuncionario = Funcionario(null,resultGerente.id_ginasio,nome,isAdmin,codigo,codigo.toString(),null,"Ativo", "photo")
+                        FuncionarioRequests.Post(lifecycleScope,sessionToken,newFuncionario){ resultEditFuncionario ->
+                            if (resultEditFuncionario == "User not found")
+                            {
+                                Toast.makeText(this@Activity_Gerente_Funcionario_Add, "Error on create an employee", Toast.LENGTH_LONG).show()
+                            }
+                            else
+                            {
+                                finish()
+                                startActivity(intent)
+                            }
+                        }
                     }
                 }
             }

@@ -32,7 +32,7 @@ class Activity_Cliente_OurTeam : AppCompatActivity() {
         val options = arrayOf("Conta", "Definições", "Sair")
         val listViewFuncionarios= findViewById<ListView>(R.id.listview_funcionarios)
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
-        ourTeamList.add(Funcionario(1,1,"boas",true,1,"bpas","dasd","Ativo"))
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 

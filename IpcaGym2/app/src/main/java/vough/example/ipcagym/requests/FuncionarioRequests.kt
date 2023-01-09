@@ -99,7 +99,8 @@ object FuncionarioRequests {
                   "is_admin": ${newFuncionario.is_admin},
                   "codigo": ${newFuncionario.codigo},
                   "pass_salt": "${newFuncionario.pass_salt}",
-                  "estado": "${newFuncionario.estado}"
+                  "estado": "${newFuncionario.estado}",
+                  "foto_funcionario": "${newFuncionario.foto_funcionario}"
                 }
             """
 
@@ -135,17 +136,36 @@ object FuncionarioRequests {
 
     fun Patch(scope: CoroutineScope, token : String?, targetID: Int, editFuncionario : Funcionario, callback: (String) -> Unit){
         scope.launch(Dispatchers.IO) {
-            val jsonBody = """
-                {
-                  "id_funcionario": ${editFuncionario.id_funcionario},
-                  "id_ginasio": ${editFuncionario.id_ginasio},
-                  "nome": "${editFuncionario.nome}",
-                  "is_admin": ${editFuncionario.is_admin},
-                  "codigo": ${editFuncionario.codigo},
-                  "pass_salt": "${editFuncionario.pass_salt}",
-                  "estado": "${editFuncionario.estado}"
-                }
-            """
+            var jsonBody : String
+
+            if(editFuncionario.foto_funcionario == null || editFuncionario.toString() == null){
+                jsonBody = """
+                    {
+                      "id_funcionario": ${editFuncionario.id_funcionario},
+                      "id_ginasio": ${editFuncionario.id_ginasio},
+                      "nome": "${editFuncionario.nome}",
+                      "is_admin": ${editFuncionario.is_admin},
+                      "codigo": ${editFuncionario.codigo},
+                      "pass_salt": "${editFuncionario.pass_salt}",
+                      "estado": "${editFuncionario.estado}",
+                      "foto_funcionario": ${editFuncionario.foto_funcionario}
+                    }
+                """
+            }
+            else{
+                jsonBody = """
+                    {
+                      "id_funcionario": ${editFuncionario.id_funcionario},
+                      "id_ginasio": ${editFuncionario.id_ginasio},
+                      "nome": "${editFuncionario.nome}",
+                      "is_admin": ${editFuncionario.is_admin},
+                      "codigo": ${editFuncionario.codigo},
+                      "pass_salt": "${editFuncionario.pass_salt}",
+                      "estado": "${editFuncionario.estado}",
+                      "foto_funcionario": "${editFuncionario.foto_funcionario}"
+                    }
+                """
+            }
 
             val request = Request.Builder()
                 .url(UtilsForRequests.baseURL + "/api/Funcionario/$targetID")
@@ -294,7 +314,7 @@ object FuncionarioRequests {
                     "altura": ${newCliente.altura},
                     "gordura": ${newCliente.gordura},
                     "foto_perfil": "${newCliente.foto_perfil}",
-                    "estado": "${newCliente.estado}" 
+                    "estado": "${newCliente.estado}"
                 }
             """
 

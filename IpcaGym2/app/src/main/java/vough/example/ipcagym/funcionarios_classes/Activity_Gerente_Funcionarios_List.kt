@@ -2,6 +2,7 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,6 @@ import vough.example.ipcagym.requests.FuncionarioRequests
 
 class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
 
-    var gerenteRefresh : Funcionario? = null
     var list_funcionario = arrayListOf<Funcionario>()
     var funcionarios_adapter = AdapterFuncionario()
 
@@ -27,26 +27,25 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
-        val image_view = findViewById<ImageView>(R.id.profile_pic)
+        val imageView = findViewById<ImageView>(R.id.profile_pic)
         var listFuncAux = arrayListOf<Funcionario>()
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
-            if(resultGerente != null) gerenteRefresh = resultGerente
-
-            FuncionarioRequests.GetAllByGym(lifecycleScope, sessionToken, resultGerente?.id_ginasio) { resultFuncionarios ->
-
-                /* TODO: foto do gerente
-                if (gerenteRefresh?.foto_perfil != null)
+            if(resultGerente != null){
+                if (resultGerente.foto_funcionario != null)
                 {
-                    val imageUri: Uri = Uri.parse(gerenteRefresh?)
+                    val imageUri: Uri = Uri.parse(resultGerente.foto_funcionario)
                     imageView.setImageURI(imageUri)
                 }
-                */
 
-                list_funcionario = resultFuncionarios
-                listFuncAux = resultFuncionarios
+                FuncionarioRequests.GetAllByGym(lifecycleScope, sessionToken, resultGerente.id_ginasio) { resultFuncionarios ->
+                    if(resultFuncionarios.isNotEmpty()){
+                        list_funcionario = resultFuncionarios
+                        listFuncAux = resultFuncionarios
 
-                funcionarios_adapter.notifyDataSetChanged()
+                        funcionarios_adapter.notifyDataSetChanged()
+                    }
+                }
             }
         }
 
@@ -97,7 +96,8 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
                 spinner.setSelection(3)
             }
         }
-        image_view.setOnClickListener {
+
+        imageView.setOnClickListener {
             spinner.performClick()
         }
 
@@ -193,15 +193,13 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val root_view = layoutInflater.inflate(R.layout.row_funcionario,parent,false)
 
-            //TODO: funcionario não tem atributo foto
-            /*
             if (list_funcionario[position].foto_funcionario != null)
             {
-                val funcionario_image_view = findViewById<ImageView>(R.id.profile_pic_activity)
+                val funcionario_image_view = findViewById<ImageView>(R.id.profile_pic)
                 val imageUri: Uri = Uri.parse(list_funcionario[position].foto_funcionario)
                 funcionario_image_view.setImageURI(imageUri)
             }
-            */
+
             val nome_view = root_view.findViewById<TextView>(R.id.funcionarioName)
             nome_view.text = list_funcionario[position].nome
             val id_view = root_view.findViewById<TextView>(R.id.idFuncionario)
@@ -219,6 +217,7 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
                 intent.putExtra("pass_salt", list_funcionario[position].pass_salt)
                 intent.putExtra("pass_hash", list_funcionario[position].pass_hash)
                 intent.putExtra("estado", list_funcionario[position].estado)
+                intent.putExtra("foto_funcionario", list_funcionario[position].foto_funcionario)
 
                 startActivity(intent)
             }

@@ -42,5 +42,10 @@
         /// </summary>
         /// <example>Ativo</example>
         public string estado { get; set; }
+        /// <summary>
+        /// Foto de perfil do funcionario podendo ser nulo
+        /// </summary>
+        /// <example>C:\OneDrive\funcionario.png</example>
+        public string? foto_funcionario { get; set; }
     }
 }

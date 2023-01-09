@@ -11,6 +11,7 @@ class Funcionario {
     var pass_salt  : String? = null
     var pass_hash  : String? = null
     var estado  : String? = null
+    var foto_funcionario : String? = null
 
     constructor(
         id_funcionario : Int?,
@@ -20,7 +21,8 @@ class Funcionario {
         codigo : Int?,
         pass_salt  : String?,
         pass_hash  : String?,
-        estado  : String?
+        estado  : String?,
+        foto_funcionario : String?
 
     ) {
         this.id_funcionario  = id_funcionario
@@ -31,6 +33,7 @@ class Funcionario {
         this.pass_salt   = pass_salt
         this.pass_hash   = pass_hash
         this.estado   = estado
+        this.foto_funcionario   = foto_funcionario
     }
 
     fun toJson() : JSONObject {
@@ -44,6 +47,7 @@ class Funcionario {
         jsonObj.put("pass_salt", pass_salt)
         jsonObj.put("pass_hash", pass_hash)
         jsonObj.put("estado", estado)
+        jsonObj.put("foto_funcionario", foto_funcionario)
 
         return jsonObj
     }
@@ -58,7 +62,8 @@ class Funcionario {
                 jsonObject.getInt("codigo"),
                 jsonObject.getString("pass_salt"),
                 jsonObject.getString("pass_hash"),
-                jsonObject.getString("estado")
+                jsonObject.getString("estado"),
+                jsonObject.getString("foto_funcionario")
              )
         }
     }

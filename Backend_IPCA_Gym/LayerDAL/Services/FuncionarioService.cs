@@ -50,6 +50,15 @@ namespace LayerDAL.Services
                             funcionario.pass_hash = dataReader["pass_hash"].ToString();
                             funcionario.estado = dataReader["estado"].ToString();
 
+                            if (!Convert.IsDBNull(dataReader["foto_funcionario"]))
+                            {
+                                funcionario.foto_funcionario = dataReader["foto_funcionario"].ToString();
+                            }
+                            else
+                            {
+                                funcionario.foto_funcionario = null;
+                            }
+
                             funcionarios.Add(funcionario);
                         }
 
@@ -128,6 +137,15 @@ namespace LayerDAL.Services
                             funcionario.pass_salt = dataReader["pass_salt"].ToString();
                             funcionario.pass_hash = dataReader["pass_hash"].ToString();
                             funcionario.estado = dataReader["estado"].ToString();
+
+                            if (!Convert.IsDBNull(dataReader["foto_funcionario"]))
+                            {
+                                funcionario.foto_funcionario = dataReader["foto_funcionario"].ToString();
+                            }
+                            else
+                            {
+                                funcionario.foto_funcionario = null;
+                            }
 
                             funcionarios.Add(funcionario);
                         }
@@ -211,6 +229,15 @@ namespace LayerDAL.Services
                             targetFuncionario.pass_hash = reader.GetString(6);
                             targetFuncionario.estado = reader.GetString(7);
 
+                            if (!Convert.IsDBNull(reader["foto_funcionario"]))
+                            {
+                                targetFuncionario.foto_funcionario = reader.GetString(8);
+                            }
+                            else
+                            {
+                                targetFuncionario.foto_funcionario = null;
+                            }
+
                             reader.Close();
                             databaseConnection.Close();
 
@@ -271,8 +298,8 @@ namespace LayerDAL.Services
         public static async Task<bool> PostService(string sqlDataSource, Funcionario newFuncionario)
         {
             string query = @"
-                            insert into dbo.Funcionario (id_ginasio, nome, is_admin, codigo, pass_salt, pass_hash, estado)
-                            values (@id_ginasio, @nome, @is_admin, @codigo, @pass_salt, @pass_hash, @estado)";
+                            insert into dbo.Funcionario (id_ginasio, nome, is_admin, codigo, pass_salt, pass_hash, estado, foto_funcionario)
+                            values (@id_ginasio, @nome, @is_admin, @codigo, @pass_salt, @pass_hash, @estado, @foto_funcionario)";
 
             try
             {
@@ -295,6 +322,9 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("pass_salt", newFuncionario.pass_salt);
 
                         myCommand.Parameters.AddWithValue("estado", newFuncionario.estado);
+
+                        if (!string.IsNullOrEmpty(newFuncionario.foto_funcionario)) myCommand.Parameters.AddWithValue("foto_funcionario", newFuncionario.foto_funcionario);
+                        else myCommand.Parameters.AddWithValue("foto_funcionario", DBNull.Value);
 
                         dataReader = myCommand.ExecuteReader();
 
@@ -352,7 +382,8 @@ namespace LayerDAL.Services
                             nome = @nome, 
                             is_admin = @is_admin,
                             codigo = @codigo,
-                            estado = @estado
+                            estado = @estado,
+                            foto_funcionario = @foto_funcionario
                             where id_funcionario = @id_funcionario";
 
             try
@@ -371,6 +402,11 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("is_admin", funcionario.is_admin != null ? funcionario.is_admin : funcionarioAtual.is_admin);
                         myCommand.Parameters.AddWithValue("codigo", funcionario.codigo != 0 ? funcionario.codigo : funcionarioAtual.codigo);
                         myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(funcionario.estado) ? funcionario.estado : funcionarioAtual.estado);
+                        
+                        if(funcionarioAtual.foto_funcionario != null)
+                            myCommand.Parameters.AddWithValue("foto_funcionario", funcionario.foto_funcionario != null ? funcionario.foto_funcionario : funcionarioAtual.foto_funcionario);
+                        else
+                            myCommand.Parameters.AddWithValue("foto_funcionario", DBNull.Value);
 
                         dataReader = myCommand.ExecuteReader();
 
@@ -573,6 +609,14 @@ namespace LayerDAL.Services
                             targetFuncionario.pass_salt = reader.GetString(5);
                             targetFuncionario.pass_hash = reader.GetString(6);
                             targetFuncionario.estado = reader.GetString(7);
+                            if (!Convert.IsDBNull(reader["foto_funcionario"]))
+                            {
+                                targetFuncionario.foto_funcionario = reader.GetString(8);
+                            }
+                            else
+                            {
+                                targetFuncionario.foto_funcionario = null;
+                            }
 
                             reader.Close();
                             databaseConnection.Close();
@@ -725,7 +769,6 @@ namespace LayerDAL.Services
                 return false;
             }
         }
-
 
         /// <summary>
         /// Alteração do valor de lotacao atual no ginasio
@@ -894,6 +937,14 @@ namespace LayerDAL.Services
                             targetFuncionario.pass_salt = reader.GetString(5);
                             targetFuncionario.pass_hash = reader.GetString(6);
                             targetFuncionario.estado = reader.GetString(7);
+                            if (!Convert.IsDBNull(reader["foto_funcionario"]))
+                            {
+                                targetFuncionario.foto_funcionario = reader.GetString(8);
+                            }
+                            else
+                            {
+                                targetFuncionario.foto_funcionario = null;
+                            }
 
                             reader.Close();
                             databaseConnection.Close();
@@ -982,6 +1033,15 @@ namespace LayerDAL.Services
                             funcionario.pass_salt = dataReader["pass_salt"].ToString();
                             funcionario.pass_hash = dataReader["pass_hash"].ToString();
                             funcionario.estado = dataReader["estado"].ToString();
+
+                            if (!Convert.IsDBNull(dataReader["foto_funcionario"]))
+                            {
+                                funcionario.foto_funcionario = dataReader["foto_funcionario"].ToString();
+                            }
+                            else
+                            {
+                                funcionario.foto_funcionario = null;
+                            }
 
                             funcionarios.Add(funcionario);
                         }

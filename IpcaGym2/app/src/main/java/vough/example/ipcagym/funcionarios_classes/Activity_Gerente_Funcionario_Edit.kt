@@ -2,7 +2,9 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -13,9 +15,6 @@ import vough.example.ipcagym.data_classes.Funcionario
 import vough.example.ipcagym.requests.FuncionarioRequests
 
 class Activity_Gerente_Funcionario_Edit : AppCompatActivity() {
-
-    var gerenteRefresh : Funcionario? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gerente_funcionario_edit)
@@ -32,18 +31,18 @@ class Activity_Gerente_Funcionario_Edit : AppCompatActivity() {
         val pass_salt = intent.getStringExtra("pass_salt")
         val pass_hash = intent.getStringExtra("pass_hash")
         val estado = intent.getStringExtra("estado")
+        val foto_funcionario = intent.getStringExtra("foto_funcionario")
 
-        val image_view = findViewById<ImageView>(R.id.profile_pic)
+        val imageView = findViewById<ImageView>(R.id.profile_pic)
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
-            if(resultGerente != null) gerenteRefresh = resultGerente
-            /* TODO: foto do gerente
-            if (gerenteRefresh?.foto_perfil != null)
-            {
-                val imageUri: Uri = Uri.parse(gerenteRefresh?)
-                imageView.setImageURI(imageUri)
+            if(resultGerente != null){
+                if (resultGerente.foto_funcionario != null)
+                {
+                    val imageUri: Uri = Uri.parse(resultGerente.foto_funcionario)
+                    imageView.setImageURI(imageUri)
+                }
             }
-            */
         }
 
         var counter = 0
@@ -94,19 +93,17 @@ class Activity_Gerente_Funcionario_Edit : AppCompatActivity() {
             }
         }
 
-        image_view.setOnClickListener {
+        imageView.setOnClickListener {
             spinner.performClick()
         }
 
-        // TODO: funcionario sem atributo foto
-        /*
-        if (foto_perfil != null)
+        if (foto_funcionario != null)
         {
-            val cliente_image_view = findViewById<ImageView>(R.id.profile_pic)
-            val imageUri: Uri = Uri.parse(foto_perfil)
+            val cliente_image_view = findViewById<ImageView>(R.id.profile_funcionario_pic)
+            val imageUri: Uri = Uri.parse(foto_funcionario)
             cliente_image_view.setImageURI(imageUri)
         }
-        */
+
         val editNomeFuncionario = findViewById<TextView>(R.id.editTextNomeFuncionario)
         editNomeFuncionario.hint = nome
         val editCodigoFuncionario = findViewById<TextView>(R.id.editTextCodigoFuncionario)
@@ -128,7 +125,7 @@ class Activity_Gerente_Funcionario_Edit : AppCompatActivity() {
             }
             is_admin = editIsAdmin.isChecked
 
-            val funcionarioEditado = Funcionario(id_funcionario,id_ginasio,nome,is_admin,codigo,pass_salt,pass_hash,estado)
+            val funcionarioEditado = Funcionario(id_funcionario,id_ginasio,nome,is_admin,codigo,pass_salt,pass_hash,estado, foto_funcionario)
             FuncionarioRequests.Patch(lifecycleScope,sessionToken,id_funcionario,funcionarioEditado){ resultEditFuncionario ->
                 if (resultEditFuncionario == "User not found")
                 {

@@ -16,7 +16,7 @@ class Activity_Funcionario_Pagina_Inicial: AppCompatActivity() {
 
     val date_time_formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
     var adapter_comment = commentAdapter()
-    var funcionario = Funcionario(4,2,"Frederico Botelho",null,126789,"null","null","ativo")
+    var funcionario = Funcionario(4,2,"Frederico Botelho",null,126789,"null","null","ativo", "photo")
     val listComments = arrayListOf<Classificacao>()
 
     override fun onCreate(savedInstanceState: Bundle?) {

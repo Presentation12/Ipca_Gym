@@ -43,7 +43,7 @@ class Activity_Cliente_Login : AppCompatActivity() {
                         editor.apply()
 
                         //val intentStart = Intent(this@Activity_Cliente_Login,Activity_Cliente_Pagina_Inicial::class.java)
-                        val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_Activities::class.java)
+                        val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_OurTeam::class.java)
                         finish()
                         startActivity(intentStart)
                     }
