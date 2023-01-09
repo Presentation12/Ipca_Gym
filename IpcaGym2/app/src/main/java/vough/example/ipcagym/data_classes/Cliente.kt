@@ -37,7 +37,7 @@ class Cliente{
 
     constructor(
         id_cliente: Int?,
-        id_ginasio: Int,
+        id_ginasio: Int?,
         id_plano_nutricional: Int?,
         nome: String?,
         mail: String?,
