@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.*
 import vough.example.ipcagym.requests.*
+import java.time.LocalDateTime
 
 class Cliente_classificacao_activity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,10 +30,14 @@ class Cliente_classificacao_activity : AppCompatActivity(){
             val options = arrayOf("Conta", "Definições", "Sair")
             val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            ClienteRequests.GetByToken(lifecycleScope, sessionToken){ result ->
+                if(result != null)
+                    findViewById<TextView>(R.id.textView_nome_cliente_avaliacao).text = result.nome
+            }
+
             spinner.adapter = adapter
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-
-
                 override fun onItemSelected(
                     parent: AdapterView<*>,
                     view: View,
@@ -50,6 +55,8 @@ class Cliente_classificacao_activity : AppCompatActivity(){
                     // Do nothing
                 }
             }
+
+
 
             findViewById<Button>(R.id.buttom_starts_gym).setOnClickListener() {
                 startActivity(
@@ -72,6 +79,7 @@ class Cliente_classificacao_activity : AppCompatActivity(){
                     descricao = findViewById<EditText>(R.id.campo_comentario).text.toString()
                 }
                 else emptyFields = true
+                //TODO: Valores entre 1 e 5
                 if (!findViewById<EditText>(R.id.campo_rating).text.isEmpty())
                 {
                     rating = findViewById<EditText>(R.id.campo_rating).text.toString().toInt()
@@ -80,16 +88,20 @@ class Cliente_classificacao_activity : AppCompatActivity(){
 
                 if (!emptyFields)
                 {
-                    val newClassificacao = Classificacao(null,clienteRefresh?.id_ginasio,clienteRefresh?.id_cliente,rating,descricao,null)
-                    ClassificacaoRequests.Post(lifecycleScope,sessionToken,newClassificacao){ resultEditClassificacao ->
-                        if (resultEditClassificacao == "User not found")
-                        {
-                            Toast.makeText(this@Cliente_classificacao_activity, "Error on create an rating", Toast.LENGTH_LONG).show()
-                        }
-                        else
-                        {
-                            finish()
-                            startActivity(intent)
+
+                    ClienteRequests.GetByToken(lifecycleScope, sessionToken){ result ->
+                        if(result != null){
+                            val newClassificacao = Classificacao(null,clienteRefresh?.id_ginasio,clienteRefresh?.id_cliente,rating,descricao,LocalDateTime.now())
+
+                            ClassificacaoRequests.Post(lifecycleScope,sessionToken,newClassificacao){ resultEditClassificacao ->
+                                if (resultEditClassificacao == "User not found")
+                                    Toast.makeText(this@Cliente_classificacao_activity, "Error on create an rating", Toast.LENGTH_LONG).show()
+                                else
+                                {
+                                    finish()
+                                    startActivity(intent)
+                                }
+                            }
                         }
                     }
                 }

@@ -7,18 +7,16 @@
 
     <EditText
         android:id="@+id/campo_rating"
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="90dp"
-        android:layout_marginEnd="90dp"
-        android:layout_marginBottom="70dp"
         android:elevation="10dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView18"
-        app:layout_constraintEnd_toEndOf="@+id/cardView18"
-        app:layout_constraintStart_toEndOf="@+id/estrelas"
+        android:text="5"
+        app:layout_constraintBottom_toBottomOf="@+id/estrelas"
+        app:layout_constraintStart_toStartOf="@+id/campo_comentario"
+        app:layout_constraintTop_toTopOf="@+id/estrelas"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
     <EditText
@@ -118,7 +116,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:text="Utilizador João Pinhal"
+        android:text="Textview"
         android:textColor="#FFFFFF"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"

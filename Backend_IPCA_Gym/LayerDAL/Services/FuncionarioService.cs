@@ -669,7 +669,7 @@ namespace LayerDAL.Services
         {
             try
             {
-                Console.WriteLine("boas");
+                
                 // Inativar todas as suas marcações
                 List<Marcacao> marcacoesFuncionario = await MarcacaoService.GetAllByFuncionarioIDService(sqlDataSource, targetID);
                 if (marcacoesFuncionario.Count != 0)
@@ -683,7 +683,7 @@ namespace LayerDAL.Services
                         }
                     }
                 }
-                Console.WriteLine("boas");
+                
                 // Remover o seu horario todo
                 List<HorarioFuncionario> horarioFuncionario = await HorarioFuncionarioService.GetAllByFuncionarioIDService(sqlDataSource, targetID);
                 if (horarioFuncionario.Count != 0)
@@ -693,10 +693,10 @@ namespace LayerDAL.Services
                         HorarioFuncionarioService.DeleteService(sqlDataSource, dia.id_funcionario_horario);
                     }
                 }
-                Console.WriteLine("boas");
+                
                 // Inativar funcionário
                 Funcionario funcionario = await GetByIDService(sqlDataSource, targetID);
-                Console.WriteLine("boas");
+                
                 if (funcionario == null || funcionario.is_admin == true) return false;
 
                 funcionario.estado = "Inativo";
