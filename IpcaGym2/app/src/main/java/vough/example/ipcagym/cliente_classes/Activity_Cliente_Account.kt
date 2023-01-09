@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -108,7 +107,7 @@ class Activity_Cliente_Account : AppCompatActivity(){
 
                 findViewById<Button>(R.id.buttonLastWorkoutDetails).setOnClickListener {
                     AtividadeRequests.GetByID(lifecycleScope,sessionToken,lastWorkout?.id_atividade){ resultLastActivity ->
-                        val intent = Intent(this@Activity_Cliente_Account, ActivityDetailClienteActivity::class.java)
+                        val intent = Intent(this@Activity_Cliente_Account, Activity_Cliente_Activity_Details::class.java)
 
                         intent.putExtra("id_atividade", lastWorkout?.id_atividade)
                         intent.putExtra("data", lastWorkout?.data_saida?.format(date_formatter))

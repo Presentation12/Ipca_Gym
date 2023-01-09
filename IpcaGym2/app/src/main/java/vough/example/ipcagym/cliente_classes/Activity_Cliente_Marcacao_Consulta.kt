@@ -4,21 +4,16 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
-import vough.example.ipcagym.data_classes.Cliente
-import vough.example.ipcagym.data_classes.Funcionario
 import vough.example.ipcagym.data_classes.Marcacao
 import vough.example.ipcagym.requests.ClienteRequests
 import vough.example.ipcagym.requests.FuncionarioRequests
 import vough.example.ipcagym.requests.MarcacaoRequests
-import vough.example.ipcagym.requests.PlanoTreinoRequests
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -94,7 +89,7 @@ class Activity_Cliente_Marcacao_Consulta : AppCompatActivity() {
 
         // butao de marcar consulta, e volta a página inicial
         findViewById<Button>(R.id.buttonMark).setOnClickListener {
-            val intent = Intent(this@Activity_Cliente_Marcacao_Consulta, MainMenuClienteActivity::class.java)
+            val intent = Intent(this@Activity_Cliente_Marcacao_Consulta, Activity_Cliente_Marcacoes::class.java)
 
             var marcacaoType : String
             if (findViewById<RadioButton>(R.id.radioButton2).isChecked)

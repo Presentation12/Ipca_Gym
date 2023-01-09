@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import vough.example.ipcagym.R
 
-class ActivityDetailClienteActivity : AppCompatActivity() {
+class Activity_Cliente_Activity_Details : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +39,7 @@ class ActivityDetailClienteActivity : AppCompatActivity() {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(this@ActivityDetailClienteActivity,options[position], Toast.LENGTH_LONG).show()
+                Toast.makeText(this@Activity_Cliente_Activity_Details,options[position], Toast.LENGTH_LONG).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {

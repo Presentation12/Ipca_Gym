@@ -9,11 +9,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
-import vough.example.ipcagym.funcionarios_classes.Activity_Gerente_Funcionarios_List
-import vough.example.ipcagym.funcionarios_classes.LoginFuncionarioActivity
+import vough.example.ipcagym.funcionarios_classes.Activity_Funcionario_Login
 import vough.example.ipcagym.requests.ClienteRequests
 
-class LoginClienteActivity : AppCompatActivity() {
+class Activity_Cliente_Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_login)
@@ -26,14 +25,14 @@ class LoginClienteActivity : AppCompatActivity() {
 
         //Caso a token de sessão estiver ativa, passar login a frente
         /*if (sessionToken != "") {
-            val intentStart = Intent(this@LoginClienteActivity, Activity_Gerente_Funcionarios_List::class.java)
+            val intentStart = Intent(this@Activity_Cliente_Login, Activity_Gerente_Funcionarios_List::class.java)
             finish()
             startActivity(intentStart)
         }*/
 
         loginbutton.setOnClickListener{
             if(mail.text.toString() == "" || pass.text.toString() == "")
-                Toast.makeText(this@LoginClienteActivity, "Insert all fields!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@Activity_Cliente_Login, "Insert all fields!", Toast.LENGTH_SHORT).show()
             else{
                 ClienteRequests.login(lifecycleScope, mail.text.toString(), pass.text.toString()){ result ->
                     if(result != "User not found") {
@@ -43,13 +42,13 @@ class LoginClienteActivity : AppCompatActivity() {
 
                         editor.apply()
 
-                        //val intentStart = Intent(this@LoginClienteActivity,PaginaInicialClienteActivity::class.java)
-                        val intentStart = Intent(this@LoginClienteActivity, ActivitiesClienteActivity::class.java)
+                        //val intentStart = Intent(this@Activity_Cliente_Login,Activity_Cliente_Pagina_Inicial::class.java)
+                        val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_Activities::class.java)
                         finish()
                         startActivity(intentStart)
                     }
                     else {
-                        Toast.makeText(this@LoginClienteActivity, result, Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@Activity_Cliente_Login, result, Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -60,13 +59,13 @@ class LoginClienteActivity : AppCompatActivity() {
             val editor = preferences.edit()
             editor.putString("session_token", "")
             finish()
-            startActivity(Intent(this@LoginClienteActivity, LoginFuncionarioActivity::class.java))
+            startActivity(Intent(this@Activity_Cliente_Login, Activity_Funcionario_Login::class.java))
         }
 
 
         findViewById<Button>(R.id.forgetpassword).setOnClickListener {
             startActivity(
-                Intent(this@LoginClienteActivity,
+                Intent(this@Activity_Cliente_Login,
                     Activity_Cliente_RecoverPass::class.java)
             )
         }

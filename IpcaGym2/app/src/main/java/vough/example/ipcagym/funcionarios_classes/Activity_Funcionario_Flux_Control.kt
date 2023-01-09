@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -23,9 +21,8 @@ import vough.example.ipcagym.requests.FuncionarioRequests
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class FluxControlFuncionarioActivity : AppCompatActivity() {
+class Activity_Funcionario_Flux_Control : AppCompatActivity() {
 
-    private var selectedPosition: Int = 0
     var activityList = arrayListOf<Atividade>()
     var funcionarioRefresh : Funcionario? = null
     var client_adapter = FuncionarioActivityAdapter()
@@ -59,7 +56,7 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
             }
         }
 
-        val adapter = MyAdapter(this@FluxControlFuncionarioActivity, options)
+        val adapter = MyAdapter(this@Activity_Funcionario_Flux_Control, options)
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
@@ -82,12 +79,12 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
                             spinner.setSelection(3)
                         }
                         else{
-                            startActivity(Intent(this@FluxControlFuncionarioActivity, Activity_Funcionario_Perfil_Edit::class.java))
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Perfil_Edit::class.java))
                             spinner.setSelection(3)
                         }
                     }
                     1 -> {
-                        startActivity(Intent(this@FluxControlFuncionarioActivity, Activity_Funcionario_Settings::class.java))
+                        startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Settings::class.java))
                         spinner.setSelection(3)
                     }
                     2 -> {
@@ -97,7 +94,7 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
 
                         editor.apply()
                         finish()
-                        startActivity(Intent(this@FluxControlFuncionarioActivity, LoginFuncionarioActivity::class.java))
+                        startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Login::class.java))
                     }
                 }
             }
@@ -134,7 +131,7 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
                             (biggestDate == activity.data_entrada && !isNewClient)) || isNewClient){
 
                             if(activity.data_saida == null){
-                                Toast.makeText(this@FluxControlFuncionarioActivity,"This client needs to exit first!", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@Activity_Funcionario_Flux_Control,"This client needs to exit first!", Toast.LENGTH_LONG).show()
                             }
                             else
                             {
@@ -145,9 +142,9 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
                                     LocalDateTime.now(),
                                     null
                                 )){ response ->
-                                    if(response == "User not found") Toast.makeText(this@FluxControlFuncionarioActivity, "ERROR", Toast.LENGTH_SHORT).show()
+                                    if(response == "User not found") Toast.makeText(this@Activity_Funcionario_Flux_Control, "ERROR", Toast.LENGTH_SHORT).show()
                                     else{
-                                        Toast.makeText(this@FluxControlFuncionarioActivity,"Activity added successfully", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(this@Activity_Funcionario_Flux_Control,"Activity added successfully", Toast.LENGTH_SHORT).show()
                                         AtividadeRequests.GetAll(lifecycleScope, sessionToken){
                                             activityList = it
 
@@ -179,19 +176,19 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
                                     activity.data_entrada,
                                     LocalDateTime.now())){ result ->
                                     if(result != "User not found") {
-                                        Toast.makeText(this@FluxControlFuncionarioActivity,"Activity added successfully", Toast.LENGTH_LONG).show()
+                                        Toast.makeText(this@Activity_Funcionario_Flux_Control,"Activity added successfully", Toast.LENGTH_LONG).show()
                                         AtividadeRequests.GetAll(lifecycleScope, sessionToken){
                                             activityList = it
 
                                             client_adapter.notifyDataSetChanged()
                                         }
                                     }
-                                    else Toast.makeText(this@FluxControlFuncionarioActivity,"ERROR", Toast.LENGTH_LONG).show()
+                                    else Toast.makeText(this@Activity_Funcionario_Flux_Control,"ERROR", Toast.LENGTH_LONG).show()
                                 }
                             }
                             else
                             {
-                                Toast.makeText(this@FluxControlFuncionarioActivity,"This client needs to enter first!", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@Activity_Funcionario_Flux_Control,"This client needs to enter first!", Toast.LENGTH_LONG).show()
                             }
                         }
                     }
@@ -199,12 +196,12 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
             }
             else
             {
-                Toast.makeText(this@FluxControlFuncionarioActivity,"Error on adding a new activity", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@Activity_Funcionario_Flux_Control,"Error on adding a new activity", Toast.LENGTH_LONG).show()
             }
         }
 
         addButton.setOnClickListener {
-            receiverNewActivity?.launch(Intent(this@FluxControlFuncionarioActivity, FluxControlFuncionarioAddActivity::class.java))
+            receiverNewActivity?.launch(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Flux_Control_Add::class.java))
         }
     }
 
@@ -259,7 +256,7 @@ class FluxControlFuncionarioActivity : AppCompatActivity() {
             }
 
             rootView.setOnClickListener {
-                val intent = Intent(this@FluxControlFuncionarioActivity, FluxControlFuncionarioDetailsActivity::class.java)
+                val intent = Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Flux_Control_Details::class.java)
 
                 intent.putExtra("id_atividade", activityList[position].id_atividade)
                 intent.putExtra("id_ginasio", activityList[position].id_ginasio)

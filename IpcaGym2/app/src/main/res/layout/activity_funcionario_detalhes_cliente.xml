@@ -9,7 +9,7 @@
         android:id="@+id/button_apagar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="@android:color/transparent"
         android:elevation="10dp"
         android:text="Apagar"

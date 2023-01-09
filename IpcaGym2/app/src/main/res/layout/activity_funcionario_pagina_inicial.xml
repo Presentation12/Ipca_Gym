@@ -13,12 +13,32 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_gravity="end"
-        android:layout_marginEnd="51dp"
+        android:layout_marginEnd="20dp"
         android:clickable="false"
         android:spinnerMode="dropdown"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_pic2" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView7" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView7"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/profile_pic_activity"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon" />
+
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/textView10"
@@ -45,19 +65,6 @@
         tools:ignore="MissingConstraints">
 
     </androidx.cardview.widget.CardView>
-
-    <ImageView
-        android:id="@+id/profile_pic2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="30dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></ImageView>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -92,14 +99,12 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:text="Funcionario João Pinhal"
         android:textColor="#FFFFFF"
         android:textSize="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/profile_pic2"
-        app:layout_constraintHorizontal_bias="0.56"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/spinner2"
+        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="@+id/cardView7" />
 
     <androidx.cardview.widget.CardView
         android:elevation="10dp"
@@ -119,28 +124,28 @@
         android:id="@+id/textView6"
         android:layout_width="81dp"
         android:layout_height="21dp"
-        android:layout_marginStart="50dp"
         android:layout_marginTop="16dp"
         android:text="Rating"
         android:textColor="#FFFFFF"
         android:textSize="18dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/cardView3"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <TextView
         android:id="@+id/textView_medium_rating"
         android:layout_width="30dp"
         android:layout_height="26dp"
-        android:layout_marginTop="14dp"
 
         android:elevation="10dp"
         android:text="5.0"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/tableRow"
         app:layout_constraintEnd_toEndOf="@+id/cardView3"
         app:layout_constraintStart_toStartOf="@+id/cardView3"
         app:layout_constraintTop_toTopOf="@+id/cardView3" />
 
     <TableRow
+        android:id="@+id/tableRow"
         android:layout_width="210dp"
         android:layout_height="61dp"
         android:layout_marginBottom="10dp"
@@ -188,12 +193,11 @@
         android:id="@+id/imageView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="110dp"
         android:background="#00FFFFFF"
         android:backgroundTint="#FFFFFF"
         android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/cardView4"
-        app:layout_constraintStart_toStartOf="@+id/cardView4"
+        app:layout_constraintEnd_toStartOf="@+id/textView_medium_rating"
         app:layout_constraintTop_toTopOf="@+id/cardView4"
         app:srcCompat="@drawable/ic_baseline_person_24" />
 
@@ -201,14 +205,13 @@
         android:id="@+id/textView_total_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="120dp"
+        android:layout_marginStart="8dp"
         android:elevation="10dp"
         android:text="1215"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textSize="21sp"
         app:layout_constraintBottom_toBottomOf="@+id/cardView4"
-        app:layout_constraintEnd_toEndOf="@+id/cardView4"
         app:layout_constraintStart_toEndOf="@+id/imageView13"
         app:layout_constraintTop_toTopOf="@+id/cardView4" />
 

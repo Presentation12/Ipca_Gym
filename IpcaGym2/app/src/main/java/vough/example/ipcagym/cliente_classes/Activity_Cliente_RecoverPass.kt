@@ -31,7 +31,7 @@ class Activity_Cliente_RecoverPass : AppCompatActivity() {
                     ClienteRequests.recoverPasswordCliente(lifecycleScope, emailRecover.toString(), passNew.toString()){ result ->
                         if(result != "error") {
                             Toast.makeText(this@Activity_Cliente_RecoverPass, "Password changed!", Toast.LENGTH_LONG).show()
-                            startActivity(Intent(this@Activity_Cliente_RecoverPass,LoginClienteActivity::class.java))
+                            startActivity(Intent(this@Activity_Cliente_RecoverPass,Activity_Cliente_Login::class.java))
                         }
                         else Toast.makeText(this@Activity_Cliente_RecoverPass, "User not found", Toast.LENGTH_LONG).show()
                     }
@@ -39,7 +39,7 @@ class Activity_Cliente_RecoverPass : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.cancelpassword).setOnClickListener{
-            startActivity(Intent(this@Activity_Cliente_RecoverPass,LoginClienteActivity::class.java))
+            startActivity(Intent(this@Activity_Cliente_RecoverPass,Activity_Cliente_Login::class.java))
         }
     }
 }

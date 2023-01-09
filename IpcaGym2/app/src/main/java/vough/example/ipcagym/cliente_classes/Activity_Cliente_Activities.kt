@@ -15,7 +15,7 @@ import vough.example.ipcagym.requests.AtividadeRequests
 import vough.example.ipcagym.requests.ClienteRequests
 import java.time.format.DateTimeFormatter
 
-class ActivitiesClienteActivity : AppCompatActivity(){
+class Activity_Cliente_Activities : AppCompatActivity(){
 
     var activityList = arrayListOf<Atividade>()
     var client_adapter = AdapterAtividade()
@@ -55,7 +55,7 @@ class ActivitiesClienteActivity : AppCompatActivity(){
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(this@ActivitiesClienteActivity,options[position], Toast.LENGTH_LONG).show()
+                Toast.makeText(this@Activity_Cliente_Activities,options[position], Toast.LENGTH_LONG).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -70,23 +70,23 @@ class ActivitiesClienteActivity : AppCompatActivity(){
         bottomNavigationView.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this@ActivitiesClienteActivity,"Main Menu", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Activities,"Main Menu", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_fitness -> {
-                    Toast.makeText(this@ActivitiesClienteActivity,"Treino", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Activities,"Treino", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_shopping -> {
-                    Toast.makeText(this@ActivitiesClienteActivity,"Loja", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Activities,"Loja", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_diet -> {
-                    Toast.makeText(this@ActivitiesClienteActivity,"Refeicoes", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Activities,"Refeicoes", Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.nav_history -> {
-                    Toast.makeText(this@ActivitiesClienteActivity,"Atividades", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Activity_Cliente_Activities,"Atividades", Toast.LENGTH_LONG).show()
                     true
                 }
                 else -> false
@@ -118,7 +118,7 @@ class ActivitiesClienteActivity : AppCompatActivity(){
 
             //Clicar num rootView abre detalhes
             rootView.setOnClickListener {
-                val intent = Intent(this@ActivitiesClienteActivity, ActivityDetailClienteActivity::class.java)
+                val intent = Intent(this@Activity_Cliente_Activities, Activity_Cliente_Activity_Details::class.java)
 
                 intent.putExtra("id_atividade", activityList[position].id_atividade)
                 intent.putExtra("data", activityList[position].data_entrada?.format(date_formatter))

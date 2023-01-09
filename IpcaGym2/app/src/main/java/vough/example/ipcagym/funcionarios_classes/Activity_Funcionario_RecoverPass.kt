@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
-import vough.example.ipcagym.cliente_classes.LoginClienteActivity
 import vough.example.ipcagym.requests.FuncionarioRequests
 
 class Activity_Funcionario_RecoverPass : AppCompatActivity() {
@@ -33,7 +32,7 @@ class Activity_Funcionario_RecoverPass : AppCompatActivity() {
                     FuncionarioRequests.recoverPasswordFuncionario(lifecycleScope,emailRecover.toString() , passNew.toString()){ result ->
                         if(result != "error") {
                             Toast.makeText(this@Activity_Funcionario_RecoverPass, "Password changed!", Toast.LENGTH_LONG).show()
-                            startActivity(Intent(this@Activity_Funcionario_RecoverPass,LoginFuncionarioActivity::class.java))
+                            startActivity(Intent(this@Activity_Funcionario_RecoverPass,Activity_Funcionario_Login::class.java))
                         }
                         else Toast.makeText(this@Activity_Funcionario_RecoverPass, "User not found", Toast.LENGTH_LONG).show()
                     }
@@ -41,7 +40,7 @@ class Activity_Funcionario_RecoverPass : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.cancelpasswordFuncionario).setOnClickListener{
-            startActivity(Intent(this@Activity_Funcionario_RecoverPass,LoginFuncionarioActivity::class.java))
+            startActivity(Intent(this@Activity_Funcionario_RecoverPass,Activity_Funcionario_Login::class.java))
         }
     }
 }

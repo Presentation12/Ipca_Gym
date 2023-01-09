@@ -1,28 +1,23 @@
 package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.bottomappbar.BottomAppBar
 import vough.example.ipcagym.R
-import vough.example.ipcagym.data_classes.Exercicio
 import vough.example.ipcagym.data_classes.Funcionario
-import vough.example.ipcagym.data_classes.Ginasio
 import vough.example.ipcagym.data_classes.Plano_Treino
 import vough.example.ipcagym.requests.AtividadeRequests
 import vough.example.ipcagym.requests.FuncionarioRequests
 import vough.example.ipcagym.requests.GinasioRequests
 import vough.example.ipcagym.views.VerticalBarCapacityView
-import java.util.zip.Inflater
 
-class CapacityManagementActivity : AppCompatActivity() {
+class Activity_Funcionario_Capacity : AppCompatActivity() {
     val listAux = arrayListOf<Plano_Treino>()
     val adapterAux = CapacityManagementApapter()
     var funcionarioRefresh : Funcionario? = null
@@ -34,8 +29,6 @@ class CapacityManagementActivity : AppCompatActivity() {
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
-
-
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
             if(result != null) funcionarioRefresh = result
         }
@@ -46,20 +39,51 @@ class CapacityManagementActivity : AppCompatActivity() {
         listAux.add(Plano_Treino(1,1,"aux","aux"))
 
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
+        var counter = 0
         val spinner = findViewById<Spinner>(R.id.spinner)
-        val options = arrayOf("Conta", "Definições", "Sair")
+        val options = listOf("Account", "Settings", "Logout", "")
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        class MyAdapter(context: Context, items: List<String>) : ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, items) {
+            override fun getCount(): Int {
+                return 3
+            }
+        }
+
+        val adapter = MyAdapter(this@Activity_Funcionario_Capacity, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                //Do nothing
+                when (position) {
+                    0 -> {
+                        if(counter == 0){
+                            counter+=1
+                            spinner.setSelection(3)
+                        }
+                        else{
+                            startActivity(Intent(this@Activity_Funcionario_Capacity, Activity_Funcionario_Perfil_Edit::class.java))
+                            spinner.setSelection(3)
+                        }
+                    }
+                    1 -> {
+                        startActivity(Intent(this@Activity_Funcionario_Capacity, Activity_Funcionario_Settings::class.java))
+                        spinner.setSelection(3)
+                    }
+                    2 -> {
+                        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+                        val editor = preferences.edit()
+                        editor.putString("session_token", "")
+
+                        editor.apply()
+                        finish()
+                        startActivity(Intent(this@Activity_Funcionario_Capacity, Activity_Funcionario_Login::class.java))
+                    }
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
-                // Do nothing
+                spinner.setSelection(3)
             }
         }
 

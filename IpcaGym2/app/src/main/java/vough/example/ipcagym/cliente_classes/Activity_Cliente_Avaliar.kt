@@ -12,7 +12,7 @@ import vough.example.ipcagym.data_classes.*
 import vough.example.ipcagym.requests.*
 import java.time.LocalDateTime
 
-class Cliente_classificacao_activity : AppCompatActivity(){
+class Activity_Cliente_Avaliar : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_avaliar)
@@ -45,7 +45,7 @@ class Cliente_classificacao_activity : AppCompatActivity(){
                     id: Long
                 ) {
                     Toast.makeText(
-                        this@Cliente_classificacao_activity,
+                        this@Activity_Cliente_Avaliar,
                         options[position],
                         Toast.LENGTH_LONG
                     ).show()
@@ -61,14 +61,14 @@ class Cliente_classificacao_activity : AppCompatActivity(){
             findViewById<Button>(R.id.buttom_starts_gym).setOnClickListener() {
                 startActivity(
                     Intent(
-                        this@Cliente_classificacao_activity,
+                        this@Activity_Cliente_Avaliar,
                         Activity_Cliente_Account::class.java
                     )
                 )
             }
 
                 findViewById<Button>(R.id.button_avaliar_ginasio).setOnClickListener {
-                val intent = Intent(this@Cliente_classificacao_activity, PaginaInicialClienteActivity::class.java)
+                val intent = Intent(this@Activity_Cliente_Avaliar, Activity_Cliente_Pagina_Inicial::class.java)
 
                 var descricao = ""
                 var emptyFields = false
@@ -95,7 +95,7 @@ class Cliente_classificacao_activity : AppCompatActivity(){
 
                             ClassificacaoRequests.Post(lifecycleScope,sessionToken,newClassificacao){ resultEditClassificacao ->
                                 if (resultEditClassificacao == "User not found")
-                                    Toast.makeText(this@Cliente_classificacao_activity, "Error on create an rating", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(this@Activity_Cliente_Avaliar, "Error on create an rating", Toast.LENGTH_LONG).show()
                                 else
                                 {
                                     finish()
@@ -105,7 +105,7 @@ class Cliente_classificacao_activity : AppCompatActivity(){
                         }
                     }
                 }
-                else Toast.makeText(this@Cliente_classificacao_activity,"Error: Empty fields",Toast.LENGTH_LONG).show()
+                else Toast.makeText(this@Activity_Cliente_Avaliar,"Error: Empty fields",Toast.LENGTH_LONG).show()
             }
         }
     }

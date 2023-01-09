@@ -3,7 +3,6 @@ package vough.example.ipcagym.funcionarios_classes
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,11 +10,10 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
-import vough.example.ipcagym.cliente_classes.LoginClienteActivity
-import vough.example.ipcagym.cliente_classes.PaginaInicialClienteActivity
+import vough.example.ipcagym.cliente_classes.Activity_Cliente_Login
 import vough.example.ipcagym.requests.FuncionarioRequests
 
-class LoginFuncionarioActivity : AppCompatActivity() {
+class Activity_Funcionario_Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_login)
@@ -23,12 +21,12 @@ class LoginFuncionarioActivity : AppCompatActivity() {
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
-        /*if(sessionToken != "") {
-            //val intentStart = Intent(this@LoginFuncionarioActivity, PaginaInicialFuncionarioActivity::class.java)
-            val intentStart = Intent(this@LoginFuncionarioActivity, Activity_Funcionario_Perfil_Edit::class.java)
+        if(sessionToken != "") {
+            //val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Pagina_Inicial::class.java)
+            val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Capacity::class.java)
             finish()
             startActivity(intentStart)
-        }*/
+        }
 
         //TODO: CERTIFICAR QUE O QUE O CODE NÃO SEJA LONG (VER TAMANHO DO CODE)
         val code = findViewById<AppCompatEditText>(R.id.mail).text
@@ -37,7 +35,7 @@ class LoginFuncionarioActivity : AppCompatActivity() {
         findViewById<AppCompatButton>(R.id.button).setOnClickListener {
             if (code.toString() == "" || pass.toString() == "")
                 Toast.makeText(
-                    this@LoginFuncionarioActivity,
+                    this@Activity_Funcionario_Login,
                     "Insert all fields!",
                     Toast.LENGTH_SHORT
                 ).show()
@@ -50,12 +48,11 @@ class LoginFuncionarioActivity : AppCompatActivity() {
 
                         editor.apply()
 
-                        //val intentStart = Intent(this@LoginFuncionarioActivity, PaginaInicialFuncionarioActivity::class.java)
-                        val intentStart = Intent(this@LoginFuncionarioActivity,Activity_Funcionario_Clientes_List::class.java)
+                        val intentStart = Intent(this@Activity_Funcionario_Login,Activity_Funcionario_Capacity::class.java)
                         finish()
                         startActivity(intentStart)
                     } else {
-                        Toast.makeText(this@LoginFuncionarioActivity, result, Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@Activity_Funcionario_Login, result, Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -66,11 +63,11 @@ class LoginFuncionarioActivity : AppCompatActivity() {
             val editor = preferences.edit()
             editor.putString("session_token", "")
             finish()
-            startActivity(Intent(this@LoginFuncionarioActivity, LoginClienteActivity::class.java))
+            startActivity(Intent(this@Activity_Funcionario_Login, Activity_Cliente_Login::class.java))
         }
 
         findViewById<Button>(R.id.forgetpassword).setOnClickListener {
-            startActivity(Intent(this@LoginFuncionarioActivity,Activity_Funcionario_RecoverPass::class.java))
+            startActivity(Intent(this@Activity_Funcionario_Login,Activity_Funcionario_RecoverPass::class.java))
         }
     }
 
