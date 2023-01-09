@@ -121,7 +121,7 @@ class ActivitiesClienteActivity : AppCompatActivity(){
                 val intent = Intent(this@ActivitiesClienteActivity, ActivityDetailClienteActivity::class.java)
 
                 intent.putExtra("id_atividade", activityList[position].id_atividade)
-                intent.putExtra("data", activityList[position].data_saida?.format(date_formatter))
+                intent.putExtra("data", activityList[position].data_entrada?.format(date_formatter))
                 intent.putExtra("hora_entrada", activityList[position].data_entrada?.format(time_formatter))
                 intent.putExtra("hora_saida", activityList[position].data_saida?.format(time_formatter))
 

@@ -483,6 +483,54 @@
                     app:layout_constraintEnd_toEndOf="@+id/Saturday"
                     app:layout_constraintStart_toStartOf="@+id/Saturday"
                     app:layout_constraintTop_toBottomOf="@+id/Saturday" />
+
+                <TextView
+                    android:id="@+id/testMonday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-1"
+                    app:layout_constraintEnd_toEndOf="@+id/capacityMonday"
+                    app:layout_constraintTop_toBottomOf="@+id/capacityMonday" />
+
+                <TextView
+                    android:id="@+id/testMonday2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-1"
+                    app:layout_constraintEnd_toEndOf="@+id/capacityTuesday"
+                    app:layout_constraintTop_toBottomOf="@+id/capacityMonday" />
+
+                <TextView
+                    android:id="@+id/testMonday3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-1"
+                    app:layout_constraintEnd_toEndOf="@+id/capacityWednesday"
+                    app:layout_constraintTop_toBottomOf="@+id/capacityMonday" />
+
+                <TextView
+                    android:id="@+id/testMonday4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-1"
+                    app:layout_constraintEnd_toEndOf="@+id/capacityThrusday"
+                    app:layout_constraintTop_toBottomOf="@+id/capacityMonday" />
+
+                <TextView
+                    android:id="@+id/testMonday5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-1"
+                    app:layout_constraintEnd_toEndOf="@+id/capacityFriday"
+                    app:layout_constraintTop_toBottomOf="@+id/capacityMonday" />
+
+                <TextView
+                    android:id="@+id/testMonday6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-1"
+                    app:layout_constraintEnd_toEndOf="@+id/capacitySaturday"
+                    app:layout_constraintTop_toBottomOf="@+id/capacityMonday" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

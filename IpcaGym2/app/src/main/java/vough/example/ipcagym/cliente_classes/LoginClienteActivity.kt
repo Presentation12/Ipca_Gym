@@ -44,7 +44,7 @@ class LoginClienteActivity : AppCompatActivity() {
                         editor.apply()
 
                         //val intentStart = Intent(this@LoginClienteActivity,PaginaInicialClienteActivity::class.java)
-                        val intentStart = Intent(this@LoginClienteActivity, Cliente_classificacao_activity::class.java)
+                        val intentStart = Intent(this@LoginClienteActivity, ActivitiesClienteActivity::class.java)
                         finish()
                         startActivity(intentStart)
                     }
@@ -60,7 +60,7 @@ class LoginClienteActivity : AppCompatActivity() {
             val editor = preferences.edit()
             editor.putString("session_token", "")
             finish()
-            startActivity(Intent(this@LoginClienteActivity, Activity_Gerente_Funcionarios_List::class.java))
+            startActivity(Intent(this@LoginClienteActivity, LoginFuncionarioActivity::class.java))
         }
 
 

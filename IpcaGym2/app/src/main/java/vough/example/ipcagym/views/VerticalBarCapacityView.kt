@@ -28,18 +28,16 @@ class VerticalBarCapacityView : View {
         super.draw(canvas)
 
         val paint = Paint()
-        paint.color = Color.GRAY
-        paint.strokeWidth = 10F
-        paint.style = Paint.Style.STROKE
-
-        val rect = Rect(0, 0, width, height)
-        canvas?.drawRect(rect, paint)
-
-        val rect2 = Rect(5,  (height * _percent).toInt()+5, width-5, height-5)
 
         paint.color = Color.WHITE
         paint.style = Paint.Style.FILL
 
-        canvas?.drawRect(rect2, paint)
+        canvas?.drawRect(Rect(5,  (height * _percent).toInt()-5, width-5, height-5),paint)
+
+        paint.color = Color.GRAY
+        paint.strokeWidth = 10F
+        paint.style = Paint.Style.STROKE
+
+        canvas?.drawRoundRect(0F, 0F, width.toFloat(), height.toFloat(),45F, 45F, paint)
     }
 }

@@ -2,11 +2,13 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomappbar.BottomAppBar
 import vough.example.ipcagym.R
@@ -31,6 +33,8 @@ class CapacityManagementActivity : AppCompatActivity() {
 
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
+
+
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
             if(result != null) funcionarioRefresh = result
@@ -83,12 +87,20 @@ class CapacityManagementActivity : AppCompatActivity() {
             val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
             val sessionToken = preferences.getString("session_token", null)
 
+            //Esconder percentagens debaixo das barras
+            rootView.findViewById<TextView>(R.id.testMonday).isVisible = false
+            rootView.findViewById<TextView>(R.id.testMonday2).isVisible = false
+            rootView.findViewById<TextView>(R.id.testMonday3).isVisible = false
+            rootView.findViewById<TextView>(R.id.testMonday4).isVisible = false
+            rootView.findViewById<TextView>(R.id.testMonday5).isVisible = false
+            rootView.findViewById<TextView>(R.id.testMonday6).isVisible = false
+
             FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){  result ->
                 if(result != null)
                     GinasioRequests.GetByID(lifecycleScope, sessionToken, result?.id_ginasio!!){ resultGym ->
                         if(resultGym != null)
                             AtividadeRequests.getGymStats(lifecycleScope, sessionToken, result?.id_ginasio!!){ result2 ->
-                                if(result2 != null)
+                                if(result2 != null){
                                     rootView.findViewById<TextView>(R.id.capacityCurrentValue).text = result2.current.toString()
                                     rootView.findViewById<TextView>(R.id.capacityExitsValue).text = result2.exits.toString()
                                     rootView.findViewById<TextView>(R.id.capacityTodayValue).text = result2.today.toString()
@@ -99,18 +111,26 @@ class CapacityManagementActivity : AppCompatActivity() {
                                     rootView.findViewById<TextView>(R.id.capacityMaxMonthCurrentValue).text = result2.maxMonth.toString()
 
                                     //Preencher as barras
-                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityMonday).setPercentagem(result2.averageMonday!!.toFloat() / resultGym.lotacaoMax!!)
-                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityTuesday).setPercentagem(result2.averageTuesday!!.toFloat() / resultGym.lotacaoMax!!)
-                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityWednesday).setPercentagem(result2.averageWednesday!!.toFloat() / resultGym.lotacaoMax!!)
-                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityThrusday).setPercentagem(result2.averageThursday!!.toFloat() / resultGym.lotacaoMax!!)
-                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityFriday).setPercentagem(result2.averageFriday!!.toFloat() / resultGym.lotacaoMax!!)
-                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacitySaturday).setPercentagem(result2.averageSaturday!!.toFloat() / resultGym.lotacaoMax!!)
+                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityMonday).setPercentagem(1 - (result2.averageMonday!!.toFloat() / resultGym.lotacaoMax!!))
+                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityTuesday).setPercentagem(1 - (result2.averageTuesday!!.toFloat() / resultGym.lotacaoMax!!))
+                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityWednesday).setPercentagem(1 - (result2.averageWednesday!!.toFloat() / resultGym.lotacaoMax!!))
+                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityThrusday).setPercentagem(1 - (result2.averageThursday!!.toFloat() / resultGym.lotacaoMax!!))
+                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacityFriday).setPercentagem(1 - (result2.averageFriday!!.toFloat() / resultGym.lotacaoMax!!))
+                                    rootView.findViewById<VerticalBarCapacityView>(R.id.capacitySaturday).setPercentagem(1 - (result2.averageSaturday!!.toFloat() / resultGym.lotacaoMax!!))
+
+                                    //Percentagens de ocupação
+                                    /*rootView.findViewById<TextView>(R.id.testMonday).text = String.format("%.2f", (result2.averageMonday!!.toFloat() / resultGym.lotacaoMax!!) * 100) + " %"
+                                    rootView.findViewById<TextView>(R.id.testMonday2).text = String.format("%.2f", (result2.averageTuesday!!.toFloat() / resultGym.lotacaoMax!!) * 100) + " %"
+                                    rootView.findViewById<TextView>(R.id.testMonday3).text = String.format("%.2f", (result2.averageWednesday!!.toFloat() / resultGym.lotacaoMax!!) * 100) + " %"
+                                    rootView.findViewById<TextView>(R.id.testMonday4).text = String.format("%.2f", (result2.averageThursday!!.toFloat() / resultGym.lotacaoMax!!) * 100) + " %"
+                                    rootView.findViewById<TextView>(R.id.testMonday5).text = String.format("%.2f", (result2.averageFriday!!.toFloat() / resultGym.lotacaoMax!!) * 100) + " %"
+                                    rootView.findViewById<TextView>(R.id.testMonday6).text = String.format("%.2f", (result2.averageSaturday!!.toFloat() / resultGym.lotacaoMax!!) * 100) + " %"*/
+                                }
                             }
                     }
             }
 
             return rootView
         }
-
     }
 }
