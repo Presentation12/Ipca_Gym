@@ -1,6 +1,7 @@
 package vough.example.ipcagym.data_classes
 
 import org.json.JSONObject
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 class Pedido {
@@ -10,10 +11,10 @@ class Pedido {
     var estado_pedido : String? = null
 
     constructor(
-        id_pedido : Int?,
+        id_pedido: Int?,
         id_cliente: Int?,
-        data_pedido : LocalDateTime?,
-        estado_pedido : String?
+        data_pedido: LocalDateTime,
+        estado_pedido: String?
 
     ) {
         this.id_pedido  = id_pedido

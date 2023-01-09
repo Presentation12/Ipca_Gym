@@ -1,6 +1,7 @@
 package vough.example.ipcagym.cliente_classes
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,9 +11,15 @@ import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.*
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.LojaRequests
+import vough.example.ipcagym.requests.PedidoLojaRequests
+import vough.example.ipcagym.requests.PedidoRequests
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
@@ -30,7 +37,29 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_loja)
 
-        produtos_list.add(Loja(1, 1, "Batata", "Comida", 12.5, "200Gr", "Ativo", null, 10))
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
+        val imageView = findViewById<ImageView>(R.id.profile_pic)
+
+        ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
+            if(resultCliente != null)
+            {
+                if (resultCliente.foto_perfil != null)
+                {
+                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
+                    imageView.setImageURI(imageUri)
+                }
+
+                LojaRequests.GetAllByGinasioID(lifecycleScope, sessionToken,resultCliente.id_ginasio){ resultProdutosGinasio ->
+                    if(resultProdutosGinasio.isNotEmpty()){
+                        produtos_list = resultProdutosGinasio
+                        produtos_adapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
 
         val carrinho_view = findViewById<ImageView>(R.id.imageViewCarrinho)
         val spinner_carrinho = findViewById<Spinner>(R.id.spinnerCarrinho)
@@ -46,7 +75,73 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
         }
         carrinho_view.setOnClickListener {
             spinner_carrinho.performClick()
+            if (carrinho.count() > 0)
+            {
+                findViewById<Button>(R.id.buttonBuyCart).visibility = View.VISIBLE
+                findViewById<TextView>(R.id.textViewTotalPrice).visibility = View.VISIBLE
+                findViewById<TextView>(R.id.buttonCancelCart).visibility = View.VISIBLE
+            }
         }
+
+        //TODO: Verify cancelar carrinho que remove tudo da lista
+        findViewById<TextView>(R.id.buttonCancelCart).setOnClickListener {
+            carrinho.clear()
+            carrinho_adapter.notifyDataSetChanged()
+        }
+
+        //TODO: Verify buy cart que da post de um peiddo novo e de todos os pedidos de produto
+        findViewById<Button>(R.id.buttonBuyCart).setOnClickListener {
+            ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
+
+                // post de pedido
+                var newPedido = Pedido(null,resultCliente?.id_cliente, LocalDateTime.now(),"Ativo")
+                PedidoRequests.Post(lifecycleScope,sessionToken,newPedido){ resultAddPedido ->
+                    if (resultAddPedido == "User not found")
+                    {
+                        //erro
+                    }
+                    else
+                    {
+                        // buscar id do pedido criado
+                        PedidoRequests.GetAll(lifecycleScope,sessionToken){ resultPedidos ->
+
+                            val lastPedido = resultPedidos.last()
+
+                            // converto o carrinho em pedido loja
+                            var allPedidosProdutos = arrayListOf<Pedido_Loja>()
+                            for (p in carrinho)
+                            {
+                                allPedidosProdutos.add(Pedido_Loja(lastPedido.id_pedido,p.id_produto, p.quantidade_pedido))
+                            }
+                            // post de todos os pedidos de cada produto do carrinho a base de dados
+                            for(p in allPedidosProdutos)
+                            {
+                                PedidoLojaRequests.PostPedidoChecked(lifecycleScope,sessionToken,p){ resultAddPedidoLoja ->
+                                    if (resultAddPedido == "User not found")
+                                    {
+                                        //erro
+                                    }
+                                    else
+                                    {
+                                        // correu bem
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                // post pedido loja
+            }
+        }
+
+        //TODO: total preco
+        var total_price = 0.0
+        for (produto in carrinho) {
+              total_price += produto.preco!!
+        }
+        findViewById<TextView>(R.id.textViewTotalPrice).text = total_price.toString()
 
         receiverNewData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
 
@@ -68,38 +163,21 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
                 }
             }
 
-        //TODO: butao de cancelar e remover artigos carrinho
-
-        //TODO: total preco
-        //var total_price = 0.0
-        //for (produto in carrinho) {
-        //      total_price += produto.preco!!
-        //}
-        //findViewById<TextView>(R.id.textViewTotalPrice).text = total_price.toString()
-
-        //TODO: imagem
-        val image_view = findViewById<ImageView>(R.id.profile_pic)
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = arrayOf("Conta", "Definições", "Sair")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                Toast.makeText(this@Activity_Cliente_Loja_Produtos, options[position], Toast.LENGTH_LONG)
-                    .show()
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Do nothing
             }
         }
-        image_view.setOnClickListener {
+        imageView.setOnClickListener {
             spinner.performClick()
         }
 
@@ -215,6 +293,11 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
             val quantityProdutoView = root_view.findViewById<TextView>(R.id.textViewQt)
             quantityProdutoView.text = carrinho[position].quantidade_pedido.toString()
 
+            //TODO: remover artigos carrinho
+            findViewById<ImageButton>(R.id.imageButtonRemove).setOnClickListener{
+                carrinho.remove(carrinho[position])
+                carrinho_adapter.notifyDataSetChanged()
+            }
             return root_view
         }
 

@@ -1,5 +1,6 @@
 package vough.example.ipcagym.cliente_classes
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,8 +10,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.LojaRequests
 
 class Activity_Cliente_Loja_Produto_Details : AppCompatActivity() {
 
@@ -18,31 +22,38 @@ class Activity_Cliente_Loja_Produto_Details : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_loja_produto_details)
 
-        var id_produto = intent.getIntExtra("id_produto", -1)
-        var id_ginasio = intent.getIntExtra("id_ginasio", -1)
-        var nome = intent.getStringExtra("nome")
-        var tipo_produto = intent.getStringExtra("tipo_produto")
-        var preco = intent.getDoubleExtra("preco",0.0)
-        var descricao = intent.getStringExtra("descricao")
-        var estado_produto = intent.getStringExtra("estado_produto")
-        var foto_produto = intent.getStringExtra("foto_produto")
-        var quantidade_produto = intent.getIntExtra("quantidade_produto",-1)
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
-        //TODO: link imagem
-        /*
-        if (foto_cliente != null)
-        {
-            val cliente_image_view = findViewById<ImageView>(R.id.)
-            val imageUri: Uri = Uri.parse(foto_produto)
-            cliente_image_view.setImageURI(imageUri)
+        val id_produto = intent.getIntExtra("id_produto", -1)
+        val id_ginasio = intent.getIntExtra("id_ginasio", -1)
+        val nome = intent.getStringExtra("nome")
+        val tipo_produto = intent.getStringExtra("tipo_produto")
+        val preco = intent.getDoubleExtra("preco",0.0)
+        val descricao = intent.getStringExtra("descricao")
+        val estado_produto = intent.getStringExtra("estado_produto")
+        val foto_produto = intent.getStringExtra("foto_produto")
+        val quantidade_produto = intent.getIntExtra("quantidade_produto",-1)
+
+        var imageView = findViewById<ImageView>(R.id.profile_pic_produto_details)
+
+        ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
+            if(resultCliente != null)
+            {
+                if (resultCliente.foto_perfil != null)
+                {
+                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
+                    imageView.setImageURI(imageUri)
+                }
+            }
         }
-        */
 
         if (foto_produto != null)
         {
-            val cliente_image_view = findViewById<ImageView>(R.id.imageViewProduto)
+            val produto_image_view = findViewById<ImageView>(R.id.imageViewProduto)
             val imageUri: Uri = Uri.parse(foto_produto)
-            cliente_image_view.setImageURI(imageUri)
+            produto_image_view.setImageURI(imageUri)
         }
         findViewById<TextView>(R.id.nomeProduto).text = nome
         findViewById<TextView>(R.id.Tipo).text = tipo_produto

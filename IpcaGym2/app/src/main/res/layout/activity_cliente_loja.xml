@@ -116,4 +116,43 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+    <Button
+        android:id="@+id/buttonBuyCart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#000000"
+        android:text="Buy"
+        android:textColor="#A5A5A5"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/spinnerCarrinho"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCarrinho"
+        app:strokeColor="#A5A5A5"
+        app:strokeWidth="2dp" />
+
+    <Button
+        android:id="@+id/buttonCancelCart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:backgroundTint="#000000"
+        android:text="Cancel"
+        android:textColor="#A5A5A5"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonBuyCart"
+        app:layout_constraintStart_toEndOf="@+id/buttonBuyCart"
+        app:layout_constraintTop_toTopOf="@+id/buttonBuyCart"
+        app:strokeColor="#A5A5A5"
+        app:strokeWidth="2dp" />
+
+    <TextView
+        android:id="@+id/textViewTotalPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="TextView"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonCancelCart"
+        app:layout_constraintStart_toEndOf="@+id/buttonCancelCart"
+        app:layout_constraintTop_toTopOf="@+id/buttonCancelCart" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
