@@ -6,9 +6,15 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Cliente
+import vough.example.ipcagym.data_classes.Funcionario
+import vough.example.ipcagym.data_classes.Plano_Treino
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.PlanoTreinoRequests
 
 class Activity_Funcionario_Cliente_Add : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,11 +24,16 @@ class Activity_Funcionario_Cliente_Add : AppCompatActivity() {
 
         val imageView = findViewById<ImageView>(R.id.profile_pic_funcionario_add_cliente)
 
+        //Get token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
         var counter = 0
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = listOf("Account", "Settings", "Logout", "")
 
-        class MyAdapter(context: Context, items: List<String>) : ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, items) {
+        class MyAdapter(context: Context, items: List<String>) :
+            ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, items) {
             override fun getCount(): Int {
                 return 3
             }
@@ -33,30 +44,50 @@ class Activity_Funcionario_Cliente_Add : AppCompatActivity() {
         spinner.adapter = adapter
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
                 when (position) {
                     0 -> {
-                        if(counter == 0){
-                            counter+=1
+                        if (counter == 0) {
+                            counter += 1
                             spinner.setSelection(3)
-                        }
-                        else{
-                            startActivity(Intent(this@Activity_Funcionario_Cliente_Add, Activity_Funcionario_Perfil_Edit::class.java))
+                        } else {
+                            startActivity(
+                                Intent(
+                                    this@Activity_Funcionario_Cliente_Add,
+                                    Activity_Funcionario_Perfil_Edit::class.java
+                                )
+                            )
                             spinner.setSelection(3)
                         }
                     }
                     1 -> {
-                        startActivity(Intent(this@Activity_Funcionario_Cliente_Add, Activity_Funcionario_Settings::class.java))
+                        startActivity(
+                            Intent(
+                                this@Activity_Funcionario_Cliente_Add,
+                                Activity_Funcionario_Settings::class.java
+                            )
+                        )
                         spinner.setSelection(3)
                     }
                     2 -> {
-                        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+                        val preferences =
+                            getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
                         val editor = preferences.edit()
                         editor.putString("session_token", "")
 
                         editor.apply()
                         finish()
-                        startActivity(Intent(this@Activity_Funcionario_Cliente_Add, Activity_Funcionario_Login::class.java))
+                        startActivity(
+                            Intent(
+                                this@Activity_Funcionario_Cliente_Add,
+                                Activity_Funcionario_Login::class.java
+                            )
+                        )
                     }
                 }
             }
@@ -66,6 +97,48 @@ class Activity_Funcionario_Cliente_Add : AppCompatActivity() {
             }
         }
         imageView.setOnClickListener { spinner.performClick() }
+
+        //Butão para que , clicando , adiciona um cliente novo
+        findViewById<Button>(R.id.buttonAdd).setOnClickListener {
+            val intent = Intent(this@Activity_Funcionario_Cliente_Add, Activity_Funcionario_Pagina_Inicial::class.java)
+
+            var emptyFields = false
+            var nome = ""
+            var email = ""
+            var contacto = -1
+
+            if (!findViewById<EditText>(R.id.editTextClienteNome).text.isEmpty())
+            {
+                nome = findViewById<EditText>(R.id.editTextClienteNome).text.toString()
+            }
+            else emptyFields = true
+            if (!findViewById<EditText>(R.id.editTextClienteMail).text.isEmpty())
+            {
+                email = findViewById<EditText>(R.id.editTextClienteMail).text.toString()
+            }
+            if (!findViewById<EditText>(R.id.editTextClienteTelemovel).text.isEmpty())
+            {
+                contacto = findViewById<EditText>(R.id.editTextClienteTelemovel).text.toString().toInt()
+            }
+            if (!emptyFields)
+            {
+                FuncionarioRequests.GetByToken(lifecycleScope,sessionToken){ resultFuncionarioGetByToken ->
+                val RegistClient = Cliente(null,resultFuncionarioGetByToken?.id_ginasio,null,nome,email,contacto,contacto.toString(),null,null,null,null,null,"Ativo")
+                    ClienteRequests.Post(lifecycleScope,sessionToken,RegistClient){ resultAddClient ->
+                        if (resultAddClient == "User not found")
+                        {
+                            Toast.makeText(this@Activity_Funcionario_Cliente_Add, "Error on create an client", Toast.LENGTH_LONG).show()
+                        }
+                        else
+                        {
+                            finish()
+                            startActivity(intent)
+                        }
+                    }
+                }
+            }
+            else Toast.makeText(this@Activity_Funcionario_Cliente_Add,"Error: Empty fields",Toast.LENGTH_LONG).show()
+        }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
         bottomNavigationView.setOnItemSelectedListener{ item ->
@@ -92,27 +165,6 @@ class Activity_Funcionario_Cliente_Add : AppCompatActivity() {
                 }
                 else -> false
             }
-        }
-
-        // butao de adicionar cliente novo, e volta a página ida lista de clientes
-        findViewById<Button>(R.id.buttonAdd).setOnClickListener {
-            val intent = Intent(this@Activity_Funcionario_Cliente_Add, Activity_Funcionario_Clientes_List::class.java)
-
-            var nomeCliente = findViewById<EditText>(R.id.editTextClienteNome).text.toString()
-            var mailCliente = findViewById<EditText>(R.id.editTextClienteMail).text.toString()
-            //TODO: trocar por condições de verificacao de campos preenchidos
-            var telemovelCliente : Int = 0
-            if (findViewById<EditText>(R.id.editTextClienteTelemovel).text.isEmpty() == false)
-            {
-                telemovelCliente = findViewById<EditText>(R.id.editTextClienteTelemovel).text.toString().toInt()
-            }
-
-            // TODO: SUBSTITUIR OS NULOS e hardcodes DO OBJETO ABAIXO
-            // objeto enviado para o backend
-            var id_ginasio = 1
-            var newCliente = Cliente(null,id_ginasio,0,nomeCliente,mailCliente,telemovelCliente,"","",null,null,null,null,"Ativo")
-
-            startActivity(intent)
         }
     }
 }
