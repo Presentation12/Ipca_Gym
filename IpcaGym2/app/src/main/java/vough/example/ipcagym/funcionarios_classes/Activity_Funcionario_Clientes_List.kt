@@ -2,6 +2,7 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -31,14 +32,12 @@ class Activity_Funcionario_Clientes_List : AppCompatActivity() {
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultFuncionario ->
 
-            //TODO: foto gerente
-            /*
-            if (resultFuncionario?.foto_perfil != null)
+            if (resultFuncionario?.foto_funcionario != null)
             {
-                val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
+                val imageUri: Uri = Uri.parse(resultFuncionario.foto_funcionario)
                 imageView.setImageURI(imageUri)
             }
-            */
+
             ClienteRequests.GetAllByGymID(lifecycleScope, sessionToken, resultFuncionario?.id_ginasio) {resultClientes ->
                 list_clientes = resultClientes
                 clientes_adapter.notifyDataSetChanged()

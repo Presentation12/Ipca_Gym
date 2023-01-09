@@ -2,6 +2,7 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -14,8 +15,6 @@ import vough.example.ipcagym.requests.FuncionarioRequests
 import vough.example.ipcagym.requests.GinasioRequests
 
 class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
-
-    var gerenteRefresh : Funcionario? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,16 +32,17 @@ class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
         val pass_salt = intent.getStringExtra("pass_salt")
         val pass_hash = intent.getStringExtra("pass_hash")
         val estado = intent.getStringExtra("estado")
+        val foto_funcionario = intent.getStringExtra("foto_funcionario")
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
-            if(resultGerente != null) gerenteRefresh = resultGerente
-            /* TODO: foto do gerente
-            if (gerenteRefresh?.foto_perfil != null)
+            if(resultGerente != null)
             {
-                val imageUri: Uri = Uri.parse(gerenteRefresh?)
-                imageView.setImageURI(imageUri)
+                if (resultGerente.foto_funcionario != null)
+                {
+                    val imageUri: Uri = Uri.parse(resultGerente.foto_funcionario)
+                    imageView.setImageURI(imageUri)
+                }
             }
-            */
         }
 
         GinasioRequests.GetByID(lifecycleScope,sessionToken,id_ginasio){ resultGinasio ->
@@ -57,15 +57,13 @@ class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
         codigoFuncionario.text = codigo.toString()
         val estadoFuncionario = findViewById<TextView>(R.id.Estado)
         estadoFuncionario.text = estado
-        // TODO: funcionario sem atributo foto
-        /*
-        if (foto_perfil != null)
+
+        if (foto_funcionario != null)
         {
-            val cliente_image_view = findViewById<ImageView>(R.id.profile_pic)
-            val imageUri: Uri = Uri.parse(foto_perfil)
-            cliente_image_view.setImageURI(imageUri)
+            val funcionario_image_view = findViewById<ImageView>(R.id.profile_pic)
+            val imageUri: Uri = Uri.parse(foto_funcionario)
+            funcionario_image_view.setImageURI(imageUri)
         }
-        */
 
         // TODO: quando houver linkagem alterar aqui para remover funcionario
         findViewById<Button>(R.id.buttonRemover).setOnClickListener {
@@ -98,6 +96,7 @@ class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
             intent.putExtra("pass_salt", pass_salt)
             intent.putExtra("pass_hash", pass_hash)
             intent.putExtra("estado", estado)
+            intent.putExtra("foto_funcionario", foto_funcionario)
 
             startActivity(intent)
         }
