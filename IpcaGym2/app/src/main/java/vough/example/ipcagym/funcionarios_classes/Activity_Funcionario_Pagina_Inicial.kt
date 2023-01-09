@@ -2,36 +2,61 @@ package vough.example.ipcagym.funcionarios_classes
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.w3c.dom.Text
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Classificacao
 import vough.example.ipcagym.data_classes.Funcionario
+import vough.example.ipcagym.requests.ClassificacaoRequests
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.PlanoNutricionalRequests
 import java.time.format.DateTimeFormatter
+import kotlin.math.log
 
 class Activity_Funcionario_Pagina_Inicial: AppCompatActivity() {
 
-    val date_time_formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+    var commentsList = arrayListOf<Classificacao>()
     var adapter_comment = commentAdapter()
-    var funcionario = Funcionario(4,2,"Frederico Botelho",null,126789,"null","null","ativo", "photo")
-    val listComments = arrayListOf<Classificacao>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_pagina_inicial)
 
-        listComments.add(Classificacao(7, 1, 1, 5, "Adorei", null))
-        listComments.add(Classificacao(8, 2, 1, 1, "Pessimo", null))
-        listComments.add(Classificacao(9, 2, 3, 3, "meio bom", null))
-        listComments.add(Classificacao(1, 3, 7, 4, "caca", null))
-        listComments.add(Classificacao(7, 1, 3, 9, "teste1", null))
-        listComments.add(Classificacao(8, 2, 4, 1, "teste2", null))
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
+            if(result != null)
+                findViewById<TextView>(R.id.textView_funcionario_nome).text = result.nome
+        }
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+            FuncionarioRequests.GetAvaliacoesOnGym(lifecycleScope, sessionToken, it?.codigo!!){ result ->
+                if(result.isNotEmpty()){
+                    commentsList = result
+                    adapter_comment.notifyDataSetChanged()
+                    var classification_count_view = findViewById<TextView>(R.id.textView_total_count)
+                    classification_count_view.text = commentsList.count { it is Classificacao }.toString()
+
+                    var classification_average = findViewById<TextView>(R.id.textView_medium_rating)
+                    classification_average.text = averagePrice(commentsList).toString()
+                }
+            }
+        }
+
+        val listCommentsView = findViewById<ListView>(R.id.comentarios_List_View)
+        listCommentsView.adapter = adapter_comment
+
 
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
         var counter = 0
         val spinner = findViewById<Spinner>(R.id.spinner2)
         val options = listOf("Account", "Settings", "Logout", "")
@@ -81,49 +106,35 @@ class Activity_Funcionario_Pagina_Inicial: AppCompatActivity() {
         }
 
         imageView.setOnClickListener{ spinner.performClick() }
-
-        val listComentariosnView = findViewById<ListView>(R.id.comentarios_List_View)
-        listComentariosnView.adapter = adapter_comment
-
-        val name_view = findViewById<TextView>(R.id.textView5)
-        name_view.text = funcionario.nome
-
-        var classification_average_view = findViewById<TextView>(R.id.textView_medium_rating)
-        classification_average_view.text = averagePrice(listComments).toString()
-
-
-        var classification_count_view = findViewById<TextView>(R.id.textView_total_count)
-        classification_count_view.text = listComments.count { it is Classificacao }.toString()
     }
 
-    fun averagePrice(listComments: List<Classificacao>): Double {
+    fun averagePrice(commentsList: List<Classificacao>): Double {
         var total = 0.0
-        for (classificacao in listComments) {
+        for (classificacao in commentsList) {
             total += classificacao.avaliacao!!
         }
-        return total / listComments.size
+        Log.d("myTag",total.toString())
+        return total / commentsList.size
     }
 
     inner class commentAdapter: BaseAdapter(){
         override fun getCount(): Int {
-            return listComments.size
+            return commentsList.size
         }
 
         override fun getItem(position: Int): Any {
-            return listComments[position]
+            return commentsList[position]
         }
 
         override fun getItemId(position: Int): Long {
-            return listComments[position].id_avaliacao?.toLong()?:-1L
+            return commentsList[position].id_avaliacao?.toLong()?:-1L
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val rootView = layoutInflater.inflate(R.layout.row_comments,parent,false)
 
-            rootView.findViewById<TextView>(R.id.textView_commnets_ginasio).text = listComments[position].comentario
-
-            rootView.findViewById<TextView>(R.id.textView_stars_rating).text = listComments[position].avaliacao.toString()
-
+            rootView.findViewById<TextView>(R.id.textView_commnets_ginasio).text = commentsList[position].comentario
+            rootView.findViewById<TextView>(R.id.textView_stars_rating).text = commentsList[position].avaliacao.toString()
             return rootView
         }
     }

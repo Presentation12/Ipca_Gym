@@ -124,6 +124,7 @@ class Activity_Funcionario_Cliente_Add : AppCompatActivity() {
             {
                 FuncionarioRequests.GetByToken(lifecycleScope,sessionToken){ resultFuncionarioGetByToken ->
                 val RegistClient = Cliente(null,resultFuncionarioGetByToken?.id_ginasio,null,nome,email,contacto,contacto.toString(),null,null,null,null,null,"Ativo")
+
                     ClienteRequests.Post(lifecycleScope,sessionToken,RegistClient){ resultAddClient ->
                         if (resultAddClient == "User not found")
                         {
