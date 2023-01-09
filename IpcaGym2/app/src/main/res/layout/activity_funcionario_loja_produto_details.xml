@@ -258,32 +258,4 @@
 
     </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/buttonPlus"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:backgroundTint="@android:color/transparent"
-        android:text="+"
-        android:textSize="20dp"
-        android:textColor="#A5A5A5"
-        app:layout_constraintStart_toStartOf="@+id/textViewQuantidade"
-        app:layout_constraintTop_toBottomOf="@+id/textViewQuantidade"
-        app:strokeColor="#A5A5A5"
-        app:strokeWidth="2dp" />
-
-    <Button
-        android:id="@+id/buttonMinus"
-        android:layout_width="50dp"
-        android:layout_marginTop="5dp"
-        android:layout_height="wrap_content"
-        android:text="-"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/textViewQuantidade"
-        app:layout_constraintTop_toBottomOf="@+id/textViewQuantidade"
-        android:textColor="#A5A5A5"
-        android:backgroundTint="@android:color/transparent"
-        app:strokeColor="#A5A5A5"
-        app:strokeWidth="2dp"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

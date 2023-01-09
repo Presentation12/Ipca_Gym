@@ -1,17 +1,24 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Loja
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.LojaRequests
 
 class Activity_Funcionario_Loja_Produto_Edit : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_loja_produto_edit)
+
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
         var id_produto = intent.getIntExtra("id_produto", -1)
         var id_ginasio = intent.getIntExtra("id_ginasio", -1)
@@ -34,41 +41,40 @@ class Activity_Funcionario_Loja_Produto_Edit : AppCompatActivity() {
         findViewById<Button>(R.id.buttonSave).setOnClickListener {
             val intent = Intent(this@Activity_Funcionario_Loja_Produto_Edit, Activity_Funcionario_Loja_Produto_Details::class.java)
 
-            var nomeProduto : String? = null
-            var tipoProduto : String? = null
-            var precoProduto : Double? = null
-            var descricaoProduto : String? = null
-            var quantidadeProduto : Int? = null
-            var fotoProduto : String? = null
-
-            //TODO: trocar por condições de verificacao de campos preenchidos
             if (findViewById<EditText>(R.id.editTextNomeProduto).text.isEmpty() == false)
             {
-                nomeProduto = findViewById<EditText>(R.id.editTextNomeProduto).text.toString()
+                nome = findViewById<EditText>(R.id.editTextNomeProduto).text.toString()
             }
             if (findViewById<EditText>(R.id.editTextTipoProduto).text.isEmpty() == false)
             {
-                tipoProduto = findViewById<EditText>(R.id.editTextTipoProduto).text.toString()
+                tipo_produto = findViewById<EditText>(R.id.editTextTipoProduto).text.toString()
             }
             if (findViewById<EditText>(R.id.editTextPrecoProduto).text.isEmpty() == false)
             {
-                precoProduto = findViewById<EditText>(R.id.editTextPrecoProduto).text.toString().toDouble()
+                preco = findViewById<EditText>(R.id.editTextPrecoProduto).text.toString().toDouble()
             }
             if (findViewById<EditText>(R.id.editTextDescricaoProduto).text.isEmpty() == false)
             {
-                descricaoProduto = findViewById<EditText>(R.id.editTextDescricaoProduto).text.toString()
+                descricao = findViewById<EditText>(R.id.editTextDescricaoProduto).text.toString()
             }
             if (findViewById<EditText>(R.id.editTextQuantidadeProduto).text.isEmpty() == false)
             {
-                quantidadeProduto = findViewById<EditText>(R.id.editTextQuantidadeProduto).text.toString().toInt()
+                quantidade_produto = findViewById<EditText>(R.id.editTextQuantidadeProduto).text.toString().toInt()
             }
 
+            var editProduto = Loja(id_produto,id_ginasio,nome,tipo_produto,preco,descricao,estado_produto,foto_produto,quantidade_produto)
+            LojaRequests.Patch(lifecycleScope,sessionToken,id_produto,editProduto){ resultProdutoEditado ->
+                if (resultProdutoEditado == "User not found")
+                {
+                    Toast.makeText(this@Activity_Funcionario_Loja_Produto_Edit, "Error: Edit fail", Toast.LENGTH_LONG).show()
+                }
+                else
+                {
+                    finish()
+                    startActivity(intent)
+                }
+            }
 
-            // TODO: SUBSTITUIR OS NULOS e hardcodes DO OBJETO ABAIXO
-            // objeto enviado para o backend
-            var id_ginasio = 1
-            var editProduto = Loja(null,id_ginasio,nomeProduto,tipoProduto,precoProduto,descricaoProduto,"Ativo",fotoProduto,quantidadeProduto)
-            startActivity(intent)
         }
     }
 }

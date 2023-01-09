@@ -2,20 +2,37 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Loja
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.LojaRequests
 
 class Activity_Funcionario_Loja_Produto_Add : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_loja_produto_add)
 
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken) { resultFuncionario ->
+            if(resultFuncionario != null)
+            {
+                if (resultFuncionario?.foto_funcionario != null)
+                {
+                    val imageUri: Uri = Uri.parse(resultFuncionario.foto_funcionario)
+                    imageView.setImageURI(imageUri)
+                }
+            }
+        }
 
         var counter = 0
         val spinner = findViewById<Spinner>(R.id.spinner)
@@ -102,41 +119,65 @@ class Activity_Funcionario_Loja_Produto_Add : AppCompatActivity() {
             var precoProduto : Double = 0.0
             var descricaoProduto : String = ""
             var quantidadeProduto : Int = 0
+            //TODO insert foto
             var fotoProduto : String = ""
 
-            //TODO: trocar por condições de verificacao de campos preenchidos
+            var emptyField = false
+
             if (findViewById<EditText>(R.id.editTextNomeProduto).text.isEmpty() == false)
             {
                 nomeProduto = findViewById<EditText>(R.id.editTextNomeProduto).text.toString()
             }
-            else Toast.makeText(this@Activity_Funcionario_Loja_Produto_Add,"Error: Fields missing",Toast.LENGTH_LONG)
+            else emptyField = true
+
             if (findViewById<EditText>(R.id.editTextTipoProduto).text.isEmpty() == false)
             {
                 tipoProduto = findViewById<EditText>(R.id.editTextTipoProduto).text.toString()
             }
-            else Toast.makeText(this@Activity_Funcionario_Loja_Produto_Add,"Error: Fields missing",Toast.LENGTH_LONG)
+            else emptyField = true
+
             if (findViewById<EditText>(R.id.editTextPrecoProduto).text.isEmpty() == false)
             {
                 precoProduto = findViewById<EditText>(R.id.editTextPrecoProduto).text.toString().toDouble()
             }
-            else Toast.makeText(this@Activity_Funcionario_Loja_Produto_Add,"Error: Fields missing",Toast.LENGTH_LONG)
+            else emptyField = true
+
             if (findViewById<EditText>(R.id.editTextDescricaoProduto).text.isEmpty() == false)
             {
                 descricaoProduto = findViewById<EditText>(R.id.editTextDescricaoProduto).text.toString()
             }
-            else Toast.makeText(this@Activity_Funcionario_Loja_Produto_Add,"Error: Fields missing",Toast.LENGTH_LONG)
+            else emptyField = true
+
             if (findViewById<EditText>(R.id.editTextQuantidadeProduto).text.isEmpty() == false)
             {
                 quantidadeProduto = findViewById<EditText>(R.id.editTextQuantidadeProduto).text.toString().toInt()
             }
-            else Toast.makeText(this@Activity_Funcionario_Loja_Produto_Add,"Error: Fields missing",Toast.LENGTH_LONG)
+            else emptyField = true
 
-            // TODO: SUBSTITUIR OS NULOS e hardcodes DO OBJETO ABAIXO
-            // objeto enviado para o backend
-            var id_ginasio = 1
-            var newProduto = Loja(null,id_ginasio,nomeProduto,tipoProduto,precoProduto,descricaoProduto,"Ativo",fotoProduto,quantidadeProduto)
-
-            startActivity(intent)
+            if(emptyField == false)
+            {
+                FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultFuncionario ->
+                    if(resultFuncionario != null)
+                    {
+                        var newProduto = Loja(null,resultFuncionario.id_ginasio,nomeProduto,tipoProduto,precoProduto,descricaoProduto,"Ativo",fotoProduto,quantidadeProduto)
+                        LojaRequests.Post(lifecycleScope, sessionToken, newProduto){ resultNewProduto ->
+                            if (resultNewProduto == "User not found")
+                            {
+                                Toast.makeText(this@Activity_Funcionario_Loja_Produto_Add, "Error: Edit fail", Toast.LENGTH_LONG).show()
+                            }
+                            else
+                            {
+                                finish()
+                                startActivity(intent)
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Toast.makeText(this@Activity_Funcionario_Loja_Produto_Add,"Error: Fields missing",Toast.LENGTH_LONG)
+            }
         }
     }
 }

@@ -8,20 +8,43 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Loja
+import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.LojaRequests
 
 class Activity_Funcionario_Loja_Produtos : AppCompatActivity() {
 
     var produtos_list = arrayListOf<Loja>()
     var produtos_adapter = AdapterProduto()
 
+    val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+    val sessionToken = preferences.getString("session_token", null)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_loja_produtos_list)
 
-        val image_view = findViewById<ImageView>(R.id.profile_pic)
+        val imageView = findViewById<ImageView>(R.id.profile_pic)
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken) { resultFuncionario ->
+            if(resultFuncionario != null)
+            {
+                if (resultFuncionario?.foto_funcionario != null)
+                {
+                    val imageUri: Uri = Uri.parse(resultFuncionario.foto_funcionario)
+                    imageView.setImageURI(imageUri)
+                }
+
+                LojaRequests.GetAllByGinasioID(lifecycleScope,sessionToken,resultFuncionario.id_funcionario){ resultProdutosGinasio ->
+                    produtos_list = resultProdutosGinasio
+                    produtos_adapter.notifyDataSetChanged()
+                }
+            }
+        }
+
         var counter = 0
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options = listOf("Account", "Settings", "Logout", "")
@@ -69,11 +92,11 @@ class Activity_Funcionario_Loja_Produtos : AppCompatActivity() {
                 spinner.setSelection(3)
             }
         }
-        image_view.setOnClickListener {
+        imageView.setOnClickListener {
             spinner.performClick()
         }
 
-        findViewById<ListView>(R.id.buttonNewProduto).setOnClickListener {
+        findViewById<Button>(R.id.buttonNewProduto).setOnClickListener {
             val intent = Intent(this@Activity_Funcionario_Loja_Produtos, Activity_Funcionario_Loja_Produto_Add::class.java)
             startActivity(intent)
         }

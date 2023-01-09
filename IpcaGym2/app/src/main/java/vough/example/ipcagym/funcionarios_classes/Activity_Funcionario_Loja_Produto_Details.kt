@@ -7,14 +7,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
+import vough.example.ipcagym.requests.LojaRequests
 
 class Activity_Funcionario_Loja_Produto_Details : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_loja_produto_details)
+
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
         var id_produto = intent.getIntExtra("id_produto", -1)
         var id_ginasio = intent.getIntExtra("id_ginasio", -1)
@@ -48,20 +53,21 @@ class Activity_Funcionario_Loja_Produto_Details : AppCompatActivity() {
         val quantidadeProduto = findViewById<TextView>(R.id.Quantidade)
         quantidadeProduto.text = quantidade_produto.toString()
 
-        findViewById<Button>(R.id.buttonPlus).setOnClickListener{
-            quantidade_produto += 1
-        }
-        findViewById<Button>(R.id.buttonMinus).setOnClickListener{
-            quantidade_produto -= 1
-        }
-
         findViewById<Button>(R.id.buttonRemover).setOnClickListener{
             val intent = Intent(this@Activity_Funcionario_Loja_Produto_Details, Activity_Funcionario_Loja_Produtos::class.java)
-            // TODO: remover da lista o produto
-            startActivity(intent)
+            LojaRequests.Delete(lifecycleScope,sessionToken,id_produto){ resultProdutoRemove ->
+                if (resultProdutoRemove == "User not found")
+                {
+                    Toast.makeText(this@Activity_Funcionario_Loja_Produto_Details, "Error: Remove fail", Toast.LENGTH_LONG).show()
+                }
+                else
+                {
+                    finish()
+                    startActivity(intent)
+                }
+            }
         }
 
-        // TODO: linkagem
         findViewById<Button>(R.id.buttonEditar).setOnClickListener {
             val intent = Intent(this@Activity_Funcionario_Loja_Produto_Details, Activity_Funcionario_Loja_Produto_Edit::class.java)
 
