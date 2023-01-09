@@ -57,7 +57,7 @@
         android:layout_marginTop="10dp"
         android:backgroundTint="@android:color/transparent"
         android:elevation="10dp"
-        android:text="Alterar"
+        android:text="Alterar Dados Biometricos"
         android:textColor="#A5A5A5"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -171,7 +171,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/textView_nome_cliente"
+        android:id="@+id/textView_nome_funcionario_working"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -247,7 +247,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="125dp"
-        android:text="Nome do cliente"
+        android:text="textView"
         android:textColor="#fff"
         app:layout_constraintStart_toEndOf="@+id/personal_data_view_name"
         app:layout_constraintTop_toTopOf="parent" />
@@ -258,7 +258,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="16dp"
-        android:text="swsdw@ded.ded"
+        android:text="textView"
         android:textColor="#fff"
         app:layout_constraintStart_toEndOf="@+id/personal_personal_data_view_personal_data_view_birthday"
         app:layout_constraintTop_toBottomOf="@+id/textViewNomeCliente" />
@@ -269,7 +269,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="16dp"
-        android:text="4705-875"
+        android:text="textView"
         android:textColor="#FFFFFF"
         app:layout_constraintStart_toEndOf="@+id/personal_data_view_personal_data_view_code"
         app:layout_constraintTop_toBottomOf="@+id/textViewMail" />
@@ -303,7 +303,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:elevation="10dp"
-        android:text="70,4"
+        android:text="textView"
         android:textColor="#fff"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/cardview_Height"
@@ -342,7 +342,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:elevation="10dp"
-        android:text="181"
+        android:text="textView"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/cardview_altura_atual"
@@ -376,12 +376,12 @@
         app:layout_constraintTop_toTopOf="@+id/cardview_fat" />
 
     <TextView
-        android:elevation="10dp"
         android:id="@+id/textViewGordura"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="10,6"
+        android:elevation="10dp"
+        android:text="textView"
         android:textColor="#EFEFEF"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/cardview_fat"
@@ -433,7 +433,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:elevation="10dp"
-        android:text="12,6"
+        android:text="textView"
         android:textColor="#fff"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/cardview_entradas_semanais"
@@ -473,7 +473,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:elevation="10dp"
-        android:text="13"
+        android:text="textView"
         android:textColor="#EDE9E9"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/cardview_entradas_mensais"
@@ -495,7 +495,7 @@
         app:layout_constraintStart_toStartOf="@+id/cardview_entradas_mensais" />
 
     <TextView
-        android:id="@+id/textView66"
+        android:id="@+id/textView_month"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -508,17 +508,17 @@
         app:layout_constraintTop_toTopOf="@+id/cardview_entradas_dias" />
 
     <TextView
-        android:id="@+id/textView67"
+        android:id="@+id/textView_mes_dias"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:elevation="10dp"
-        android:text="1"
+        android:text="textView"
         android:textColor="#fff"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/cardview_entradas_dias"
         app:layout_constraintStart_toStartOf="@+id/cardview_entradas_dias"
-        app:layout_constraintTop_toBottomOf="@+id/textView66" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_month" />
 
     <TextView
         android:id="@+id/textView_dias_mes_atual"
