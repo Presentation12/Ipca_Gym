@@ -9,44 +9,49 @@
         android:id="@+id/campo_rating"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:elevation="10dp"
         android:ems="10"
+        android:hint="5"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:text="5"
-        app:layout_constraintBottom_toBottomOf="@+id/estrelas"
+        android:outlineProvider="none"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView18"
+        app:layout_constraintEnd_toEndOf="@+id/campo_comentario"
         app:layout_constraintStart_toStartOf="@+id/campo_comentario"
-        app:layout_constraintTop_toTopOf="@+id/estrelas"
+        app:layout_constraintTop_toBottomOf="@+id/campo_comentario"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
     <EditText
         android:id="@+id/campo_comentario"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:elevation="10dp"
         android:ems="10"
+        android:hint="Comment"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:outlineProvider="none"
         app:layout_constraintEnd_toEndOf="@+id/cardView18"
-        app:layout_constraintStart_toEndOf="@+id/comentario"
-        app:layout_constraintTop_toTopOf="@+id/cardView18"
+        app:layout_constraintStart_toStartOf="@+id/cardView18"
+        app:layout_constraintTop_toBottomOf="@+id/textView66"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView18"
         android:layout_width="0dp"
-        android:layout_height="250dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toTopOf="@+id/button_avaliar_ginasio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_nome_cliente_avaliacao">
+        app:layout_constraintTop_toBottomOf="@+id/spinner_avalicao">
 
     </androidx.cardview.widget.CardView>
 
@@ -109,20 +114,6 @@
         </com.google.android.material.bottomappbar.BottomAppBar>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <TextView
-        android:id="@+id/textView_nome_cliente_avaliacao"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
-        android:text="Textview"
-        android:textColor="#FFFFFF"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Spinner
         android:id="@+id/spinner_avalicao"
         android:layout_width="32dp"
@@ -156,33 +147,16 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/comentario"
-        android:layout_width="97dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="80dp"
-        android:background="#2D2D2D"
+        android:id="@+id/textView66"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:elevation="10dp"
-        android:paddingLeft="5dp"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
-        android:text="Comentario"
+        android:text="Rating"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/cardView18"
         app:layout_constraintStart_toStartOf="@+id/cardView18"
         app:layout_constraintTop_toTopOf="@+id/cardView18" />
-
-    <TextView
-        android:id="@+id/estrelas"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="80dp"
-        android:background="#2D2D2D"
-        android:elevation="10dp"
-        android:paddingLeft="5dp"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
-        android:text="Estrelas"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView18"
-        app:layout_constraintStart_toStartOf="@+id/cardView18" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

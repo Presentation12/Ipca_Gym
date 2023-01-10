@@ -14,13 +14,12 @@
         android:id="@+id/versio_app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
         android:text="Follow"
         android:textColor="#FFFFFF"
-        android:textSize="21sp"
+        android:textSize="16dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.163"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Version_Layout"
         tools:text="Follow" />
@@ -29,17 +28,16 @@
         android:layout_width="301dp"
 
         android:layout_height="170dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/grey_shape_background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/versio_app">
 
         <Button
             android:id="@+id/button_follow_facebook"
             android:layout_width="126dp"
-            android:layout_height="37dp"
+            android:layout_height="48dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="4dp"
@@ -48,12 +46,13 @@
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toTopOf="@+id/button_follow_tiktok"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_follow_instagram" />
+            app:layout_constraintTop_toBottomOf="@+id/button_follow_instagram"
+            tools:ignore="DuplicateSpeakableTextCheck" />
 
         <Button
             android:id="@+id/button_follow_instagram"
             android:layout_width="126dp"
-            android:layout_height="37dp"
+            android:layout_height="48dp"
 
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
@@ -69,7 +68,7 @@
         <Button
             android:id="@+id/button_follow_tiktok"
             android:layout_width="126dp"
-            android:layout_height="37dp"
+            android:layout_height="48dp"
 
             android:layout_marginTop="2dp"
             android:layout_marginEnd="16dp"
@@ -124,13 +123,12 @@
         android:id="@+id/Versio_app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
         android:text="Version"
         android:textColor="#FFFFFF"
-        android:textSize="21sp"
+        android:textSize="16dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.153"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/InfoAndHelp_Layout"
         tools:text="Version" />
@@ -139,7 +137,7 @@
         android:id="@+id/Version_Layout"
         android:layout_width="299dp"
         android:layout_height="60dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/grey_shape_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.508"
@@ -194,6 +192,7 @@
         android:layout_width="301dp"
         android:layout_height="165dp"
         android:layout_margin="8dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/grey_shape_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.472"
@@ -203,7 +202,7 @@
         <Button
             android:id="@+id/button_helpandcontacts"
             android:layout_width="238dp"
-            android:layout_height="44dp"
+            android:layout_height="48dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="2dp"
             android:backgroundTint="#2D2D2D"
@@ -219,7 +218,7 @@
         <Button
             android:id="@+id/button_aboutus"
             android:layout_width="238dp"
-            android:layout_height="44dp"
+            android:layout_height="48dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
             android:backgroundTint="#2D2D2D"
@@ -235,7 +234,7 @@
         <Button
             android:id="@+id/button_subscrive"
             android:layout_width="238dp"
-            android:layout_height="42dp"
+            android:layout_height="48dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="4dp"
             android:backgroundTint="#2D2D2D"
@@ -254,13 +253,12 @@
         android:id="@+id/InfoAndHelp_app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
         android:text="Information and Help"
         android:textColor="#FFFFFF"
-        android:textSize="21sp"
+        android:textSize="16dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.267"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/App_Layout" />
 
@@ -268,13 +266,12 @@
         android:id="@+id/defenitions_app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
         android:text="APP"
         android:textColor="#FFFFFF"
-        android:textSize="21sp"
+        android:textSize="16dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.153"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -282,7 +279,7 @@
         android:id="@+id/App_Layout"
         android:layout_width="299dp"
         android:layout_height="116dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/grey_shape_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -292,34 +289,27 @@
             android:id="@+id/textView_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginBottom="20dp"
             android:text="Mode"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_dark"
-            app:layout_constraintHorizontal_bias="0.269"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/button_dark"
+            app:layout_constraintStart_toStartOf="@+id/textView_idioma"
+            app:layout_constraintTop_toTopOf="@+id/button_dark"
             tools:text="Mode" />
 
         <TextView
             android:id="@+id/textView_idioma"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="20dp"
 
+            android:layout_marginEnd="20dp"
             android:text="Idioma"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textColorHint="#000000"
-            app:layout_constraintBottom_toTopOf="@+id/textView_mode"
+            app:layout_constraintBottom_toBottomOf="@+id/button_english"
             app:layout_constraintEnd_toStartOf="@+id/button_english"
-            app:layout_constraintHorizontal_bias="0.155"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.147" />
+            app:layout_constraintTop_toTopOf="@+id/button_english" />
 
         <Button
             android:id="@+id/button_english"
@@ -327,11 +317,9 @@
             android:layout_height="43dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="28dp"
-            android:layout_marginBottom="2dp"
             android:backgroundTint="#2D2D2D"
             android:text="English"
             android:textColor="#FFFFFF"
-            app:layout_constraintBottom_toTopOf="@+id/button_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:rippleColor="#000000"
@@ -341,7 +329,6 @@
             android:id="@+id/button_dark"
             android:layout_width="156dp"
             android:layout_height="43dp"
-            android:layout_marginTop="2dp"
             android:layout_marginEnd="28dp"
             android:layout_marginBottom="4dp"
             android:backgroundTint="#2D2D2D"
@@ -349,9 +336,6 @@
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_english"
             tools:ignore="TouchTargetSizeCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

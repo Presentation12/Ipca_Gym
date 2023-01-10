@@ -40,7 +40,6 @@ class Activity_Cliente_Nutricao_Atual : AppCompatActivity() {
             //Buscar token
             val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
             val sessionToken = preferences.getString("session_token", null)
-            findViewById<TextView>(R.id.textView13).isInvisible = true
 
             val imageView = findViewById<ImageView>(R.id.profile_pic_cliente_nutricao)
 

@@ -2,6 +2,7 @@ package vough.example.ipcagym.cliente_classes
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -24,15 +25,21 @@ class Activity_Cliente_Avaliar : AppCompatActivity(){
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
+        val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
+
         ClienteRequests.GetByToken(lifecycleScope, sessionToken) { resultCliente ->
             if (resultCliente != null) {
-                findViewById<TextView>(R.id.textView_nome_cliente_avaliacao).text =
-                    resultCliente.nome
+
+                if (resultCliente.foto_perfil != null)
+                {
+                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
+                    imageView.setImageURI(imageUri)
+                }
             }
         }
 
 
-        val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
+
         var counter = 0
         val spinner = findViewById<Spinner>(R.id.spinner_avalicao)
 

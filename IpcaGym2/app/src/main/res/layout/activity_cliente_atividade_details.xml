@@ -20,11 +20,11 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="0dp"
-        android:layout_height="255dp"
+        android:layout_height="200dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView">
@@ -55,34 +55,36 @@
         android:id="@+id/activityDetailHourEntrada"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
         android:background="#2D2D2D"
         android:elevation="10dp"
         android:text="  Entry Hour"
         app:layout_constraintBottom_toTopOf="@+id/activityDetailHourExit"
-        app:layout_constraintStart_toStartOf="@+id/cardView2" />
+        app:layout_constraintEnd_toEndOf="@+id/activityDetailID"
+        app:layout_constraintStart_toStartOf="@+id/activityDetailID"
+        app:layout_constraintTop_toBottomOf="@+id/activityDetailID" />
 
     <TextView
         android:id="@+id/activityDetailHourExit"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="20dp"
         android:background="#2D2D2D"
         android:elevation="10dp"
         android:text="  Exit Hour"
         app:layout_constraintBottom_toBottomOf="@+id/cardView2"
-        app:layout_constraintStart_toStartOf="@+id/cardView2" />
+        app:layout_constraintEnd_toEndOf="@+id/activityDetailHourEntrada"
+        app:layout_constraintStart_toStartOf="@+id/activityDetailHourEntrada" />
 
     <TextView
         android:id="@+id/activityDetailDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
         android:elevation="10dp"
+        android:text="TextView"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/cardView2"
         app:layout_constraintStart_toStartOf="@+id/cardView2"
         app:layout_constraintTop_toTopOf="@+id/cardView2" />
 
@@ -90,43 +92,44 @@
         android:id="@+id/activityDetailHourEntradaValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:elevation="10dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/activityDetailHourEntrada"
-        app:layout_constraintStart_toEndOf="@+id/activityDetailHourEntrada" />
+        app:layout_constraintEnd_toEndOf="@+id/activityDetailIDValue"
+        app:layout_constraintStart_toStartOf="@+id/activityDetailIDValue" />
 
     <TextView
         android:id="@+id/activityDetailHourExitValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="TextView"
         android:elevation="10dp"
+        android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/activityDetailHourExit"
-        app:layout_constraintStart_toEndOf="@+id/activityDetailHourExit" />
+        app:layout_constraintEnd_toEndOf="@+id/activityDetailHourEntradaValue"
+        app:layout_constraintStart_toStartOf="@+id/activityDetailHourEntradaValue" />
 
     <TextView
         android:id="@+id/activityDetailID"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="20dp"
         android:background="#2D2D2D"
         android:elevation="10dp"
         android:text="  ID da Atividade"
-        app:layout_constraintBottom_toTopOf="@+id/activityDetailHourEntrada"
-        app:layout_constraintStart_toStartOf="@+id/cardView2" />
+        app:layout_constraintEnd_toStartOf="@+id/activityDetailDate"
+        app:layout_constraintStart_toStartOf="@+id/activityDetailDate"
+        app:layout_constraintTop_toBottomOf="@+id/activityDetailDate" />
 
     <TextView
         android:id="@+id/activityDetailIDValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="5dp"
         android:elevation="10dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/activityDetailID"
-        app:layout_constraintStart_toEndOf="@+id/activityDetailID" />
+        app:layout_constraintStart_toEndOf="@+id/activityDetailID"
+        app:layout_constraintTop_toTopOf="@+id/activityDetailID" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
