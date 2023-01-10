@@ -406,22 +406,22 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("pass_hash", clienteAtual.pass_hash);
                         myCommand.Parameters.AddWithValue("pass_salt", clienteAtual.pass_salt);
 
-                        if (clienteAtual.peso != null)
+                        if (cliente.peso != null)
                             myCommand.Parameters.AddWithValue("peso", cliente.peso != null ? cliente.peso : clienteAtual.peso);
                         else
                             myCommand.Parameters.AddWithValue("peso", DBNull.Value);
 
-                        if (clienteAtual.altura != null)
+                        if (cliente.altura != null)
                             myCommand.Parameters.AddWithValue("altura", cliente.altura != null ? cliente.altura : clienteAtual.altura);
                         else
                             myCommand.Parameters.AddWithValue("altura", DBNull.Value);
 
-                        if (clienteAtual.gordura != null)
+                        if (cliente.gordura != null)
                             myCommand.Parameters.AddWithValue("gordura", cliente.gordura != null ? cliente.gordura : clienteAtual.gordura);
                         else
                             myCommand.Parameters.AddWithValue("gordura", DBNull.Value);
 
-                        if (clienteAtual.foto_perfil != null)
+                        if (cliente.foto_perfil != null)
                             myCommand.Parameters.AddWithValue("foto_perfil", cliente.foto_perfil != null ? cliente.foto_perfil : clienteAtual.foto_perfil);
                         else
                             myCommand.Parameters.AddWithValue("foto_perfil", DBNull.Value);
