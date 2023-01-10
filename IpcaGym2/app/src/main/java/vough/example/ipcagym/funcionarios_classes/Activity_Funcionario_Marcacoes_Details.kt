@@ -142,7 +142,7 @@ class Activity_Funcionario_Marcacoes_Details: AppCompatActivity() {
                     true
                 }
                 R.id.nav_shopping -> {
-                    startActivity(Intent(this@Activity_Funcionario_Marcacoes_Details, Activity_Funcionario_Loja_Produtos::class.java))
+                    startActivity(Intent(this@Activity_Funcionario_Marcacoes_Details, Activity_Funcionario_Loja_Pedidos::class.java))
                     finish()
 
                     true
@@ -155,6 +155,7 @@ class Activity_Funcionario_Marcacoes_Details: AppCompatActivity() {
                 R.id.nav_history -> {
                     startActivity(Intent(this@Activity_Funcionario_Marcacoes_Details, Activity_Funcionario_Flux_Control::class.java))
                     finish()
+
                     true
                 }
                 else -> false

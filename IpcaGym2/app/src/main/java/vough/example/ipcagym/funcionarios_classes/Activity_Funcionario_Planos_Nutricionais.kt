@@ -144,7 +144,7 @@ class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
                     true
                 }
                 R.id.nav_shopping -> {
-                    startActivity(Intent(this@Activity_Funcionario_Planos_Nutricionais, Activity_Funcionario_Loja_Produtos::class.java))
+                    startActivity(Intent(this@Activity_Funcionario_Planos_Nutricionais, Activity_Funcionario_Loja_Pedidos::class.java))
                     finish()
 
                     true

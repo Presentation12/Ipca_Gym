@@ -158,27 +158,36 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
-        bottom_navigation_view.setOnItemSelectedListener{ item ->
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
+
+        bottomNavigationView.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this@Activity_Gerente_Funcionarios_List,"Main Menu", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Gerente_Funcionarios_List, Activity_Funcionario_Pagina_Inicial::class.java))
+                    finish()
+
                     true
                 }
-                R.id.nav_fitness -> {
-                    Toast.makeText(this@Activity_Gerente_Funcionarios_List,"Treino", Toast.LENGTH_LONG).show()
+                R.id.nav_clients -> {
+                    startActivity(Intent(this@Activity_Gerente_Funcionarios_List, Activity_Funcionario_Clientes_List::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_shopping -> {
-                    Toast.makeText(this@Activity_Gerente_Funcionarios_List,"Loja", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Gerente_Funcionarios_List, Activity_Funcionario_Loja_Pedidos::class.java))
+                    finish()
+
                     true
                 }
-                R.id.nav_diet -> {
-                    Toast.makeText(this@Activity_Gerente_Funcionarios_List,"Refeicoes", Toast.LENGTH_LONG).show()
+                R.id.nav_capacity -> {
+                    startActivity(Intent(this@Activity_Gerente_Funcionarios_List, Activity_Funcionario_Capacity::class.java))
+                    finish()
                     true
                 }
                 R.id.nav_history -> {
-                    Toast.makeText(this@Activity_Gerente_Funcionarios_List,"Atividades", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Gerente_Funcionarios_List, Activity_Funcionario_Flux_Control::class.java))
+                    finish()
                     true
                 }
                 else -> false
