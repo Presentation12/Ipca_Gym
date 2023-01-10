@@ -91,14 +91,17 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
 
         //TODO: Verify buy cart que da post de um peiddo novo e de todos os pedidos de produto
         findViewById<Button>(R.id.buttonBuyCart).setOnClickListener {
+
+            var intent = Intent(this@Activity_Cliente_Loja_Produtos, Activity_Cliente_Loja_Pedidos::class.java)
+
             ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
 
                 // post de pedido
                 var newPedido = Pedido(null,resultCliente?.id_cliente, LocalDateTime.now(),"Ativo")
                 PedidoRequests.Post(lifecycleScope,sessionToken,newPedido){ resultAddPedido ->
-                    if (resultAddPedido == "User not found")
+                    if (resultAddPedido == "Error: Post Pedido fails")
                     {
-                        //erro
+                        Toast.makeText(this@Activity_Cliente_Loja_Produtos, "Error: Post Pedido fails", Toast.LENGTH_LONG).show()
                     }
                     else
                     {
@@ -117,13 +120,14 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
                             for(p in allPedidosProdutos)
                             {
                                 PedidoLojaRequests.PostPedidoChecked(lifecycleScope,sessionToken,p){ resultAddPedidoLoja ->
-                                    if (resultAddPedido == "User not found")
+                                    if (resultAddPedido == "Error: Post PedidoLoja fails")
                                     {
-                                        //erro
+                                        Toast.makeText(this@Activity_Cliente_Loja_Produtos, "Error: Post PedidoLoja fails", Toast.LENGTH_LONG).show()
                                     }
                                     else
                                     {
-                                        // correu bem
+                                        finish()
+                                        startActivity(intent)
                                     }
                                 }
                             }
@@ -131,8 +135,6 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
                         }
                     }
                 }
-
-                // post pedido loja
             }
         }
 

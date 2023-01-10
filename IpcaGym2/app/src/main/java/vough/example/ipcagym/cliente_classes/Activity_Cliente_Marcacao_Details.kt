@@ -171,7 +171,7 @@ class Activity_Cliente_Marcacao_Details : AppCompatActivity() {
             val intent = Intent(this@Activity_Cliente_Marcacao_Details, Activity_Cliente_Marcacoes::class.java)
             var editMarcacao = Marcacao(id_marcacao,id_funcionario,id_cliente,data_marcacao_formatado,descricao,"Cancelada")
             MarcacaoRequests.PatchCancelMarcacao(lifecycleScope, sessionToken, id_marcacao, editMarcacao) { resultCancelMarcacao ->
-                if (resultCancelMarcacao == "User not found")
+                if (resultCancelMarcacao == "Error: Patch Cancel Marcacao Checked Product fails")
                 {
                     Toast.makeText(this@Activity_Cliente_Marcacao_Details, "Error on canceling an appointment", Toast.LENGTH_LONG).show()
                 }

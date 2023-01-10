@@ -181,16 +181,16 @@ class Activity_Cliente_Loja_Pedido_Details : AppCompatActivity() {
             val intent = Intent(this@Activity_Cliente_Loja_Pedido_Details, Activity_Cliente_Loja_Pedidos::class.java)
             // remove os pedidos loja e inativa pedido
             PedidoLojaRequests.DeletePedidoLoja(lifecycleScope,sessionToken,id_pedido){ resultCancelarPedido ->
-                if (resultCancelarPedido == "User not found")
+                if (resultCancelarPedido == "Error: Delete PedidoLoja fails")
                 {
-                    // erro
+                    Toast.makeText(this@Activity_Cliente_Loja_Pedido_Details, "Error: Delete PedidoLoja fails", Toast.LENGTH_LONG).show()
                 }
                 else
                 {
-                    // certo
+                    finish()
+                    startActivity(intent)
                 }
             }
-            startActivity(intent)
         }
     }
 

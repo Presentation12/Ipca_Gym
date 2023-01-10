@@ -85,7 +85,7 @@ class Activity_Cliente_Nutricao_Plano_Details : AppCompatActivity() {
                     resultCliente?.id_cliente,
                     resultCliente
                 ) { resultEditCliente ->
-                        if (resultEditCliente == "User not found")
+                        if (resultEditCliente == "Error: Patch Client fails")
                             Toast.makeText(
                                 this@Activity_Cliente_Nutricao_Plano_Details,
                                 "Error on edit a client",

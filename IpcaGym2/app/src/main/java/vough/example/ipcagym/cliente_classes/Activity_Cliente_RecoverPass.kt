@@ -33,7 +33,7 @@ class Activity_Cliente_RecoverPass : AppCompatActivity() {
                             Toast.makeText(this@Activity_Cliente_RecoverPass, "Password changed!", Toast.LENGTH_LONG).show()
                             startActivity(Intent(this@Activity_Cliente_RecoverPass,Activity_Cliente_Login::class.java))
                         }
-                        else Toast.makeText(this@Activity_Cliente_RecoverPass, "User not found", Toast.LENGTH_LONG).show()
+                        else Toast.makeText(this@Activity_Cliente_RecoverPass, "Error: Recover Client password fails", Toast.LENGTH_LONG).show()
                     }
             }
         }

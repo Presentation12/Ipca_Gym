@@ -126,7 +126,7 @@ object MarcacaoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("Error: Post Product fails")
+                        callback("Error: Post Marcacao fails")
                     }
             }
         }
@@ -202,7 +202,7 @@ object MarcacaoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("Error: Delete Product fails")
+                        callback("Error: Delete Marcacao fails")
                     }
             }
         }
@@ -322,7 +322,7 @@ object MarcacaoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("Error: Post Checked Product fails")
+                        callback("Error: Post Checked Marcacao fails")
                     }
             }
         }

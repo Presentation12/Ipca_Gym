@@ -162,7 +162,7 @@ class Activity_Cliente_Marcacao_Consulta : AppCompatActivity() {
                     var newMarcacao = Marcacao(null, idFuncionarioSelected, resultCliente?.id_cliente,dateSelectedFormated,marcacaoType,"Ativo")
                     // objeto enviado para o backend
                     MarcacaoRequests.PostChecked(lifecycleScope, sessionToken, newMarcacao) { resultMarcacao ->
-                        if (resultMarcacao == "User not found")
+                        if (resultMarcacao == "Error: Post Checked Marcacao fails")
                             Toast.makeText(this@Activity_Cliente_Marcacao_Consulta, "Error on marking an appointment", Toast.LENGTH_LONG).show()
                         else
                         {

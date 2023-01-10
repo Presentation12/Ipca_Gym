@@ -154,8 +154,8 @@ class Activity_Cliente_Avaliar : AppCompatActivity(){
                             lifecycleScope,
                             sessionToken,
                             newClassificacao
-                        ) { resultEditClassificacao ->
-                            if (resultEditClassificacao == "User not found")
+                        ) { resultInsertClassificacao ->
+                            if (resultInsertClassificacao == "Error: Post Classification fails")
                                 Toast.makeText(
                                     this@Activity_Cliente_Avaliar,
                                     "Error on create an rating",
