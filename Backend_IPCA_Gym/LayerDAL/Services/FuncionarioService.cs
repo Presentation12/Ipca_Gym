@@ -582,7 +582,7 @@ namespace LayerDAL.Services
         /// <exception cref="InvalidOperationException">Ocorre quando o codigo do funcionario nao está atribuido</exception>
         /// <exception cref="ArgumentNullException">Ocorre quando um parâmetro é nulo.</exception>
         /// <exception cref="Exception">Ocorre quando ocorre qualquer outro erro.</exception>
-        public static async Task<string> LoginService(string sqlDataSource, LoginFuncionario conta, IConfiguration _configuration)
+        public static async Task<LoginModel> LoginService(string sqlDataSource, LoginFuncionario conta, IConfiguration _configuration)
         {
             string query = @"
                             select * from dbo.Funcionario 
@@ -626,9 +626,9 @@ namespace LayerDAL.Services
                                 throw new ArgumentException("Password Errada.", "conta");
                             }
 
-                            string token = Token.CreateTokenFuncionario(targetFuncionario, _configuration);
+                            LoginModel loginModel = Token.CreateTokenFuncionario(targetFuncionario, _configuration);
 
-                            return token;
+                            return loginModel;
                         }
                     }
                 }
@@ -636,22 +636,22 @@ namespace LayerDAL.Services
             catch (InvalidOperationException ex)
             {
                 Console.WriteLine("Funcionário não existe\n" + ex.Message);
-                return string.Empty;
+                return null;
             }
             catch (SqlException ex)
             {
                 Console.WriteLine("Erro na conexão com a base de dados: " + ex.Message);
-                return string.Empty;
+                return null;
             }
             catch (ArgumentNullException ex)
             {
                 Console.WriteLine("Erro de parametro inserido nulo: " + ex.Message);
-                return string.Empty;
+                return null;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                return string.Empty;
+                return null;
             }
         }
 

@@ -20,13 +20,14 @@ class Activity_Funcionario_Login : AppCompatActivity() {
 
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
+        val sessionRole = preferences.getString("session_role", null)
 
-        if(sessionToken != "") {
+        /*if(sessionToken != "" && sessionRole != "Cliente"){
             //val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Pagina_Inicial::class.java)
-            val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Marcacoes::class.java)
+            val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Planos_Nutricionais::class.java)
             finish()
             startActivity(intentStart)
-        }
+        }*/
 
         //TODO: CERTIFICAR QUE O QUE O CODE NÃO SEJA LONG (VER TAMANHO DO CODE)
         val code = findViewById<AppCompatEditText>(R.id.mail).text
@@ -40,19 +41,20 @@ class Activity_Funcionario_Login : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             else {
-                FuncionarioRequests.loginFuncionario(lifecycleScope,code.toString(),pass.toString()) { result ->
-                    if (result != "User not found") {
+                FuncionarioRequests.loginFuncionario(lifecycleScope, code.toString(), pass.toString()) { result ->
+                    if (result != null) {
                         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
                         val editor = preferences.edit()
-                        editor.putString("session_token", result)
+                        editor.putString("session_token", result.token)
+                        editor.putString("session_role", result.role)
 
                         editor.apply()
 
-                        val intentStart = Intent(this@Activity_Funcionario_Login,Activity_Funcionario_Flux_Control::class.java)
+                        val intentStart = Intent(this@Activity_Funcionario_Login,Activity_Gerente_Funcionarios_List::class.java)
                         finish()
                         startActivity(intentStart)
                     } else {
-                        Toast.makeText(this@Activity_Funcionario_Login, result, Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@Activity_Funcionario_Login, "Wrong credentials", Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -62,6 +64,10 @@ class Activity_Funcionario_Login : AppCompatActivity() {
             val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
             val editor = preferences.edit()
             editor.putString("session_token", "")
+            editor.putString("session_role", "")
+
+            editor.apply()
+
             finish()
             startActivity(Intent(this@Activity_Funcionario_Login, Activity_Cliente_Login::class.java))
         }
