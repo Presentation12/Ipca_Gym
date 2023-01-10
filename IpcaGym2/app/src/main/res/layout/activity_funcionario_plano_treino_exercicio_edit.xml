@@ -11,9 +11,6 @@
         android:layout_height="40dp"
         android:layout_gravity="end"
         android:layout_margin="20dp"
-        android:layout_marginTop="16dp"
-
-        android:layout_marginEnd="16dp"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,9 +20,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon">
-
-        </ImageView>
+            android:src="@drawable/defaultprofilepic"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -78,9 +73,9 @@
         android:id="@+id/cardView19"
         android:layout_width="0dp"
         android:layout_height="300dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,11 +87,11 @@
         android:id="@+id/textView51"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:text="Edit Exercise"
-        android:textColor="#FFFFFF"
-        android:textSize="21sp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
@@ -168,7 +163,9 @@
         android:layout_marginEnd="8dp"
         android:elevation="10dp"
         android:ems="10"
+        android:hint="Name"
         android:inputType="textPersonName"
+        android:outlineProvider="none"
         app:layout_constraintBottom_toBottomOf="@+id/textView23"
         app:layout_constraintEnd_toEndOf="@+id/cardView19"
         app:layout_constraintStart_toEndOf="@+id/textView23"
@@ -182,7 +179,9 @@
         android:layout_marginEnd="8dp"
         android:elevation="10dp"
         android:ems="10"
+        android:hint="Description"
         android:inputType="textPersonName"
+        android:outlineProvider="none"
         app:layout_constraintBottom_toBottomOf="@+id/textView43"
         app:layout_constraintEnd_toEndOf="@+id/cardView19"
         app:layout_constraintStart_toEndOf="@+id/textView43"
@@ -196,7 +195,9 @@
         android:layout_marginEnd="8dp"
         android:elevation="10dp"
         android:ems="10"
+        android:hint="Type"
         android:inputType="textPersonName"
+        android:outlineProvider="none"
         app:layout_constraintBottom_toBottomOf="@+id/textView45"
         app:layout_constraintEnd_toEndOf="@+id/cardView19"
         app:layout_constraintStart_toEndOf="@+id/textView45"
@@ -277,6 +278,7 @@
         android:elevation="10dp"
         android:ems="10"
         android:inputType="number"
+        android:outlineProvider="none"
         app:layout_constraintEnd_toStartOf="@+id/isSets"
         app:layout_constraintStart_toStartOf="@+id/cardView19"
         app:layout_constraintTop_toTopOf="@+id/timeMinExerciseValue" />
@@ -288,6 +290,7 @@
         android:elevation="10dp"
         android:ems="10"
         android:inputType="number"
+        android:outlineProvider="none"
         app:layout_constraintStart_toStartOf="@+id/timeSecsExerciseValue"
         app:layout_constraintTop_toTopOf="@+id/timeSecsExerciseValue" />
 
@@ -317,10 +320,10 @@
         android:id="@+id/buttonEditExercise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:backgroundTint="#00FFFFFF"
         android:text="Confirm"
         android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView19"

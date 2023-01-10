@@ -36,7 +36,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon"></ImageView>
+            android:src="@drawable/defaultprofilepic"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -60,7 +60,7 @@
         android:elevation="10dp"
         android:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/activityClienteName" />
+        app:layout_constraintTop_toBottomOf="@+id/dataPedido" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView6"
@@ -79,22 +79,21 @@
             android:layout_width="92dp"
             android:layout_height="50dp"
             android:scaleType="centerCrop"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            android:src="@drawable/noimage" />
 
     </androidx.cardview.widget.CardView>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:backgroundTint="#66000000"
+        android:elevation="10dp"
         android:text="+"
         android:textColor="#FFFFFF"
         android:textSize="30dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView5"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView6"
         app:layout_constraintEnd_toEndOf="@+id/cardView6"
         app:layout_constraintStart_toStartOf="@+id/cardView6"
-        app:layout_constraintTop_toTopOf="@+id/cardView6"
-        android:elevation="10dp"/>
+        app:layout_constraintTop_toTopOf="@+id/cardView6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

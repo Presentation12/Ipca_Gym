@@ -23,7 +23,7 @@
             android:layout_height="100dp"
             android:elevation="10dp"
             android:scaleType="centerCrop"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            android:src="@drawable/noimage" />
 
     </androidx.cardview.widget.CardView>
 

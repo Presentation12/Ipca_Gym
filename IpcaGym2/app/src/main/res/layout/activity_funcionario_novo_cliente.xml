@@ -21,7 +21,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon">
+            android:src="@drawable/defaultprofilepic">
 
         </ImageView>
 
@@ -90,10 +90,10 @@
         android:layout_width="320dp"
         android:layout_height="250dp"
         app:cardCornerRadius="21dp"
-        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_novoRegisto"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView_novoRegisto"
@@ -103,8 +103,9 @@
         android:elevation="10dp"
         android:text="New Client"
         android:textAlignment="center"
-        android:textColor="#fff"
-        android:textSize="21dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/cardView_campos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />

@@ -10,9 +10,9 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="end"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:cardCornerRadius="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -21,7 +21,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon"></ImageView>
+            android:src="@drawable/defaultprofilepic" />
 
     </androidx.cardview.widget.CardView>
 
@@ -39,15 +39,15 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView11"
-        android:layout_width="349dp"
+        android:layout_width="0dp"
         android:layout_height="120dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="128dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -96,52 +96,28 @@
         android:id="@+id/editTextNumber2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="10dp"
         android:elevation="10dp"
         android:ems="10"
+        android:hint="Contact"
         android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="@+id/textView19"
+        android:outlineProvider="none"
         app:layout_constraintEnd_toEndOf="@+id/cardView11"
-        app:layout_constraintStart_toEndOf="@+id/textView19"
-        app:layout_constraintTop_toTopOf="@+id/textView19" />
+        app:layout_constraintStart_toStartOf="@+id/cardView11"
+        app:layout_constraintTop_toTopOf="@+id/cardView11" />
 
     <EditText
         android:id="@+id/editTextNumber3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:elevation="10dp"
         android:ems="10"
+        android:hint="Max Capacity"
         android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="@+id/textView22"
+        android:outlineProvider="none"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView11"
         app:layout_constraintEnd_toEndOf="@+id/cardView11"
-        app:layout_constraintStart_toEndOf="@+id/textView22"
-        app:layout_constraintTop_toTopOf="@+id/textView22" />
-
-    <TextView
-        android:id="@+id/textView22"
-        android:layout_width="115dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:background="#2D2D2D"
-        android:elevation="10dp"
-        android:paddingBottom="2dp"
-        android:text="  Lotação Máxima"
-        app:layout_constraintStart_toStartOf="@+id/cardView11"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="115dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:background="#2D2D2D"
-        android:elevation="10dp"
-        android:paddingBottom="2dp"
-        android:text="  Contacto"
-        app:layout_constraintStart_toStartOf="@+id/cardView11"
-        app:layout_constraintTop_toTopOf="@+id/cardView11" />
+        app:layout_constraintStart_toStartOf="@+id/cardView11" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

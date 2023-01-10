@@ -11,9 +11,6 @@
         android:layout_height="40dp"
         android:layout_gravity="end"
         android:layout_margin="20dp"
-        android:layout_marginTop="16dp"
-
-        android:layout_marginEnd="16dp"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,9 +20,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon">
-
-        </ImageView>
+            android:src="@drawable/defaultprofilepic"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -45,14 +40,14 @@
         android:id="@+id/cardView18"
         android:layout_width="0dp"
         android:layout_height="250dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView48">
+        app:layout_constraintTop_toTopOf="parent">
 
     </androidx.cardview.widget.CardView>
 
@@ -60,12 +55,12 @@
         android:id="@+id/addNewPlanButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#00FFFFFF"
         android:text="Create"
         android:textColor="#FFFFFF"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/cardView18"
         app:layout_constraintTop_toBottomOf="@+id/cardView18"
         app:strokeColor="#A5A5A5"
         app:strokeWidth="2dp" />
@@ -105,13 +100,13 @@
         android:id="@+id/textView48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
         android:text="New Training Plan"
         android:textColor="#FFFFFF"
-        android:textSize="21sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView18"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView50"
@@ -161,12 +156,12 @@
         android:id="@+id/CancelAddNewPlanButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="64dp"
+        android:layout_marginEnd="40dp"
         android:backgroundTint="#002D2D2D"
         android:text="Return"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/addNewPlanButton"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/cardView18"
         app:layout_constraintTop_toTopOf="@+id/addNewPlanButton"
         app:strokeColor="#A5A5A5"
         app:strokeWidth="2dp" />

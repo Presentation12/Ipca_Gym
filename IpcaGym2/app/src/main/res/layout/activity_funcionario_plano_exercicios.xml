@@ -23,9 +23,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon">
-
-        </ImageView>
+            android:src="@drawable/defaultprofilepic"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -76,11 +74,14 @@
         android:id="@+id/listViewExercicios"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@+id/addExercicioButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" >
+        app:layout_constraintTop_toBottomOf="@+id/textView5">
 
     </ListView>
 
@@ -103,12 +104,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginBottom="16dp"
-        android:background="#00FFFFFF"
+        android:backgroundTint="@android:color/transparent"
         android:text="Add Exercise"
-        android:textColor="#FFFFFF"
+        android:textColor="#A5A5A5"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="#FFFFFF" />
+        app:strokeColor="#A5A5A5"
+        app:strokeWidth="2dp" />
 
     <Button
         android:id="@+id/deletePlanoButton"
@@ -116,11 +118,24 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
-        android:background="#00FFFFFF"
+        android:backgroundTint="@android:color/transparent"
         android:text="Remove Plan"
-        android:textColor="#FFFFFF"
+        android:textColor="#A5A5A5"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:strokeColor="#FFFFFF" />
+        app:strokeColor="#A5A5A5"
+        app:strokeWidth="2dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="TextViewPlanoTreino"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
