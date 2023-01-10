@@ -43,7 +43,7 @@ class Activity_Cliente_Plano_Treino_Exercicios : AppCompatActivity() {
         ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
             if(resultCliente?.id_cliente != null)
             {
-                if (resultCliente.foto_perfil != null)
+                if (resultCliente.foto_perfil != null && resultCliente?.foto_perfil != "null")
                 {
                     val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
                     val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
@@ -205,7 +205,7 @@ class Activity_Cliente_Plano_Treino_Exercicios : AppCompatActivity() {
             else exercicio_quantity_view.text = exercicios_plano_list[position].tempo.toString()
 
             val exercicio_image_view = rootView.findViewById<ImageView>(R.id.imageViewPlanoTreino)
-            if (exercicios_plano_list[position].foto_exercicio != null)
+            if (exercicios_plano_list[position].foto_exercicio != null && exercicios_plano_list[position].foto_exercicio != "null")
             {
                 val pictureByteArray = Base64.decode(exercicios_plano_list[position].foto_exercicio, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)

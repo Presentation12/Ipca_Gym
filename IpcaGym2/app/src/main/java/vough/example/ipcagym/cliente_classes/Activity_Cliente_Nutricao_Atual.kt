@@ -3,9 +3,11 @@ package vough.example.ipcagym.cliente_classes
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -45,10 +47,11 @@ class Activity_Cliente_Nutricao_Atual : AppCompatActivity() {
 
             ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
 
-                if (resultCliente?.foto_perfil != null)
+                if (resultCliente?.foto_perfil != null && resultCliente?.foto_perfil != "null")
                 {
-                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
-                    imageView.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultCliente?.foto_perfil, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    imageView.setImageBitmap(bitmap)
                 }
 
                 if (resultCliente?.id_plano_nutricional != 0 && resultCliente?.id_plano_nutricional != null)
@@ -216,11 +219,12 @@ class Activity_Cliente_Nutricao_Atual : AppCompatActivity() {
                 val refeicao_text_view = root_view.findViewById<TextView>(R.id.textViewHoraRefeicao)
                 refeicao_text_view.text = list_refeicoes[position].hora.toString()
 
-                if (list_refeicoes[position].foto_refeicao != null)
+                val refeicao_image_view = root_view.findViewById<ImageView>(R.id.imageViewRefeicao)
+                if (list_refeicoes[position].foto_refeicao  != null && list_refeicoes[position].foto_refeicao != "null")
                 {
-                    val refeicao_image_view = root_view.findViewById<ImageView>(R.id.imageViewRefeicao)
-                    val imageUri: Uri = Uri.parse(list_refeicoes[position].foto_refeicao)
-                    refeicao_image_view.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(list_refeicoes[position].foto_refeicao, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    refeicao_image_view.setImageBitmap(bitmap)
                 }
 
                 //Clicar num rootView abre o plano de treino

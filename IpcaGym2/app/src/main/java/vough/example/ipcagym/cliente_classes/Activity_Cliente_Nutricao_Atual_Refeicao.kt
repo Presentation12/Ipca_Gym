@@ -2,8 +2,10 @@ package vough.example.ipcagym.cliente_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -35,20 +37,24 @@ class Activity_Cliente_Nutricao_Atual_Refeicao : AppCompatActivity() {
 
         ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
 
-            if (resultCliente?.foto_perfil != null)
+            if (resultCliente?.foto_perfil  != null && resultCliente.foto_perfil != "null")
             {
-                val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
-                imageView.setImageURI(imageUri)
+                val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                imageView.setImageBitmap(bitmap)
             }
         }
 
         findViewById<TextView>(R.id.textViewHora).text = hora
-        if (foto_refeicao != null)
+
+        val refeicao_image_view = findViewById<ImageView>(R.id.refeicao_pic)
+        if (foto_refeicao  != null && foto_refeicao != "null")
         {
-            val refeicao_image_view = findViewById<ImageView>(R.id.refeicao_pic)
-            val imageUri: Uri = Uri.parse(foto_refeicao)
-            refeicao_image_view.setImageURI(imageUri)
+            val pictureByteArray = Base64.decode(foto_refeicao, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+            refeicao_image_view.setImageBitmap(bitmap)
         }
+
         findViewById<TextView>(R.id.textViewDescricaoRefeicao).text = descricao
 
         val spinner = findViewById<Spinner>(R.id.spinner)
