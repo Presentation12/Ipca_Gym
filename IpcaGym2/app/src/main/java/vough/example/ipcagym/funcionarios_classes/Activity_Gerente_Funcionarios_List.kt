@@ -43,7 +43,7 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
                 FuncionarioRequests.GetAllByGym(lifecycleScope, sessionToken, resultGerente.id_ginasio) { resultFuncionarios ->
                     if(resultFuncionarios.isNotEmpty()){
                         list_funcionario = resultFuncionarios
-                        listFuncAux = resultFuncionarios
+                        ListTotal = resultFuncionarios
 
                         funcionarios_adapter.notifyDataSetChanged()
                     }
