@@ -203,7 +203,7 @@
                 android:layout_height="22dp"
                 android:backgroundTint="@color/white"
                 android:elevation="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/textView31"
+                app:layout_constraintBottom_toTopOf="@+id/textView_capacidade_atual"
                 app:layout_constraintEnd_toEndOf="@+id/cardView11"
                 app:layout_constraintStart_toStartOf="@+id/cardView11"
                 app:layout_constraintTop_toTopOf="@+id/cardView11"
@@ -230,7 +230,7 @@
             </androidx.cardview.widget.CardView>
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/button_view_team"
                 android:layout_width="98dp"
                 android:layout_height="49dp"
                 android:layout_marginEnd="16dp"
@@ -243,16 +243,17 @@
                 app:strokeColor="@color/teal_200" />
 
             <TextView
-                android:id="@+id/textView31"
+                android:id="@+id/textView_capacidade_atual"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="30dp"
                 android:elevation="10dp"
                 android:text="TextView"
                 android:textColor="#FFFF"
                 app:layout_constraintBottom_toTopOf="@+id/textView22"
                 app:layout_constraintEnd_toEndOf="@+id/cardView11"
-                app:layout_constraintStart_toStartOf="@+id/cardView11" />
+                app:layout_constraintStart_toStartOf="@+id/cardView11"
+                app:layout_constraintTop_toTopOf="@+id/cardView11" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
@@ -264,13 +265,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView14">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView9"
+                    android:id="@+id/cardView_loja"
                     android:layout_width="151dp"
                     android:layout_height="139dp"
                     android:layout_marginEnd="16dp"
                     app:cardCornerRadius="21dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/cardView10"
+                    app:layout_constraintEnd_toStartOf="@+id/cardView_planos_nutricao"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
@@ -279,10 +280,11 @@
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
                         android:src="@drawable/icon" />
+
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView10"
+                    android:id="@+id/cardView_planos_nutricao"
                     android:layout_width="151dp"
                     android:layout_height="139dp"
                     app:cardCornerRadius="21dp"
@@ -320,7 +322,7 @@
                 android:elevation="10dp"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView_team_members"
-                app:layout_constraintEnd_toStartOf="@+id/button4"
+                app:layout_constraintEnd_toStartOf="@+id/button_view_team"
                 app:layout_constraintTop_toTopOf="@+id/cardView_team_members">
 
                 <ImageView
@@ -345,18 +347,33 @@
                 app:layout_constraintTop_toTopOf="@+id/textView199"
                 app:layout_constraintVertical_bias="0.0" />
 
-            <Button
-                android:id="@+id/buttonSaberMais"
+            <TextView
+
+                android:id="@+id/textView_sobreNos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/transparent"
+                android:layout_marginTop="10dp"
                 android:elevation="10dp"
-                android:text="Saber mais"
-                android:textColor="#A5A5A5"
-                android:textStyle="bold"
+                android:text="Sobre Nós"
+                android:textAlignment="center"
+                android:textColor="#E4E4E4"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/cardView8"
+                app:layout_constraintStart_toStartOf="@+id/cardView8"
+                app:layout_constraintTop_toTopOf="@+id/cardView8" />
+
+            <Button
+                android:id="@+id/button_sobreNos"
+                android:layout_width="150dp"
+                android:layout_height="49dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="@android:color/tertiary_text_light"
+                android:text="Junta-te"
+                android:textColor="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView8"
                 app:layout_constraintEnd_toEndOf="@+id/cardView8"
-                app:layout_constraintStart_toStartOf="@+id/cardView8" />
+                app:layout_constraintStart_toStartOf="@+id/cardView8"
+                app:strokeColor="@color/teal_200" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
