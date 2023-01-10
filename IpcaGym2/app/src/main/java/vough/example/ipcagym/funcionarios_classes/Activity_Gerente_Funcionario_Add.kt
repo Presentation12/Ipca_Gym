@@ -85,26 +85,35 @@ class Activity_Gerente_Funcionario_Add : AppCompatActivity() {
         imageView.setOnClickListener { spinner.performClick() }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
+
         bottomNavigationView.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this@Activity_Gerente_Funcionario_Add,"Main Menu", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Gerente_Funcionario_Add, Activity_Funcionario_Pagina_Inicial::class.java))
+                    finish()
+
                     true
                 }
-                R.id.nav_fitness -> {
-                    Toast.makeText(this@Activity_Gerente_Funcionario_Add,"Treino", Toast.LENGTH_LONG).show()
+                R.id.nav_clients -> {
+                    startActivity(Intent(this@Activity_Gerente_Funcionario_Add, Activity_Funcionario_Clientes_List::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_shopping -> {
-                    Toast.makeText(this@Activity_Gerente_Funcionario_Add,"Loja", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Gerente_Funcionario_Add, Activity_Funcionario_Loja_Pedidos::class.java))
+                    finish()
+
                     true
                 }
-                R.id.nav_diet -> {
-                    Toast.makeText(this@Activity_Gerente_Funcionario_Add,"Refeicoes", Toast.LENGTH_LONG).show()
+                R.id.nav_capacity -> {
+                    startActivity(Intent(this@Activity_Gerente_Funcionario_Add, Activity_Funcionario_Capacity::class.java))
+                    finish()
                     true
                 }
                 R.id.nav_history -> {
-                    Toast.makeText(this@Activity_Gerente_Funcionario_Add,"Atividades", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Gerente_Funcionario_Add, Activity_Funcionario_Flux_Control::class.java))
+                    finish()
                     true
                 }
                 else -> false

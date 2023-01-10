@@ -134,32 +134,42 @@ class Activity_Funcionario_Loja_Produto_Details : AppCompatActivity() {
 
         imageView.setOnClickListener{ spinner.performClick() }
 
-        val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
-        bottom_navigation_view.setOnItemSelectedListener{ item ->
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
+
+        bottomNavigationView.setSelectedItemId(R.id.nav_shopping);
+        bottomNavigationView.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this@Activity_Funcionario_Loja_Produto_Details,"Main Menu", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Funcionario_Loja_Produto_Details, Activity_Funcionario_Pagina_Inicial::class.java))
+                    finish()
+
                     true
                 }
-                R.id.nav_fitness -> {
-                    Toast.makeText(this@Activity_Funcionario_Loja_Produto_Details,"Treino", Toast.LENGTH_LONG).show()
+                R.id.nav_clients -> {
+                    startActivity(Intent(this@Activity_Funcionario_Loja_Produto_Details, Activity_Funcionario_Clientes_List::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_shopping -> {
-                    Toast.makeText(this@Activity_Funcionario_Loja_Produto_Details,"Loja", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Funcionario_Loja_Produto_Details, Activity_Funcionario_Loja_Pedidos::class.java))
+                    finish()
+
                     true
                 }
-                R.id.nav_diet -> {
-                    Toast.makeText(this@Activity_Funcionario_Loja_Produto_Details,"Refeicoes", Toast.LENGTH_LONG).show()
+                R.id.nav_capacity -> {
+                    startActivity(Intent(this@Activity_Funcionario_Loja_Produto_Details, Activity_Funcionario_Capacity::class.java))
+                    finish()
                     true
                 }
                 R.id.nav_history -> {
-                    Toast.makeText(this@Activity_Funcionario_Loja_Produto_Details,"Atividades", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Funcionario_Loja_Produto_Details, Activity_Funcionario_Flux_Control::class.java))
+                    finish()
+
                     true
                 }
                 else -> false
             }
         }
-
     }
 }

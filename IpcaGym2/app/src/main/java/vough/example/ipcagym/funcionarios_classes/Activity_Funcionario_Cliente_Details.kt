@@ -30,24 +30,25 @@ class Activity_Funcionario_Cliente_Details : AppCompatActivity() {
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
-        var id_cliente = intent.getIntExtra("id_cliente", -1)
-        var id_ginasio = intent.getIntExtra("id_ginasio", -1)
-        var id_plano_nutricional : Int? = intent.getIntExtra("id_plano_nutricional", 0)
-        var nome = intent.getStringExtra("nome")
-        var mail = intent.getStringExtra("mail")
-        var telemovel = intent.getIntExtra("telemovel",-1)
-        var pass_salt = intent.getStringExtra("pass_salt")
-        var pass_hash = intent.getStringExtra("pass_hash")
-        var peso : Double? = intent.getDoubleExtra("peso",0.0)
-        var altura : Int?  = intent.getIntExtra("altura",-1)
-        var gordura : Double?  = intent.getDoubleExtra("gordura",0.0)
-        var foto_perfil = intent.getStringExtra("foto_perfil")
-        var estado = intent.getStringExtra("estado")
+        val id_cliente = intent.getIntExtra("id_cliente", -1)
+        val id_ginasio = intent.getIntExtra("id_ginasio", -1)
+        val id_plano_nutricional : Int? = intent.getIntExtra("id_plano_nutricional", 0)
+        val nome = intent.getStringExtra("nome")
+        val mail = intent.getStringExtra("mail")
+        val telemovel = intent.getIntExtra("telemovel",-1)
+        val pass_salt = intent.getStringExtra("pass_salt")
+        val pass_hash = intent.getStringExtra("pass_hash")
+        val peso : Double? = intent.getDoubleExtra("peso",0.0)
+        val altura : Int?  = intent.getIntExtra("altura",-1)
+        val gordura : Double?  = intent.getDoubleExtra("gordura",0.0)
+        val foto_perfil = intent.getStringExtra("foto_perfil")
+        val estado = intent.getStringExtra("estado")
 
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken) { resultFuncionario ->
-            val namefunc_view = findViewById<TextView>(R.id.textView_nome_funcionario_working)
-            namefunc_view.text = resultFuncionario?.nome
+            if(resultFuncionario != null){
+                val namefunc_view = findViewById<TextView>(R.id.textView_nome_funcionario_working)
+                namefunc_view.text = resultFuncionario.nome
 
                 AtividadeRequests.GetAllByClienteID(lifecycleScope,sessionToken,id_cliente){ resultAtividades ->
                     val mes_atual_view = findViewById<TextView>(R.id.textView_month)
@@ -82,6 +83,7 @@ class Activity_Funcionario_Cliente_Details : AppCompatActivity() {
 
                 }
             }
+        }
 
         val nome_view = findViewById<TextView>(R.id.textViewNomeCliente)
         nome_view.text = nome
@@ -114,7 +116,7 @@ class Activity_Funcionario_Cliente_Details : AppCompatActivity() {
 
         findViewById<Button>(R.id.button_alterar).setOnClickListener{
 
-            var intent = Intent(this@Activity_Funcionario_Cliente_Details,Activity_Funcionario_Cliente_Edit::class.java)
+            val intent = Intent(this@Activity_Funcionario_Cliente_Details,Activity_Funcionario_Cliente_Edit::class.java)
 
             intent.putExtra("id_cliente", id_cliente)
             intent.putExtra("id_ginasio", id_ginasio)
@@ -146,27 +148,37 @@ class Activity_Funcionario_Cliente_Details : AppCompatActivity() {
             }
         }
 
-        val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
-        bottom_navigation_view.setOnItemSelectedListener{ item ->
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
+
+        bottomNavigationView.setSelectedItemId(R.id.nav_clients);
+        bottomNavigationView.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this@Activity_Funcionario_Cliente_Details,"Main Menu", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Funcionario_Cliente_Details, Activity_Funcionario_Pagina_Inicial::class.java))
+                    finish()
+
                     true
                 }
-                R.id.nav_fitness -> {
-                    Toast.makeText(this@Activity_Funcionario_Cliente_Details,"Treino", Toast.LENGTH_LONG).show()
+                R.id.nav_clients -> {
+                    startActivity(Intent(this@Activity_Funcionario_Cliente_Details, Activity_Funcionario_Clientes_List::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_shopping -> {
-                    Toast.makeText(this@Activity_Funcionario_Cliente_Details,"Loja", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Funcionario_Cliente_Details, Activity_Funcionario_Loja_Pedidos::class.java))
+                    finish()
+
                     true
                 }
-                R.id.nav_diet -> {
-                    Toast.makeText(this@Activity_Funcionario_Cliente_Details,"Refeicoes", Toast.LENGTH_LONG).show()
+                R.id.nav_capacity -> {
+                    startActivity(Intent(this@Activity_Funcionario_Cliente_Details, Activity_Funcionario_Capacity::class.java))
+                    finish()
                     true
                 }
                 R.id.nav_history -> {
-                    Toast.makeText(this@Activity_Funcionario_Cliente_Details,"Atividades", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Funcionario_Cliente_Details, Activity_Funcionario_Flux_Control::class.java))
+                    finish()
                     true
                 }
                 else -> false

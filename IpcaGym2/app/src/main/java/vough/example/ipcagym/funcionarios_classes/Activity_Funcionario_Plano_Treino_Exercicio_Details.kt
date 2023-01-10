@@ -117,7 +117,7 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Details : AppCompatActivity() 
                     true
                 }
                 R.id.nav_shopping -> {
-                    startActivity(Intent(this@Activity_Funcionario_Plano_Treino_Exercicio_Details, Activity_Funcionario_Loja_Produtos::class.java))
+                    startActivity(Intent(this@Activity_Funcionario_Plano_Treino_Exercicio_Details, Activity_Funcionario_Loja_Pedidos::class.java))
                     finish()
 
                     true
