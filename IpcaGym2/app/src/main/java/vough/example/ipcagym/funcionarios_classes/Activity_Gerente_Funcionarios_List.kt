@@ -4,11 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -108,94 +111,81 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
 
         var previousTextLength = 0
 
-        //TODO quando se apaga list fica vazia
-        findViewById<EditText>(R.id.editText).doOnTextChanged { text, start, before, count ->
-
-            var searchResults = ArrayList<Funcionario>()
-            for (func in list_funcionario) {
-                if (func.nome?.lowercase()?.contains(text.toString().lowercase()) == true) {
-                    searchResults.add(func)
-                }
-            }
-
-            if(count == 0 && before > 0){
-                searchResults = ListTotal
-            }
-
-            //if(text.toString().length <= 1){
-            //   searchResults = ListTotal
-            //}
-
-            list_funcionario = searchResults
-            funcionarios_adapter.notifyDataSetChanged()
-        }
-
-        //TODO verificar
-        if(findViewById<Switch>(R.id.switch1).isChecked)
-        {
-            var adminResults = ArrayList<Funcionario>()
-            for (func in list_funcionario) {
-                if (func.is_admin == true) {
-                    adminResults.add(func)
-                }
-            }
-
-            list_funcionario = adminResults
-            funcionarios_adapter.notifyDataSetChanged()
-        }
-        else
-        {
-            list_funcionario = ListTotal
-            funcionarios_adapter.notifyDataSetChanged()
-        }
-
-        //TODO: Search view, quando se carrega fora do teclado, crasha
-        /*
-        val searchFuncionarioBar = findViewById<SearchView>(R.id.searchView)
-        searchFuncionarioBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-
+        findViewById<EditText>(R.id.editText).addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 var searchResults = ArrayList<Funcionario>()
-
                 for (func in list_funcionario) {
-                    if (func.nome?.toLowerCase()?.contains(query?.toLowerCase() ?: "") == true) {
+                    if (func.nome?.lowercase()?.contains(s.toString().lowercase()) == true) {
                         searchResults.add(func)
                     }
                 }
 
-                if(query.toString() == ""){
-                    searchResults = listFuncAux
+                if(count == 0 && before > 0){
+                    searchResults = ListTotal
                 }
 
                 list_funcionario = searchResults
-                runOnUiThread {
-                    funcionarios_adapter.notifyDataSetChanged()
-                }
-                return true
+                funcionarios_adapter.notifyDataSetChanged()
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                var searchResults = ArrayList<Funcionario>()
-
-                for (func in list_funcionario) {
-                    if (func.nome?.toLowerCase()?.contains(newText?.toLowerCase() ?: "") == true) {
-                        searchResults.add(func)
-                    }
-                }
-
-                if(newText.toString() == ""){
-                    searchResults = listFuncAux
-                }
-
-                list_funcionario = searchResults
-                runOnUiThread {
-                    funcionarios_adapter.notifyDataSetChanged()
-                }
-
-                return true
-            }
+            // overrides vazios necessário para implementar TextWatcher
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable?) {}
         })
-        */
+
+        //TODO quando se apaga list nao atualiza
+        /*findViewById<EditText>(R.id.editText).doOnTextChanged { text, start, before, count ->
+            if (before == 1 && count == 0) {
+                var searchResults = ArrayList<Funcionario>()
+                for (func in list_funcionario) {
+                    if (func.nome?.lowercase()?.contains(text.toString().lowercase()) == true) {
+                        searchResults.add(func)
+                    }
+                }
+
+                /*if(text.toString().length == 0){
+                    searchResults = ListTotal
+                }*/
+
+                list_funcionario = searchResults
+                funcionarios_adapter.notifyDataSetChanged()
+            }
+            else{
+                var searchResults = ArrayList<Funcionario>()
+                for (func in list_funcionario) {
+                    if (func.nome?.lowercase()?.contains(text.toString().lowercase()) == true) {
+                        searchResults.add(func)
+                    }
+                }
+
+                if(text.toString().length == 0){
+                    searchResults = ListTotal
+                }
+
+                list_funcionario = searchResults
+                funcionarios_adapter.notifyDataSetChanged()
+            }
+        }*/
+
+        findViewById<Switch>(R.id.switch1).setOnClickListener{
+            if(findViewById<Switch>(R.id.switch1).isChecked)
+            {
+                var adminResults = ArrayList<Funcionario>()
+                for (func in list_funcionario) {
+                    if (func.is_admin == true) {
+                        adminResults.add(func)
+                    }
+                }
+
+                list_funcionario = adminResults
+                funcionarios_adapter.notifyDataSetChanged()
+            }
+            else
+            {
+                list_funcionario = ListTotal
+                funcionarios_adapter.notifyDataSetChanged()
+            }
+        }
 
         findViewById<ImageButton>(R.id.buttonAddFuncionario).setOnClickListener {
             val intent = Intent(this@Activity_Gerente_Funcionarios_List, Activity_Gerente_Funcionario_Add::class.java)
