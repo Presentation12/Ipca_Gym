@@ -132,27 +132,38 @@ class Activity_Cliente_Marcacoes : AppCompatActivity() {
         val list_view_planos_treino = findViewById<ListView>(R.id.listviewMarcacoes)
         list_view_planos_treino.adapter = marcacoes_adapter
 
-        val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
-        bottom_navigation_view.setOnItemSelectedListener{ item ->
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
+
+        bottomNavigationView.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this@Activity_Cliente_Marcacoes,"Main Menu", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Marcacoes, Activity_Cliente_Pagina_Inicial::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_fitness -> {
-                    Toast.makeText(this@Activity_Cliente_Marcacoes,"Treino", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Marcacoes, Activity_Cliente_Planos_Treino::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_shopping -> {
-                    Toast.makeText(this@Activity_Cliente_Marcacoes,"Loja", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Marcacoes, Activity_Cliente_Loja_Produtos::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_diet -> {
-                    Toast.makeText(this@Activity_Cliente_Marcacoes,"Refeicoes", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Marcacoes, Activity_Cliente_Nutricao_Atual::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_history -> {
-                    Toast.makeText(this@Activity_Cliente_Marcacoes,"Atividades", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Marcacoes, Activity_Cliente_Activities::class.java))
+                    finish()
+
                     true
                 }
                 else -> false

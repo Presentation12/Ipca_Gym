@@ -12,6 +12,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Plano_Treino
 import vough.example.ipcagym.data_classes.Refeicao
@@ -148,6 +149,44 @@ class Activity_Cliente_Pagina_Inicial : AppCompatActivity() {
         findViewById<Button>(R.id.button_avaliar).setOnClickListener{
             val intent = Intent(this@Activity_Cliente_Pagina_Inicial,Activity_Cliente_Avaliar :: class.java)
             startActivity(intent)
+        }
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
+
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        bottomNavigationView.setOnItemSelectedListener{ item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    finish()
+
+                    true
+                }
+                R.id.nav_fitness -> {
+                    startActivity(Intent(this@Activity_Cliente_Pagina_Inicial, Activity_Cliente_Planos_Treino::class.java))
+                    finish()
+
+                    true
+                }
+                R.id.nav_shopping -> {
+                    startActivity(Intent(this@Activity_Cliente_Pagina_Inicial, Activity_Cliente_Loja_Produtos::class.java))
+                    finish()
+
+                    true
+                }
+                R.id.nav_diet -> {
+                    startActivity(Intent(this@Activity_Cliente_Pagina_Inicial, Activity_Cliente_Nutricao_Atual::class.java))
+                    finish()
+
+                    true
+                }
+                R.id.nav_history -> {
+                    startActivity(Intent(this@Activity_Cliente_Pagina_Inicial, Activity_Cliente_Activities::class.java))
+                    finish()
+
+                    true
+                }
+                else -> false
+            }
         }
     }
 }

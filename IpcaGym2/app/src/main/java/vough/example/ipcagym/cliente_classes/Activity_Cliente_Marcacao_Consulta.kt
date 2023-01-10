@@ -175,26 +175,37 @@ class Activity_Cliente_Marcacao_Consulta : AppCompatActivity() {
         }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
+
         bottomNavigationView.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this@Activity_Cliente_Marcacao_Consulta,"Main Menu", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Marcacao_Consulta, Activity_Cliente_Pagina_Inicial::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_fitness -> {
-                    Toast.makeText(this@Activity_Cliente_Marcacao_Consulta,"Treino", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Marcacao_Consulta, Activity_Cliente_Planos_Treino::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_shopping -> {
-                    Toast.makeText(this@Activity_Cliente_Marcacao_Consulta,"Loja", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Marcacao_Consulta, Activity_Cliente_Loja_Produtos::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_diet -> {
-                    Toast.makeText(this@Activity_Cliente_Marcacao_Consulta,"Refeicoes", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Marcacao_Consulta, Activity_Cliente_Nutricao_Atual::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_history -> {
-                    Toast.makeText(this@Activity_Cliente_Marcacao_Consulta,"Atividades", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Marcacao_Consulta, Activity_Cliente_Activities::class.java))
+                    finish()
+
                     true
                 }
                 else -> false

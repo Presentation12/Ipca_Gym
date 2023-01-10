@@ -124,27 +124,39 @@ class Activity_Cliente_Nutricao_Atual_Refeicao : AppCompatActivity() {
             spinner.performClick()
         }
 
-        val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
-        bottom_navigation_view.setOnItemSelectedListener{ item ->
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
+
+        bottomNavigationView.setSelectedItemId(R.id.nav_diet);
+        bottomNavigationView.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this@Activity_Cliente_Nutricao_Atual_Refeicao,"Main Menu", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Nutricao_Atual_Refeicao, Activity_Cliente_Pagina_Inicial::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_fitness -> {
-                    Toast.makeText(this@Activity_Cliente_Nutricao_Atual_Refeicao,"Treino", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Nutricao_Atual_Refeicao, Activity_Cliente_Planos_Treino::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_shopping -> {
-                    Toast.makeText(this@Activity_Cliente_Nutricao_Atual_Refeicao,"Loja", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Nutricao_Atual_Refeicao, Activity_Cliente_Loja_Produtos::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_diet -> {
-                    Toast.makeText(this@Activity_Cliente_Nutricao_Atual_Refeicao,"Refeicoes", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Nutricao_Atual_Refeicao, Activity_Cliente_Nutricao_Atual::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_history -> {
-                    Toast.makeText(this@Activity_Cliente_Nutricao_Atual_Refeicao,"Atividades", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Nutricao_Atual_Refeicao, Activity_Cliente_Activities::class.java))
+                    finish()
+
                     true
                 }
                 else -> false

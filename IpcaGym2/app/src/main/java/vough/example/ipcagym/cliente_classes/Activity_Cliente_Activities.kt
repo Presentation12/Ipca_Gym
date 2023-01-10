@@ -132,12 +132,6 @@ class Activity_Cliente_Activities : AppCompatActivity(){
                     true
                 }
                 R.id.nav_history -> {
-                    val selectedItemId = bottomNavigationView.selectedItemId
-                    if (selectedItemId != R.id.nav_history){
-                        startActivity(Intent(this@Activity_Cliente_Activities, Activity_Cliente_Activities::class.java))
-                        finish()
-                    }
-
                     true
                 }
                 else -> false

@@ -94,7 +94,7 @@ class Activity_Cliente_OurTeam : AppCompatActivity() {
             spinner.performClick()
         }
 
-        bottomNavigationView.selectedItemId = R.id.nav_home;
+        bottomNavigationView.selectedItemId = R.id.nav_home
         bottomNavigationView.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {

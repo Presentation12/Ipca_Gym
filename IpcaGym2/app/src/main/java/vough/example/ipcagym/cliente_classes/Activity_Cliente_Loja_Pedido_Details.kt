@@ -148,27 +148,39 @@ class Activity_Cliente_Loja_Pedido_Details : AppCompatActivity() {
 
         findViewById<ListView>(R.id.listviewProdutosPedido)
 
-        val bottom_navigation_view = findViewById<BottomNavigationView>(R.id.bottom_navbar)
-        bottom_navigation_view.setOnItemSelectedListener{ item ->
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
+
+        bottomNavigationView.setSelectedItemId(R.id.nav_shopping);
+        bottomNavigationView.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(this@Activity_Cliente_Loja_Pedido_Details,"Main Menu", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Loja_Pedido_Details, Activity_Cliente_Pagina_Inicial::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_fitness -> {
-                    Toast.makeText(this@Activity_Cliente_Loja_Pedido_Details,"Treino", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Loja_Pedido_Details, Activity_Cliente_Planos_Treino::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_shopping -> {
-                    Toast.makeText(this@Activity_Cliente_Loja_Pedido_Details,"Loja", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Loja_Pedido_Details, Activity_Cliente_Loja_Produtos::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_diet -> {
-                    Toast.makeText(this@Activity_Cliente_Loja_Pedido_Details,"Refeicoes", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Loja_Pedido_Details, Activity_Cliente_Nutricao_Atual::class.java))
+                    finish()
+
                     true
                 }
                 R.id.nav_history -> {
-                    Toast.makeText(this@Activity_Cliente_Loja_Pedido_Details,"Atividades", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@Activity_Cliente_Loja_Pedido_Details, Activity_Cliente_Activities::class.java))
+                    finish()
+
                     true
                 }
                 else -> false
