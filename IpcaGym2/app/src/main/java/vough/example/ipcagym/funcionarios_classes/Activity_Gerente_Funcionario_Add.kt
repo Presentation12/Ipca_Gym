@@ -2,8 +2,10 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -27,10 +29,11 @@ class Activity_Gerente_Funcionario_Add : AppCompatActivity() {
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
             if(resultGerente != null) {
-                if (resultGerente.foto_funcionario != null)
+                if (resultGerente.foto_funcionario  != null && resultGerente.foto_funcionario != "null")
                 {
-                    val imageUri: Uri = Uri.parse(resultGerente.foto_funcionario)
-                    imageView.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultGerente.foto_funcionario, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    imageView.setImageBitmap(bitmap)
                 }
             }
         }

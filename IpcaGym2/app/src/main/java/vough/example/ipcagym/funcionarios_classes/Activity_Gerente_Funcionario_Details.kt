@@ -2,8 +2,10 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -24,7 +26,9 @@ class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
         //Buscar token
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
+
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
+
         val id_funcionario = intent.getIntExtra("id_funcionario", -1)
         val id_ginasio = intent.getIntExtra("id_ginasio", -1)
         val nome = intent.getStringExtra("nome")
@@ -39,10 +43,11 @@ class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
             if(resultGerente != null)
             {
-                if (resultGerente.foto_funcionario != null)
+                if (resultGerente.foto_funcionario  != null && resultGerente.foto_funcionario != "null")
                 {
-                    val imageUri: Uri = Uri.parse(resultGerente.foto_funcionario)
-                    imageView.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultGerente.foto_funcionario, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    imageView.setImageBitmap(bitmap)
                 }
             }
         }
@@ -60,12 +65,14 @@ class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
         val estadoFuncionario = findViewById<TextView>(R.id.Estado)
         estadoFuncionario.text = estado
 
-        if (foto_funcionario != null)
+        val funcionario_editado_image_view = findViewById<ImageView>(R.id.imageView6)
+        if (foto_funcionario  != null && foto_funcionario != "null")
         {
-            val funcionario_image_view = findViewById<ImageView>(R.id.imageView6)
-            val imageUri: Uri = Uri.parse(foto_funcionario)
-            funcionario_image_view.setImageURI(imageUri)
+            val pictureByteArray = Base64.decode(foto_funcionario, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+            funcionario_editado_image_view.setImageBitmap(bitmap)
         }
+
 
         // TODO: quando houver linkagem alterar aqui para remover funcionario
         findViewById<Button>(R.id.buttonRemover).setOnClickListener {

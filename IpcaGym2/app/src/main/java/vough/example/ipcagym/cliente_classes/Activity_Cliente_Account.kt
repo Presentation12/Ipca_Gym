@@ -2,9 +2,11 @@ package vough.example.ipcagym.cliente_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -39,11 +41,13 @@ class Activity_Cliente_Account : AppCompatActivity(){
 
             ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
 
-                if (resultCliente?.foto_perfil != null)
+                if (resultCliente?.foto_perfil  != null && resultCliente?.foto_perfil != "null")
                 {
-                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
-                    imageView.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultCliente?.foto_perfil, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    imageView.setImageBitmap(bitmap)
                 }
+
                 val name_view = findViewById<TextView>(R.id.textNome)
                 name_view.text = resultCliente?.nome
                 val mail_view = findViewById<TextView>(R.id.textMail)

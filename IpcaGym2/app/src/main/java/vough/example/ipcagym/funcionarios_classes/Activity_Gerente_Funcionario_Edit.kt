@@ -2,8 +2,10 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -37,10 +39,11 @@ class Activity_Gerente_Funcionario_Edit : AppCompatActivity() {
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
             if(resultGerente != null){
-                if (resultGerente.foto_funcionario != null)
+                if (resultGerente.foto_funcionario  != null && resultGerente.foto_funcionario != "null")
                 {
-                    val imageUri: Uri = Uri.parse(resultGerente.foto_funcionario)
-                    imageView.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultGerente.foto_funcionario, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    imageView.setImageBitmap(bitmap)
                 }
             }
         }
@@ -97,11 +100,13 @@ class Activity_Gerente_Funcionario_Edit : AppCompatActivity() {
             spinner.performClick()
         }
 
-        if (foto_funcionario != null)
+
+        val funcionario_editado_image_view = findViewById<ImageView>(R.id.profile_funcionario_pic)
+        if (foto_funcionario  != null && foto_funcionario != "null")
         {
-            val cliente_image_view = findViewById<ImageView>(R.id.profile_funcionario_pic)
-            val imageUri: Uri = Uri.parse(foto_funcionario)
-            cliente_image_view.setImageURI(imageUri)
+            val pictureByteArray = Base64.decode(foto_funcionario, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+            funcionario_editado_image_view.setImageBitmap(bitmap)
         }
 
         val editNomeFuncionario = findViewById<TextView>(R.id.editTextNomeFuncionario)

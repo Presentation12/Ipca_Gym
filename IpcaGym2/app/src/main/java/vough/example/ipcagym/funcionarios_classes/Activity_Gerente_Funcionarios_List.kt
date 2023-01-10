@@ -2,10 +2,12 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Base64
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
@@ -33,20 +35,17 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
         val sessionToken = preferences.getString("session_token", null)
 
         val imageView = findViewById<ImageView>(R.id.profile_pic)
-        var ListTotal = arrayListOf<Funcionario>()
+        var ListTotal: ArrayList<Funcionario>
 
-        list_funcionario.add(Funcionario(1,1,"Paulo Raposo",true,1,null,null,"Ativo",null))
-        list_funcionario.add(Funcionario(1,1,"Paulo Cartao",false,2,null,null,"Ativo",null))
-        list_funcionario.add(Funcionario(1,1,"Frederico Raposo",true,3,null,null,"Ativo",null))
         ListTotal = list_funcionario
 
-        /*
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
             if(resultGerente != null){
-                if (resultGerente.foto_funcionario != null)
+                if (resultGerente.foto_funcionario  != null && resultGerente.foto_funcionario != "null")
                 {
-                    val imageUri: Uri = Uri.parse(resultGerente.foto_funcionario)
-                    imageView.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultGerente.foto_funcionario, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    imageView.setImageBitmap(bitmap)
                 }
 
                 FuncionarioRequests.GetAllByGym(lifecycleScope, sessionToken, resultGerente.id_ginasio) { resultFuncionarios ->
@@ -59,7 +58,6 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
                 }
             }
         }
-*/
 
         var counter = 0
         val spinner = findViewById<Spinner>(R.id.spinner)
@@ -115,8 +113,7 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
 
         val list_view_funcionario = findViewById<ListView>(R.id.listviewFuncionarios)
         list_view_funcionario.adapter = funcionarios_adapter
-
-        var previousTextLength = 0
+        
         var listAux = list_funcionario
         findViewById<EditText>(R.id.editText).addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -145,40 +142,6 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}
         })
-
-        //TODO quando se apaga list nao atualiza
-        /*findViewById<EditText>(R.id.editText).doOnTextChanged { text, start, before, count ->
-            if (before == 1 && count == 0) {
-                var searchResults = ArrayList<Funcionario>()
-                for (func in list_funcionario) {
-                    if (func.nome?.lowercase()?.contains(text.toString().lowercase()) == true) {
-                        searchResults.add(func)
-                    }
-                }
-
-                /*if(text.toString().length == 0){
-                    searchResults = ListTotal
-                }*/
-
-                list_funcionario = searchResults
-                funcionarios_adapter.notifyDataSetChanged()
-            }
-            else{
-                var searchResults = ArrayList<Funcionario>()
-                for (func in list_funcionario) {
-                    if (func.nome?.lowercase()?.contains(text.toString().lowercase()) == true) {
-                        searchResults.add(func)
-                    }
-                }
-
-                if(text.toString().length == 0){
-                    searchResults = ListTotal
-                }
-
-                list_funcionario = searchResults
-                funcionarios_adapter.notifyDataSetChanged()
-            }
-        }*/
 
         findViewById<Switch>(R.id.switch1).setOnClickListener{
 
@@ -259,11 +222,12 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val root_view = layoutInflater.inflate(R.layout.row_funcionario,parent,false)
 
-            if (list_funcionario[position].foto_funcionario != null)
+            val funcionario_image_view = findViewById<ImageView>(R.id.profile_pic)
+            if (list_funcionario[position].foto_funcionario  != null && list_funcionario[position].foto_funcionario != "null")
             {
-                val funcionario_image_view = findViewById<ImageView>(R.id.profile_pic)
-                val imageUri: Uri = Uri.parse(list_funcionario[position].foto_funcionario)
-                funcionario_image_view.setImageURI(imageUri)
+                val pictureByteArray = Base64.decode(list_funcionario[position].foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                funcionario_image_view.setImageBitmap(bitmap)
             }
 
             val nome_view = root_view.findViewById<TextView>(R.id.funcionarioName)
