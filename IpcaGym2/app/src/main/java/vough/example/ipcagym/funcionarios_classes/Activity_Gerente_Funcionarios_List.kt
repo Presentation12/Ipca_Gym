@@ -108,20 +108,44 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
 
         var previousTextLength = 0
 
+        //TODO quando se apaga list fica vazia
         findViewById<EditText>(R.id.editText).doOnTextChanged { text, start, before, count ->
 
             var searchResults = ArrayList<Funcionario>()
             for (func in list_funcionario) {
-                if (func.nome?.toLowerCase()?.contains(text.toString().toLowerCase() ?: "") == true) {
+                if (func.nome?.lowercase()?.contains(text.toString().lowercase()) == true) {
                     searchResults.add(func)
                 }
             }
 
-            if(text.toString() == ""){
+            if(count == 0 && before > 0){
                 searchResults = ListTotal
             }
 
+            //if(text.toString().length <= 1){
+            //   searchResults = ListTotal
+            //}
+
             list_funcionario = searchResults
+            funcionarios_adapter.notifyDataSetChanged()
+        }
+
+        //TODO verificar
+        if(findViewById<Switch>(R.id.switch1).isChecked)
+        {
+            var adminResults = ArrayList<Funcionario>()
+            for (func in list_funcionario) {
+                if (func.is_admin == true) {
+                    adminResults.add(func)
+                }
+            }
+
+            list_funcionario = adminResults
+            funcionarios_adapter.notifyDataSetChanged()
+        }
+        else
+        {
+            list_funcionario = ListTotal
             funcionarios_adapter.notifyDataSetChanged()
         }
 
@@ -173,7 +197,7 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
         })
         */
 
-        findViewById<Button>(R.id.buttonAddFuncionario).setOnClickListener {
+        findViewById<ImageButton>(R.id.buttonAddFuncionario).setOnClickListener {
             val intent = Intent(this@Activity_Gerente_Funcionarios_List, Activity_Gerente_Funcionario_Add::class.java)
             startActivity(intent)
         }

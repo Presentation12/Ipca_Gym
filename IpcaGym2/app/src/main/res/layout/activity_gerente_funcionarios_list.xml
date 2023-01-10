@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -82,19 +83,17 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <Button
+    <ImageButton
         android:id="@+id/buttonAddFuncionario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="10dp"
-        android:backgroundTint="@android:color/transparent"
-        android:text="New"
-        android:textColor="#A5A5A5"
-        app:layout_constraintStart_toEndOf="@+id/editText"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
-        app:strokeColor="#A5A5A5"
-        app:strokeWidth="2dp" />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="centerCrop"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/editText"
+        app:layout_constraintEnd_toEndOf="@+id/spinner"
+        app:layout_constraintStart_toStartOf="@+id/cardView"
+        app:layout_constraintTop_toTopOf="@+id/editText"
+        app:srcCompat="@drawable/ic_baseline_add_circle_24" />
 
     <EditText
         android:id="@+id/editText"
@@ -105,6 +104,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
         android:drawableLeft="@drawable/ic_baseline_search_24"
-        app:queryHint="Search"/>
+        android:hint="Search"
+        android:paddingLeft="10dp"
+        android:maxLines="1"/>
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onSwitchClick"
+        android:clickable="true"
+        android:text="Admin"
+        app:layout_constraintBottom_toBottomOf="@+id/editText"
+        app:layout_constraintStart_toEndOf="@+id/editText"
+        app:layout_constraintTop_toTopOf="@+id/editText" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
