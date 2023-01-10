@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
@@ -29,7 +30,7 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
         val sessionToken = preferences.getString("session_token", null)
 
         val imageView = findViewById<ImageView>(R.id.profile_pic)
-        var listFuncAux = arrayListOf<Funcionario>()
+        var ListTotal = arrayListOf<Funcionario>()
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
             if(resultGerente != null){
@@ -107,7 +108,25 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
 
         var previousTextLength = 0
 
+        findViewById<EditText>(R.id.editText).doOnTextChanged { text, start, before, count ->
+
+            var searchResults = ArrayList<Funcionario>()
+            for (func in list_funcionario) {
+                if (func.nome?.toLowerCase()?.contains(text.toString().toLowerCase() ?: "") == true) {
+                    searchResults.add(func)
+                }
+            }
+
+            if(text.toString() == ""){
+                searchResults = ListTotal
+            }
+
+            list_funcionario = searchResults
+            funcionarios_adapter.notifyDataSetChanged()
+        }
+
         //TODO: Search view, quando se carrega fora do teclado, crasha
+        /*
         val searchFuncionarioBar = findViewById<SearchView>(R.id.searchView)
         searchFuncionarioBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -152,6 +171,7 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
                 return true
             }
         })
+        */
 
         findViewById<Button>(R.id.buttonAddFuncionario).setOnClickListener {
             val intent = Intent(this@Activity_Gerente_Funcionarios_List, Activity_Gerente_Funcionario_Add::class.java)

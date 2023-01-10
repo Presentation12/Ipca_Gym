@@ -40,12 +40,12 @@
 
     <ListView
         android:id="@+id/listviewFuncionarios"
-        android:layout_marginTop="10dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -91,19 +91,20 @@
         android:backgroundTint="@android:color/transparent"
         android:text="New"
         android:textColor="#A5A5A5"
-        app:layout_constraintStart_toEndOf="@+id/searchView"
+        app:layout_constraintStart_toEndOf="@+id/editText"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
         app:strokeColor="#A5A5A5"
         app:strokeWidth="2dp" />
 
-    <SearchView
-        android:id="@+id/searchView"
+    <EditText
+        android:id="@+id/editText"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
+        android:drawableLeft="@drawable/ic_baseline_search_24"
         app:queryHint="Search"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
