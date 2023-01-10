@@ -72,7 +72,7 @@ class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
             val intent = Intent(this@Activity_Gerente_Funcionario_Details, Activity_Gerente_Funcionarios_List::class.java)
             // ele altera o estado no backend
             FuncionarioRequests.DeleteFuncionario(lifecycleScope,sessionToken,id_funcionario){ resultRemoveFuncionario ->
-                if (resultRemoveFuncionario == "User not found")
+                if (resultRemoveFuncionario == "Error: Delete Emnployee fails")
                     Toast.makeText(this@Activity_Gerente_Funcionario_Details, "Error on remove an employee", Toast.LENGTH_LONG).show()
                 else
                 {

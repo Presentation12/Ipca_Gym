@@ -56,7 +56,7 @@ class Activity_Funcionario_Loja_Produto_Details : AppCompatActivity() {
         findViewById<Button>(R.id.buttonRemover).setOnClickListener{
             val intent = Intent(this@Activity_Funcionario_Loja_Produto_Details, Activity_Funcionario_Loja_Produtos::class.java)
             LojaRequests.Delete(lifecycleScope,sessionToken,id_produto){ resultProdutoRemove ->
-                if (resultProdutoRemove == "User not found")
+                if (resultProdutoRemove == "Error: Delete Product fails")
                 {
                     Toast.makeText(this@Activity_Funcionario_Loja_Produto_Details, "Error: Remove fail", Toast.LENGTH_LONG).show()
                 }

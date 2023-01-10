@@ -65,7 +65,7 @@ class Activity_Funcionario_Loja_Produto_Edit : AppCompatActivity() {
 
             var editProduto = Loja(id_produto,id_ginasio,nome,tipo_produto,preco,descricao,estado_produto,foto_produto,quantidade_produto)
             LojaRequests.Patch(lifecycleScope,sessionToken,id_produto,editProduto){ resultProdutoEditado ->
-                if (resultProdutoEditado == "User not found")
+                if (resultProdutoEditado == "Error: Patch Product fails")
                 {
                     Toast.makeText(this@Activity_Funcionario_Loja_Produto_Edit, "Error: Edit fail", Toast.LENGTH_LONG).show()
                 }

@@ -181,7 +181,7 @@ class Activity_Funcionario_Flux_Control : AppCompatActivity() {
                                     LocalDateTime.now(),
                                     null
                                 )){ response ->
-                                    if(response == "User not found") Toast.makeText(this@Activity_Funcionario_Flux_Control, "ERROR", Toast.LENGTH_SHORT).show()
+                                    if(response == "Error: Post Activity fails") Toast.makeText(this@Activity_Funcionario_Flux_Control, "ERROR", Toast.LENGTH_SHORT).show()
                                     else{
                                         Toast.makeText(this@Activity_Funcionario_Flux_Control,"Activity added successfully", Toast.LENGTH_SHORT).show()
                                         AtividadeRequests.GetAll(lifecycleScope, sessionToken){
@@ -214,7 +214,7 @@ class Activity_Funcionario_Flux_Control : AppCompatActivity() {
                                     activity.id_cliente,
                                     activity.data_entrada,
                                     LocalDateTime.now())){ result ->
-                                    if(result != "User not found") {
+                                    if(result != "Error: Patch Activity fails") {
                                         Toast.makeText(this@Activity_Funcionario_Flux_Control,"Activity added successfully", Toast.LENGTH_LONG).show()
                                         AtividadeRequests.GetAll(lifecycleScope, sessionToken){
                                             activityList = it

@@ -122,7 +122,7 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Add : AppCompatActivity() {
                 """
                 Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Add, intent.getIntExtra("id_plano_treino", -1).toString(), Toast.LENGTH_SHORT).show()
                 ExercicioRequests.Post(lifecycleScope, sessionToken, jsonBody){ result ->
-                    if(result != "User not found"){
+                    if(result != "Error: Post Exercise fails"){
                         setResult(RESULT_OK, intentAddIn);
                         finish()
                     }
@@ -174,7 +174,7 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Add : AppCompatActivity() {
                 """
 
                 ExercicioRequests.Post(lifecycleScope, sessionToken, jsonBody){ result ->
-                    if(result != "User not found"){
+                    if(result != "Error: Post Exercise fails"){
                         setResult(RESULT_OK, intentAddIn);
                         finish()
                     }

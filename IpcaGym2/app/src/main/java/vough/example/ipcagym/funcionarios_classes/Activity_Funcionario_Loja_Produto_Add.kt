@@ -171,9 +171,9 @@ class Activity_Funcionario_Loja_Produto_Add : AppCompatActivity() {
                     {
                         var newProduto = Loja(null,resultFuncionario.id_ginasio,nomeProduto,tipoProduto,precoProduto,descricaoProduto,"Ativo",fotoProduto,quantidadeProduto)
                         LojaRequests.Post(lifecycleScope, sessionToken, newProduto){ resultNewProduto ->
-                            if (resultNewProduto == "User not found")
+                            if (resultNewProduto == "Error: Post Product fails")
                             {
-                                Toast.makeText(this@Activity_Funcionario_Loja_Produto_Add, "Error: Edit fail", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@Activity_Funcionario_Loja_Produto_Add, "Error: Post Product fails", Toast.LENGTH_LONG).show()
                             }
                             else
                             {

@@ -155,7 +155,7 @@ class Activity_Funcionario_Loja_Pedido_Details : AppCompatActivity() {
             estado_pedido = "Inativo" //entregue
             var editPedido = Pedido(id_pedido,id_cliente,data_pedido_formatado,estado_pedido)
             PedidoRequests.Patch(lifecycleScope, sessionToken, id_pedido, editPedido){ resultEditPedido ->
-                if (resultEditPedido == "User not found")
+                if (resultEditPedido == "Error: Patch Pedido fails")
                 {
                     Toast.makeText(this@Activity_Funcionario_Loja_Pedido_Details, "Error: Edit fail", Toast.LENGTH_LONG).show()
                 }

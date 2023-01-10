@@ -137,7 +137,7 @@ class Activity_Funcionario_Cliente_Details : AppCompatActivity() {
 
         findViewById<Button>(R.id.button_apagar).setOnClickListener{
             ClienteRequests.DeleteCliente(lifecycleScope,sessionToken,id_cliente){ resultClienteRemovido ->
-                if(resultClienteRemovido == "User not found")
+                if(resultClienteRemovido == "Error: Delete Client fails")
                 {
                     Toast.makeText(this@Activity_Funcionario_Cliente_Details,"Error : Removing Client",Toast.LENGTH_LONG).show()
                 }

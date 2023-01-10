@@ -147,7 +147,7 @@ class Activity_Gerente_Funcionario_Add : AppCompatActivity() {
                         //TODO: FALTA METER FOTO
                         val newFuncionario = Funcionario(null,resultGerente.id_ginasio,nome,isAdmin,codigo,codigo.toString(),null,"Ativo", "photo")
                         FuncionarioRequests.Post(lifecycleScope,sessionToken,newFuncionario){ resultEditFuncionario ->
-                            if (resultEditFuncionario == "User not found")
+                            if (resultEditFuncionario == "Error: Post Employee fails")
                             {
                                 Toast.makeText(this@Activity_Gerente_Funcionario_Add, "Error on create an employee", Toast.LENGTH_LONG).show()
                             }

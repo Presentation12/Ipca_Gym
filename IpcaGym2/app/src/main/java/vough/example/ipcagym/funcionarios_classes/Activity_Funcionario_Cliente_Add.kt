@@ -126,7 +126,7 @@ class Activity_Funcionario_Cliente_Add : AppCompatActivity() {
                 val RegistClient = Cliente(null,resultFuncionarioGetByToken?.id_ginasio,null,nome,email,contacto,contacto.toString(),null,null,null,null,null,"Ativo")
 
                     ClienteRequests.Post(lifecycleScope,sessionToken,RegistClient){ resultAddClient ->
-                        if (resultAddClient == "User not found")
+                        if (resultAddClient == "Error: Post Client fails")
                         {
                             Toast.makeText(this@Activity_Funcionario_Cliente_Add, "Error on create an client", Toast.LENGTH_LONG).show()
                         }

@@ -153,7 +153,7 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
                 """
 
                 ExercicioRequests.Patch(lifecycleScope, sessionToken, intent.getIntExtra("id_exercicio", -1), jsonBody){ result ->
-                    if(result != "User not found"){
+                    if(result != "Error: Patch Exercise fails"){
                         setResult(RESULT_OK, intentEditIn);
                         finish()
                     }
@@ -206,7 +206,7 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
                 """
 
                 ExercicioRequests.Patch(lifecycleScope, sessionToken, intent.getIntExtra("id_exercicio", -1), jsonBody){ result ->
-                    if(result != "User not found"){
+                    if(result != "Error: Patch Exercise fails"){
                         setResult(RESULT_OK, intentEditIn);
                         finish()
                     }

@@ -64,7 +64,7 @@ class Activity_Funcionario_Cliente_Edit: AppCompatActivity() {
 
             var editCliente = Cliente(id_cliente,id_ginasio,id_plano_nutricional,nome,mail,telemovel,pass_salt,pass_hash,peso,altura,gordura,foto_perfil,estado)
             ClienteRequests.Patch(lifecycleScope,sessionToken,id_cliente, editCliente) { resultEditcliente ->
-                if (resultEditcliente == "User not found")
+                if (resultEditcliente == "Error: Patch Client fails")
                 {
                     Toast.makeText(this@Activity_Funcionario_Cliente_Edit, "Error on editting cliente measurements", Toast.LENGTH_LONG).show()
                 }

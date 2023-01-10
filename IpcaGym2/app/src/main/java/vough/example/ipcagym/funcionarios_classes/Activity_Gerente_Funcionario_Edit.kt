@@ -127,7 +127,7 @@ class Activity_Gerente_Funcionario_Edit : AppCompatActivity() {
 
             val funcionarioEditado = Funcionario(id_funcionario,id_ginasio,nome,is_admin,codigo,pass_salt,pass_hash,estado, foto_funcionario)
             FuncionarioRequests.Patch(lifecycleScope,sessionToken,id_funcionario,funcionarioEditado){ resultEditFuncionario ->
-                if (resultEditFuncionario == "User not found")
+                if (resultEditFuncionario == "Error: Patch Employee fails")
                 {
                     Toast.makeText(this@Activity_Gerente_Funcionario_Edit, "Error on edit an employee", Toast.LENGTH_LONG).show()
                 }

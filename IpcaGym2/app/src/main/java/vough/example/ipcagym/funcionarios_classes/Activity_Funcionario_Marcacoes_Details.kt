@@ -113,7 +113,7 @@ class Activity_Funcionario_Marcacoes_Details: AppCompatActivity() {
                 LocalDateTime.parse(data_marcacao!! + ":00", DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")),
                 descricao,
                 estado)){ result ->
-               if(result != "User not found"){
+               if(result != "Error: Patch Cancel Marcacao Checked Product fails"){
                    Toast.makeText(this@Activity_Funcionario_Marcacoes_Details, "Appointment cancelled successfully", Toast.LENGTH_SHORT).show()
                    finish()
                    startActivity(Intent(this@Activity_Funcionario_Marcacoes_Details, Activity_Funcionario_Marcacoes::class.java))

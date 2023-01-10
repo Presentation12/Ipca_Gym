@@ -136,7 +136,7 @@ class Activity_Gerente_Ginasio_Patch : AppCompatActivity() {
                                 gymResponse?.lotacao!!,
                                 findViewById<EditText>(R.id.editTextNumber3).text.toString().toInt(),
                             )){ editGymResponse ->
-                                if(editGymResponse != "User not found"){
+                                if(editGymResponse != "Error: Patch Gym fails"){
                                     Toast.makeText(this@Activity_Gerente_Ginasio_Patch, "Gym data edited successfully", Toast.LENGTH_LONG).show()
                                     finish()
                                     startActivity(Intent(this@Activity_Gerente_Ginasio_Patch, Activity_Funcionario_Pagina_Inicial::class.java))

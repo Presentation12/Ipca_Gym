@@ -142,7 +142,7 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
             val deleteIntent = Intent()
 
             PlanoTreinoRequests.DeleteChecked(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_treino", -1)){
-                if(it != "User not found") Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios, "Plan removed successfully", Toast.LENGTH_LONG).show()
+                if(it != "Error: Delete Checked Plano Treino fails") Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios, "Plan removed successfully", Toast.LENGTH_LONG).show()
                 else Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios, "Error on removing plan", Toast.LENGTH_LONG).show()
             }
 
@@ -257,7 +257,7 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
 
             rootView.findViewById<Button>(R.id.apagarExercicioButton).setOnClickListener{
                 ExercicioRequests.Delete(lifecycleScope, sessionToken, listExercicios[position].id_exercicio!!){ result ->
-                    if(result == "User not found"){
+                    if(result == "Error: Delete Exercise fails"){
                         Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicios, "Error removing the exercise", Toast.LENGTH_SHORT).show()
                     }
                     else{

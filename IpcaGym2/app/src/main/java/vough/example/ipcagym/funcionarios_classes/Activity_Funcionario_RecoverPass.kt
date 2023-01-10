@@ -34,7 +34,7 @@ class Activity_Funcionario_RecoverPass : AppCompatActivity() {
                             Toast.makeText(this@Activity_Funcionario_RecoverPass, "Password changed!", Toast.LENGTH_LONG).show()
                             startActivity(Intent(this@Activity_Funcionario_RecoverPass,Activity_Funcionario_Login::class.java))
                         }
-                        else Toast.makeText(this@Activity_Funcionario_RecoverPass, "User not found", Toast.LENGTH_LONG).show()
+                        else Toast.makeText(this@Activity_Funcionario_RecoverPass, "Error: Recover Employee password fails", Toast.LENGTH_LONG).show()
                     }
             }
         }
