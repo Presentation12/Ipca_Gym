@@ -478,13 +478,13 @@ namespace LayerBLL.Logics
             
             try
             {
-                string token = await FuncionarioService.LoginService(sqlDataSource, conta, _configuration);
+                LoginModel loginModel = await FuncionarioService.LoginService(sqlDataSource, conta, _configuration);
 
-                if (token.Length != 0)
+                if (loginModel != null)
                 {
                     response.StatusCode = StatusCodes.SUCCESS;
                     response.Message = "Login feito com sucesso!";
-                    response.Data = new JsonResult(token);
+                    response.Data = new JsonResult(loginModel);
                 }
 
                 return response;

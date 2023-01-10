@@ -32,7 +32,7 @@ class Activity_Funcionario_Change_Password : AppCompatActivity() {
 
             FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
                 FuncionarioRequests.loginFuncionario(lifecycleScope, it?.codigo!!.toString(), passCurrent.toString()){ response ->
-                    if(response != "User not found"){
+                    if(response != null){
                         var passNew = findViewById<EditText>(R.id.editTextNewPassword).text
                         var passNewRepeated = findViewById<EditText>(R.id.editTextRepeatPassword).text
 

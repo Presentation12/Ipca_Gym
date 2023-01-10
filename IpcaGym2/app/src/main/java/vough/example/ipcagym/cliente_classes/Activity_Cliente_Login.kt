@@ -22,33 +22,35 @@ class Activity_Cliente_Login : AppCompatActivity() {
         val pass = findViewById<EditText>(R.id.password)
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
+        val sessionRole = preferences.getString("session_role", null)
 
         //Caso a token de sessão estiver ativa, passar login a frente
-        /*if (sessionToken != "") {
-            val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_OurTeam::class.java)
+        if (sessionToken != "" && sessionRole == "Cliente") {
+            val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_Pagina_Inicial::class.java)
             finish()
             startActivity(intentStart)
-        }*/
+        }
 
         loginbutton.setOnClickListener{
             if(mail.text.toString() == "" || pass.text.toString() == "")
                 Toast.makeText(this@Activity_Cliente_Login, "Insert all fields!", Toast.LENGTH_SHORT).show()
             else{
                 ClienteRequests.login(lifecycleScope, mail.text.toString(), pass.text.toString()){ result ->
-                    if(result != "User not found") {
+                    if(result != null) {
                         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
                         val editor = preferences.edit()
-                        editor.putString("session_token", result)
+                        editor.putString("session_token", result.token)
+                        editor.putString("session_role", result.role)
 
                         editor.apply()
 
                         //val intentStart = Intent(this@Activity_Cliente_Login,Activity_Cliente_Pagina_Inicial::class.java)
-                        val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_Activities::class.java)
+                        val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_Planos_Treino::class.java)
                         finish()
                         startActivity(intentStart)
                     }
                     else {
-                        Toast.makeText(this@Activity_Cliente_Login, result, Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@Activity_Cliente_Login, "Wrong credentials", Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -58,6 +60,9 @@ class Activity_Cliente_Login : AppCompatActivity() {
             val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
             val editor = preferences.edit()
             editor.putString("session_token", "")
+            editor.putString("session_role", "")
+
+            editor.apply()
             finish()
             startActivity(Intent(this@Activity_Cliente_Login, Activity_Funcionario_Login::class.java))
         }

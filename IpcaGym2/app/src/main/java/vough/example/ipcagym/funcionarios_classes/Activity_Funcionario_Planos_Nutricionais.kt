@@ -187,7 +187,6 @@ class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
 
             val pictureByteArray = Base64.decode(listPlanosNutricionais[position].foto_plano_nutricional, Base64.DEFAULT)
             val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-
             rootView.findViewById<ImageView>(R.id.imageViewPlanoNutricional).setImageBitmap(bitmap)
 
             rootView.setOnClickListener{

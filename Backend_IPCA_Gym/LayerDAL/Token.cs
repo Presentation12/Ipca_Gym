@@ -18,13 +18,17 @@ namespace LayerDAL
         /// </summary>
         /// <param name="cliente"> Cliente </param>
         /// <returns> JSON web token </returns>
-        public static string CreateTokenCliente(Cliente cliente, IConfiguration _configuration)
+        public static LoginModel CreateTokenCliente(Cliente cliente, IConfiguration _configuration)
         {
+            var modelResult = new LoginModel();
+
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, cliente.mail),
                 new Claim(ClaimTypes.Role, "Cliente")
             };
+
+            modelResult.role = "Cliente";
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
 
@@ -37,7 +41,9 @@ namespace LayerDAL
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return jwt;
+            modelResult.token = jwt;
+
+            return modelResult;
         }
 
         /// <summary>
@@ -46,14 +52,22 @@ namespace LayerDAL
         /// <param name="funcionario">Funcionario que esta a efetuar login</param>
         /// <param name="_configuration">Dependency Injection</param>
         /// <returns>Token jwt de sessao</returns>
-        public static string CreateTokenFuncionario(Funcionario funcionario, IConfiguration _configuration)
+        public static LoginModel CreateTokenFuncionario(Funcionario funcionario, IConfiguration _configuration)
         {
             string role = string.Empty;
+            var modelResult = new LoginModel();
 
-            if (funcionario.is_admin) role = "Gerente";
-            else role = "Funcionario";
+            if (funcionario.is_admin)
+            {
+                role = "Gerente";
 
-            if (funcionario.nome == "adminaccount") role = "Admin";
+                if (funcionario.nome == "adminaccount")
+                    role = "Admin";
+            }
+            else
+                role = "Funcionario";
+
+            modelResult.role = role;
 
             List<Claim> claims = new List<Claim>
             {
@@ -72,8 +86,9 @@ namespace LayerDAL
                 signingCredentials: creds);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            modelResult.token = jwt;
 
-            return jwt;
+            return modelResult;
         }
     }
 }

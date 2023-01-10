@@ -230,7 +230,7 @@ object FuncionarioRequests {
         }
     }
 
-    fun loginFuncionario(scope: CoroutineScope, code : String?, pass: String?, callback: (String) -> Unit){
+    fun loginFuncionario(scope: CoroutineScope, code : String?, pass: String?, callback: (LoginReceiverModel) -> Unit){
         scope.launch(Dispatchers.IO) {
             val jsonBody = """
                 {
@@ -248,21 +248,24 @@ object FuncionarioRequests {
                 if (!response.isSuccessful) throw IOException("Unexpected code $response")
 
                 val statusCode = response.code
+                var resultLogin : LoginReceiverModel? = null
 
                 if(statusCode == 200) {
                     val result = response.body!!.string()
 
                     val jsonObject = JSONObject(result)
                     val JsonData = jsonObject.getJSONObject("data")
-                    val JsonValue = JsonData.getString("value")
+                    val JsonValue = JsonData.getJSONObject("value")
+
+                    resultLogin = LoginReceiverModel.fromJson(JsonValue)
 
                     scope.launch(Dispatchers.Main){
-                        callback(JsonValue)
+                        callback(resultLogin)
                     }
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback(resultLogin!!)
                     }
             }
         }
