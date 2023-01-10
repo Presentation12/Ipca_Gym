@@ -35,6 +35,12 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
         val imageView = findViewById<ImageView>(R.id.profile_pic)
         var ListTotal = arrayListOf<Funcionario>()
 
+        list_funcionario.add(Funcionario(1,1,"Paulo Raposo",true,1,null,null,"Ativo",null))
+        list_funcionario.add(Funcionario(1,1,"Paulo Cartao",false,2,null,null,"Ativo",null))
+        list_funcionario.add(Funcionario(1,1,"Frederico Raposo",true,3,null,null,"Ativo",null))
+        ListTotal = list_funcionario
+
+        /*
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
             if(resultGerente != null){
                 if (resultGerente.foto_funcionario != null)
@@ -53,6 +59,7 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
                 }
             }
         }
+*/
 
         var counter = 0
         val spinner = findViewById<Spinner>(R.id.spinner)
@@ -110,21 +117,27 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
         list_view_funcionario.adapter = funcionarios_adapter
 
         var previousTextLength = 0
-
+        var listAux = list_funcionario
         findViewById<EditText>(R.id.editText).addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 var searchResults = ArrayList<Funcionario>()
-                for (func in list_funcionario) {
+                for (func in ListTotal) {
                     if (func.nome?.lowercase()?.contains(s.toString().lowercase()) == true) {
                         searchResults.add(func)
                     }
                 }
 
                 if(count == 0 && before > 0){
-                    searchResults = ListTotal
+                    searchResults = ArrayList<Funcionario>()
+                    for (func in ListTotal) {
+                        if (func.nome?.lowercase()?.contains(s.toString().lowercase()) == true) {
+                            searchResults.add(func)
+                        }
+                    }
                 }
 
                 list_funcionario = searchResults
+                listAux = list_funcionario
                 funcionarios_adapter.notifyDataSetChanged()
             }
 
@@ -168,6 +181,7 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
         }*/
 
         findViewById<Switch>(R.id.switch1).setOnClickListener{
+
             if(findViewById<Switch>(R.id.switch1).isChecked)
             {
                 var adminResults = ArrayList<Funcionario>()
@@ -182,7 +196,7 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
             }
             else
             {
-                list_funcionario = ListTotal
+                list_funcionario = listAux
                 funcionarios_adapter.notifyDataSetChanged()
             }
         }
