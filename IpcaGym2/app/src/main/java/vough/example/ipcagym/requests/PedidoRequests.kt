@@ -126,7 +126,7 @@ object PedidoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Post Pedido fails")
                     }
             }
         }
@@ -167,7 +167,7 @@ object PedidoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Patch Pedido fails")
                     }
             }
         }
@@ -200,13 +200,12 @@ object PedidoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete Pedido fails")
                     }
             }
         }
     }
 
-    //TODO: por verificar
     fun GetAllConnectionClient(scope: CoroutineScope, token : String?, targetID : Int?, callback: (ArrayList<Pedido_Join>) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()

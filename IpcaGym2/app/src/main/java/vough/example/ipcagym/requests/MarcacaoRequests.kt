@@ -54,7 +54,6 @@ object MarcacaoRequests {
         }
     }
 
-    //TODO: por verificar
     fun GetByID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (Marcacao?) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()
@@ -127,7 +126,7 @@ object MarcacaoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Post Product fails")
                     }
             }
         }
@@ -170,7 +169,7 @@ object MarcacaoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Patch Product fails")
                     }
             }
         }
@@ -203,13 +202,12 @@ object MarcacaoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete Product fails")
                     }
             }
         }
     }
 
-    //TODO: por verificar
     fun GetAllByFuncionarioID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (ArrayList<Marcacao>) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()
@@ -249,7 +247,6 @@ object MarcacaoRequests {
         }
     }
 
-    //TODO: por verificar
     fun GetAllByClienteID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (ArrayList<Marcacao>) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()
@@ -325,7 +322,7 @@ object MarcacaoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Post Checked Product fails")
                     }
             }
         }
@@ -368,7 +365,7 @@ object MarcacaoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Patch Cancel Marcacao Checked Product fails")
                     }
             }
         }
@@ -411,7 +408,7 @@ object MarcacaoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Patch Reschedule Marcacao Checked Product fails")
                     }
             }
         }

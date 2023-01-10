@@ -53,7 +53,6 @@ object RefeicaoRequests {
         }
     }
 
-    //TODO: por verificar
     fun GetByID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (Refeicao?) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()
@@ -89,7 +88,6 @@ object RefeicaoRequests {
         }
     }
 
-    //TODO: por verificar
     fun GetAllByPlanoID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (ArrayList<Refeicao>) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()
@@ -155,7 +153,7 @@ object RefeicaoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Post Refeicao fails")
                     }
             }
         }
@@ -187,7 +185,7 @@ object RefeicaoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Patch Refeicao fails")
                     }
             }
         }
@@ -220,7 +218,7 @@ object RefeicaoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete Refeicao fails")
                     }
             }
         }

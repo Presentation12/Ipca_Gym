@@ -125,7 +125,7 @@ object ClassificacaoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Post Classification fails")
                     }
             }
         }
@@ -168,7 +168,7 @@ object ClassificacaoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Patch Classification fails")
                     }
             }
         }
@@ -201,7 +201,7 @@ object ClassificacaoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete Classification fails")
                     }
             }
         }

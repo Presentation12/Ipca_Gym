@@ -54,7 +54,6 @@ object PedidoLojaRequests {
         }
     }
 
-    //TODO: por verificar
     fun GetByID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (Pedido_Loja?) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()
@@ -124,7 +123,7 @@ object PedidoLojaRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Post PedidoLoja fails")
                     }
             }
         }
@@ -164,7 +163,7 @@ object PedidoLojaRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Patch PedidoLoja fails")
                     }
             }
         }
@@ -197,13 +196,12 @@ object PedidoLojaRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete PedidoLoja fails")
                     }
             }
         }
     }
 
-    //TODO: por verificar
     fun GetAllByPedidoIDID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (ArrayList<Pedido_Loja>) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()
@@ -270,7 +268,7 @@ object PedidoLojaRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete PedidoLoja fails")
                     }
             }
         }
@@ -310,7 +308,7 @@ object PedidoLojaRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Post PedidoLoja fails")
                     }
             }
         }

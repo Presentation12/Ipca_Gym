@@ -138,7 +138,7 @@ object ClienteRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Post Client fails")
                     }
             }
         }
@@ -187,7 +187,7 @@ object ClienteRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Patch Client fails")
                     }
             }
         }
@@ -220,7 +220,7 @@ object ClienteRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete Client fails")
                     }
             }
         }
@@ -290,7 +290,7 @@ object ClienteRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("error")
+                        callback("Error: Recover Client password fails")
                     }
             }
         }
@@ -323,7 +323,7 @@ object ClienteRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete Client fails")
                     }
             }
         }

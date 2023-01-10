@@ -130,7 +130,7 @@ object AtividadeRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Post Activity fails")
                     }
             }
         }
@@ -171,7 +171,7 @@ object AtividadeRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Patch Activity fails")
                     }
             }
         }
@@ -204,7 +204,7 @@ object AtividadeRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete Activity fails")
                     }
             }
         }

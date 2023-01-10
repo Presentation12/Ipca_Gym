@@ -128,7 +128,7 @@ object FuncionarioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Post Employee fails")
                     }
             }
         }
@@ -191,7 +191,7 @@ object FuncionarioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Patch Employee fails")
                     }
             }
         }
@@ -224,7 +224,7 @@ object FuncionarioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete Employee fails")
                     }
             }
         }
@@ -294,7 +294,7 @@ object FuncionarioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("error")
+                        callback("Error: Recover Employee password fails")
                     }
             }
         }
@@ -342,7 +342,7 @@ object FuncionarioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Regist Client fails")
                     }
             }
         }
@@ -391,7 +391,7 @@ object FuncionarioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Edit Client fails")
                     }
             }
         }
@@ -437,7 +437,7 @@ object FuncionarioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Edit shop stock fails")
                     }
             }
         }
@@ -483,7 +483,7 @@ object FuncionarioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Edit shop fails")
                     }
             }
         }
@@ -527,13 +527,12 @@ object FuncionarioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Edit capacity fails")
                     }
             }
         }
     }
 
-    //TODO: por verificar
     fun GetAvaliacoesOnGym(scope: CoroutineScope, token : String?, targetID : Int?, callback: (ArrayList<Classificacao>) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()
@@ -600,7 +599,7 @@ object FuncionarioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete Emnployee fails")
                     }
             }
         }

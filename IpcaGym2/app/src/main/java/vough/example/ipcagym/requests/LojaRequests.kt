@@ -168,7 +168,7 @@ object LojaRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Post Product fails")
                     }
             }
         }
@@ -214,7 +214,7 @@ object LojaRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Patch Product fails")
                     }
             }
         }
@@ -247,7 +247,7 @@ object LojaRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete Product fails")
                     }
             }
         }

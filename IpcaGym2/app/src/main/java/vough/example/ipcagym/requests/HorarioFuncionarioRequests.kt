@@ -53,7 +53,6 @@ object HorarioFuncionarioRequests {
         }
     }
 
-    //TODO: por verificar
     fun GetByID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (Horario_Funcionario?) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()
@@ -89,7 +88,6 @@ object HorarioFuncionarioRequests {
         }
     }
 
-    //TODO: por verificar
     fun GetAllByFuncionarioID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (ArrayList<Horario_Funcionario>) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()
@@ -164,7 +162,7 @@ object HorarioFuncionarioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Post Day in Employee schedule fails")
                     }
             }
         }
@@ -206,7 +204,7 @@ object HorarioFuncionarioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Patch Day in Employee schedule fails")
                     }
             }
         }
@@ -239,7 +237,7 @@ object HorarioFuncionarioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete Day in Employee schedule fails")
                     }
             }
         }

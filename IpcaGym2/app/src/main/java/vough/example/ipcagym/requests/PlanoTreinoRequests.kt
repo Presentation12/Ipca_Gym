@@ -53,7 +53,6 @@ object PlanoTreinoRequests {
         }
     }
 
-    //TODO: por verificar
     fun GetByID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (Plano_Treino?) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()
@@ -89,7 +88,6 @@ object PlanoTreinoRequests {
         }
     }
 
-    //TODO: por verificar
     fun GetAllByGinasioID(scope: CoroutineScope, token : String?, targetID : Int?, callback: (ArrayList<Plano_Treino>) -> Unit){
         scope.launch(Dispatchers.IO) {
             val request = Request.Builder()
@@ -163,7 +161,7 @@ object PlanoTreinoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Post Plano Treino fails")
                     }
             }
         }
@@ -204,7 +202,7 @@ object PlanoTreinoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Patch Plano Treino fails")
                     }
             }
         }
@@ -237,7 +235,7 @@ object PlanoTreinoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete Plano Treino fails")
                     }
             }
         }
@@ -270,7 +268,7 @@ object PlanoTreinoRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete Checked Plano Treino fails")
                     }
             }
         }

@@ -155,7 +155,7 @@ object ExercicioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Post Exercise fails")
                     }
             }
         }
@@ -187,7 +187,7 @@ object ExercicioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Patch Exercise fails")
                     }
             }
         }
@@ -220,7 +220,7 @@ object ExercicioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete Exercise fails")
                     }
             }
         }

@@ -127,7 +127,7 @@ object GinasioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Post Gym fails")
                     }
             }
         }
@@ -171,7 +171,7 @@ object GinasioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Patch Gym fails")
                     }
             }
         }
@@ -204,7 +204,7 @@ object GinasioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("User not found")
+                        callback("Error: Delete Gym fails")
                     }
             }
         }
