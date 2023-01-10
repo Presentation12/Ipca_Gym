@@ -49,10 +49,6 @@ class Activity_Cliente_Plano_Treino_Exercicios : AppCompatActivity() {
                     val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                     imageView.setImageBitmap(bitmap)
                 }
-                else
-                {
-                    imageView.setImageResource(R.drawable.defaultprofilepic)
-                }
 
                 ExercicioRequests.GetAllByPlanoID(lifecycleScope, sessionToken, id_plano_treino) { resultExercicio ->
                     exercicios_plano_list = resultExercicio
@@ -214,10 +210,6 @@ class Activity_Cliente_Plano_Treino_Exercicios : AppCompatActivity() {
                 val pictureByteArray = Base64.decode(exercicios_plano_list[position].foto_exercicio, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                 exercicio_image_view.setImageBitmap(bitmap)
-            }
-            else
-            {
-                exercicio_image_view.setImageResource(R.drawable.defaultprofilepic)
             }
 
             return rootView

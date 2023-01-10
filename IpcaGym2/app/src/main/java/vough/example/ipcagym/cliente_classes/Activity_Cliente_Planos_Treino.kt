@@ -18,7 +18,6 @@ import vough.example.ipcagym.data_classes.Plano_Treino
 import vough.example.ipcagym.requests.ClienteRequests
 import vough.example.ipcagym.requests.PlanoTreinoRequests
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
 
 class Activity_Cliente_Planos_Treino : AppCompatActivity() {
 
@@ -43,10 +42,6 @@ class Activity_Cliente_Planos_Treino : AppCompatActivity() {
                     val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
                     val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                     imageView.setImageBitmap(bitmap)
-                }
-                else
-                {
-                    imageView.setImageResource(R.drawable.defaultprofilepic)
                 }
 
                 PlanoTreinoRequests.GetAllByGinasioID(lifecycleScope, sessionToken, resultCliente.id_ginasio) { resultGym ->
