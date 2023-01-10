@@ -23,7 +23,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon">
+            android:src="@drawable/defaultprofilepic">
 
         </ImageView>
 
@@ -76,11 +76,12 @@
         android:id="@+id/textView21"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:text="New Meal"
         android:textColor="#FFFFFF"
-        android:textSize="21sp"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView20"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
@@ -88,20 +89,19 @@
         android:id="@+id/cardView20"
         android:layout_width="0dp"
         android:layout_height="250dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/addNewMealButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#00FFFFFF"
         android:text="Add Meal"
         android:textColor="#FFFFFF"
@@ -161,6 +161,7 @@
         android:layout_marginStart="16dp"
         android:elevation="10dp"
         android:ems="10"
+        android:hint="Description"
         android:inputType="textPersonName"
         android:outlineProvider="none"
         app:layout_constraintBottom_toBottomOf="@+id/textView61"
@@ -174,8 +175,10 @@
         android:layout_marginStart="16dp"
         android:elevation="10dp"
         android:ems="10"
+        android:hint="HH"
         android:inputType="number"
         android:outlineProvider="none"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/textView62"
         app:layout_constraintStart_toEndOf="@+id/textView62"
         app:layout_constraintTop_toTopOf="@+id/textView62" />
@@ -187,8 +190,10 @@
         android:layout_marginStart="16dp"
         android:elevation="10dp"
         android:ems="10"
+        android:hint="MM"
         android:inputType="number"
         android:outlineProvider="none"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/refeicaoHourHourValue"
         app:layout_constraintStart_toEndOf="@+id/refeicaoHourHourValue"
         app:layout_constraintTop_toTopOf="@+id/refeicaoHourHourValue" />

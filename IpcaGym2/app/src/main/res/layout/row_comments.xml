@@ -21,14 +21,10 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="end"
         android:layout_margin="20dp"
-
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/tableRow2"
         app:layout_constraintStart_toStartOf="@+id/tableRow2"
@@ -60,27 +56,20 @@
         android:id="@+id/textView_stars_rating"
         android:layout_width="36dp"
         android:layout_height="21dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginBottom="12dp"
         android:background="@drawable/grey_shape_background"
         android:text="x"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/tableRow2"
-        app:layout_constraintEnd_toStartOf="@+id/textView69"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintStart_toStartOf="@+id/textView_commnets_ginasio"
         app:layout_constraintTop_toBottomOf="@+id/textView_commnets_ginasio" />
 
     <TextView
         android:id="@+id/textView69"
-        android:layout_width="wrap_content"
+        android:layout_width="84dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/gray_background"
         android:text="Estrelas"
         android:textColor="#F1EAEA"
-        app:layout_constraintBottom_toBottomOf="@+id/tableRow2"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/textView_commnets_ginasio" />
+        app:layout_constraintBottom_toBottomOf="@+id/textView_stars_rating"
+        app:layout_constraintStart_toEndOf="@+id/textView_stars_rating"
+        app:layout_constraintTop_toTopOf="@+id/textView_stars_rating" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

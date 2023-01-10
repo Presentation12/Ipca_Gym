@@ -7,11 +7,11 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/placeholderFuncionarioInfo"
-        android:layout_width="282dp"
+        android:layout_width="0dp"
         android:layout_height="150dp"
         android:layout_gravity="end"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:background="#393939"
         app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -38,7 +38,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon" />
+            android:src="@drawable/defaultprofilepic" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -120,7 +120,7 @@
         android:id="@+id/changePasswordButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#00FFFFFF"
         android:text="Change Password"
         android:textColor="#A5A5A5"

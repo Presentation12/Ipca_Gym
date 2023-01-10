@@ -10,8 +10,8 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="end"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,7 +21,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon"></ImageView>
+            android:src="@drawable/defaultprofilepic"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -70,6 +70,7 @@
         android:id="@+id/newActivityTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="Add Activity"
         android:textColor="#FFFFFF"
         android:textSize="21dp"
@@ -77,78 +78,84 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="Client_ID"
-        app:layout_constraintBottom_toBottomOf="@+id/newIDClienteActivity"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="250dp"
+        android:layout_height="200dp"
+        android:layout_gravity="end"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/newIDClienteActivity" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.cardview.widget.CardView>
 
     <EditText
         android:id="@+id/newIDClienteActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="20dp"
+        android:elevation="10dp"
         android:ems="10"
+        android:hint="Client ID"
         android:inputType="number"
+        android:outlineProvider="none"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newActivityTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cardView2"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <Button
         android:id="@+id/entryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:backgroundTint="#056009"
+        android:backgroundTint="@android:color/transparent"
         android:text="Entry"
+        android:textColor="#056009"
         app:layout_constraintBottom_toBottomOf="@+id/exitButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/exitButton" />
+        app:layout_constraintStart_toStartOf="@+id/newIDClienteActivity"
+        app:layout_constraintTop_toTopOf="@+id/exitButton"
+        app:strokeColor="#056009"
+        app:strokeWidth="2dp" />
 
     <Button
         android:id="@+id/exitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="64dp"
-        android:backgroundTint="#C30B0B"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@android:color/transparent"
         android:text="Exit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        android:textColor="#C30B0B"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView2"
+        app:layout_constraintEnd_toEndOf="@+id/newIDClienteActivity"
+        app:strokeColor="#C30B0B"
+        app:strokeWidth="2dp" />
 
     <Button
         android:id="@+id/buttonAddActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@android:color/transparent"
         android:text="Add"
+        android:textColor="#A5A5A5"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exitButton" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Client activity:"
-        app:layout_constraintEnd_toEndOf="@+id/entryButton"
-        app:layout_constraintStart_toEndOf="@+id/entryButton"
-        app:layout_constraintTop_toBottomOf="@+id/newIDClienteActivity" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView2"
+        app:strokeColor="#A5A5A5"
+        app:strokeWidth="2dp" />
 
     <TextView
         android:id="@+id/textViewCurrentState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:elevation="10dp"
         android:text="none"
-        app:layout_constraintBottom_toBottomOf="@+id/textView8"
-        app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toTopOf="@+id/textView8" />
+        app:layout_constraintBottom_toTopOf="@+id/exitButton"
+        app:layout_constraintEnd_toEndOf="@+id/newIDClienteActivity"
+        app:layout_constraintStart_toStartOf="@+id/newIDClienteActivity"
+        app:layout_constraintTop_toBottomOf="@+id/newIDClienteActivity" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
