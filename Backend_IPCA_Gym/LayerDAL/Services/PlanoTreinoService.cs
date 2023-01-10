@@ -287,8 +287,11 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("id_plano_treino", planoTreino.id_plano_treino != 0 ? planoTreino.id_plano_treino : planoTreinoAtual.id_plano_treino);
                         myCommand.Parameters.AddWithValue("id_ginasio", planoTreino.id_ginasio != 0 ? planoTreino.id_ginasio : planoTreinoAtual.id_ginasio);
                         myCommand.Parameters.AddWithValue("tipo", !string.IsNullOrEmpty(planoTreino.tipo) ? planoTreino.tipo : planoTreinoAtual.tipo);
-                        myCommand.Parameters.AddWithValue("foto_plano_treino", !string.IsNullOrEmpty(planoTreino.foto_plano_treino) ? planoTreino.foto_plano_treino : planoTreinoAtual.foto_plano_treino);
 
+                        if (planoTreino.foto_plano_treino != null)
+                            myCommand.Parameters.AddWithValue("foto_plano_treino", planoTreino.foto_plano_treino);
+                        else
+                            myCommand.Parameters.AddWithValue("foto_plano_treino", planoTreinoAtual.foto_plano_treino != null ? planoTreinoAtual.foto_plano_treino : DBNull.Value);
 
                         dataReader = myCommand.ExecuteReader();
 

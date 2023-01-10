@@ -403,10 +403,10 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("codigo", funcionario.codigo != 0 ? funcionario.codigo : funcionarioAtual.codigo);
                         myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(funcionario.estado) ? funcionario.estado : funcionarioAtual.estado);
                         
-                        if(funcionarioAtual.foto_funcionario != null)
-                            myCommand.Parameters.AddWithValue("foto_funcionario", funcionario.foto_funcionario != null ? funcionario.foto_funcionario : funcionarioAtual.foto_funcionario);
+                        if (funcionario.foto_funcionario != null)
+                            myCommand.Parameters.AddWithValue("foto_funcionario", funcionario.foto_funcionario);
                         else
-                            myCommand.Parameters.AddWithValue("foto_funcionario", DBNull.Value);
+                            myCommand.Parameters.AddWithValue("foto_funcionario", funcionarioAtual.foto_funcionario != null ? funcionarioAtual.foto_funcionario : DBNull.Value);
 
                         dataReader = myCommand.ExecuteReader();
 

@@ -291,7 +291,11 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("id_ginasio", planoNutricional.id_ginasio != 0 ? planoNutricional.id_ginasio : planoNutricionalAtual.id_ginasio);
                         myCommand.Parameters.AddWithValue("tipo", !string.IsNullOrEmpty(planoNutricional.tipo) ? planoNutricional.tipo : planoNutricionalAtual.tipo);
                         myCommand.Parameters.AddWithValue("calorias", planoNutricional.calorias != 0 ? planoNutricional.calorias : planoNutricionalAtual.calorias);
-                        myCommand.Parameters.AddWithValue("foto_plano_nutricional", !string.IsNullOrEmpty(planoNutricional.foto_plano_nutricional) ? planoNutricional.foto_plano_nutricional : planoNutricionalAtual.foto_plano_nutricional);
+
+                        if (planoNutricional.foto_plano_nutricional != null)
+                            myCommand.Parameters.AddWithValue("foto_plano_nutricional", planoNutricional.foto_plano_nutricional);
+                        else
+                            myCommand.Parameters.AddWithValue("foto_plano_nutricional", planoNutricionalAtual.foto_plano_nutricional != null ? planoNutricionalAtual.foto_plano_nutricional : DBNull.Value);
 
                         dataReader = myCommand.ExecuteReader();
 

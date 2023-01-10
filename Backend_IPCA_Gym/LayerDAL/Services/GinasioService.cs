@@ -292,12 +292,13 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("id_ginasio", ginasio.id_ginasio != 0 ? ginasio.id_ginasio : ginasioAtual.id_ginasio);
                         myCommand.Parameters.AddWithValue("instituicao", !string.IsNullOrEmpty(ginasio.instituicao) ? ginasio.instituicao : ginasioAtual.instituicao);
                         myCommand.Parameters.AddWithValue("contacto", ginasio.contacto != 0 ? ginasio.contacto : ginasioAtual.contacto);
-                        
-                        if(!string.IsNullOrEmpty(ginasio.foto_ginasio) && !string.IsNullOrEmpty(ginasioAtual.foto_ginasio))
-                            myCommand.Parameters.AddWithValue("foto_ginasio", !string.IsNullOrEmpty(ginasio.foto_ginasio) ? ginasio.foto_ginasio : ginasioAtual.foto_ginasio);
+                     
+                        if (ginasio.foto_ginasio != null)
+                            myCommand.Parameters.AddWithValue("foto_ginasio", ginasio.foto_ginasio);
                         else
-                            myCommand.Parameters.AddWithValue("foto_ginasio", DBNull.Value);
-                        
+                            myCommand.Parameters.AddWithValue("foto_ginasio", ginasioAtual.foto_ginasio != null ? ginasioAtual.foto_ginasio : DBNull.Value);
+
+
                         myCommand.Parameters.AddWithValue("estado", !string.IsNullOrEmpty(ginasio.estado) ? ginasio.estado : ginasioAtual.estado);
                         myCommand.Parameters.AddWithValue("lotacao", ginasio.lotacao);
                         myCommand.Parameters.AddWithValue("lotacaoMax", ginasio.lotacaoMax);

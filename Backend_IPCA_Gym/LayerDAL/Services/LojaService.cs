@@ -312,7 +312,12 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("preco", produto.preco != (double)0 ? produto.preco : produtoAtual.preco);
                         myCommand.Parameters.AddWithValue("descricao", !string.IsNullOrEmpty(produto.descricao) ? produto.descricao : produtoAtual.descricao);
                         myCommand.Parameters.AddWithValue("estado_produto", !string.IsNullOrEmpty(produto.estado_produto) ? produto.estado_produto : produtoAtual.estado_produto);
-                        myCommand.Parameters.AddWithValue("foto_produto", !string.IsNullOrEmpty(produto.foto_produto) ? produto.foto_produto : produtoAtual.foto_produto);
+                        
+                        if (produto.foto_produto != null)
+                            myCommand.Parameters.AddWithValue("foto_produto", produto.foto_produto);
+                        else
+                            myCommand.Parameters.AddWithValue("foto_produto", produtoAtual.foto_produto != null ? produtoAtual.foto_produto : DBNull.Value);
+
                         myCommand.Parameters.AddWithValue("quantidade_produto", produto.quantidade_produto);
 
                         dataReader = myCommand.ExecuteReader();

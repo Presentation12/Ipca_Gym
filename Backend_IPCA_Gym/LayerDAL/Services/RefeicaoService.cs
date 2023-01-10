@@ -291,7 +291,13 @@ namespace LayerDAL.Services
                         myCommand.Parameters.AddWithValue("descricao", !string.IsNullOrEmpty(refeicao.descricao) ? refeicao.descricao : refeicaoAtual.descricao);
                         myCommand.Parameters.AddWithValue("hora", refeicao.hora != TimeSpan.Zero ? refeicao.hora : refeicaoAtual.hora);
                         myCommand.Parameters.AddWithValue("foto_refeicao", !string.IsNullOrEmpty(refeicao.foto_refeicao) ? refeicao.foto_refeicao : refeicaoAtual.foto_refeicao);
-                        
+
+                        if (refeicao.foto_refeicao != null)
+                            myCommand.Parameters.AddWithValue("foto_refeicao", refeicao.foto_refeicao);
+                        else
+                            myCommand.Parameters.AddWithValue("foto_refeicao", refeicaoAtual.foto_refeicao != null ? refeicaoAtual.foto_refeicao : DBNull.Value);
+
+
                         dataReader = myCommand.ExecuteReader();
 
                         dataReader.Close();
