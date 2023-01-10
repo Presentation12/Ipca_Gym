@@ -2,9 +2,11 @@ package vough.example.ipcagym.cliente_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -20,7 +22,6 @@ import vough.example.ipcagym.requests.ExercicioRequests
 
 class Activity_Cliente_Plano_Treino_Exercicios : AppCompatActivity() {
 
-    var clienteRefresh : Cliente? = null
     var exercicios_plano_list = arrayListOf<Exercicio>()
     var exercicio_adapter = AdapterExercicios()
 
@@ -37,20 +38,26 @@ class Activity_Cliente_Plano_Treino_Exercicios : AppCompatActivity() {
         val tipo = intent.getStringExtra("tipo")
         val foto_plano_treino = intent.getStringExtra("foto_plano_treino")
 
-        val image_view = findViewById<ImageView>(R.id.profile_pic)
+        val imageView = findViewById<ImageView>(R.id.profile_pic)
 
         ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
-            if(resultCliente?.id_cliente != null) clienteRefresh = resultCliente
-
-            ExercicioRequests.GetAllByPlanoID(lifecycleScope, sessionToken, id_plano_treino) { resultExercicio ->
-                exercicios_plano_list = resultExercicio
-                if (clienteRefresh?.foto_perfil != null)
+            if(resultCliente?.id_cliente != null)
+            {
+                if (resultCliente.foto_perfil != null)
                 {
-                    val imageUri: Uri = Uri.parse(clienteRefresh?.foto_perfil)
-                    image_view.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    imageView.setImageBitmap(bitmap)
+                }
+                else
+                {
+                    imageView.setImageResource(R.drawable.defaultProfilePic)
                 }
 
-                exercicio_adapter.notifyDataSetChanged()
+                ExercicioRequests.GetAllByPlanoID(lifecycleScope, sessionToken, id_plano_treino) { resultExercicio ->
+                    exercicios_plano_list = resultExercicio
+                    exercicio_adapter.notifyDataSetChanged()
+                }
             }
         }
         findViewById<TextView>(R.id.textViewType).text = tipo
@@ -124,7 +131,7 @@ class Activity_Cliente_Plano_Treino_Exercicios : AppCompatActivity() {
                 spinner.setSelection(3)
             }
         }
-        image_view.setOnClickListener {
+        imageView.setOnClickListener {
             spinner.performClick()
         }
 
@@ -189,11 +196,16 @@ class Activity_Cliente_Plano_Treino_Exercicios : AppCompatActivity() {
             }
             else exercicio_quantity_view.text = exercicios_plano_list[position].tempo.toString()
 
+            val exercicio_image_view = rootView.findViewById<ImageView>(R.id.imageViewPlanoTreino)
             if (exercicios_plano_list[position].foto_exercicio != null)
             {
-                val exercicio_image_view = rootView.findViewById<ImageView>(R.id.imageViewPlanoTreino)
-                val imageUri: Uri = Uri.parse(exercicios_plano_list[position].foto_exercicio)
-                exercicio_image_view.setImageURI(imageUri)
+                val pictureByteArray = Base64.decode(exercicios_plano_list[position].foto_exercicio, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                exercicio_image_view.setImageBitmap(bitmap)
+            }
+            else
+            {
+                exercicio_image_view.setImageResource(R.drawable.defaultProfilePic)
             }
 
             return rootView

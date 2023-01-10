@@ -2,15 +2,16 @@ package vough.example.ipcagym.cliente_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
-import vough.example.ipcagym.data_classes.Cliente
 import vough.example.ipcagym.data_classes.Plano_Treino
 import vough.example.ipcagym.requests.ClienteRequests
 import vough.example.ipcagym.requests.PlanoTreinoRequests
@@ -18,7 +19,6 @@ import androidx.lifecycle.lifecycleScope
 
 class Activity_Cliente_Planos_Treino : AppCompatActivity() {
 
-    var clienteRefresh : Cliente? = null
     var planos_treino_list = arrayListOf<Plano_Treino>()
     var plano_adapter = AdapterPlanosTreino()
 
@@ -30,20 +30,26 @@ class Activity_Cliente_Planos_Treino : AppCompatActivity() {
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
-        var image_view = findViewById<ImageView>(R.id.profile_pic)
+        val imageView = findViewById<ImageView>(R.id.profile_pic)
 
         ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
-            if(resultCliente != null) clienteRefresh = resultCliente
-
-            PlanoTreinoRequests.GetAllByGinasioID(lifecycleScope, sessionToken, resultCliente?.id_ginasio) { resultGym ->
-                planos_treino_list = resultGym
-                if (clienteRefresh?.foto_perfil != null)
+            if(resultCliente != null)
+            {
+                if (resultCliente.foto_perfil != null)
                 {
-                    val imageUri: Uri = Uri.parse(clienteRefresh?.foto_perfil)
-                    image_view.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    imageView.setImageBitmap(bitmap)
+                }
+                else
+                {
+                    imageView.setImageResource(R.drawable.defaultProfilePic)
                 }
 
-                plano_adapter.notifyDataSetChanged()
+                PlanoTreinoRequests.GetAllByGinasioID(lifecycleScope, sessionToken, resultCliente.id_ginasio) { resultGym ->
+                    planos_treino_list = resultGym
+                    plano_adapter.notifyDataSetChanged()
+                }
             }
         }
 
@@ -116,7 +122,7 @@ class Activity_Cliente_Planos_Treino : AppCompatActivity() {
                 spinner.setSelection(3)
             }
         }
-        image_view.setOnClickListener {
+        imageView.setOnClickListener {
             spinner.performClick()
         }
 
@@ -170,11 +176,16 @@ class Activity_Cliente_Planos_Treino : AppCompatActivity() {
             val plano_treino_view = root_view.findViewById<TextView>(R.id.textViewPlanoTreino)
             plano_treino_view.text = planos_treino_list[position].tipo
 
+            val plano_treino_image_view = root_view.findViewById<ImageView>(R.id.imageViewPlanoTreino)
             if (planos_treino_list[position].foto_plano_treino != null)
             {
-                val plano_treino_image_view = root_view.findViewById<ImageView>(R.id.imageViewPlanoTreino)
-                val imageUri: Uri = Uri.parse(planos_treino_list[position].foto_plano_treino)
-                plano_treino_image_view.setImageURI(imageUri)
+                val pictureByteArray = Base64.decode(planos_treino_list[position].foto_plano_treino, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                plano_treino_image_view.setImageBitmap(bitmap)
+            }
+            else
+            {
+                plano_treino_image_view.setImageResource(R.drawable.defaultProfilePic)
             }
 
             //Clicar num rootView abre o plano de treino
