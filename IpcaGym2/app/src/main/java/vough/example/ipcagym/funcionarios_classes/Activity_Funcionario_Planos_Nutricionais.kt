@@ -3,7 +3,9 @@ package vough.example.ipcagym.funcionarios_classes
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -16,6 +18,7 @@ import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Plano_Nutricional
 import vough.example.ipcagym.requests.FuncionarioRequests
 import vough.example.ipcagym.requests.PlanoNutricionalRequests
+import android.util.Base64
 
 class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
     var listPlanosNutricionais = arrayListOf<Plano_Nutricional>()
@@ -181,7 +184,11 @@ class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
             val rootView = layoutInflater.inflate(R.layout.row_plano_nutricional, parent, false)
 
             rootView.findViewById<TextView>(R.id.textViewPlanoNutricional).text = listPlanosNutricionais[position].tipo
-            rootView.findViewById<ImageView>(R.id.imageViewPlanoNutricional).setImageURI(listPlanosNutricionais[position].foto_plano_nutricional?.toUri())
+
+            val pictureByteArray = Base64.decode(listPlanosNutricionais[position].foto_plano_nutricional, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+
+            rootView.findViewById<ImageView>(R.id.imageViewPlanoNutricional).setImageBitmap(bitmap)
 
             rootView.setOnClickListener{
                 val intent = Intent(this@Activity_Funcionario_Planos_Nutricionais, Activity_Funcionario_Plano_Nutricional_Refeicoes::class.java)
@@ -201,18 +208,12 @@ class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            100 -> {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission was granted. Do the read operation.
-                } else {
-                    // Permission denied. Show a message to the user.
-                }
-                return
+        if(requestCode == 1){
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                startActivityForResult(galleryIntent, 2)
             }
-            // Handle other request codes.
         }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

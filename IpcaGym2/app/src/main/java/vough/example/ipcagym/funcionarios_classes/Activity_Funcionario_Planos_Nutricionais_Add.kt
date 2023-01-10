@@ -2,20 +2,34 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Plano_Nutricional
 import vough.example.ipcagym.requests.FuncionarioRequests
 import vough.example.ipcagym.requests.PlanoNutricionalRequests
+import java.io.ByteArrayOutputStream
+import java.io.IOException
+//import java.util.*
+import android.util.Base64
 
 class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
-    var newImageValue = ""
+    var imageBitmapped : Bitmap? = null
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_planos_nutricionais_add)
@@ -73,10 +87,13 @@ class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.buttonImportPhotoPlanNutri).setOnClickListener{
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            //100 é o request code de escolher imagem
-            startActivityForResult(intent, 100)
+            if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
+            }
+            else{
+                val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                startActivityForResult(galleryIntent, 2)
+            }
         }
 
         findViewById<Button>(R.id.CancelAddNewPlanNutriButton).setOnClickListener{
@@ -95,6 +112,9 @@ class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
                 Toast.makeText(this@Activity_Funcionario_Planos_Nutricionais_Add, "Insert ammount of calories", Toast.LENGTH_SHORT).show()
             }
             else{
+                val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
+                val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
+                val aux2 = aux.replace("\n", "")
 
                 FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
                     PlanoNutricionalRequests.Post(lifecycleScope, sessionToken, Plano_Nutricional(
@@ -102,7 +122,7 @@ class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
                         it?.id_ginasio!!,
                         findViewById<EditText>(R.id.tipoPlanoNutriValue).text.toString(),
                         findViewById<EditText>(R.id.caloriasPlanoNutriValue).text.toString().toInt(),
-                        newImageValue
+                        aux2
                     )){ response ->
                         if(response == "User not found")
                             Toast.makeText(this@Activity_Funcionario_Planos_Nutricionais_Add, "Error on adding plan", Toast.LENGTH_SHORT).show()
@@ -155,10 +175,43 @@ class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == 2 && resultCode == RESULT_OK && data != null){
+            val imageNew = data.data
+
+            if(imageNew != null){
+                if(Build.VERSION.SDK_INT >= 28){
+                    val source = ImageDecoder.createSource(this.contentResolver, imageNew)
+                    imageBitmapped = ImageDecoder.decodeBitmap(source)
+                    imageBitmapped = Bitmap.createScaledBitmap(imageBitmapped!!, 500, 500, false)
+                    findViewById<ImageView>(R.id.imageLoadedPlanNutri).setImageBitmap(imageBitmapped)
+
+                }else{
+                    imageBitmapped = MediaStore.Images.Media.getBitmap(applicationContext.contentResolver, imageNew)
+                    imageBitmapped = Bitmap.createScaledBitmap(imageBitmapped!!, 500, 500, false)
+                    findViewById<ImageView>(R.id.imageLoadedPlanNutri).setImageBitmap(imageBitmapped)
+                }
+            }
+        }
+
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == 100 && resultCode == RESULT_OK){
-            newImageValue = data?.data.toString()
-            findViewById<ImageView>(R.id.imageLoadedPlanNutri).setImageURI(data?.data)
+    }
+
+    private fun convertBitmapToByteArray(bitmap: Bitmap) : ByteArray{
+        var byteArrayImage : ByteArrayOutputStream? = null
+
+        return try{
+            byteArrayImage = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayImage)
+            byteArrayImage.toByteArray()
+        }
+        finally{
+            if(byteArrayImage != null)
+                try{
+                    byteArrayImage.close()
+                }
+                catch (e: IOException) {
+                    Toast.makeText(this@Activity_Funcionario_Planos_Nutricionais_Add, "Error on image conversion", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 }
