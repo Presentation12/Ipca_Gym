@@ -51,7 +51,7 @@ class Activity_Cliente_Plano_Treino_Exercicios : AppCompatActivity() {
                 }
                 else
                 {
-                    imageView.setImageResource(R.drawable.defaultProfilePic)
+                    imageView.setImageResource(R.drawable.defaultprofilepic)
                 }
 
                 ExercicioRequests.GetAllByPlanoID(lifecycleScope, sessionToken, id_plano_treino) { resultExercicio ->
@@ -205,7 +205,7 @@ class Activity_Cliente_Plano_Treino_Exercicios : AppCompatActivity() {
             }
             else
             {
-                exercicio_image_view.setImageResource(R.drawable.defaultProfilePic)
+                exercicio_image_view.setImageResource(R.drawable.defaultprofilepic)
             }
 
             return rootView
