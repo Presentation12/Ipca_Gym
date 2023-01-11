@@ -2,26 +2,37 @@ package vough.example.ipcagym.cliente_classes
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.InputType
 import android.util.Base64
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Atividade
 import vough.example.ipcagym.data_classes.Cliente
 import vough.example.ipcagym.requests.AtividadeRequests
 import vough.example.ipcagym.requests.ClienteRequests
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.TextStyle
 import java.util.*
 
 class Activity_Cliente_Edit_Account : AppCompatActivity() {
+    var imageBitmapped : Bitmap? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_edit_account)
@@ -45,12 +56,7 @@ class Activity_Cliente_Edit_Account : AppCompatActivity() {
         var estado = intent.getStringExtra("estado")
 
         val cliente_image_view = findViewById<ImageView>(R.id.profile_pic)
-        if (foto_perfil != null)
-        {
-            val pictureByteArray = Base64.decode(foto_perfil, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-            cliente_image_view.setImageBitmap(bitmap)
-        }
+
         findViewById<TextView>(R.id.editTextNomeCliente).hint = nome
         findViewById<TextView>(R.id.editTextMailCliente).hint = mail
         findViewById<TextView>(R.id.editTextContactoCliente).hint = telemovel.toString()
@@ -83,19 +89,24 @@ class Activity_Cliente_Edit_Account : AppCompatActivity() {
             }
         }
 
+        findViewById<ImageButton>(R.id.buttonImportPhoto).setOnClickListener{
+            if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
+            }
+            else{
+                val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                startActivityForResult(galleryIntent, 2)
+            }
+        }
+
         // butao de guardar cliente editado, e volta a página ida lista de clientes
+
         findViewById<Button>(R.id.buttonSave).setOnClickListener {
             val intent = Intent(this@Activity_Cliente_Edit_Account, Activity_Cliente_Account::class.java)
 
-            //TODO: edit foto
-            /*
-            if (foto_perfil != null)
-            {
-                val cliente_image_view = findViewById<ImageView>(R.id.profile_pic)
-                val imageUri: Uri = Uri.parse(foto_perfil)
-                cliente_image_view.setImageURI(imageUri)
-            }
-            */
+            val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
+            val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
+            val aux2 = aux.replace("\n", "")
 
             if (findViewById<EditText>(R.id.editTextNomeCliente).text.isEmpty() == false)
             {
@@ -121,7 +132,7 @@ class Activity_Cliente_Edit_Account : AppCompatActivity() {
             if(altura == 0) altura = null
             if(gordura.toString() == "NaN") gordura = null
 
-            var editCliente = Cliente(id_cliente,id_ginasio,id_plano_nutricional,nome,mail,telemovel,pass_salt,pass_hash,peso,altura,gordura,foto_perfil,estado)
+            var editCliente = Cliente(id_cliente,id_ginasio,id_plano_nutricional,nome,mail,telemovel,pass_salt,pass_hash,peso,altura,gordura,aux2,estado)
             ClienteRequests.Patch(lifecycleScope,sessionToken,id_cliente, editCliente) { resultEditcliente ->
                 if (resultEditcliente == "Error: Patch Client fails")
                 {
@@ -147,6 +158,47 @@ class Activity_Cliente_Edit_Account : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == 2 && resultCode == RESULT_OK && data != null){
+            val imageNew = data.data
+
+            if(imageNew != null){
+                if(Build.VERSION.SDK_INT >= 28){
+                    val source = ImageDecoder.createSource(this.contentResolver, imageNew)
+                    imageBitmapped = ImageDecoder.decodeBitmap(source)
+                    imageBitmapped = Bitmap.createScaledBitmap(imageBitmapped!!, 500, 500, false)
+                    findViewById<ImageView>(R.id.profile_pic).setImageBitmap(imageBitmapped)
+
+                }else{
+                    imageBitmapped = MediaStore.Images.Media.getBitmap(applicationContext.contentResolver, imageNew)
+                    imageBitmapped = Bitmap.createScaledBitmap(imageBitmapped!!, 500, 500, false)
+                    findViewById<ImageView>(R.id.profile_pic).setImageBitmap(imageBitmapped)
+                }
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun convertBitmapToByteArray(bitmap: Bitmap) : ByteArray{
+        var byteArrayImage : ByteArrayOutputStream? = null
+
+        return try{
+            byteArrayImage = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayImage)
+            byteArrayImage.toByteArray()
+        }
+        finally{
+            if(byteArrayImage != null)
+                try{
+                    byteArrayImage.close()
+                }
+                catch (e: IOException) {
+                    Toast.makeText(this@Activity_Cliente_Edit_Account, "Error on image conversion", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 }
