@@ -2,20 +2,29 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.requests.FuncionarioRequests
 import vough.example.ipcagym.requests.RefeicaoRequests
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 class Activity_Funcionario_Plano_Nutricional_Refeicao_Add : AppCompatActivity() {
-    var newImageValue = ""
+    var imageBitmapped : Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,15 +128,26 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Add : AppCompatActivity() 
 
 
         findViewById<Button>(R.id.importPhotoMeal).setOnClickListener{
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            //100 é o request code de escolher imagem
-            startActivityForResult(intent, 100)
+            if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
+            }
+            else{
+                val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                startActivityForResult(galleryIntent, 2)
+            }
         }
 
         //TODO: Verificar as horas nao passam dos limites
         findViewById<Button>(R.id.addNewMealButton).setOnClickListener {
             val newIntent = Intent()
+
+            var stringFoto : String? = null
+
+            /*if(imageBitmapped != null){
+                    val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
+                    val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
+                    stringFoto = aux.replace("\n", "")
+                }*/
 
             var minAuxInt = findViewById<TextView>(R.id.refeicaoHourHourValue).text.toString().toInt()
             var secAuxInt = findViewById<TextView>(R.id.refeicaoHourMinuteValue).text.toString().toInt()
@@ -152,7 +172,7 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Add : AppCompatActivity() 
                   "id_plano_nutricional": ${intent.getIntExtra("id_plano_nutricional", -1)},
                   "descricao": "${findViewById<TextView>(R.id.refeicaoDescriptionValue).text}",
                   "hora": "$tempoToPatch",
-                  "foto_refeicao": "$newImageValue"
+                  "foto_refeicao": "$stringFoto"
                 }
             """
 
@@ -173,10 +193,43 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Add : AppCompatActivity() 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == 2 && resultCode == RESULT_OK && data != null){
+            val imageNew = data.data
+
+            if(imageNew != null){
+                if(Build.VERSION.SDK_INT >= 28){
+                    val source = ImageDecoder.createSource(this.contentResolver, imageNew)
+                    imageBitmapped = ImageDecoder.decodeBitmap(source)
+                    imageBitmapped = Bitmap.createScaledBitmap(imageBitmapped!!, 500, 500, false)
+                    findViewById<ImageView>(R.id.refeicaoPhotoValue).setImageBitmap(imageBitmapped)
+
+                }else{
+                    imageBitmapped = MediaStore.Images.Media.getBitmap(applicationContext.contentResolver, imageNew)
+                    imageBitmapped = Bitmap.createScaledBitmap(imageBitmapped!!, 500, 500, false)
+                    findViewById<ImageView>(R.id.refeicaoPhotoValue).setImageBitmap(imageBitmapped)
+                }
+            }
+        }
+
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == 100 && resultCode == RESULT_OK){
-            newImageValue = data?.data.toString()
-            findViewById<ImageView>(R.id.refeicaoPhotoValue).setImageURI(data?.data)
+    }
+
+    private fun convertBitmapToByteArray(bitmap: Bitmap) : ByteArray{
+        var byteArrayImage : ByteArrayOutputStream? = null
+
+        return try{
+            byteArrayImage = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayImage)
+            byteArrayImage.toByteArray()
+        }
+        finally{
+            if(byteArrayImage != null)
+                try{
+                    byteArrayImage.close()
+                }
+                catch (e: IOException) {
+                    Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicao_Add, "Error on image conversion", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 }

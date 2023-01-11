@@ -10,14 +10,14 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -105,7 +105,7 @@
                 android:id="@+id/cardView14"
                 android:layout_width="93dp"
                 android:layout_height="97dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="16dp"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView15"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -126,7 +126,7 @@
                 android:id="@+id/cardView16"
                 android:layout_width="93dp"
                 android:layout_height="210dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="16dp"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/cardView13" />
@@ -171,7 +171,7 @@
                 android:id="@+id/cardView10"
                 android:layout_width="93dp"
                 android:layout_height="97dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="16dp"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/cardView9" />
@@ -265,7 +265,7 @@
                 android:id="@+id/cardView12"
                 android:layout_width="93dp"
                 android:layout_height="97dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -287,7 +287,7 @@
                 android:id="@+id/cardView8"
                 android:layout_width="93dp"
                 android:layout_height="97dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -335,7 +335,7 @@
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textView39"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView39">
 
                 <Button

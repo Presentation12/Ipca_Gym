@@ -35,6 +35,8 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
+        findViewById<TextView>(R.id.textView5).text = intent.getStringExtra("tipo")
+
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
             if(it != null){
                 val pictureByteArray = Base64.decode(it.foto_funcionario, Base64.DEFAULT)

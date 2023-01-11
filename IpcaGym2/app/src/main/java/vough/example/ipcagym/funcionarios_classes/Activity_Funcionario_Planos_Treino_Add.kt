@@ -2,21 +2,32 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Plano_Treino
 import vough.example.ipcagym.requests.FuncionarioRequests
 import vough.example.ipcagym.requests.PlanoTreinoRequests
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 class Activity_Funcionario_Planos_Treino_Add : AppCompatActivity() {
-    var newImageValue = ""
+    var imageBitmapped : Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,23 +94,37 @@ class Activity_Funcionario_Planos_Treino_Add : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.addPhotoPlanNew).setOnClickListener{
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            //100 é o request code de escolher imagem
-            startActivityForResult(intent, 100)
+            if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
+            }
+            else{
+                val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                startActivityForResult(galleryIntent, 2)
+            }
         }
 
         findViewById<Button>(R.id.addNewPlanButton).setOnClickListener{
             val intent = Intent()
 
+            var stringFoto : String? = null
+
+            /*if(imageBitmapped != null){
+                val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
+                val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
+                stringFoto = aux.replace("\n", "")
+            }*/
+
             FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
                 if(it != null){
-                    PlanoTreinoRequests.Post(lifecycleScope, sessionToken, Plano_Treino(
-                        null,
-                        it?.id_ginasio!!,
-                        findViewById<EditText>(R.id.typePlanoValue).text.toString(),
-                        newImageValue
-                    )){
+                    lifecycleScope.launch {
+                        delay(100000L)
+                        PlanoTreinoRequests.Post(lifecycleScope, sessionToken, Plano_Treino(
+                            null,
+                            it?.id_ginasio!!,
+                            findViewById<EditText>(R.id.typePlanoValue).text.toString(),
+                            stringFoto
+                        )){
+                        }
                     }
                 }
             }
@@ -155,10 +180,63 @@ class Activity_Funcionario_Planos_Treino_Add : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == 100 && resultCode == RESULT_OK){
-            newImageValue = data?.data.toString()
-            findViewById<ImageView>(R.id.photoPlanoValue).setImageURI(data?.data)
+        if(requestCode == 2 && resultCode == RESULT_OK && data != null){
+            val imageNew = data.data
+
+            if(imageNew != null){
+                if(Build.VERSION.SDK_INT >= 28){
+                    val source = ImageDecoder.createSource(this.contentResolver, imageNew)
+                    imageBitmapped = ImageDecoder.decodeBitmap(source)
+                    imageBitmapped = resizeBitmap(imageBitmapped!!, 400)
+                    findViewById<ImageView>(R.id.photoPlanoValue).setImageBitmap(imageBitmapped)
+
+                }else{
+                    imageBitmapped = MediaStore.Images.Media.getBitmap(applicationContext.contentResolver, imageNew)
+                    imageBitmapped = resizeBitmap(imageBitmapped!!, 400)
+                    findViewById<ImageView>(R.id.photoPlanoValue).setImageBitmap(imageBitmapped)
+                }
+            }
         }
+
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun convertBitmapToByteArray(bitmap: Bitmap) : ByteArray{
+        var byteArrayImage : ByteArrayOutputStream? = null
+
+        return try{
+            byteArrayImage = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayImage)
+            byteArrayImage.toByteArray()
+        }
+        finally{
+            if(byteArrayImage != null)
+                try{
+                    byteArrayImage.close()
+                }
+                catch (e: IOException) {
+                    Toast.makeText(this@Activity_Funcionario_Planos_Treino_Add, "Error on image conversion", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+    private fun resizeBitmap(source: Bitmap, maxLength: Int): Bitmap {
+        try {
+            if (source.height >= source.width) {
+                if (source.height <= maxLength) return source
+
+                val aspectRatio = source.width.toDouble() / source.height.toDouble()
+                val targetWidth = (maxLength * aspectRatio).toInt()
+
+                return Bitmap.createScaledBitmap(source, targetWidth, maxLength, false)
+            } else {
+                if (source.width <= maxLength) return source
+
+                val aspectRatio = source.height.toDouble() / source.width.toDouble()
+                val targetHeight = (maxLength * aspectRatio).toInt()
+
+                return Bitmap.createScaledBitmap(source, maxLength, targetHeight, false)
+            }
+        } catch (e: Exception) { return source }
     }
 }

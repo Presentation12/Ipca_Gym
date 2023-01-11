@@ -19,6 +19,9 @@ import vough.example.ipcagym.data_classes.Plano_Nutricional
 import vough.example.ipcagym.requests.FuncionarioRequests
 import vough.example.ipcagym.requests.PlanoNutricionalRequests
 import android.util.Base64
+import androidx.activity.result.contract.ActivityResultContracts
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
     var listPlanosNutricionais = arrayListOf<Plano_Nutricional>()
@@ -40,8 +43,17 @@ class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
                 val pictureByteArray = Base64.decode(it.foto_funcionario, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                 findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
-                PlanoNutricionalRequests.GetAllByGinasioID(lifecycleScope, sessionToken, it.id_ginasio!!){ result ->
-                    if(result.isNotEmpty()){
+            }
+        }
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken) {
+            if (it != null) {
+                PlanoNutricionalRequests.GetAllByGinasioID(
+                    lifecycleScope,
+                    sessionToken,
+                    it.id_ginasio!!
+                ) { result ->
+                    if (result.isNotEmpty()) {
                         listPlanosNutricionais = result
                         adapter_nutri.notifyDataSetChanged()
                     }
@@ -101,25 +113,34 @@ class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
         val listPlanosNutricionaisView = findViewById<ListView>(R.id.listViewPlanosNutricionais)
         listPlanosNutricionaisView.adapter = adapter_nutri
 
-        newPlanReceiver = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()) {
-            if(it.resultCode == android.app.Activity.RESULT_OK){
-                FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
-                    PlanoNutricionalRequests.GetAllByGinasioID(lifecycleScope, sessionToken, it?.id_ginasio!!){ result ->
-                        if(result.isNotEmpty()){
-                            listPlanosNutricionais = result
-                            adapter_nutri.notifyDataSetChanged()
+        newPlanReceiver = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if(it.resultCode == RESULT_OK){
+                FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ tokenResult ->
+                    lifecycleScope.launch {
+                        delay(10000L)
+                    }
+                    if(tokenResult != null){
+                        PlanoNutricionalRequests.GetAllByGinasioID(lifecycleScope, sessionToken, tokenResult?.id_ginasio!!){ result ->
+                            if(result.isNotEmpty()){
+                                listPlanosNutricionais = result
+                                adapter_nutri.notifyDataSetChanged()
+                            }
                         }
                     }
                 }
             }
         }
 
-        deletePlanReceiver = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()) {
-            if(it.resultCode == android.app.Activity.RESULT_OK){
+        deletePlanReceiver = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if(it.resultCode == RESULT_OK){
                 FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+                    lifecycleScope.launch {
+                        delay(10000L)
+                    }
                     PlanoNutricionalRequests.GetAllByGinasioID(lifecycleScope, sessionToken, it?.id_ginasio!!){ result ->
                         if(result.isNotEmpty()){
                             listPlanosNutricionais = result
+
                             adapter_nutri.notifyDataSetChanged()
                         }
                     }

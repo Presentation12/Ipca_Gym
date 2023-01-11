@@ -82,36 +82,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView58" />
 
-    <Button
-        android:id="@+id/addNewRefeicaoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="@android:color/transparent"
-        android:outlineProvider="none"
-        android:text="        Add        "
-        android:textColor="#A5A5A5"
-        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="#A5A5A5"
-        app:strokeWidth="2dp" />
-
-    <Button
-        android:id="@+id/removePlanButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="@android:color/transparent"
-        android:outlineProvider="none"
-        android:text="Remove Plan"
-        android:textColor="#A5A5A5"
-        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:strokeColor="#A5A5A5"
-        app:strokeWidth="2dp" />
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
         android:layout_width="wrap_content"
@@ -187,9 +157,45 @@
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"
         android:textSize="21sp"
-        app:layout_constraintBottom_toBottomOf="@+id/listViewRefeicoes"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/listViewRefeicoes" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/removePlanButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:backgroundTint="@android:color/transparent"
+            android:outlineProvider="none"
+            android:text="Remove Plan"
+            android:textColor="#A5A5A5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/addNewRefeicaoButton"
+            app:strokeColor="#A5A5A5"
+            app:strokeWidth="2dp" />
+
+        <Button
+            android:id="@+id/addNewRefeicaoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:outlineProvider="none"
+            android:text="        Add        "
+            android:textColor="#A5A5A5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:strokeColor="#A5A5A5"
+            app:strokeWidth="2dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Refeicao
 import vough.example.ipcagym.requests.FuncionarioRequests
@@ -93,7 +95,9 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
             }
         }
 
-
+        lifecycleScope.launch {
+            delay(10000L)
+        }
         RefeicaoRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_nutricional", -1)){
             if(it.isNotEmpty()){
                 listRefeicoes = it
@@ -104,6 +108,8 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
                 findViewById<TextView>(R.id.textView11).text = "Empty plan, add some meals!"
             }
         }
+
+
 
         findViewById<TextView>(R.id.planoNutriTipoTitle).text = intent.getStringExtra("tipo")
         findViewById<TextView>(R.id.planoNutriCaloriasTitle).text = intent.getIntExtra("calorias", -1).toString() + " KCal"

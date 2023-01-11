@@ -26,6 +26,8 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 //import java.util.*
 import android.util.Base64
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
     var imageBitmapped : Bitmap? = null
@@ -121,23 +123,44 @@ class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
                 Toast.makeText(this@Activity_Funcionario_Planos_Nutricionais_Add, "Insert ammount of calories", Toast.LENGTH_SHORT).show()
             }
             else{
-                val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
-                val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
-                val aux2 = aux.replace("\n", "")
+                var stringFoto : String? = null
 
-                FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
-                    PlanoNutricionalRequests.Post(lifecycleScope, sessionToken, Plano_Nutricional(
-                        null,
-                        it?.id_ginasio!!,
-                        findViewById<EditText>(R.id.tipoPlanoNutriValue).text.toString(),
-                        findViewById<EditText>(R.id.caloriasPlanoNutriValue).text.toString().toInt(),
-                        aux2
-                    )){ response ->
-                        if(response == "User not found")
-                            Toast.makeText(this@Activity_Funcionario_Planos_Nutricionais_Add, "Error on adding plan", Toast.LENGTH_SHORT).show()
-                        else
-                            Toast.makeText(this@Activity_Funcionario_Planos_Nutricionais_Add, "Plan added successfully", Toast.LENGTH_SHORT).show()
-                    }
+                /*if(imageBitmapped != null){
+                    val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
+                    val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
+                    stringFoto = aux.replace("\n", "")
+                }*/
+
+                FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultFunc ->
+
+                    if(resultFunc != null){
+
+                            PlanoNutricionalRequests.Post(
+                                lifecycleScope, sessionToken, Plano_Nutricional(
+                                    null,
+                                    resultFunc.id_ginasio!!,
+                                    findViewById<EditText>(R.id.tipoPlanoNutriValue).text.toString(),
+                                    findViewById<EditText>(R.id.caloriasPlanoNutriValue).text.toString()
+                                        .toInt(),
+                                    stringFoto
+                                )
+                            ) { response ->
+                                if (response == "User not found")
+                                    Toast.makeText(
+                                        this@Activity_Funcionario_Planos_Nutricionais_Add,
+                                        "Error on adding plan",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                else
+                                    Toast.makeText(
+                                        this@Activity_Funcionario_Planos_Nutricionais_Add,
+                                        "Plan added successfully",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                            }
+                        }
+                    else
+                        Toast.makeText(this@Activity_Funcionario_Planos_Nutricionais_Add, "Error on adding plan (Wrong token)", Toast.LENGTH_SHORT).show()
                 }
 
                 setResult(RESULT_OK, intent);
@@ -191,12 +214,12 @@ class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
                 if(Build.VERSION.SDK_INT >= 28){
                     val source = ImageDecoder.createSource(this.contentResolver, imageNew)
                     imageBitmapped = ImageDecoder.decodeBitmap(source)
-                    imageBitmapped = Bitmap.createScaledBitmap(imageBitmapped!!, 500, 500, false)
+                    imageBitmapped = resizeBitmap(imageBitmapped!!, 400)
                     findViewById<ImageView>(R.id.imageLoadedPlanNutri).setImageBitmap(imageBitmapped)
 
                 }else{
                     imageBitmapped = MediaStore.Images.Media.getBitmap(applicationContext.contentResolver, imageNew)
-                    imageBitmapped = Bitmap.createScaledBitmap(imageBitmapped!!, 500, 500, false)
+                    imageBitmapped = resizeBitmap(imageBitmapped!!, 400)
                     findViewById<ImageView>(R.id.imageLoadedPlanNutri).setImageBitmap(imageBitmapped)
                 }
             }
@@ -222,5 +245,25 @@ class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
                     Toast.makeText(this@Activity_Funcionario_Planos_Nutricionais_Add, "Error on image conversion", Toast.LENGTH_SHORT).show()
                 }
         }
+    }
+
+    private fun resizeBitmap(source: Bitmap, maxLength: Int): Bitmap {
+        try {
+            if (source.height >= source.width) {
+                if (source.height <= maxLength) return source
+
+                val aspectRatio = source.width.toDouble() / source.height.toDouble()
+                val targetWidth = (maxLength * aspectRatio).toInt()
+
+                return Bitmap.createScaledBitmap(source, targetWidth, maxLength, false)
+            } else {
+                if (source.width <= maxLength) return source
+
+                val aspectRatio = source.height.toDouble() / source.width.toDouble()
+                val targetHeight = (maxLength * aspectRatio).toInt()
+
+                return Bitmap.createScaledBitmap(source, maxLength, targetHeight, false)
+            }
+        } catch (e: Exception) { return source }
     }
 }

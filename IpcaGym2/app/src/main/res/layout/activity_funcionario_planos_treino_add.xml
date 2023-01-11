@@ -175,6 +175,7 @@
         android:elevation="10dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="@+id/cardView18"
+        app:layout_constraintEnd_toStartOf="@+id/addPhotoPlanNew"
         app:layout_constraintStart_toEndOf="@+id/textView50"
         app:layout_constraintTop_toBottomOf="@+id/typePlanoValue"
         tools:srcCompat="@drawable/ic_baseline_photo_24" />
@@ -186,8 +187,7 @@
         android:backgroundTint="#00686868"
         android:text="import"
         app:layout_constraintBottom_toBottomOf="@+id/photoPlanoValue"
-        app:layout_constraintEnd_toEndOf="@+id/cardView18"
-        app:layout_constraintStart_toEndOf="@+id/photoPlanoValue"
+        app:layout_constraintEnd_toEndOf="@+id/typePlanoValue"
         app:layout_constraintTop_toTopOf="@+id/photoPlanoValue"
         app:strokeWidth="2dp" />
 
