@@ -2,20 +2,30 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Funcionario
 import vough.example.ipcagym.requests.FuncionarioRequests
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 class Activity_Gerente_Funcionario_Add : AppCompatActivity() {
+    var imageBitmapped : Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,9 +133,25 @@ class Activity_Gerente_Funcionario_Add : AppCompatActivity() {
             }
         }
 
+        findViewById<ImageButton>(R.id.buttonImportPhoto).setOnClickListener{
+            if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
+            }
+            else{
+                val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                startActivityForResult(galleryIntent, 2)
+            }
+        }
+
         // butao de adicionar funcionario novo, e volta a página ida lista de funcionários
         findViewById<Button>(R.id.buttonAddFuncionario).setOnClickListener {
             val intent = Intent(this@Activity_Gerente_Funcionario_Add, Activity_Gerente_Funcionarios_List::class.java)
+
+            val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
+            val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
+            val aux2 = aux.replace("\n", "")
+            var foto_perfil : String? = null
+            if(aux2.isNotEmpty()) foto_perfil = aux2
 
             var emptyFields = false
             var nome = ""
@@ -147,8 +173,8 @@ class Activity_Gerente_Funcionario_Add : AppCompatActivity() {
             {
                 FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
                     if(resultGerente != null) {
-                        //TODO: FALTA METER FOTO
-                        val newFuncionario = Funcionario(null,resultGerente.id_ginasio,nome,isAdmin,codigo,codigo.toString(),null,"Ativo", "photo")
+
+                        val newFuncionario = Funcionario(null,resultGerente.id_ginasio,nome,isAdmin,codigo,codigo.toString(),null,"Ativo", foto_perfil)
                         FuncionarioRequests.Post(lifecycleScope,sessionToken,newFuncionario){ resultEditFuncionario ->
                             if (resultEditFuncionario == "Error: Post Employee fails")
                             {
@@ -164,6 +190,47 @@ class Activity_Gerente_Funcionario_Add : AppCompatActivity() {
                 }
             }
             else Toast.makeText(this@Activity_Gerente_Funcionario_Add,"Error: Empty fields",Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == 2 && resultCode == RESULT_OK && data != null){
+            val imageNew = data.data
+
+            if(imageNew != null){
+                if(Build.VERSION.SDK_INT >= 28){
+                    val source = ImageDecoder.createSource(this.contentResolver, imageNew)
+                    imageBitmapped = ImageDecoder.decodeBitmap(source)
+                    imageBitmapped = Bitmap.createScaledBitmap(imageBitmapped!!, 500, 500, false)
+                    findViewById<ImageView>(R.id.profile_funcionario_pic).setImageBitmap(imageBitmapped)
+
+                }else{
+                    imageBitmapped = MediaStore.Images.Media.getBitmap(applicationContext.contentResolver, imageNew)
+                    imageBitmapped = Bitmap.createScaledBitmap(imageBitmapped!!, 500, 500, false)
+                    findViewById<ImageView>(R.id.profile_funcionario_pic).setImageBitmap(imageBitmapped)
+                }
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun convertBitmapToByteArray(bitmap: Bitmap) : ByteArray{
+        var byteArrayImage : ByteArrayOutputStream? = null
+
+        return try{
+            byteArrayImage = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayImage)
+            byteArrayImage.toByteArray()
+        }
+        finally{
+            if(byteArrayImage != null)
+                try{
+                    byteArrayImage.close()
+                }
+                catch (e: IOException) {
+                    Toast.makeText(this@Activity_Gerente_Funcionario_Add, "Error on image conversion", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 }

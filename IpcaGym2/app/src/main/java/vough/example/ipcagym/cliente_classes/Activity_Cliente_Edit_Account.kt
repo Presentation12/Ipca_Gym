@@ -56,6 +56,12 @@ class Activity_Cliente_Edit_Account : AppCompatActivity() {
         var estado = intent.getStringExtra("estado")
 
         val cliente_image_view = findViewById<ImageView>(R.id.profile_pic)
+        if (foto_perfil != null && foto_perfil != "null")
+        {
+            val pictureByteArray = Base64.decode(foto_perfil, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+            cliente_image_view.setImageBitmap(bitmap)
+        }
 
         findViewById<TextView>(R.id.editTextNomeCliente).hint = nome
         findViewById<TextView>(R.id.editTextMailCliente).hint = mail
@@ -132,7 +138,9 @@ class Activity_Cliente_Edit_Account : AppCompatActivity() {
             if(altura == 0) altura = null
             if(gordura.toString() == "NaN") gordura = null
 
-            var editCliente = Cliente(id_cliente,id_ginasio,id_plano_nutricional,nome,mail,telemovel,pass_salt,pass_hash,peso,altura,gordura,aux2,estado)
+            if (aux2.isNotEmpty()) foto_perfil = aux2
+
+            var editCliente = Cliente(id_cliente,id_ginasio,id_plano_nutricional,nome,mail,telemovel,pass_salt,pass_hash,peso,altura,gordura,foto_perfil,estado)
             ClienteRequests.Patch(lifecycleScope,sessionToken,id_cliente, editCliente) { resultEditcliente ->
                 if (resultEditcliente == "Error: Patch Client fails")
                 {
