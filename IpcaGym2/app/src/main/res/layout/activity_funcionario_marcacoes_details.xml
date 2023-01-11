@@ -222,14 +222,30 @@
 
     <Button
         android:id="@+id/buttonCancelar"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
         android:backgroundTint="@android:color/transparent"
         android:text="Cancel"
         android:textColor="#A5A5A5"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/cardViewBig"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewBig"
+        app:strokeColor="#A5A5A5"
+        app:strokeWidth="2dp" />
+
+    <Button
+        android:id="@+id/buttonRemarcar"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@android:color/transparent"
+        android:text="Reschedule"
+        android:textColor="#A5A5A5"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewBig"
         app:layout_constraintTop_toBottomOf="@+id/cardViewBig"
         app:strokeColor="#A5A5A5"
         app:strokeWidth="2dp" />
