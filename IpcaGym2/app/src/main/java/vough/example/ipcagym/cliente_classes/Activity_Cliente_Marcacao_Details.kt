@@ -2,8 +2,10 @@ package vough.example.ipcagym.cliente_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -45,15 +47,18 @@ class Activity_Cliente_Marcacao_Details : AppCompatActivity() {
 
         ClienteRequests.GetByToken(lifecycleScope, sessionToken) { resultCliente ->
             clienteRefresh = resultCliente
-            if (clienteRefresh?.foto_perfil != null)
-            {
-                val imageUri: Uri = Uri.parse(resultCliente?.foto_perfil)
-                imageView.setImageURI(imageUri)
 
-                GinasioRequests.GetByID(lifecycleScope,sessionToken,clienteRefresh?.id_ginasio){ resultGinasio ->
-                    findViewById<TextView>(R.id.GinasioNome).text = resultGinasio?.instituicao
-                }
+            if (resultCliente?.foto_perfil != null)
+            {
+                val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                imageView.setImageBitmap(bitmap)
             }
+
+            GinasioRequests.GetByID(lifecycleScope,sessionToken,clienteRefresh?.id_ginasio){ resultGinasio ->
+                findViewById<TextView>(R.id.GinasioNome).text = resultGinasio?.instituicao
+            }
+
         }
 
         FuncionarioRequests.GetByID(lifecycleScope,sessionToken,id_funcionario){ resultFuncionaio ->
