@@ -3,7 +3,6 @@ package vough.example.ipcagym.cliente_classes
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
 import android.view.View
@@ -12,29 +11,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
-import vough.example.ipcagym.data_classes.Cliente
 import vough.example.ipcagym.data_classes.Marcacao
 import vough.example.ipcagym.requests.ClienteRequests
-import vough.example.ipcagym.requests.FuncionarioRequests
-import vough.example.ipcagym.requests.GinasioRequests
 import vough.example.ipcagym.requests.MarcacaoRequests
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class Activity_Cliente_Marcacao_Details : AppCompatActivity() {
+class Activity_Cliente_Marcacao_Remarcar : AppCompatActivity() {
 
     val date_time_formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
-    var clienteRefresh : Cliente? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cliente_marcacao_details)
-
-        //Buscar token
-        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-        val sessionToken = preferences.getString("session_token", null)
-
-        val imageView = findViewById<ImageView>(R.id.profile_pic_cliente_marcacao_details)
+        setContentView(R.layout.activity_cliente_marcacao_remarcar)
 
         val id_marcacao = intent.getIntExtra("id_marcacao", -1)
         val id_funcionario = intent.getIntExtra("id_funcionario", -1)
@@ -45,28 +34,24 @@ class Activity_Cliente_Marcacao_Details : AppCompatActivity() {
 
         var data_marcacao_formatado = LocalDateTime.parse(data_marcacao, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
 
-        ClienteRequests.GetByToken(lifecycleScope, sessionToken) { resultCliente ->
-            clienteRefresh = resultCliente
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
 
-            if (resultCliente?.foto_perfil != null)
-            {
-                val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
-                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-                imageView.setImageBitmap(bitmap)
+        val imageView = findViewById<ImageView>(R.id.profile_pic_remarcacao_page)
+        ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
+            if(resultCliente != null){
+
+                if (resultCliente.foto_perfil != null)
+                {
+                    val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    imageView.setImageBitmap(bitmap)
+                }
             }
-
-            GinasioRequests.GetByID(lifecycleScope,sessionToken,clienteRefresh?.id_ginasio){ resultGinasio ->
-                findViewById<TextView>(R.id.GinasioNome).text = resultGinasio?.instituicao
-            }
-
         }
 
-        FuncionarioRequests.GetByID(lifecycleScope,sessionToken,id_funcionario){ resultFuncionaio ->
-            findViewById<TextView>(R.id.FuncionarioNome).text = resultFuncionaio?.nome
-        }
-
-        findViewById<TextView>(R.id.data).text = data_marcacao_formatado?.format(date_time_formatter)
-        findViewById<TextView>(R.id.Descricao).text = descricao
+        findViewById<TextView>(R.id.textViewOldDate).text = data_marcacao_formatado?.format(date_time_formatter)
 
         val spinner = findViewById<Spinner>(R.id.spinner)
         var counter = 0
@@ -79,7 +64,7 @@ class Activity_Cliente_Marcacao_Details : AppCompatActivity() {
             }
         }
 
-        val adapter = MyAdapter(this@Activity_Cliente_Marcacao_Details, options)
+        val adapter = MyAdapter(this@Activity_Cliente_Marcacao_Remarcar, options)
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
@@ -99,7 +84,7 @@ class Activity_Cliente_Marcacao_Details : AppCompatActivity() {
                         } else {
                             startActivity(
                                 Intent(
-                                    this@Activity_Cliente_Marcacao_Details,
+                                    this@Activity_Cliente_Marcacao_Remarcar,
                                     Activity_Cliente_Account::class.java
                                 )
                             )
@@ -109,7 +94,7 @@ class Activity_Cliente_Marcacao_Details : AppCompatActivity() {
                     1 -> {
                         startActivity(
                             Intent(
-                                this@Activity_Cliente_Marcacao_Details,
+                                this@Activity_Cliente_Marcacao_Remarcar,
                                 Activity_Cliente_Definitions::class.java
                             )
                         )
@@ -125,7 +110,7 @@ class Activity_Cliente_Marcacao_Details : AppCompatActivity() {
                         finish()
                         startActivity(
                             Intent(
-                                this@Activity_Cliente_Marcacao_Details,
+                                this@Activity_Cliente_Marcacao_Remarcar,
                                 Activity_Cliente_Login::class.java
                             )
                         )
@@ -137,42 +122,63 @@ class Activity_Cliente_Marcacao_Details : AppCompatActivity() {
                 spinner.setSelection(3)
             }
         }
-        imageView.setOnClickListener {
-            spinner.performClick()
-        }
+        imageView.setOnClickListener { spinner.performClick() }
 
-        //TODO: REMARCAR CONSULTA
+        // butao de remarcar consulta, e volta a página inicial
+        findViewById<Button>(R.id.buttonMark).setOnClickListener {
+            val intent = Intent(this@Activity_Cliente_Marcacao_Remarcar, Activity_Cliente_Marcacoes::class.java)
+
+            var newDateSelected = findViewById<EditText>(R.id.editTextDate).text.toString()
+            var formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+            var newDateSelectedFormated = LocalDateTime.parse(newDateSelected, formatter)
+
+            ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
+                if(resultCliente != null){
+                    //TODO: devia printar o porque de nao dar para marcar ao cliente
+                    var rescheduleMarcacao = Marcacao(id_marcacao, id_funcionario, resultCliente.id_cliente,newDateSelectedFormated,descricao,estado)
+                    MarcacaoRequests.PatchRescheduleMarcacao(lifecycleScope, sessionToken,id_marcacao ,rescheduleMarcacao) { resultMarcacaoRemarcada ->
+                        if (resultMarcacaoRemarcada == "Error: Patch Reschedule Marcacao Checked Product fails")
+                            Toast.makeText(this@Activity_Cliente_Marcacao_Remarcar, "Error on reschedule an appointment", Toast.LENGTH_LONG).show()
+                        else
+                        {
+                            finish()
+                            startActivity(intent)
+                        }
+                    }
+                }
+            }
+        }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
 
         bottomNavigationView.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this@Activity_Cliente_Marcacao_Details, Activity_Cliente_Pagina_Inicial::class.java))
+                    startActivity(Intent(this@Activity_Cliente_Marcacao_Remarcar, Activity_Cliente_Pagina_Inicial::class.java))
                     finish()
 
                     true
                 }
                 R.id.nav_fitness -> {
-                    startActivity(Intent(this@Activity_Cliente_Marcacao_Details, Activity_Cliente_Planos_Treino::class.java))
+                    startActivity(Intent(this@Activity_Cliente_Marcacao_Remarcar, Activity_Cliente_Planos_Treino::class.java))
                     finish()
 
                     true
                 }
                 R.id.nav_shopping -> {
-                    startActivity(Intent(this@Activity_Cliente_Marcacao_Details, Activity_Cliente_Loja_Produtos::class.java))
+                    startActivity(Intent(this@Activity_Cliente_Marcacao_Remarcar, Activity_Cliente_Loja_Produtos::class.java))
                     finish()
 
                     true
                 }
                 R.id.nav_diet -> {
-                    startActivity(Intent(this@Activity_Cliente_Marcacao_Details, Activity_Cliente_Nutricao_Atual::class.java))
+                    startActivity(Intent(this@Activity_Cliente_Marcacao_Remarcar, Activity_Cliente_Nutricao_Atual::class.java))
                     finish()
 
                     true
                 }
                 R.id.nav_history -> {
-                    startActivity(Intent(this@Activity_Cliente_Marcacao_Details, Activity_Cliente_Activities::class.java))
+                    startActivity(Intent(this@Activity_Cliente_Marcacao_Remarcar, Activity_Cliente_Activities::class.java))
                     finish()
 
                     true
@@ -180,39 +186,6 @@ class Activity_Cliente_Marcacao_Details : AppCompatActivity() {
                 else -> false
             }
         }
-
-        var botaoCancelar = findViewById<Button>(R.id.buttonCancelar)
-        var botaoRemarcar = findViewById<Button>(R.id.buttonRemarcar)
-        if (estado == "Ativo")
-        {
-            botaoCancelar.visibility = View.VISIBLE
-            botaoRemarcar.visibility = View.VISIBLE
-        }
-        botaoCancelar.setOnClickListener {
-            val intent = Intent(this@Activity_Cliente_Marcacao_Details, Activity_Cliente_Marcacoes::class.java)
-            var editMarcacao = Marcacao(id_marcacao,id_funcionario,id_cliente,data_marcacao_formatado,descricao,"Cancelada")
-            MarcacaoRequests.PatchCancelMarcacao(lifecycleScope, sessionToken, id_marcacao, editMarcacao) { resultCancelMarcacao ->
-                if (resultCancelMarcacao == "Error: Patch Cancel Marcacao Checked Product fails")
-                {
-                    Toast.makeText(this@Activity_Cliente_Marcacao_Details, "Error on canceling an appointment", Toast.LENGTH_LONG).show()
-                }
-                else
-                {
-                    startActivity(intent)
-                }
-            }
-        }
-        botaoRemarcar.setOnClickListener {
-            val intent = Intent(this@Activity_Cliente_Marcacao_Details, Activity_Cliente_Marcacao_Remarcar::class.java)
-
-            intent.putExtra("id_marcacao", id_marcacao)
-            intent.putExtra("id_funcionario", id_funcionario)
-            intent.putExtra("id_cliente", id_cliente)
-            intent.putExtra("data_marcacao", data_marcacao?.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-            intent.putExtra("descricao", descricao)
-            intent.putExtra("estado", estado)
-
-            startActivity(intent)
-        }
     }
+
 }
