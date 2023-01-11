@@ -2,9 +2,11 @@ package vough.example.ipcagym.cliente_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,32 +28,67 @@ class Activity_Cliente_Pagina_Inicial : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_pagina_inicial)
 
-        //Buscar token
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
+        val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
 
         ClienteRequests.GetByToken(lifecycleScope, sessionToken) { resultCliente ->
 
-            //if (resultCliente?.foto_perfil != null)
-            //{
-            //    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
-            //   imageView.setImageURI(imageUri)
-            //}
+            if (resultCliente != null)
+            {
+                if (resultCliente?.foto_perfil  != null && resultCliente.foto_perfil != "null")
+                {
+                    val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    imageView.setImageBitmap(bitmap)
+                }
 
-            val name_view = findViewById<TextView>(R.id.textView7)
-            name_view.text = resultCliente?.nome
-
-            GinasioRequests.GetByID(lifecycleScope, sessionToken, resultCliente?.id_ginasio) { resultGym ->
-                if (resultGym != null) {
-                    if(resultGym.lotacao == resultGym.lotacaoMax){
-                        findViewById<TextView>(R.id.textView_capacidade_atual).setTextColor(Color.RED)
+                GinasioRequests.GetByID(lifecycleScope, sessionToken, resultCliente?.id_ginasio) { resultGym ->
+                    if (resultGym != null) {
+                        if(resultGym.lotacao == resultGym.lotacaoMax){
+                            findViewById<TextView>(R.id.textView_capacidade_atual).setTextColor(Color.RED)
+                        }
+                        findViewById<TextView>(R.id.textView_capacidade_atual).text = "${resultGym.lotacao} / ${resultGym.lotacaoMax} "
                     }
-                    findViewById<TextView>(R.id.textView_capacidade_atual).text = "${resultGym.lotacao} / ${resultGym.lotacaoMax} "
+                }
+
+                var imageFunc1 = findViewById<ImageView>(R.id.profile_pic_activity_team_um)
+                var imageFunc2 = findViewById<ImageView>(R.id.profile_pic_activity_team_dois)
+                var imageFunc3 = findViewById<ImageView>(R.id.profile_pic_activity_team_tres)
+                FuncionarioRequests.GetAllByGym(lifecycleScope, sessionToken, resultCliente.id_ginasio) { resultFuncionarios ->
+
+                    if (resultFuncionarios.count() > 0)
+                    {
+                        if (resultFuncionarios[0].foto_funcionario  != null && resultFuncionarios[0].foto_funcionario != "null")
+                        {
+                            val pictureByteArray = Base64.decode(resultFuncionarios[0].foto_funcionario, Base64.DEFAULT)
+                            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                            imageFunc1.setImageBitmap(bitmap)
+                        }
+                        if (resultFuncionarios.count() > 1)
+                        {
+                            if (resultFuncionarios[1].foto_funcionario  != null && resultFuncionarios[0].foto_funcionario != "null")
+                            {
+                                val pictureByteArray = Base64.decode(resultFuncionarios[0].foto_funcionario, Base64.DEFAULT)
+                                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                                imageFunc2.setImageBitmap(bitmap)
+                            }
+                            if (resultFuncionarios.count() > 2)
+                            {
+                                if (resultFuncionarios[2].foto_funcionario  != null && resultFuncionarios[0].foto_funcionario != "null")
+                                {
+                                    val pictureByteArray = Base64.decode(resultFuncionarios[0].foto_funcionario, Base64.DEFAULT)
+                                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                                    imageFunc3.setImageBitmap(bitmap)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
+
         val spinner = findViewById<Spinner>(R.id.spinner)
         var counter = 0
         val options = listOf("Account", "Settings", "Logout", "")
@@ -123,6 +160,7 @@ class Activity_Cliente_Pagina_Inicial : AppCompatActivity() {
         }
 
         imageView.setOnClickListener{ spinner.performClick() }
+
         //TODO: Criar um layout para mostrar informação sobre nós
         //findViewById<Button>(R.id.button_sobreNos).setOnClickListener {
             //val intent = Intent(this@Activity_Cliente_Pagina_Inicial, ::class.java)
@@ -141,7 +179,7 @@ class Activity_Cliente_Pagina_Inicial : AppCompatActivity() {
             startActivity(intent)
         }
 
-        findViewById<Button>(R.id.button_view_team).setOnClickListener {
+        findViewById<ImageButton>(R.id.button_view_team).setOnClickListener {
             val intent = Intent(this@Activity_Cliente_Pagina_Inicial, Activity_Cliente_OurTeam::class.java)
             startActivity(intent)
         }

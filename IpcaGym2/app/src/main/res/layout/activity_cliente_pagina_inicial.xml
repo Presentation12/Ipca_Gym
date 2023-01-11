@@ -39,8 +39,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="end"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_margin="20dp"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -50,7 +49,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon" />
+            android:src="@drawable/defaultprofilepic" />
 
     </androidx.cardview.widget.CardView>
 
@@ -103,22 +102,23 @@
                 android:layout_marginTop="16dp"
                 android:elevation="10dp"
                 android:text="A nossa equipa"
-                android:textSize="21sp"
+                android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="@+id/textView14"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
             <Button
                 android:id="@+id/button_avaliar"
-                android:layout_width="98dp"
-                android:layout_height="49dp"
-                android:backgroundTint="@android:color/tertiary_text_light"
-                android:text="Avaliar"
-                android:textColor="#FFFFFF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:text="Rate"
+                android:textColor="#A5A5A5"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView11"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cardView11"
+                app:layout_constraintEnd_toEndOf="@+id/textView_avaliar"
+                app:layout_constraintStart_toStartOf="@+id/textView_avaliar"
                 app:layout_constraintTop_toTopOf="@+id/cardView11"
-                app:strokeColor="@color/teal_200" />
+                app:strokeColor="#A5A5A5"
+                app:strokeWidth="2dp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView11"
@@ -129,30 +129,16 @@
                 app:layout_constraintStart_toStartOf="@+id/textView199"
                 app:layout_constraintTop_toBottomOf="@+id/textView199" />
 
-            <TextView
-                android:id="@+id/textView22"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:elevation="10dp"
-                android:text="Atualmente"
-                android:textColor="#FFFFFF"
-                android:textSize="19dp"
-                app:layout_constraintBottom_toBottomOf="@+id/cardView11"
-                app:layout_constraintEnd_toEndOf="@+id/cardView11"
-                app:layout_constraintStart_toStartOf="@+id/cardView11" />
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView8"
                 android:layout_width="0dp"
                 android:layout_height="96dp"
                 android:layout_marginStart="40dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="40dp"
                 app:cardCornerRadius="25dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView7">
+                tools:layout_editor_absoluteY="43dp">
 
             </androidx.cardview.widget.CardView>
 
@@ -161,7 +147,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="20dp"
                 android:elevation="10dp"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView_team_members"
@@ -173,19 +159,9 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/icon"></ImageView>
-            </androidx.cardview.widget.CardView>
+                    android:src="@drawable/defaultprofilepic"/>
 
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Utilizador João Pinhal"
-                android:textColor="#FFFFFF"
-                android:textSize="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/textView14"
@@ -193,15 +169,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Nutrição"
-                android:textSize="21sp"
+                android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="@+id/cardView8"
                 app:layout_constraintTop_toBottomOf="@+id/cardView8" />
 
             <ImageView
                 android:id="@+id/imageView15"
-                android:layout_width="20dp"
-                android:layout_height="22dp"
-                android:backgroundTint="@color/white"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/transparent_background"
                 android:elevation="10dp"
                 app:layout_constraintBottom_toTopOf="@+id/textView_capacidade_atual"
                 app:layout_constraintEnd_toEndOf="@+id/cardView11"
@@ -216,8 +192,8 @@
                 android:layout_gravity="end"
                 android:elevation="10dp"
                 app:cardCornerRadius="20dp"
+                android:layout_marginStart="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView_numero_tres"
-                app:layout_constraintEnd_toStartOf="@+id/cardView_numero_tres"
                 app:layout_constraintStart_toEndOf="@+id/cardView_numero_um"
                 app:layout_constraintTop_toTopOf="@+id/cardView_numero_tres">
 
@@ -226,31 +202,31 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/icon"></ImageView>
+                    android:src="@drawable/defaultprofilepic"/>
+
             </androidx.cardview.widget.CardView>
 
-            <Button
+            <ImageButton
                 android:id="@+id/button_view_team"
-                android:layout_width="98dp"
-                android:layout_height="49dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginEnd="16dp"
-                android:backgroundTint="@android:color/tertiary_text_light"
-                android:text="Equipa"
-                android:textColor="#FFFFFF"
+                android:background="@android:color/transparent"
+                android:elevation="10dp"
+                android:src="@drawable/ic_baseline_add_circle_24"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView_team_members"
                 app:layout_constraintEnd_toEndOf="@+id/cardView_team_members"
                 app:layout_constraintTop_toTopOf="@+id/cardView_team_members"
-                app:strokeColor="@color/teal_200" />
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/textView_capacidade_atual"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
                 android:elevation="10dp"
                 android:text="TextView"
-                android:textColor="#FFFF"
-                app:layout_constraintBottom_toTopOf="@+id/textView22"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView11"
                 app:layout_constraintEnd_toEndOf="@+id/cardView11"
                 app:layout_constraintStart_toStartOf="@+id/cardView11"
                 app:layout_constraintTop_toTopOf="@+id/cardView11" />
@@ -279,7 +255,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/icon" />
+                        android:src="@drawable/noimage" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -297,7 +273,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/icon" />
+                        android:src="@drawable/noimage" />
                 </androidx.cardview.widget.CardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -308,8 +284,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:elevation="10dp"
-                android:text="Capacidade"
-                android:textSize="21sp"
+                android:text="Current Capacity"
+                android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="@+id/textView18"
                 app:layout_constraintTop_toBottomOf="@+id/cardView_team_members" />
 
@@ -318,11 +294,12 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="end"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="10dp"
                 android:elevation="10dp"
+                android:layout_marginStart="20dp"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView_team_members"
-                app:layout_constraintEnd_toStartOf="@+id/button_view_team"
+                app:layout_constraintStart_toEndOf="@+id/cardView_numero_dois"
                 app:layout_constraintTop_toTopOf="@+id/cardView_team_members">
 
                 <ImageView
@@ -330,7 +307,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/icon" />
+                    android:src="@drawable/defaultprofilepic" />
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -338,8 +315,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:elevation="10dp"
-                android:text="Avalie-nos"
-                android:textSize="21sp"
+                android:text="Rate us"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView199"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.51"
@@ -354,7 +331,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:elevation="10dp"
-                android:text="Sobre Nós"
+                android:text="About Us"
                 android:textAlignment="center"
                 android:textColor="#E4E4E4"
                 android:textSize="16dp"
@@ -364,16 +341,17 @@
 
             <Button
                 android:id="@+id/button_sobreNos"
-                android:layout_width="150dp"
-                android:layout_height="49dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:backgroundTint="@android:color/tertiary_text_light"
-                android:text="Junta-te"
-                android:textColor="#FFFFFF"
+                android:backgroundTint="@android:color/transparent"
+                android:text="More"
+                android:textColor="#A5A5A5"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView8"
                 app:layout_constraintEnd_toEndOf="@+id/cardView8"
                 app:layout_constraintStart_toStartOf="@+id/cardView8"
-                app:strokeColor="@color/teal_200" />
+                app:strokeColor="#A5A5A5"
+                app:strokeWidth="2dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
