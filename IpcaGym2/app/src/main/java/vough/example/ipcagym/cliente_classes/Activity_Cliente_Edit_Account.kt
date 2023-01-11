@@ -2,9 +2,11 @@ package vough.example.ipcagym.cliente_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
+import android.util.Base64
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -42,11 +44,12 @@ class Activity_Cliente_Edit_Account : AppCompatActivity() {
         var foto_perfil = intent.getStringExtra("foto_perfil")
         var estado = intent.getStringExtra("estado")
 
+        val cliente_image_view = findViewById<ImageView>(R.id.profile_pic)
         if (foto_perfil != null)
         {
-            val cliente_image_view = findViewById<ImageView>(R.id.profile_pic)
-            val imageUri: Uri = Uri.parse(foto_perfil)
-            cliente_image_view.setImageURI(imageUri)
+            val pictureByteArray = Base64.decode(foto_perfil, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+            cliente_image_view.setImageBitmap(bitmap)
         }
         findViewById<TextView>(R.id.editTextNomeCliente).hint = nome
         findViewById<TextView>(R.id.editTextMailCliente).hint = mail
