@@ -2,7 +2,9 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +33,14 @@ class Activity_Funcionario_Planos_Treino_Add : AppCompatActivity() {
         class MyAdapter(context: Context, items: List<String>) : ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, items) {
             override fun getCount(): Int {
                 return 3
+            }
+        }
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
+            if(result != null) {
+                val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
             }
         }
 

@@ -36,10 +36,15 @@ class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
         val sessionToken = preferences.getString("session_token", null)
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
-            PlanoNutricionalRequests.GetAllByGinasioID(lifecycleScope, sessionToken, it?.id_ginasio!!){ result ->
-                if(result.isNotEmpty()){
-                    listPlanosNutricionais = result
-                    adapter_nutri.notifyDataSetChanged()
+            if(it != null){
+                val pictureByteArray = Base64.decode(it.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
+                PlanoNutricionalRequests.GetAllByGinasioID(lifecycleScope, sessionToken, it.id_ginasio!!){ result ->
+                    if(result.isNotEmpty()){
+                        listPlanosNutricionais = result
+                        adapter_nutri.notifyDataSetChanged()
+                    }
                 }
             }
         }
@@ -196,7 +201,6 @@ class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
                 intent.putExtra("id_ginasio", listPlanosNutricionais[position].id_ginasio)
                 intent.putExtra("tipo", listPlanosNutricionais[position].tipo)
                 intent.putExtra("calorias", listPlanosNutricionais[position].calorias)
-                intent.putExtra("foto_plano_nutricional", listPlanosNutricionais[position].foto_plano_nutricional)
 
                 deletePlanReceiver?.launch(intent)
             }

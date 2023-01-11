@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -16,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Refeicao
+import vough.example.ipcagym.requests.FuncionarioRequests
 import vough.example.ipcagym.requests.PlanoNutricionalRequests
 import vough.example.ipcagym.requests.RefeicaoRequests
 import java.time.format.DateTimeFormatter
@@ -29,6 +32,17 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_plano_nutricional_refeicoes)
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
+            if(result != null) {
+                val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
+            }
+        }
 
         val image_view = findViewById<ImageView>(R.id.profile_pic)
         var counter = 0
@@ -79,9 +93,6 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
             }
         }
 
-        //Buscar token
-        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-        val sessionToken = preferences.getString("session_token", null)
 
         RefeicaoRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_nutricional", -1)){
             if(it.isNotEmpty()){
@@ -215,7 +226,10 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
 
             rootView.findViewById<TextView>(R.id.textViewHoraRefeicao).text = listRefeicoes[position].hora?.format(
                 DateTimeFormatter.ofPattern("HH:mm"))
-            rootView.findViewById<ImageView>(R.id.imageViewRefeicao).setImageURI(listRefeicoes[position].foto_refeicao?.toUri())
+
+            val pictureByteArray = Base64.decode(listRefeicoes[position].foto_refeicao, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+            rootView.findViewById<ImageView>(R.id.imageViewRefeicao).setImageBitmap(bitmap)
 
             rootView.setOnClickListener{
                 val intent2 = Intent(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, Activity_Funcionario_Plano_Nutricional_Refeicao_Details::class.java)
@@ -227,7 +241,6 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
                 intent2.putExtra("id_refeicao", listRefeicoes[position].id_refeicao)
                 intent2.putExtra("descricao", listRefeicoes[position].descricao)
                 intent2.putExtra("hora", listRefeicoes[position].hora?.format(DateTimeFormatter.ofPattern("HH:mm")))
-                intent2.putExtra("foto_refeicao", listRefeicoes[position].foto_refeicao)
 
                 startActivity(intent2)
             }
@@ -257,7 +270,6 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
                 intentEdit.putExtra("descricao", listRefeicoes[position].descricao)
                 intentEdit.putExtra("hora_hora", listRefeicoes[position].hora?.hour)
                 intentEdit.putExtra("hora_minute", listRefeicoes[position].hora?.minute)
-                intentEdit.putExtra("foto_refeicao", listRefeicoes[position].foto_refeicao)
 
                 receiverEditData?.launch(intentEdit)
             }

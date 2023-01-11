@@ -3,7 +3,9 @@ package vough.example.ipcagym.funcionarios_classes
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -14,10 +16,10 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.requests.ExercicioRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
 
 class Activity_Funcionario_Plano_Treino_Exercicio_Details : AppCompatActivity() {
     var receiverEditData : ActivityResultLauncher<Intent>? = null
-    var exercicio_adapter = ExercicioAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +33,13 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Details : AppCompatActivity() 
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
+            if(result != null) {
+                val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
+            }
+        }
 
         findViewById<TextView>(R.id.exercicioNome).text = nome
         findViewById<TextView>(R.id.descricaoExercicioValue).text = descricao
@@ -136,31 +145,8 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Details : AppCompatActivity() 
             }
         }
 
-        findViewById<Button>(R.id.returnButton).setOnClickListener{
-            finish()
-        }
-
         image_view.setOnClickListener {
             spinner.performClick()
         }
-    }
-
-    inner class ExercicioAdapter : BaseAdapter(){
-        override fun getCount(): Int {
-            TODO("Not yet implemented")
-        }
-
-        override fun getItem(position: Int): Any {
-            TODO("Not yet implemented")
-        }
-
-        override fun getItemId(position: Int): Long {
-            TODO("Not yet implemented")
-        }
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            TODO("Not yet implemented")
-        }
-
     }
 }

@@ -2,7 +2,9 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -34,6 +36,14 @@ class Activity_Funcionario_Marcacoes_Details: AppCompatActivity() {
 
         val buttonCancelar = findViewById<Button>(R.id.buttonCancelar)
 
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
+            if(result != null) {
+                val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic_activity).setImageBitmap(bitmap)
+            }
+        }
+
         findViewById<TextView>(R.id.marcacaoidmarcacaovalue).text = id_marcacao.toString()
 
         ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente){
@@ -42,7 +52,6 @@ class Activity_Funcionario_Marcacoes_Details: AppCompatActivity() {
 
         FuncionarioRequests.GetByID(lifecycleScope, sessionToken, id_funcionario){
             findViewById<TextView>(R.id.marcacaofuncionariovalue).text = it?.nome.toString()
-
         }
 
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)

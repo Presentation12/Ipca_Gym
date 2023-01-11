@@ -1,7 +1,9 @@
 package vough.example.ipcagym.funcionarios_classes
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -33,12 +35,12 @@ class Activity_Funcionario_Pagina_Inicial: AppCompatActivity() {
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
-        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
-            if(result != null)
-                findViewById<TextView>(R.id.textView5).text = result.nome
-        }
-
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+            if(it != null){
+                val pictureByteArray = Base64.decode(it.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic_activity).setImageBitmap(bitmap)
+            }
             FuncionarioRequests.GetAvaliacoesOnGym(lifecycleScope, sessionToken, it?.codigo!!){ result ->
                 if(result.isNotEmpty()){
                     commentsList = result

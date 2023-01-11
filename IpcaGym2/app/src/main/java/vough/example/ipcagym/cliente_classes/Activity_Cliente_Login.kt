@@ -62,7 +62,7 @@ class Activity_Cliente_Login : AppCompatActivity() {
             editor.putString("session_token", "")
             editor.putString("session_role", "")
 
-            editor.apply()
+            //editor.apply()
             finish()
             startActivity(Intent(this@Activity_Cliente_Login, Activity_Funcionario_Login::class.java))
         }

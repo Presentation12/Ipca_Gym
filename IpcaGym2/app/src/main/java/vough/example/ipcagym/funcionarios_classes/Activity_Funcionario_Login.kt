@@ -22,12 +22,12 @@ class Activity_Funcionario_Login : AppCompatActivity() {
         val sessionToken = preferences.getString("session_token", null)
         val sessionRole = preferences.getString("session_role", null)
 
-        /*if(sessionToken != "" && sessionRole != "Cliente"){
+        if(sessionToken != "" && sessionRole != "Cliente"){
             //val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Pagina_Inicial::class.java)
-            val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Planos_Nutricionais::class.java)
+            val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Capacity::class.java)
             finish()
             startActivity(intentStart)
-        }*/
+        }
 
         //TODO: CERTIFICAR QUE O QUE O CODE NÃO SEJA LONG (VER TAMANHO DO CODE)
         val code = findViewById<AppCompatEditText>(R.id.mail).text
@@ -50,7 +50,7 @@ class Activity_Funcionario_Login : AppCompatActivity() {
 
                         editor.apply()
 
-                        val intentStart = Intent(this@Activity_Funcionario_Login,Activity_Gerente_Funcionarios_List::class.java)
+                        val intentStart = Intent(this@Activity_Funcionario_Login,Activity_Funcionario_Perfil_Edit::class.java)
                         finish()
                         startActivity(intentStart)
                     } else {

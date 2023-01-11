@@ -3,7 +3,9 @@ package vough.example.ipcagym.funcionarios_classes
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -34,13 +36,19 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
         val sessionToken = preferences.getString("session_token", null)
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
-            ExercicioRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_treino", -1)){ result ->
-                if(result.isNotEmpty()) {
-                    listExercicios = result
-                    exercicio_adapter.notifyDataSetChanged()
-                }
-                else{
-                    findViewById<TextView>(R.id.textView9).text = "This Plan is empty\nAdd some exercises!"
+            if(it != null){
+                val pictureByteArray = Base64.decode(it.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
+
+                ExercicioRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_treino", -1)){ result ->
+                    if(result.isNotEmpty()) {
+                        listExercicios = result
+                        exercicio_adapter.notifyDataSetChanged()
+                    }
+                    else{
+                        findViewById<TextView>(R.id.textView9).text = "This Plan is empty\nAdd some exercises!"
+                    }
                 }
             }
         }
@@ -217,6 +225,11 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
             //Guardar elementos em variaveis
             val exercicio_nome_view = rootView.findViewById<TextView>(R.id.textViewNomeExercicios)
             val exercicio_quantity_view = rootView.findViewById<TextView>(R.id.textViewSetsExercicio)
+            val exercicio_image = rootView.findViewById<ImageView>(R.id.imageViewPlanoTreino)
+
+            val pictureByteArray = Base64.decode(listExercicios[position].foto_exercicio, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+            exercicio_image.setImageBitmap(bitmap)
 
             //Adicionar os textos
             exercicio_nome_view.text = listExercicios[position].nome
@@ -236,7 +249,6 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
                 intent.putExtra("nome", listExercicios[position].nome)
                 intent.putExtra("descricao", listExercicios[position].descricao)
                 intent.putExtra("tipo", listExercicios[position].tipo)
-                intent.putExtra("foto_exercicio", listExercicios[position].foto_exercicio)
 
                 if (listExercicios[position].tempo == null){
                     intent.putExtra("series_value", listExercicios[position].series.toString())
@@ -289,7 +301,6 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
                 intentEdit.putExtra("nome", listExercicios[position].nome)
                 intentEdit.putExtra("descricao", listExercicios[position].descricao)
                 intentEdit.putExtra("tipo", listExercicios[position].tipo)
-                intentEdit.putExtra("foto_exercicio", listExercicios[position].foto_exercicio)
                 intentEdit.putExtra("tempo_min", listExercicios[position].tempo?.minute.toString())
                 intentEdit.putExtra("tempo_sec", listExercicios[position].tempo?.second.toString())
                 intentEdit.putExtra("series", listExercicios[position].series.toString())

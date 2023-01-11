@@ -2,7 +2,9 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -22,7 +24,6 @@ class Activity_Funcionario_Marcacoes : AppCompatActivity() {
     val date_formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy")
     val date_formatter_compact = DateTimeFormatter.ofPattern("dd-MM-yyyy")
     val time_formatter = DateTimeFormatter.ofPattern("hh:mm")
-    var funcionarioRefresh : Funcionario? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +36,16 @@ class Activity_Funcionario_Marcacoes : AppCompatActivity() {
         listViewMarcacoes.adapter = marcacao_adapter
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
-            if(result != null) funcionarioRefresh = result
+            if(result != null) {
+                val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic_activity).setImageBitmap(bitmap)
 
-            MarcacaoRequests.GetAllByFuncionarioID(lifecycleScope, sessionToken, funcionarioRefresh?.id_funcionario!!){
-                if(!it.isEmpty()) {
-                    marcacoesList = it
-                    marcacao_adapter.notifyDataSetChanged()
+                MarcacaoRequests.GetAllByFuncionarioID(lifecycleScope, sessionToken, result?.id_funcionario!!){
+                    if(!it.isEmpty()) {
+                        marcacoesList = it
+                        marcacao_adapter.notifyDataSetChanged()
+                    }
                 }
             }
         }

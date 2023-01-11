@@ -2,8 +2,10 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
 import vough.example.ipcagym.requests.GinasioRequests
 
 class Activity_Funcionario_Flux_Control_Details : AppCompatActivity() {
@@ -30,6 +33,15 @@ class Activity_Funcionario_Flux_Control_Details : AppCompatActivity() {
         val hora_entrada = intent.getStringExtra("hora_entrada")
         val hora_saida = intent.getStringExtra("hora_saida")
         val state = intent.getBooleanExtra("state", true)
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
+            if(result != null){
+                val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic_activity).setImageBitmap(bitmap)
+            }
+        }
+
 
         //Escrever no layout detalhado
 

@@ -2,7 +2,9 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +12,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
+import vough.example.ipcagym.requests.FuncionarioRequests
 import vough.example.ipcagym.requests.RefeicaoRequests
 
 class Activity_Funcionario_Plano_Nutricional_Refeicao_Edit: AppCompatActivity() {
@@ -23,10 +26,25 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Edit: AppCompatActivity() 
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
+            if(result != null) {
+                val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
+            }
+        }
+
         findViewById<TextView>(R.id.refeicaoEditDescriptionValue).text = intent.getStringExtra("descricao")
         findViewById<TextView>(R.id.refeicaoEditHourHourValue).text = intent.getIntExtra("hora_hora", -1).toString()
         findViewById<TextView>(R.id.refeicaoEditHourMinuteValue).text = intent.getIntExtra("hora_minute", -1).toString()
-        findViewById<ImageView>(R.id.refeicaoEditPhotoValue).setImageURI(intent.getStringExtra("foto_refeicao")?.toUri())
+
+        RefeicaoRequests.GetByID(lifecycleScope, sessionToken, intent.getIntExtra("id_refeicao", -1)){ result ->
+            if(result != null) {
+                val pictureByteArray = Base64.decode(result.foto_refeicao, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.refeicaoEditPhotoValue).setImageBitmap(bitmap)
+            }
+        }
 
         val image_view = findViewById<ImageView>(R.id.profile_pic)
         var counter = 0

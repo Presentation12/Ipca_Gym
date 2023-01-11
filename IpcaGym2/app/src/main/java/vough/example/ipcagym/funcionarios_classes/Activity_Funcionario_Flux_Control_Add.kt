@@ -2,7 +2,9 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.requests.ClienteRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
 
 class Activity_Funcionario_Flux_Control_Add : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +27,16 @@ class Activity_Funcionario_Flux_Control_Add : AppCompatActivity() {
         val buttonEntry = findViewById<Button>(R.id.entryButton)
         val buttonExit = findViewById<Button>(R.id.exitButton)
         val id_cliente = findViewById<EditText>(R.id.newIDClienteActivity)
-        var state = true
+        var state : Boolean? = null
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
+            if(result != null){
+                val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic_activity).setImageBitmap(bitmap)
+            }
+        }
+
 
         buttonEntry.setOnClickListener{
             state = true
@@ -39,19 +51,23 @@ class Activity_Funcionario_Flux_Control_Add : AppCompatActivity() {
         }
 
         buttonAdd.setOnClickListener{
-            val intent = Intent()
+            if(state != null){
+                val intent = Intent()
 
-            ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente.text.toString().toInt()){ response ->
-                if (response == null) Toast.makeText(this@Activity_Funcionario_Flux_Control_Add, "User not found!", Toast.LENGTH_SHORT).show()
-                else{
-                    intent.putExtra("id_cliente", id_cliente.text.toString().toInt())
-                    intent.putExtra("state", state)
+                ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente.text.toString().toInt()){ response ->
+                    if (response == null) Toast.makeText(this@Activity_Funcionario_Flux_Control_Add, "User not found!", Toast.LENGTH_SHORT).show()
+                    else{
+                        intent.putExtra("id_cliente", id_cliente.text.toString().toInt())
+                        intent.putExtra("state", state)
 
-                    setResult(RESULT_OK, intent)
-                    finish()
+                        setResult(RESULT_OK, intent)
+                        finish()
+                    }
                 }
             }
-
+            else{
+                Toast.makeText(this@Activity_Funcionario_Flux_Control_Add,"Select if the client is making an entry or exit!", Toast.LENGTH_SHORT).show()
+            }
         }
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
 

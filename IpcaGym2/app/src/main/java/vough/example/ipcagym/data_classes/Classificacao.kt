@@ -50,7 +50,7 @@ class Classificacao {
                 jsonObject.getInt("id_cliente"),
                 jsonObject.getInt("avaliacao"),
                 jsonObject.getString("comentario"),
-                LocalDateTime.parse(jsonObject.getString("data_saida"))
+                LocalDateTime.parse(jsonObject.getString("data_avaliacao"))
              )
         }
     }

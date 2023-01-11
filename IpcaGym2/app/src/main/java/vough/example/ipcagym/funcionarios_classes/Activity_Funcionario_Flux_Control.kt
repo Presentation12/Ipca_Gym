@@ -3,8 +3,10 @@ package vough.example.ipcagym.funcionarios_classes
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -18,16 +20,17 @@ import vough.example.ipcagym.R
 import vough.example.ipcagym.cliente_classes.*
 import vough.example.ipcagym.data_classes.Atividade
 import vough.example.ipcagym.data_classes.Funcionario
+import vough.example.ipcagym.data_classes.Ginasio
 import vough.example.ipcagym.requests.AtividadeRequests
 import vough.example.ipcagym.requests.ClienteRequests
 import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.GinasioRequests
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class Activity_Funcionario_Flux_Control : AppCompatActivity() {
 
     var activityList = arrayListOf<Atividade>()
-    var funcionarioRefresh : Funcionario? = null
     var client_adapter = FuncionarioActivityAdapter()
     val date_formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy")
     val date_formatter_compact = DateTimeFormatter.ofPattern("dd-MM-yyyy")
@@ -44,7 +47,11 @@ class Activity_Funcionario_Flux_Control : AppCompatActivity() {
         var counter = 0
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
-            if(result != null) funcionarioRefresh = result
+            if(result != null){
+                val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic_activity).setImageBitmap(bitmap)
+            }
         }
 
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
@@ -148,91 +155,135 @@ class Activity_Funcionario_Flux_Control : AppCompatActivity() {
 
         receiverNewActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode == Activity.RESULT_OK){
-                val id_ginasio = funcionarioRefresh?.id_ginasio
                 val id_cliente = it.data?.getIntExtra("id_cliente", -1)
-
                 val state = it.data?.getBooleanExtra("state", true)
-                var biggestDate = LocalDateTime.MIN
-                var isNewClient = true
 
+                ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente){
+                    if(it != null){
+                        val id_ginasio = it.id_ginasio
 
-                if(state == true){
-                    for(activity in activityList){
-                        if(id_ginasio == activity.id_ginasio && id_cliente == activity.id_cliente
-                            && (biggestDate < activity.data_entrada)){
-                            biggestDate = activity.data_entrada
-                            isNewClient = false
-                        }
-                    }
+                        var biggestDate = LocalDateTime.MIN
+                        var isNewClient = true
 
-                    for(activity in activityList){
-                        if((id_ginasio == activity.id_ginasio && id_cliente == activity.id_cliente &&
-                            (biggestDate == activity.data_entrada && !isNewClient)) || isNewClient){
-
-                            if(activity.data_saida == null){
-                                Toast.makeText(this@Activity_Funcionario_Flux_Control,"This client needs to exit first!", Toast.LENGTH_LONG).show()
+                        if(state == true){
+                            for(activity in activityList){
+                                if(id_ginasio == activity.id_ginasio && id_cliente == activity.id_cliente
+                                    && (biggestDate < activity.data_entrada)){
+                                    biggestDate = activity.data_entrada
+                                    isNewClient = false
+                                }
                             }
-                            else
-                            {
-                                AtividadeRequests.Post(lifecycleScope, sessionToken, Atividade(
-                                    null,
-                                    id_ginasio,
-                                    id_cliente,
-                                    LocalDateTime.now(),
-                                    null
-                                )){ response ->
-                                    if(response == "Error: Post Activity fails") Toast.makeText(this@Activity_Funcionario_Flux_Control, "ERROR", Toast.LENGTH_SHORT).show()
-                                    else{
-                                        Toast.makeText(this@Activity_Funcionario_Flux_Control,"Activity added successfully", Toast.LENGTH_SHORT).show()
-                                        AtividadeRequests.GetAll(lifecycleScope, sessionToken){
-                                            activityList = it
 
-                                            client_adapter.notifyDataSetChanged()
+                            for(activity in activityList){
+                                if((id_ginasio == activity.id_ginasio && id_cliente == activity.id_cliente &&
+                                            (biggestDate == activity.data_entrada && !isNewClient)) || isNewClient){
+
+                                    if(activity.data_saida == null){
+                                        Toast.makeText(this@Activity_Funcionario_Flux_Control,"This client needs to exit first!", Toast.LENGTH_LONG).show()
+                                    }
+                                    else
+                                    {
+                                        AtividadeRequests.Post(lifecycleScope, sessionToken, Atividade(
+                                            null,
+                                            id_ginasio,
+                                            id_cliente,
+                                            LocalDateTime.now(),
+                                            null
+                                        )){ response ->
+                                            if(response == "Error: Post Activity fails") Toast.makeText(this@Activity_Funcionario_Flux_Control, "ERROR", Toast.LENGTH_SHORT).show()
+                                            else{
+                                                Toast.makeText(this@Activity_Funcionario_Flux_Control,"Activity added successfully", Toast.LENGTH_SHORT).show()
+
+                                                GinasioRequests.GetByID(lifecycleScope, sessionToken, id_ginasio){ resultGymInfo ->
+                                                    if(resultGymInfo != null){
+                                                        val newLotacao = resultGymInfo.lotacao?.plus(1)
+
+                                                        GinasioRequests.Patch(lifecycleScope, sessionToken, 1, Ginasio(
+                                                            resultGymInfo.id_ginasio,
+                                                            resultGymInfo.instituicao,
+                                                            resultGymInfo.estado,
+                                                            resultGymInfo.foto_ginasio,
+                                                            resultGymInfo.contacto,
+                                                            newLotacao,
+                                                            resultGymInfo.lotacaoMax
+                                                        )){ patchResult ->
+                                                                Toast.makeText(this@Activity_Funcionario_Flux_Control,patchResult, Toast.LENGTH_SHORT).show()
+                                                        }
+                                                    }
+                                                }
+
+
+                                                AtividadeRequests.GetAll(lifecycleScope, sessionToken){
+                                                    activityList = it
+
+                                                    client_adapter.notifyDataSetChanged()
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
-                }
-                else
-                {
-                    for(activity in activityList){
-                        if(id_ginasio == activity.id_ginasio && id_cliente == activity.id_cliente
-                            && biggestDate < activity.data_entrada){
-                                biggestDate = activity.data_entrada
-                        }
-                    }
-
-                    for(activity in activityList){
-                        if(id_ginasio == activity.id_ginasio && id_cliente == activity.id_cliente
-                            && biggestDate == activity.data_entrada){
-                            if(activity.data_saida == null){
-                                AtividadeRequests.Patch(lifecycleScope, sessionToken, activity.id_atividade!!, Atividade(
-                                    null,
-                                    activity.id_ginasio,
-                                    activity.id_cliente,
-                                    activity.data_entrada,
-                                    LocalDateTime.now())){ result ->
-                                    if(result != "Error: Patch Activity fails") {
-                                        Toast.makeText(this@Activity_Funcionario_Flux_Control,"Activity added successfully", Toast.LENGTH_LONG).show()
-                                        AtividadeRequests.GetAll(lifecycleScope, sessionToken){
-                                            activityList = it
-
-                                            client_adapter.notifyDataSetChanged()
-                                        }
-                                    }
-                                    else Toast.makeText(this@Activity_Funcionario_Flux_Control,"ERROR", Toast.LENGTH_LONG).show()
+                        else
+                        {
+                            for(activity in activityList){
+                                if(id_ginasio == activity.id_ginasio && id_cliente == activity.id_cliente
+                                    && biggestDate < activity.data_entrada){
+                                    biggestDate = activity.data_entrada
                                 }
                             }
-                            else
-                            {
-                                Toast.makeText(this@Activity_Funcionario_Flux_Control,"This client needs to enter first!", Toast.LENGTH_LONG).show()
+
+                            for(activity in activityList){
+                                if(id_ginasio == activity.id_ginasio && id_cliente == activity.id_cliente
+                                    && biggestDate == activity.data_entrada){
+                                    if(activity.data_saida == null){
+                                        AtividadeRequests.Patch(lifecycleScope, sessionToken, activity.id_atividade!!, Atividade(
+                                            null,
+                                            activity.id_ginasio,
+                                            activity.id_cliente,
+                                            activity.data_entrada,
+                                            LocalDateTime.now())){ result ->
+                                            if(result != "Error: Patch Activity fails") {
+                                                Toast.makeText(this@Activity_Funcionario_Flux_Control,"Activity added successfully", Toast.LENGTH_LONG).show()
+
+                                                GinasioRequests.GetByID(lifecycleScope, sessionToken, id_ginasio){ resultGymInfo ->
+                                                    if(resultGymInfo != null){
+                                                        val newLotacao = resultGymInfo.lotacao?.plus(-1)
+
+                                                        GinasioRequests.Patch(lifecycleScope, sessionToken, 1, Ginasio(
+                                                            resultGymInfo.id_ginasio,
+                                                            resultGymInfo.instituicao,
+                                                            resultGymInfo.estado,
+                                                            resultGymInfo.foto_ginasio,
+                                                            resultGymInfo.contacto,
+                                                            newLotacao,
+                                                            resultGymInfo.lotacaoMax
+                                                        )){ patchResult ->
+                                                            Toast.makeText(this@Activity_Funcionario_Flux_Control,patchResult, Toast.LENGTH_SHORT).show()
+                                                        }
+                                                    }
+                                                }
+
+                                                AtividadeRequests.GetAll(lifecycleScope, sessionToken){
+                                                    activityList = it
+
+                                                    client_adapter.notifyDataSetChanged()
+                                                }
+                                            }
+                                            else Toast.makeText(this@Activity_Funcionario_Flux_Control,"ERROR", Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(this@Activity_Funcionario_Flux_Control,"This client needs to enter first!", Toast.LENGTH_LONG).show()
+                                    }
+                                }
                             }
                         }
                     }
+                    }
                 }
-            }
+
         }
 
         addButton.setOnClickListener {
@@ -255,7 +306,7 @@ class Activity_Funcionario_Flux_Control : AppCompatActivity() {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val rootView = layoutInflater.inflate(R.layout.row_activities_by_date,parent,false)
-            val rootView2 = layoutInflater.inflate(R.layout.row_activities_on_date,parent,false)
+            //val rootView2 = layoutInflater.inflate(R.layout.row_activities_on_date,parent,false)
 
             //Buscar token
             val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
@@ -266,7 +317,7 @@ class Activity_Funcionario_Flux_Control : AppCompatActivity() {
             val date = rootView.findViewById<TextView>(R.id.activityDate)
             //val listbydate = rootView.findViewById<ListView>(R.id.listByDate)
 
-            //Aqui é nome (tratar para o caso dos nomes serem muito grandes) e foto
+            //Aqui é nome (tratar para o caso dos nomes serem muito grandes)
             val id_ginasio = rootView.findViewById<TextView>(R.id.activityClienteName)
             val id_cliente = rootView.findViewById<TextView>(R.id.activityClienteID)
             val hour = rootView.findViewById<TextView>(R.id.horaMovimento)
@@ -286,8 +337,14 @@ class Activity_Funcionario_Flux_Control : AppCompatActivity() {
 
 
             ClienteRequests.GetByID(lifecycleScope, sessionToken, activityList[position].id_cliente){
-                id_ginasio.text = it?.nome
-                id_cliente.text = activityList[position].id_cliente?.toString()
+                if(it != null){
+                    id_ginasio.text = it.nome
+                    id_cliente.text = activityList[position].id_cliente?.toString()
+
+                    val pictureByteArray = Base64.decode(it.foto_perfil, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    rootView.findViewById<ImageView>(R.id.profile_pic_activity).setImageBitmap(bitmap)
+                }
             }
 
             rootView.setOnClickListener {

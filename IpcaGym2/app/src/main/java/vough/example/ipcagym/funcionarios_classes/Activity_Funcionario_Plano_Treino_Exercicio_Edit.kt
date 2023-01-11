@@ -2,7 +2,10 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +14,10 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.requests.ExercicioRequests
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.PlanoTreinoRequests
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -25,6 +32,13 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+            if(it != null){
+                val pictureByteArray = Base64.decode(it.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
+            }
+        }
 
         findViewById<CheckBox>(R.id.timeMinExerciseValue).isInvisible = true
         findViewById<CheckBox>(R.id.timeSecsExerciseValue).isInvisible = true
@@ -126,19 +140,28 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
             intentEditIn.putExtra("tipo", findViewById<EditText>(R.id.typeExerciseValue).text.toString())
 
             //TODO: Tratar de foto
-            intentEditIn.putExtra("foto_exercicio", "photo")
+            ExercicioRequests.GetByID(lifecycleScope, sessionToken, intent.getIntExtra("id_exercicio", -1)){
+                if(it !== null){
+                    val pictureByteArray = Base64.decode(it.foto_exercicio, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    //Atualizar imagem
+                    //findViewById<ImageView>(R.id.VIEW).setImageBitmap(bitmap)
 
-            //TODO: VERIFICAR QUE MIN < 60 e SEC < 60
-            if(isSet.isChecked){
-                intentEditIn.putExtra("tempoMin",0)
-                intentEditIn.putExtra("tempoSec",0)
+                    val imageAdd = convertBitmapToByteArray(bitmap!!)
+                    val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
+                    val aux2 = aux.replace("\n", "")
 
-                intentEditIn.putExtra("repeticoes", findViewById<EditText>(R.id.repetitionsExerciseValue).text.toString().toInt())
-                intentEditIn.putExtra("series", findViewById<EditText>(R.id.SetsExerciseValue).text.toString().toInt())
+                    //TODO: VERIFICAR QUE MIN < 60 e SEC < 60
+                    if(isSet.isChecked){
+                        intentEditIn.putExtra("tempoMin",0)
+                        intentEditIn.putExtra("tempoSec",0)
 
-                intentEditIn.putExtra("aux","set")
+                        intentEditIn.putExtra("repeticoes", findViewById<EditText>(R.id.repetitionsExerciseValue).text.toString().toInt())
+                        intentEditIn.putExtra("series", findViewById<EditText>(R.id.SetsExerciseValue).text.toString().toInt())
 
-                val jsonBody = """
+                        intentEditIn.putExtra("aux","set")
+
+                        val jsonBody = """
                     {
                       "id_exercicio": ${intentEditIn.getIntExtra("id_exercicio", -1)},
                       "id_plano_treino": ${intentEditIn.getIntExtra("id_plano_treino", -1)},
@@ -148,50 +171,50 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
                       "series": ${intentEditIn.getIntExtra("series", -1)},
                       "tempo": null,
                       "repeticoes": ${intentEditIn.getIntExtra("repeticoes", -1)},
-                      "foto_exercicio": "${intentEditIn.getStringExtra("foto_exercicio")}"
+                      "foto_exercicio": "${aux2}"
                     }
                 """
 
-                ExercicioRequests.Patch(lifecycleScope, sessionToken, intent.getIntExtra("id_exercicio", -1), jsonBody){ result ->
-                    if(result != "Error: Patch Exercise fails"){
+                        ExercicioRequests.Patch(lifecycleScope, sessionToken, intent.getIntExtra("id_exercicio", -1), jsonBody){ result ->
+                            if(result != "Error: Patch Exercise fails"){
+                                setResult(RESULT_OK, intentEditIn);
+                                finish()
+                            }
+                            else
+                                Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Edit, "Error on editing exercise", Toast.LENGTH_SHORT).show()
+                        }
+
                         setResult(RESULT_OK, intentEditIn);
                         finish()
                     }
-                    else
-                        Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Edit, "Error on editing exercise", Toast.LENGTH_SHORT).show()
-                }
+                    else if(isTime.isChecked){
+                        intentEditIn.putExtra("repeticoes", -1)
+                        intentEditIn.putExtra("series", -1)
 
-                setResult(RESULT_OK, intentEditIn);
-                finish()
-            }
-            else if(isTime.isChecked){
-                intentEditIn.putExtra("repeticoes", -1)
-                intentEditIn.putExtra("series", -1)
+                        intentEditIn.putExtra("tempoMin", findViewById<EditText>(R.id.timeMinExerciseValue).text.toString().toInt())
+                        intentEditIn.putExtra("tempoSec", findViewById<EditText>(R.id.timeSecsExerciseValue).text.toString().toInt())
 
-                intentEditIn.putExtra("tempoMin", findViewById<EditText>(R.id.timeMinExerciseValue).text.toString().toInt())
-                intentEditIn.putExtra("tempoSec", findViewById<EditText>(R.id.timeSecsExerciseValue).text.toString().toInt())
+                        intentEditIn.putExtra("aux", "time")
 
-                intentEditIn.putExtra("aux", "time")
+                        var minAuxInt = intentEditIn.getIntExtra("tempoMin",-1)
+                        var secAuxInt = intentEditIn.getIntExtra("tempoSec",-1)
 
-                var minAuxInt = intentEditIn.getIntExtra("tempoMin",-1)
-                var secAuxInt = intentEditIn.getIntExtra("tempoSec",-1)
+                        var minAuxString : String?
+                        var secAuxString : String?
 
-                var minAuxString : String?
-                var secAuxString : String?
+                        if(minAuxInt < 10)
+                            minAuxString = "0$minAuxInt"
+                        else
+                            minAuxString = minAuxInt.toString()
 
-                if(minAuxInt < 10)
-                    minAuxString = "0$minAuxInt"
-                else
-                    minAuxString = minAuxInt.toString()
+                        if(secAuxInt < 10)
+                            secAuxString = "0$secAuxInt"
+                        else
+                            secAuxString = secAuxInt.toString()
 
-                if(secAuxInt < 10)
-                    secAuxString = "0$secAuxInt"
-                else
-                    secAuxString = secAuxInt.toString()
+                        val tempoToPatch = LocalTime.parse("00:$minAuxString:$secAuxString", DateTimeFormatter.ofPattern("HH:mm:ss"))
 
-                val tempoToPatch = LocalTime.parse("00:$minAuxString:$secAuxString", DateTimeFormatter.ofPattern("HH:mm:ss"))
-
-                val jsonBody = """
+                        val jsonBody = """
                     {
                       "id_exercicio": ${intentEditIn.getIntExtra("id_exercicio", -1)},
                       "id_plano_treino": ${intentEditIn.getIntExtra("id_plano_treino", -1)},
@@ -201,21 +224,23 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
                       "series": null,
                       "tempo": "$tempoToPatch",
                       "repeticoes": null,
-                      "foto_exercicio": "${intentEditIn.getStringExtra("foto_exercicio")}"
+                      "foto_exercicio": "${aux2}"
                     }
                 """
 
-                ExercicioRequests.Patch(lifecycleScope, sessionToken, intent.getIntExtra("id_exercicio", -1), jsonBody){ result ->
-                    if(result != "Error: Patch Exercise fails"){
-                        setResult(RESULT_OK, intentEditIn);
-                        finish()
+                        ExercicioRequests.Patch(lifecycleScope, sessionToken, intent.getIntExtra("id_exercicio", -1), jsonBody){ result ->
+                            if(result != "Error: Patch Exercise fails"){
+                                setResult(RESULT_OK, intentEditIn);
+                                finish()
+                            }
+                            else
+                                Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Edit, "Error on editing exercise", Toast.LENGTH_SHORT).show()
+                        }
                     }
                     else
-                        Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Edit, "Error on editing exercise", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Edit, "You need to insert more information!", Toast.LENGTH_LONG).show()
                 }
             }
-            else
-                Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Edit, "You need to insert more information!", Toast.LENGTH_LONG).show()
         }
 
         isSet.setOnClickListener{
@@ -280,6 +305,25 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
                 }
                 else -> false
             }
+        }
+    }
+
+    private fun convertBitmapToByteArray(bitmap: Bitmap) : ByteArray{
+        var byteArrayImage : ByteArrayOutputStream? = null
+
+        return try{
+            byteArrayImage = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayImage)
+            byteArrayImage.toByteArray()
+        }
+        finally{
+            if(byteArrayImage != null)
+                try{
+                    byteArrayImage.close()
+                }
+                catch (e: IOException) {
+                    Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Edit, "Error on image conversion", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 }

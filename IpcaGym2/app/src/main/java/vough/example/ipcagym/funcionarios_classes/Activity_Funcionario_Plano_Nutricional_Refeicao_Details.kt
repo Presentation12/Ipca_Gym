@@ -2,23 +2,47 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
+import vough.example.ipcagym.requests.FuncionarioRequests
+import vough.example.ipcagym.requests.RefeicaoRequests
 
 class Activity_Funcionario_Plano_Nutricional_Refeicao_Details : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_plano_nutricional_refeicao_details)
+        //Buscar token
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+        val id_refeicao = intent.getIntExtra("id_refeicao", -1)
+
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
+            if(result != null) {
+                val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
+            }
+        }
 
         findViewById<TextView>(R.id.horaValueRefeicao).text = intent.getStringExtra("hora")
         findViewById<TextView>(R.id.descricaoValueRefeicao).text = intent.getStringExtra("descricao")
 
-        //TODO: METER FOTO REFEICAO NOS DETALHES
-        //findViewById<TextView>(R.id.imageRefeicaoValue).text = intent.getStringExtra("foto_refeicao")
+        RefeicaoRequests.GetByID(lifecycleScope, sessionToken, id_refeicao){
+            if(it != null){
+                val pictureByteArray = Base64.decode(it.foto_refeicao, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.imageRefeicaoValue).setImageBitmap(bitmap)
+            }
+
+        }
 
         val image_view = findViewById<ImageView>(R.id.profile_pic)
         var counter = 0

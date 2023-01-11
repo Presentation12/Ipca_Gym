@@ -5,8 +5,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -37,6 +39,10 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
             if(it != null){
+                val pictureByteArray = Base64.decode(it.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
+
                 PlanoTreinoRequests.GetAllByGinasioID(lifecycleScope, sessionToken, it?.id_ginasio!!){ result ->
                     if(!result.isEmpty()){
                         planos_treino_list = result
@@ -199,7 +205,10 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
 
             //Adicionar os textos
             plano_treino_view.text = planos_treino_list[position].tipo
-            plano_treino_image.setImageURI(planos_treino_list[position].foto_plano_treino?.toUri())
+
+            val pictureByteArray = Base64.decode(planos_treino_list[position].foto_plano_treino, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+            plano_treino_image.setImageBitmap(bitmap)
 
             //Clicar num rootView abre o plano de treino
             rootView.setOnClickListener {
@@ -208,7 +217,6 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
                 intent.putExtra("id_plano_treino", planos_treino_list[position].id_plano_treino)
                 intent.putExtra("id_ginasio", planos_treino_list[position].id_ginasio)
                 intent.putExtra("tipo", planos_treino_list[position].tipo)
-                intent.putExtra("foto_plano_treino", planos_treino_list[position].foto_plano_treino)
 
                 receiverDeleteData?.launch(intent)
             }

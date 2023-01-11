@@ -46,8 +46,10 @@
         app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -102,22 +104,51 @@
         android:hint="Contact"
         android:inputType="number"
         android:outlineProvider="none"
-        app:layout_constraintEnd_toEndOf="@+id/cardView11"
-        app:layout_constraintStart_toStartOf="@+id/cardView11"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintStart_toStartOf="@+id/editTextNumber3"
         app:layout_constraintTop_toTopOf="@+id/cardView11" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:background="#2D2D2D"
+        android:elevation="10dp"
+        android:padding="2dp"
+        android:paddingEnd="5dp"
+        android:paddingRight="5dp"
+        android:text="Contact"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextNumber2"
+        app:layout_constraintStart_toStartOf="@+id/cardView11"
+        app:layout_constraintTop_toTopOf="@+id/editTextNumber2" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#2D2D2D"
+        android:elevation="10dp"
+        android:padding="2dp"
+        android:paddingEnd="5dp"
+        android:paddingRight="5dp"
+        android:text="Max Capacity"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextNumber3"
+        app:layout_constraintStart_toStartOf="@+id/textView12"
+        app:layout_constraintTop_toTopOf="@+id/editTextNumber3" />
 
     <EditText
         android:id="@+id/editTextNumber3"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:elevation="10dp"
         android:ems="10"
         android:hint="Max Capacity"
         android:inputType="number"
         android:outlineProvider="none"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView11"
-        app:layout_constraintEnd_toEndOf="@+id/cardView11"
-        app:layout_constraintStart_toStartOf="@+id/cardView11" />
+        app:layout_constraintStart_toEndOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumber2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
