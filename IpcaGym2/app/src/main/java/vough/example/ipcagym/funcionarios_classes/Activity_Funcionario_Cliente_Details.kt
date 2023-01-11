@@ -2,8 +2,11 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -44,11 +47,16 @@ class Activity_Funcionario_Cliente_Details : AppCompatActivity() {
         val foto_perfil = intent.getStringExtra("foto_perfil")
         val estado = intent.getStringExtra("estado")
 
+        var imageView = findViewById<ImageView>(R.id.profile_pic_funcionario)
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken) { resultFuncionario ->
             if(resultFuncionario != null){
-                val namefunc_view = findViewById<TextView>(R.id.textView_nome_funcionario_working)
-                namefunc_view.text = resultFuncionario.nome
+
+                if(resultFuncionario.foto_funcionario != null){
+                    val pictureByteArray = Base64.decode(resultFuncionario.foto_funcionario, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    imageView.setImageBitmap(bitmap)
+                }
 
                 AtividadeRequests.GetAllByClienteID(lifecycleScope,sessionToken,id_cliente){ resultAtividades ->
                     val mes_atual_view = findViewById<TextView>(R.id.textView_month)
@@ -83,6 +91,12 @@ class Activity_Funcionario_Cliente_Details : AppCompatActivity() {
 
                 }
             }
+        }
+
+        if(foto_perfil != null){
+            val pictureByteArray = Base64.decode(foto_perfil, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+            findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
         }
 
         val nome_view = findViewById<TextView>(R.id.textViewNomeCliente)
@@ -148,8 +162,58 @@ class Activity_Funcionario_Cliente_Details : AppCompatActivity() {
             }
         }
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
+        var counter = 0
+        val spinner = findViewById<Spinner>(R.id.spinner)
+        val options = listOf("Account", "Settings", "Logout", "")
 
+        class MyAdapter(context: Context, items: List<String>) : ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, items) {
+            override fun getCount(): Int {
+                return 3
+            }
+        }
+
+        val adapter = MyAdapter(this@Activity_Funcionario_Cliente_Details, options)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                when (position) {
+                    0 -> {
+                        if(counter == 0){
+                            counter+=1
+                            spinner.setSelection(3)
+                        }
+                        else{
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Details, Activity_Funcionario_Perfil_Edit::class.java))
+                            spinner.setSelection(3)
+                        }
+                    }
+                    1 -> {
+                        startActivity(Intent(this@Activity_Funcionario_Cliente_Details, Activity_Funcionario_Settings::class.java))
+                        spinner.setSelection(3)
+                    }
+                    2 -> {
+                        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+                        val editor = preferences.edit()
+                        editor.putString("session_token", "")
+
+                        editor.apply()
+                        finish()
+                        startActivity(Intent(this@Activity_Funcionario_Cliente_Details, Activity_Funcionario_Login::class.java))
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                spinner.setSelection(3)
+            }
+        }
+        imageView.setOnClickListener {
+            spinner.performClick()
+        }
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
         bottomNavigationView.setSelectedItemId(R.id.nav_clients);
         bottomNavigationView.setOnItemSelectedListener{ item ->
             when (item.itemId) {

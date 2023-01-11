@@ -5,19 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:layout_margin="20dp"
+        app:cardCornerRadius="20dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/profile_pic_funcionario"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/defaultprofilepic"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="20dp"
+        android:clickable="false"
+        android:spinnerMode="dropdown"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
     <Button
         android:id="@+id/button_apagar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:backgroundTint="@android:color/transparent"
         android:elevation="10dp"
         android:text="Apagar"
         android:textColor="#A5A5A5"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/textView_nome_funcionario_working"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView_nome_funcionario_working"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView"
+        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintTop_toTopOf="@+id/cardView"
         app:strokeColor="#A5A5A5"
         app:strokeWidth="2dp" />
 
@@ -147,36 +179,22 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="end"
         android:layout_margin="20dp"
-        android:layout_marginStart="16dp"
-
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="35dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/profile_pic"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:scaleType="centerCrop"
             android:src="@drawable/defaultprofilepic"/>
 
     </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/textView_nome_funcionario_working"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
-        android:text="Nome Cliente"
-        android:textColor="#F8F6F6"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView_personal_data"
@@ -243,33 +261,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="125dp"
         android:text="textView"
         android:textColor="#fff"
+        app:layout_constraintBottom_toTopOf="@+id/personal_personal_data_view_personal_data_view_birthday"
         app:layout_constraintStart_toEndOf="@+id/personal_data_view_name"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/personal_data_view_name" />
 
     <TextView
         android:id="@+id/textViewMail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
         android:text="textView"
         android:textColor="#fff"
+        app:layout_constraintBottom_toBottomOf="@+id/personal_personal_data_view_personal_data_view_birthday"
         app:layout_constraintStart_toEndOf="@+id/personal_personal_data_view_personal_data_view_birthday"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNomeCliente" />
+        app:layout_constraintTop_toTopOf="@+id/personal_personal_data_view_personal_data_view_birthday" />
 
     <TextView
         android:id="@+id/textViewContacto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
         android:text="textView"
         android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/personal_data_view_personal_data_view_code"
         app:layout_constraintStart_toEndOf="@+id/personal_data_view_personal_data_view_code"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMail" />
+        app:layout_constraintTop_toTopOf="@+id/personal_data_view_personal_data_view_code" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview_Height"
