@@ -113,7 +113,7 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
 
         val list_view_funcionario = findViewById<ListView>(R.id.listviewFuncionarios)
         list_view_funcionario.adapter = funcionarios_adapter
-        
+
         var listAux = list_funcionario
         findViewById<EditText>(R.id.editText).addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {

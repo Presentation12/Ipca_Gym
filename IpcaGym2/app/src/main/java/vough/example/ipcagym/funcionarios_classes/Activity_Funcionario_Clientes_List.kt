@@ -2,8 +2,10 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -32,10 +34,11 @@ class Activity_Funcionario_Clientes_List : AppCompatActivity() {
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultFuncionario ->
 
-            if (resultFuncionario?.foto_funcionario != null)
+            if (resultFuncionario?.foto_funcionario  != null && resultFuncionario.foto_funcionario != "null")
             {
-                val imageUri: Uri = Uri.parse(resultFuncionario.foto_funcionario)
-                imageView.setImageURI(imageUri)
+                val pictureByteArray = Base64.decode(resultFuncionario.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                imageView.setImageBitmap(bitmap)
             }
 
             ClienteRequests.GetAllByGymID(lifecycleScope, sessionToken, resultFuncionario?.id_ginasio) {resultClientes ->
@@ -156,6 +159,14 @@ class Activity_Funcionario_Clientes_List : AppCompatActivity() {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val root_view = layoutInflater.inflate(R.layout.row_cliente,parent,false)
+
+            var imageClienteView = findViewById<ImageView>(R.id.profile_pic_cliente)
+            if (list_clientes[position].foto_perfil  != null && list_clientes[position].foto_perfil != "null")
+            {
+                val pictureByteArray = Base64.decode(list_clientes[position].foto_perfil, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                imageClienteView.setImageBitmap(bitmap)
+            }
 
             val nome_view = root_view.findViewById<TextView>(R.id.text_view_nome)
             nome_view.text = list_clientes[position].nome
