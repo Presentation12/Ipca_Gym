@@ -116,15 +116,17 @@ class Activity_Funcionario_Cliente_Add : AppCompatActivity() {
             {
                 email = findViewById<EditText>(R.id.editTextClienteMail).text.toString()
             }
+            else emptyFields = true
             if (!findViewById<EditText>(R.id.editTextClienteTelemovel).text.isEmpty())
             {
                 contacto = findViewById<EditText>(R.id.editTextClienteTelemovel).text.toString().toInt()
             }
+            else emptyFields = true
+
             if (!emptyFields)
             {
                 FuncionarioRequests.GetByToken(lifecycleScope,sessionToken){ resultFuncionarioGetByToken ->
                 val RegistClient = Cliente(null,resultFuncionarioGetByToken?.id_ginasio,null,nome,email,contacto,contacto.toString(),null,null,null,null,null,"Ativo")
-
                     ClienteRequests.Post(lifecycleScope,sessionToken,RegistClient){ resultAddClient ->
                         if (resultAddClient == "Error: Post Client fails")
                         {
