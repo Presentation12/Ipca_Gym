@@ -12,10 +12,13 @@
         android:layout_marginTop="20dp"
         android:elevation="10dp"
         android:ems="10"
-        android:hint="5"
+        android:hint="1-5"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:numeric="integer"
         android:outlineProvider="none"
+        android:text="1"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/cardView18"
         app:layout_constraintEnd_toEndOf="@+id/campo_comentario"
         app:layout_constraintStart_toStartOf="@+id/campo_comentario"
@@ -47,41 +50,26 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_avaliar_ginasio"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_avalicao">
+        app:layout_constraintTop_toTopOf="parent">
 
     </androidx.cardview.widget.CardView>
-
-    <Button
-        android:id="@+id/buttom_starts_gym"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="70dp"
-        android:backgroundTint="#002D2D2D"
-        android:text="Voltar"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/button_avaliar_ginasio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_avaliar_ginasio"
-        app:strokeColor="#A5A5A5"
-        app:strokeWidth="2dp" />
 
     <Button
         android:id="@+id/button_avaliar_ginasio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginBottom="100dp"
         android:backgroundTint="#00FFFFFF"
         android:text="Avaliar"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/cardView18"
+        app:layout_constraintStart_toStartOf="@+id/cardView18"
+        app:layout_constraintTop_toBottomOf="@+id/cardView18"
         app:strokeColor="#A5A5A5"
         app:strokeWidth="2dp" />
 

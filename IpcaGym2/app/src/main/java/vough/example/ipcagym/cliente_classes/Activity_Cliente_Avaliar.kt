@@ -2,8 +2,10 @@ package vough.example.ipcagym.cliente_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -31,15 +33,14 @@ class Activity_Cliente_Avaliar : AppCompatActivity(){
         ClienteRequests.GetByToken(lifecycleScope, sessionToken) { resultCliente ->
             if (resultCliente != null) {
 
-                if (resultCliente.foto_perfil != null)
+                if (resultCliente.foto_perfil  != null && resultCliente.foto_perfil != "null")
                 {
-                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
-                    imageView.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    imageView.setImageBitmap(bitmap)
                 }
             }
         }
-
-
 
         var counter = 0
         val spinner = findViewById<Spinner>(R.id.spinner_avalicao)
@@ -114,54 +115,49 @@ class Activity_Cliente_Avaliar : AppCompatActivity(){
 
         imageView.setOnClickListener { spinner.performClick() }
 
-        findViewById<Button>(R.id.buttom_starts_gym).setOnClickListener() {
-            startActivity(
-                Intent(
-                    this@Activity_Cliente_Avaliar,
-                    Activity_Cliente_Account::class.java
-                )
-            )
-        }
-
         findViewById<Button>(R.id.button_avaliar_ginasio).setOnClickListener {
-            val intent =
-                Intent(this@Activity_Cliente_Avaliar, Activity_Cliente_Pagina_Inicial::class.java)
+            val intent = Intent(this@Activity_Cliente_Avaliar, Activity_Cliente_Pagina_Inicial::class.java)
 
             var descricao = ""
             var emptyFields = false
+            var invalid = false
             var rating: Int = -1
 
-            if (!findViewById<EditText>(R.id.campo_comentario).text.isEmpty()) {
+            if (!findViewById<EditText>(R.id.campo_comentario).text.isEmpty())
+            {
                 descricao = findViewById<EditText>(R.id.campo_comentario).text.toString()
-            } else emptyFields = true
-            //TODO: Valores entre 1 e 5
-            if (!findViewById<EditText>(R.id.campo_rating).text.isEmpty()) {
+            }
+            else emptyFields = true
+
+            if (!findViewById<EditText>(R.id.campo_rating).text.isEmpty())
+            {
                 rating = findViewById<EditText>(R.id.campo_rating).text.toString().toInt()
-            } else emptyFields = true
-            if (!emptyFields) {
+            }
+            else if(findViewById<EditText>(R.id.campo_rating).text.toString().toInt() > 5 || findViewById<EditText>(R.id.campo_rating).text.toString().toInt() < 1)
+            {
+                invalid = true
+            }
+            else emptyFields = true
+
+
+
+            if (emptyFields)
+            {
+                Toast.makeText(this@Activity_Cliente_Avaliar, "Error: Empty fields", Toast.LENGTH_LONG).show()
+            }
+            else if (invalid)
+            {
+                Toast.makeText(this@Activity_Cliente_Avaliar, "Error: Invalid Number", Toast.LENGTH_LONG).show()
+            }
+            else{
 
                 ClienteRequests.GetByToken(lifecycleScope, sessionToken) { result ->
                     if (result != null) {
-                        val newClassificacao = Classificacao(
-                            null,
-                            result.id_ginasio,
-                            result.id_cliente,
-                            rating,
-                            descricao,
-                            LocalDateTime.now()
-                        )
+                        val newClassificacao = Classificacao(null, result.id_ginasio, result.id_cliente, rating, descricao, LocalDateTime.now())
 
-                        ClassificacaoRequests.Post(
-                            lifecycleScope,
-                            sessionToken,
-                            newClassificacao
-                        ) { resultInsertClassificacao ->
+                        ClassificacaoRequests.Post(lifecycleScope, sessionToken, newClassificacao) { resultInsertClassificacao ->
                             if (resultInsertClassificacao == "Error: Post Classification fails")
-                                Toast.makeText(
-                                    this@Activity_Cliente_Avaliar,
-                                    "Error on create an rating",
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                Toast.makeText(this@Activity_Cliente_Avaliar, "Error on create an rating", Toast.LENGTH_LONG).show()
                             else {
                                 finish()
                                 startActivity(intent)
@@ -169,11 +165,7 @@ class Activity_Cliente_Avaliar : AppCompatActivity(){
                         }
                     }
                 }
-            } else Toast.makeText(
-                this@Activity_Cliente_Avaliar,
-                "Error: Empty fields",
-                Toast.LENGTH_LONG
-            ).show()
+            }
         }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
