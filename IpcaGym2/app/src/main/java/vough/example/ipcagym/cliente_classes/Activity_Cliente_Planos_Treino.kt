@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Plano_Treino
@@ -31,7 +32,7 @@ class Activity_Cliente_Planos_Treino : AppCompatActivity() {
         //Buscar token
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
-
+        findViewById<TextView>(R.id.textView72).isInvisible = true
         val imageView = findViewById<ImageView>(R.id.profile_pic)
 
         ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
@@ -45,8 +46,14 @@ class Activity_Cliente_Planos_Treino : AppCompatActivity() {
                 }
 
                 PlanoTreinoRequests.GetAllByGinasioID(lifecycleScope, sessionToken, resultCliente.id_ginasio) { resultGym ->
-                    planos_treino_list = resultGym
-                    plano_adapter.notifyDataSetChanged()
+                    if(resultGym.isNotEmpty()){
+                        planos_treino_list = resultGym
+                        plano_adapter.notifyDataSetChanged()
+                    }
+                    else{
+                        findViewById<TextView>(R.id.textView72).text = "This gym doesn't have any plans!"
+                        findViewById<TextView>(R.id.textView72).isInvisible = false
+                    }
                 }
             }
         }

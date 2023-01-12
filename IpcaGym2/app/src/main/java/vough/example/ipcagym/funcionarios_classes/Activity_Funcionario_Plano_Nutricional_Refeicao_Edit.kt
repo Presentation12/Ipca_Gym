@@ -36,7 +36,7 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Edit: AppCompatActivity() 
         val sessionToken = preferences.getString("session_token", null)
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
-            if(result != null) {
+            if(result != null && result.foto_funcionario.toString() != "null") {
                 val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                 findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
@@ -48,7 +48,7 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Edit: AppCompatActivity() 
         findViewById<TextView>(R.id.refeicaoEditHourMinuteValue).text = intent.getIntExtra("hora_minute", -1).toString()
 
         RefeicaoRequests.GetByID(lifecycleScope, sessionToken, intent.getIntExtra("id_refeicao", -1)){ result ->
-            if(result != null) {
+            if(result != null && result.foto_refeicao.toString() != "null") {
                 val pictureByteArray = Base64.decode(result.foto_refeicao, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                 findViewById<ImageView>(R.id.refeicaoEditPhotoValue).setImageBitmap(bitmap)
@@ -154,7 +154,7 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Edit: AppCompatActivity() 
             """
 
             RefeicaoRequests.Patch(lifecycleScope, sessionToken, intent.getIntExtra("id_refeicao", -1) , jsonBody){
-                if(it != "User not found")
+                if(it != "Error: Patch Refeicao fails")
                     Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicao_Edit, "Meal added sucessfully", Toast.LENGTH_LONG).show()
                 else
                     Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicao_Edit, "Error on adding meal", Toast.LENGTH_LONG).show()

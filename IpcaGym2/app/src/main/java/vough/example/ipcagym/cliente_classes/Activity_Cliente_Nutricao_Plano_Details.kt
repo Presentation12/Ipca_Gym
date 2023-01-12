@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
@@ -41,19 +42,19 @@ class Activity_Cliente_Nutricao_Plano_Details : AppCompatActivity() {
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
+        findViewById<TextView>(R.id.textView38).isInvisible = true
         val id_plano_nutricional = intent.getIntExtra("id_plano_nutricional", -1)
         val id_ginasio = intent.getIntExtra("id_ginasio", -1)
         val tipo = intent.getStringExtra("tipo")
         val calorias = intent.getIntExtra("calorias",-1)
-        val foto_plano_nutricional = intent.getStringExtra("foto_plano_nutricional")
 
         val imageView = findViewById<ImageView>(R.id.profile_pic_cliente_nutricao)
 
         ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
 
-            if (resultCliente?.foto_perfil  != null && resultCliente?.foto_perfil != "null")
+            if (resultCliente?.foto_perfil  != null && resultCliente.foto_perfil != "null")
             {
-                val pictureByteArray = Base64.decode(resultCliente?.foto_perfil, Base64.DEFAULT)
+                val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                 imageView.setImageBitmap(bitmap)
             }
@@ -65,9 +66,14 @@ class Activity_Cliente_Nutricao_Plano_Details : AppCompatActivity() {
             findViewById<TextView>(R.id.textViewTipoNutricao).text = resultPlanoSelecionado?.tipo
 
             RefeicaoRequests.GetAllByPlanoID(lifecycleScope,sessionToken,resultPlanoSelecionado?.id_plano_nutricional){ resultRefeicoes ->
-
-                list_refeicoes = resultRefeicoes
-                refeicoes_adapter.notifyDataSetChanged()
+                if(resultRefeicoes.isNotEmpty()){
+                    list_refeicoes = resultRefeicoes
+                    refeicoes_adapter.notifyDataSetChanged()
+                }
+                else{
+                    findViewById<TextView>(R.id.textView38).text = "This plan is empty!"
+                    findViewById<TextView>(R.id.textView38).isInvisible = false
+                }
             }
         }
 

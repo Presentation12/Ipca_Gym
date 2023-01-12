@@ -605,7 +605,7 @@ namespace LayerDAL.Services
         {
             string query = @"
                             select * from dbo.Cliente 
-                            where mail = @mail";
+                            where mail = @mail and estado != 'Inativo'";
 
             try
             {

@@ -39,7 +39,7 @@ class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
         val sessionToken = preferences.getString("session_token", null)
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
-            if(it != null){
+            if(it != null && it.foto_funcionario.toString() != "null"){
                 val pictureByteArray = Base64.decode(it.foto_funcionario, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                 findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)

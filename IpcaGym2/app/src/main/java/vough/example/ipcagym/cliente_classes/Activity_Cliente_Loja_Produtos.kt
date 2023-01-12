@@ -57,8 +57,13 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
 
                 LojaRequests.GetAllByGinasioID(lifecycleScope, sessionToken,resultCliente.id_ginasio){ resultProdutosGinasio ->
                     if(resultProdutosGinasio.isNotEmpty()){
-                        produtos_list = resultProdutosGinasio
-                        produtos_adapter.notifyDataSetChanged()
+                        for(i in resultProdutosGinasio){
+                            if(i.estado_produto == "Ativo"){
+                                produtos_list.add(i)
+                                produtos_adapter.notifyDataSetChanged()
+                            }
+                        }
+
                     }
                 }
             }
@@ -102,9 +107,7 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
                 var newPedido = Pedido(null,resultCliente?.id_cliente, LocalDateTime.now(),"Ativo")
                 PedidoRequests.Post(lifecycleScope,sessionToken,newPedido){ resultAddPedido ->
                     if (resultAddPedido == "Error: Post Pedido fails")
-                    {
                         Toast.makeText(this@Activity_Cliente_Loja_Produtos, "Error: Post Pedido fails", Toast.LENGTH_LONG).show()
-                    }
                     else
                     {
                         // buscar id do pedido criado atraves do ultimo pedido dos pedidos do cliente
@@ -324,18 +327,22 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
 
             //Clicar num rootView abre os detalhes do produto
             root_view.setOnClickListener {
-                val intent = Intent(this@Activity_Cliente_Loja_Produtos, Activity_Cliente_Loja_Produto_Details::class.java)
+                if(produtos_list[position].quantidade_produto != 0){
+                    val intent = Intent(this@Activity_Cliente_Loja_Produtos, Activity_Cliente_Loja_Produto_Details::class.java)
 
-                intent.putExtra("id_produto", produtos_list[position].id_produto)
-                intent.putExtra("id_ginasio", produtos_list[position].id_ginasio)
-                intent.putExtra("nome", produtos_list[position].nome)
-                intent.putExtra("tipo_produto", produtos_list[position].tipo_produto)
-                intent.putExtra("preco", produtos_list[position].preco)
-                intent.putExtra("descricao", produtos_list[position].descricao)
-                intent.putExtra("estado_produto", produtos_list[position].estado_produto)
-                intent.putExtra("quantidade_produto", produtos_list[position].quantidade_produto)
+                    intent.putExtra("id_produto", produtos_list[position].id_produto)
+                    intent.putExtra("id_ginasio", produtos_list[position].id_ginasio)
+                    intent.putExtra("nome", produtos_list[position].nome)
+                    intent.putExtra("tipo_produto", produtos_list[position].tipo_produto)
+                    intent.putExtra("preco", produtos_list[position].preco)
+                    intent.putExtra("descricao", produtos_list[position].descricao)
+                    intent.putExtra("estado_produto", produtos_list[position].estado_produto)
+                    intent.putExtra("quantidade_produto", produtos_list[position].quantidade_produto)
 
-                receiverNewData?.launch(intent)
+                    receiverNewData?.launch(intent)
+                }
+                else
+                    Toast.makeText(this@Activity_Cliente_Loja_Produtos, "Product Unavailable", Toast.LENGTH_LONG).show()
             }
 
             return root_view
@@ -368,11 +375,9 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
             val quantityProdutoView = root_view.findViewById<TextView>(R.id.textViewQt)
             quantityProdutoView.text = carrinho[position].quantidade_pedido.toString()
 
-            //TODO: remover artigos carrinho
             root_view.findViewById<ImageButton>(R.id.imageButtonRemove).setOnClickListener{
                 carrinho.remove(carrinho[position])
                 carrinho_adapter.notifyDataSetChanged()
-                //TODO: total preco
                 var total_price = 0.0
                 for (produto in carrinho) {
                     total_price += (produto.preco?.times(produto.quantidade_pedido!!)!!)

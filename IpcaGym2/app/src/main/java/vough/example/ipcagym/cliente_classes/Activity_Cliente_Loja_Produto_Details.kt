@@ -53,7 +53,7 @@ class Activity_Cliente_Loja_Produto_Details : AppCompatActivity() {
         }
         findViewById<TextView>(R.id.nomeProduto).text = nome
         findViewById<TextView>(R.id.Tipo).text = tipo_produto
-        findViewById<TextView>(R.id.Preco).text = preco.toString()
+        findViewById<TextView>(R.id.Preco).text = String.format("%.2f", preco) + " €"
         findViewById<TextView>(R.id.Descricao).text = descricao
 
         LojaRequests.GetByID(lifecycleScope, sessionToken, id_produto) {
@@ -67,20 +67,24 @@ class Activity_Cliente_Loja_Produto_Details : AppCompatActivity() {
         findViewById<Button>(R.id.buttonBuy).setOnClickListener {
             val newIntent = Intent(this@Activity_Cliente_Loja_Produto_Details, Activity_Cliente_Loja_Produtos::class.java)
 
-            var quantidadeComprada = findViewById<EditText>(R.id.editTextQuantity).text.toString().toInt()
+            val quantidadeComprada = findViewById<EditText>(R.id.editTextQuantity).text.toString().toInt()
 
-            newIntent.putExtra("quantidadeComprada", quantidadeComprada)
-            newIntent.putExtra("id_produto", id_produto)
-            newIntent.putExtra("id_ginasio", id_ginasio)
-            newIntent.putExtra("nome", nome)
-            newIntent.putExtra("tipo_produto", tipo_produto)
-            newIntent.putExtra("preco", preco)
-            newIntent.putExtra("descricao", descricao)
-            newIntent.putExtra("estado_produto", estado_produto)
-            newIntent.putExtra("quantidade_produto", quantidade_produto)
+            if(quantidadeComprada <= quantidade_produto){
+                newIntent.putExtra("quantidadeComprada", quantidadeComprada)
+                newIntent.putExtra("id_produto", id_produto)
+                newIntent.putExtra("id_ginasio", id_ginasio)
+                newIntent.putExtra("nome", nome)
+                newIntent.putExtra("tipo_produto", tipo_produto)
+                newIntent.putExtra("preco", preco)
+                newIntent.putExtra("descricao", descricao)
+                newIntent.putExtra("estado_produto", estado_produto)
+                newIntent.putExtra("quantidade_produto", quantidade_produto)
 
-            setResult(RESULT_OK, newIntent)
-            finish()
+                setResult(RESULT_OK, newIntent)
+                finish()
+            }else{
+                Toast.makeText(this@Activity_Cliente_Loja_Produto_Details, "There are only ${quantidade_produto} left!", Toast.LENGTH_LONG).show()
+            }
         }
 
         findViewById<Button>(R.id.buttonCancel).setOnClickListener{

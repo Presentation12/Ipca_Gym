@@ -40,7 +40,7 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
         val sessionToken = preferences.getString("session_token", null)
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
-            if(result != null) {
+            if(result != null && result.foto_funcionario.toString() != "null") {
                 val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                 findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
@@ -152,7 +152,7 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
             val deleteIntent = Intent()
 
             PlanoNutricionalRequests.DeleteChecked(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_nutricional", -1)){
-                if(it != "User not found")
+                if(it != "Error: Delete Checked Pedido fails")
                     Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, "Plan removed successfully", Toast.LENGTH_LONG).show()
                 else
                     Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, "Error on removing plan", Toast.LENGTH_LONG).show()
@@ -256,7 +256,7 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
 
             rootView.findViewById<Button>(R.id.buttonDeleteRefeicao).setOnClickListener{
                 RefeicaoRequests.Delete(lifecycleScope, sessionToken, listRefeicoes[position].id_refeicao!!){
-                    if(it != "User not found"){
+                    if(it != "Error: Delete Refeicao fails"){
                         RefeicaoRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_nutricional", -1)){
                             if(it.isNotEmpty()){
                                 listRefeicoes = it

@@ -48,21 +48,30 @@
         android:id="@+id/text_view_nome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nome do cliente"
         android:layout_marginStart="10dp"
+        android:elevation="10dp"
+        android:text="Nome do cliente"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toTopOf="@+id/cardView"
-        android:elevation="10dp"/>
+        app:layout_constraintTop_toTopOf="@+id/cardView" />
 
     <TextView
         android:id="@+id/text_view_mail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mail"
         android:layout_marginStart="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView"
+        android:elevation="10dp"
+        android:text="Mail"
         app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_nome"
-        android:elevation="10dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/text_view_nome" />
+
+    <TextView
+        android:id="@+id/text_view_estado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:text="Estado"
+        app:layout_constraintStart_toStartOf="@+id/text_view_mail"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_mail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

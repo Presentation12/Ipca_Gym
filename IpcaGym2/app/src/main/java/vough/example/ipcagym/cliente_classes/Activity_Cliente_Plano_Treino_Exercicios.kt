@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
@@ -37,7 +39,7 @@ class Activity_Cliente_Plano_Treino_Exercicios : AppCompatActivity() {
         val id_ginasio = intent.getIntExtra("id_ginasio", -1)
         val tipo = intent.getStringExtra("tipo")
         val foto_plano_treino = intent.getStringExtra("foto_plano_treino")
-
+        findViewById<TextView>(R.id.textView31).isInvisible = true
         val imageView = findViewById<ImageView>(R.id.profile_pic)
 
         ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
@@ -51,8 +53,16 @@ class Activity_Cliente_Plano_Treino_Exercicios : AppCompatActivity() {
                 }
 
                 ExercicioRequests.GetAllByPlanoID(lifecycleScope, sessionToken, id_plano_treino) { resultExercicio ->
-                    exercicios_plano_list = resultExercicio
-                    exercicio_adapter.notifyDataSetChanged()
+                    if(resultExercicio.isNotEmpty()){
+                        exercicios_plano_list = resultExercicio
+                        exercicio_adapter.notifyDataSetChanged()
+                    }
+                    else{
+                        findViewById<TextView>(R.id.textView31).text = "This plan is empty!"
+                        findViewById<TextView>(R.id.textView31).isInvisible = false
+                    }
+
+
                 }
             }
         }

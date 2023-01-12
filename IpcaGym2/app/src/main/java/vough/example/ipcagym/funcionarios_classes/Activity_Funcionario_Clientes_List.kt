@@ -172,6 +172,8 @@ class Activity_Funcionario_Clientes_List : AppCompatActivity() {
             nome_view.text = list_clientes[position].nome
             val mail_view = root_view.findViewById<TextView>(R.id.text_view_mail)
             mail_view.text = list_clientes[position].mail
+            val estado_view = root_view.findViewById<TextView>(R.id.text_view_estado)
+            estado_view.text = list_clientes[position].estado
 
             //Clicar num rootView abre os detalhes do cliente
             root_view.setOnClickListener {
@@ -188,7 +190,6 @@ class Activity_Funcionario_Clientes_List : AppCompatActivity() {
                 intent.putExtra("peso", list_clientes[position].peso)
                 intent.putExtra("altura", list_clientes[position].altura)
                 intent.putExtra("gordura", list_clientes[position].gordura)
-                intent.putExtra("foto_perfil", list_clientes[position].foto_perfil)
                 intent.putExtra("estado", list_clientes[position].estado)
 
                 startActivity(intent)

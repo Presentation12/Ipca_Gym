@@ -27,7 +27,7 @@ class Activity_Cliente_Login : AppCompatActivity() {
 
         //Caso a token de sessão estiver ativa, passar login a frente
         if (sessionToken != "" && sessionRole == "Cliente") {
-            val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_Loja_Pedidos::class.java)
+            val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_Pagina_Inicial::class.java)
             finish()
             startActivity(intentStart)
         }
@@ -45,8 +45,7 @@ class Activity_Cliente_Login : AppCompatActivity() {
 
                         editor.apply()
 
-                        //val intentStart = Intent(this@Activity_Cliente_Login,Activity_Cliente_Pagina_Inicial::class.java)
-                        val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_Marcacoes::class.java)
+                        val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_Pagina_Inicial::class.java)
                         finish()
                         startActivity(intentStart)
                     }

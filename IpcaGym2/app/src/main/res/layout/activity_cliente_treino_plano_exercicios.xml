@@ -104,4 +104,15 @@
         app:layout_constraintStart_toEndOf="@+id/textViewTitle"
         app:layout_constraintTop_toTopOf="@+id/textViewTitle" />
 
+    <TextView
+        android:id="@+id/textView31"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:textSize="21sp"
+        app:layout_constraintBottom_toBottomOf="@+id/listview_exercicios"
+        app:layout_constraintEnd_toEndOf="@+id/listview_exercicios"
+        app:layout_constraintStart_toStartOf="@+id/listview_exercicios"
+        app:layout_constraintTop_toTopOf="@+id/listview_exercicios" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

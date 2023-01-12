@@ -25,7 +25,7 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Details : AppCompatActivit
 
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
-            if(result != null) {
+            if(result != null && result.foto_funcionario.toString() != "null") {
                 val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                 findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
@@ -36,7 +36,7 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Details : AppCompatActivit
         findViewById<TextView>(R.id.descricaoValueRefeicao).text = intent.getStringExtra("descricao")
 
         RefeicaoRequests.GetByID(lifecycleScope, sessionToken, id_refeicao){
-            if(it != null){
+            if(it != null && it.foto_refeicao.toString() != "null"){
                 val pictureByteArray = Base64.decode(it.foto_refeicao, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                 findViewById<ImageView>(R.id.imageRefeicaoValue).setImageBitmap(bitmap)

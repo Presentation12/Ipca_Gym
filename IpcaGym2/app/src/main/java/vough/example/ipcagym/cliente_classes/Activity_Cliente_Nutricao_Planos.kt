@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
@@ -28,7 +29,7 @@ class Activity_Cliente_Nutricao_Planos : AppCompatActivity() {
         //Buscar token
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
-
+        findViewById<TextView>(R.id.textView73).isInvisible = true
         val imageView = findViewById<ImageView>(R.id.profile_pic_cliente_planos_nutricionais_page)
 
         ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
@@ -41,8 +42,15 @@ class Activity_Cliente_Nutricao_Planos : AppCompatActivity() {
             }
 
             PlanoNutricionalRequests.GetAllByGinasioID(lifecycleScope,sessionToken,resultCliente?.id_ginasio){resultPlanosNutricionais ->
-                list_planos_nutricionais = resultPlanosNutricionais
-                planos_adapter.notifyDataSetChanged()
+                if(resultPlanosNutricionais.isNotEmpty()){
+                    list_planos_nutricionais = resultPlanosNutricionais
+                    planos_adapter.notifyDataSetChanged()
+                }
+                else{
+                    findViewById<TextView>(R.id.textView73).text = "This gym doens't have any plans!"
+                    findViewById<TextView>(R.id.textView73).isInvisible = false
+                }
+
             }
         }
 
@@ -197,7 +205,6 @@ class Activity_Cliente_Nutricao_Planos : AppCompatActivity() {
                 intent.putExtra("id_ginasio", list_planos_nutricionais[position].id_ginasio)
                 intent.putExtra("tipo", list_planos_nutricionais[position].tipo)
                 intent.putExtra("calorias", list_planos_nutricionais[position].calorias)
-                intent.putExtra("foto_plano_nutricional", list_planos_nutricionais[position].foto_plano_nutricional)
 
                 startActivity(intent)
             }

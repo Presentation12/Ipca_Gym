@@ -44,7 +44,6 @@ class Activity_Funcionario_Cliente_Details : AppCompatActivity() {
         val peso : Double? = intent.getDoubleExtra("peso",0.0)
         val altura : Int?  = intent.getIntExtra("altura",-1)
         val gordura : Double?  = intent.getDoubleExtra("gordura",0.0)
-        val foto_perfil = intent.getStringExtra("foto_perfil")
         val estado = intent.getStringExtra("estado")
 
         var imageView = findViewById<ImageView>(R.id.profile_pic_funcionario)
@@ -52,51 +51,54 @@ class Activity_Funcionario_Cliente_Details : AppCompatActivity() {
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken) { resultFuncionario ->
             if(resultFuncionario != null){
 
-                if(resultFuncionario.foto_funcionario != null){
+                if(resultFuncionario.foto_funcionario != null && resultFuncionario.foto_funcionario.toString() == "null"){
                     val pictureByteArray = Base64.decode(resultFuncionario.foto_funcionario, Base64.DEFAULT)
                     val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                     imageView.setImageBitmap(bitmap)
                 }
 
                 AtividadeRequests.GetAllByClienteID(lifecycleScope,sessionToken,id_cliente){ resultAtividades ->
-                    val mes_atual_view = findViewById<TextView>(R.id.textView_month)
+                    if(resultAtividades.isNotEmpty()){
+                        val mes_atual_view = findViewById<TextView>(R.id.textView_month)
 
-                    mes_atual_view.text = LocalDate.now().month.getDisplayName(TextStyle.FULL, Locale.getDefault()).toString()
+                        mes_atual_view.text = LocalDate.now().month.getDisplayName(TextStyle.FULL, Locale.getDefault()).toString()
 
-                    val media_entradas_anual_view = findViewById<TextView>(R.id.textViewMediaEntradasAnuais)
-                    val media_entradas_mensal_view = findViewById<TextView>(R.id.textViewMediaEntradasMensais)
-                    val entradas_mes_atual_view = findViewById<TextView>(R.id.textView_mes_dias)
+                        val media_entradas_anual_view = findViewById<TextView>(R.id.textViewMediaEntradasAnuais)
+                        val media_entradas_mensal_view = findViewById<TextView>(R.id.textViewMediaEntradasMensais)
+                        val entradas_mes_atual_view = findViewById<TextView>(R.id.textView_mes_dias)
 
-                    var countEntradasMesAtual = 0
-                    for (x in resultAtividades)
-                    {
-                        if (x.data_entrada?.month == LocalDate.now().month)
+                        var countEntradasMesAtual = 0
+                        for (x in resultAtividades)
                         {
-                            countEntradasMesAtual++
+                            if (x.data_entrada?.month == LocalDate.now().month)
+                            {
+                                countEntradasMesAtual++
+                            }
                         }
+
+                        entradas_mes_atual_view.text = countEntradasMesAtual.toString()
+
+                        val diffAux = Period.between(resultAtividades.first().data_entrada?.toLocalDate(), LocalDate.now())
+                        val diffDaysMonths = diffAux.toTotalMonths()
+                        var countMesesDesdeEntrada = diffDaysMonths / 30.44
+                        var countAnosDesdeEntrada = countMesesDesdeEntrada / 365
+
+                        if(countMesesDesdeEntrada < 1) countMesesDesdeEntrada++
+                        if(countAnosDesdeEntrada < 1) countAnosDesdeEntrada++
+
+                        media_entradas_anual_view.text = (resultAtividades.count()/countAnosDesdeEntrada).toString()
+                        media_entradas_mensal_view.text = (resultAtividades.count()/countMesesDesdeEntrada).toString()
                     }
-
-                    entradas_mes_atual_view.text = countEntradasMesAtual.toString()
-
-                    val diffAux = Period.between(resultAtividades.first().data_entrada?.toLocalDate(), LocalDate.now())
-                    val diffDaysMonths = diffAux.toTotalMonths()
-                    var countMesesDesdeEntrada = diffDaysMonths / 30.44
-                    var countAnosDesdeEntrada = countMesesDesdeEntrada / 365
-
-                    if(countMesesDesdeEntrada < 1) countMesesDesdeEntrada++
-                    if(countAnosDesdeEntrada < 1) countAnosDesdeEntrada++
-
-                    media_entradas_anual_view.text = (resultAtividades.count()/countAnosDesdeEntrada).toString()
-                    media_entradas_mensal_view.text = (resultAtividades.count()/countMesesDesdeEntrada).toString()
-
                 }
             }
         }
 
-        if(foto_perfil != null){
-            val pictureByteArray = Base64.decode(foto_perfil, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-            findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
+        ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente){ clientResponse ->
+            if(clientResponse != null && clientResponse.toString() == "null"){
+                val pictureByteArray = Base64.decode(clientResponse.foto_perfil, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
+            }
         }
 
         val nome_view = findViewById<TextView>(R.id.textViewNomeCliente)
@@ -129,24 +131,28 @@ class Activity_Funcionario_Cliente_Details : AppCompatActivity() {
 
 
         findViewById<Button>(R.id.button_alterar).setOnClickListener{
+            ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente){ clientResponse ->
+                if(clientResponse != null){
+                    val intent = Intent(this@Activity_Funcionario_Cliente_Details,Activity_Funcionario_Cliente_Edit::class.java)
 
-            val intent = Intent(this@Activity_Funcionario_Cliente_Details,Activity_Funcionario_Cliente_Edit::class.java)
+                    intent.putExtra("id_cliente", id_cliente)
+                    intent.putExtra("id_ginasio", id_ginasio)
+                    intent.putExtra("id_plano_nutricional", id_plano_nutricional)
+                    intent.putExtra("nome", nome)
+                    intent.putExtra("mail", mail)
+                    intent.putExtra("telemovel", telemovel)
+                    intent.putExtra("pass_salt", pass_salt)
+                    intent.putExtra("pass_hash", pass_hash)
+                    intent.putExtra("peso", peso)
+                    intent.putExtra("altura",altura)
+                    intent.putExtra("gordura", gordura)
+                    intent.putExtra("estado", estado)
 
-            intent.putExtra("id_cliente", id_cliente)
-            intent.putExtra("id_ginasio", id_ginasio)
-            intent.putExtra("id_plano_nutricional", id_plano_nutricional)
-            intent.putExtra("nome", nome)
-            intent.putExtra("mail", mail)
-            intent.putExtra("telemovel", telemovel)
-            intent.putExtra("pass_salt", pass_salt)
-            intent.putExtra("pass_hash", pass_hash)
-            intent.putExtra("peso", peso)
-            intent.putExtra("altura",altura)
-            intent.putExtra("gordura", gordura)
-            intent.putExtra("foto_perfil", foto_perfil)
-            intent.putExtra("estado", estado)
-
-            startActivity(intent)
+                    startActivity(intent)
+                }
+                else
+                    Toast.makeText(this@Activity_Funcionario_Cliente_Details, "Error on editing client!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         findViewById<Button>(R.id.button_apagar).setOnClickListener{

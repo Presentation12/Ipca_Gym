@@ -41,7 +41,7 @@ class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
         val sessionToken = preferences.getString("session_token", null)
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
-            if(result != null) {
+            if(result != null && result.foto_funcionario.toString() != "null") {
                 val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                 findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
@@ -144,7 +144,7 @@ class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
                                     stringFoto
                                 )
                             ) { response ->
-                                if (response == "User not found")
+                                if (response == "Error: Post Pedido fails")
                                     Toast.makeText(
                                         this@Activity_Funcionario_Planos_Nutricionais_Add,
                                         "Error on adding plan",

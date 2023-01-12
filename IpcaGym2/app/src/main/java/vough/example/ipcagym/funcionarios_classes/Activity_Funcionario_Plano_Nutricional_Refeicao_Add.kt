@@ -177,7 +177,7 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Add : AppCompatActivity() 
             """
 
             RefeicaoRequests.Post(lifecycleScope, sessionToken, jsonBody){
-                if(it != "User not found")
+                if(it != "Error: Post Refeicao fails")
                     Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicao_Add, "Meal added sucessfully", Toast.LENGTH_LONG).show()
                 else
                     Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicao_Add, "Error on adding meal", Toast.LENGTH_LONG).show()

@@ -36,7 +36,6 @@ class Activity_Funcionario_Cliente_Edit: AppCompatActivity() {
         var peso : Double? = intent.getDoubleExtra("peso",0.0)
         var altura : Int?  = intent.getIntExtra("altura",-1)
         var gordura : Double?  = intent.getDoubleExtra("gordura",0.0)
-        var foto_perfil = intent.getStringExtra("foto_perfil")
         var estado = intent.getStringExtra("estado")
 
         var counter = 0
@@ -46,7 +45,7 @@ class Activity_Funcionario_Cliente_Edit: AppCompatActivity() {
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultFuncionario ->
             // foto funcionario
-            if(resultFuncionario?.foto_funcionario != null){
+            if(resultFuncionario?.foto_funcionario != null && resultFuncionario?.foto_funcionario.toString() != "null"){
                 val pictureByteArray = Base64.decode(resultFuncionario.foto_funcionario, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                 imageView.setImageBitmap(bitmap)
@@ -119,16 +118,18 @@ class Activity_Funcionario_Cliente_Edit: AppCompatActivity() {
         }
         imageView.setOnClickListener { spinner.performClick() }
 
+        findViewById<TextView>(R.id.textViewNomeCliente).text = nome
         findViewById<TextView>(R.id.editTextWeight).hint = "${peso} Kg"
         findViewById<TextView>(R.id.editTextHeight).hint = "${altura} Cm"
         findViewById<TextView>(R.id.editTextFat).hint = "${gordura} %"
 
 
-        // foto cliente
-        if(foto_perfil != null){
-            val pictureByteArray = Base64.decode(foto_perfil, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-            findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
+        ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente){
+            if(it != null && it.foto_perfil.toString() != "null"){
+                val pictureByteArray = Base64.decode(it.foto_perfil, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
+            }
         }
 
         // butao de guardar cliente editado, e volta a página ida lista de clientes
@@ -153,16 +154,20 @@ class Activity_Funcionario_Cliente_Edit: AppCompatActivity() {
         if(altura == 0) altura = null
         if(gordura.toString() == "NaN") gordura = null
 
-            var editCliente = Cliente(id_cliente,id_ginasio,id_plano_nutricional,nome,mail,telemovel,pass_salt,pass_hash,peso,altura,gordura,foto_perfil,estado)
-            ClienteRequests.Patch(lifecycleScope,sessionToken,id_cliente, editCliente) { resultEditcliente ->
-                if (resultEditcliente == "Error: Patch Client fails")
-                {
-                    Toast.makeText(this@Activity_Funcionario_Cliente_Edit, "Error on editting cliente measurements", Toast.LENGTH_LONG).show()
-                }
-                else
-                {
-                    finish()
-                    startActivity(intent)
+            ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente){ response ->
+                if(response != null){
+                    val editCliente = Cliente(id_cliente,id_ginasio,id_plano_nutricional,nome,mail,telemovel,pass_salt,pass_hash,peso,altura,gordura,response.foto_perfil,estado)
+                    ClienteRequests.Patch(lifecycleScope,sessionToken,id_cliente, editCliente) { resultEditcliente ->
+                        if (resultEditcliente == "Error: Patch Client fails")
+                        {
+                            Toast.makeText(this@Activity_Funcionario_Cliente_Edit, "Error on editting cliente measurements", Toast.LENGTH_LONG).show()
+                        }
+                        else
+                        {
+                            finish()
+                            startActivity(intent)
+                        }
+                    }
                 }
             }
         }

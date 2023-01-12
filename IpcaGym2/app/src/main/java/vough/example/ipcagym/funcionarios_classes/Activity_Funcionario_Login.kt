@@ -23,13 +23,11 @@ class Activity_Funcionario_Login : AppCompatActivity() {
         val sessionRole = preferences.getString("session_role", null)
 
         if(sessionToken != "" && sessionRole != "Cliente"){
-            //val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Pagina_Inicial::class.java)
-            val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Loja_Produtos::class.java)
+            val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Planos_Nutricionais::class.java)
             finish()
             startActivity(intentStart)
         }
 
-        //TODO: CERTIFICAR QUE O QUE O CODE NÃO SEJA LONG (VER TAMANHO DO CODE)
         val code = findViewById<AppCompatEditText>(R.id.mail).text
         val pass = findViewById<AppCompatEditText>(R.id.password).text
 
@@ -41,24 +39,26 @@ class Activity_Funcionario_Login : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             else {
-                FuncionarioRequests.loginFuncionario(lifecycleScope, code.toString(), pass.toString()) { result ->
-                    if (result != null && result.role != "Wrong") {
-                        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-                        val editor = preferences.edit()
-                        editor.putString("session_token", result.token)
-                        editor.putString("session_role", result.role)
+                if(code.toString().toInt() < 10000000){
+                    FuncionarioRequests.loginFuncionario(lifecycleScope, code.toString(), pass.toString()) { result ->
+                        if (result != null && result.role != "Wrong") {
+                            val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+                            val editor = preferences.edit()
+                            editor.putString("session_token", result.token)
+                            editor.putString("session_role", result.role)
 
-                        editor.apply()
+                            editor.apply()
 
-                        val intentStart = Intent(this@Activity_Funcionario_Login,Activity_Funcionario_Pagina_Inicial::class.java)
-                        finish()
-                        startActivity(intentStart)
-                    }
-                    else if(result.role == "Wrong"){
-                        Toast.makeText(this@Activity_Funcionario_Login, "Wrong credentials", Toast.LENGTH_LONG).show()
-                    }
-                    else {
-                        Toast.makeText(this@Activity_Funcionario_Login, "Wrong credentials", Toast.LENGTH_LONG).show()
+                            val intentStart = Intent(this@Activity_Funcionario_Login,Activity_Funcionario_Pagina_Inicial::class.java)
+                            finish()
+                            startActivity(intentStart)
+                        }
+                        else if(result.role == "Wrong"){
+                            Toast.makeText(this@Activity_Funcionario_Login, "Wrong credentials", Toast.LENGTH_LONG).show()
+                        }
+                        else {
+                            Toast.makeText(this@Activity_Funcionario_Login, "Wrong credentials", Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
             }
