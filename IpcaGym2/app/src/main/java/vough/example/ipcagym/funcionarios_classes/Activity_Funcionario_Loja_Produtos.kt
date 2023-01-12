@@ -44,7 +44,14 @@ class Activity_Funcionario_Loja_Produtos : AppCompatActivity() {
 
                 LojaRequests.GetAllByGinasioID(lifecycleScope,sessionToken,resultFuncionario.id_ginasio){ resultProdutosGinasio ->
                     if(resultProdutosGinasio.isNotEmpty()){
-                        produtos_list = resultProdutosGinasio
+
+                        for(produto in resultProdutosGinasio)
+                        {
+                            if(produto.estado_produto == "Ativo")
+                            {
+                                produtos_list.add(produto)
+                            }
+                        }
                         produtos_adapter.notifyDataSetChanged()
                     }
                 }
