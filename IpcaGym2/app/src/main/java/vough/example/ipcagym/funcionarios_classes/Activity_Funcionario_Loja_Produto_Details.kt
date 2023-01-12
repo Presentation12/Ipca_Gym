@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Loja
 import vough.example.ipcagym.requests.FuncionarioRequests
 import vough.example.ipcagym.requests.LojaRequests
 
@@ -69,17 +70,22 @@ class Activity_Funcionario_Loja_Produto_Details : AppCompatActivity() {
         quantidadeProduto.text = quantidade_produto.toString()
 
         findViewById<Button>(R.id.buttonRemoverBtn).setOnClickListener{
-            val intent = Intent(this@Activity_Funcionario_Loja_Produto_Details, Activity_Funcionario_Loja_Produtos::class.java)
-            LojaRequests.Delete(lifecycleScope,sessionToken,id_produto){ resultProdutoRemove ->
-                //TODO: ESTA A REMOVER TOTALMENTE, CONFLITO COM FK DE PEDIDOS
-                if (resultProdutoRemove == "Error: Delete Product fails")
-                    Toast.makeText(this@Activity_Funcionario_Loja_Produto_Details, "Error: Remove fail", Toast.LENGTH_LONG).show()
-                else
-                {
-                    finish()
 
-                    //TODO: INTENT PARA APAGAR, COMEÇAR NO ROOTVIEW.ONCLICKLISTENER{}
-                    startActivity(intent)
+            LojaRequests.GetByID(lifecycleScope, sessionToken, id_produto){
+                if(it != null){
+                    LojaRequests.Patch(lifecycleScope,sessionToken,id_produto,
+                        Loja(id_produto, id_ginasio, nome, tipo_produto, preco, descricao, "Inativo", it.foto_produto, quantidade_produto)
+                    ){ resultProdutoRemove ->
+                        val intent = Intent(this@Activity_Funcionario_Loja_Produto_Details, Activity_Funcionario_Loja_Produtos::class.java)
+
+                        if (resultProdutoRemove == "Error: Delete Product fails")
+                            Toast.makeText(this@Activity_Funcionario_Loja_Produto_Details, "Error: Remove fail", Toast.LENGTH_LONG).show()
+                        else
+                        {
+                            finish()
+                            startActivity(intent)
+                        }
+                    }
                 }
             }
         }

@@ -169,6 +169,9 @@ class Activity_Funcionario_Loja_Produtos : AppCompatActivity() {
             val nome_produto_view = root_view.findViewById<TextView>(R.id.text_view_nome)
             nome_produto_view.text = produtos_list[position].nome
 
+            val preco_produto_view = root_view.findViewById<TextView>(R.id.text_view_preco)
+            preco_produto_view.text = String.format("%.2f", produtos_list[position].preco) + " €"
+
             if (produtos_list[position].foto_produto.toString() != "null")
             {
                 val pictureByteArray = Base64.decode(produtos_list[position].foto_produto, Base64.DEFAULT)
