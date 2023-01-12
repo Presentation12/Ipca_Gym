@@ -2,8 +2,10 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -23,14 +25,13 @@ class Activity_Funcionario_Loja_Produto_Add : AppCompatActivity() {
         val sessionToken = preferences.getString("session_token", null)
 
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
+
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken) { resultFuncionario ->
-            if(resultFuncionario != null)
+            if(resultFuncionario != null && resultFuncionario.foto_funcionario.toString() != "null")
             {
-                if (resultFuncionario?.foto_funcionario != null)
-                {
-                    val imageUri: Uri = Uri.parse(resultFuncionario.foto_funcionario)
-                    imageView.setImageURI(imageUri)
-                }
+                val pictureByteArray = Base64.decode(resultFuncionario.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                imageView.setImageBitmap(bitmap)
             }
         }
 
@@ -129,8 +130,8 @@ class Activity_Funcionario_Loja_Produto_Add : AppCompatActivity() {
             var precoProduto : Double = 0.0
             var descricaoProduto : String = ""
             var quantidadeProduto : Int = 0
-            //TODO insert foto
-            var fotoProduto : String = ""
+
+            var fotoProduto : String? = null
 
             var emptyField = false
 

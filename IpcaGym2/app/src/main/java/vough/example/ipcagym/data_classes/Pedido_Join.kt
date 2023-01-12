@@ -61,7 +61,7 @@ class Pedido_Join {
         jsonObj.put("estado_pedido", estado_pedido)
         jsonObj.put("id_produto", id_produto)
         jsonObj.put("id_ginasio", id_ginasio)
-        jsonObj.put("nome", nome)
+        jsonObj.put("nome_produto", nome)
         jsonObj.put("tipo_produto", tipo_produto)
         jsonObj.put("preco", preco)
         jsonObj.put("descricao", descricao)
@@ -82,10 +82,10 @@ class Pedido_Join {
                 jsonObject.getString("estado_pedido"),
                 jsonObject.getInt("id_produto"),
                 jsonObject.getInt("id_ginasio"),
-                jsonObject.getString("nome"),
+                jsonObject.getString("nome_produto"),
                 jsonObject.getString("tipo_produto"),
-                jsonObject.getDouble("preco"),
-                jsonObject.getString("descricao"),
+                jsonObject.getDouble("preco_produto"),
+                jsonObject.getString("descricao_produto"),
                 jsonObject.getString("estado_produto"),
                 jsonObject.getString("foto_produto"),
                 jsonObject.getInt("quantidade_produto"),

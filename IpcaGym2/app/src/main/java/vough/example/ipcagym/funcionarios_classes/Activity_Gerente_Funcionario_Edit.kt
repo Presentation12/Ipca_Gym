@@ -44,18 +44,14 @@ class Activity_Gerente_Funcionario_Edit : AppCompatActivity() {
         val pass_salt = intent.getStringExtra("pass_salt")
         val pass_hash = intent.getStringExtra("pass_hash")
         val estado = intent.getStringExtra("estado")
-        var foto_funcionario = intent.getStringExtra("foto_funcionario")
 
         val imageView = findViewById<ImageView>(R.id.profile_pic)
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
-            if(resultGerente != null){
-                if (resultGerente.foto_funcionario  != null && resultGerente.foto_funcionario != "null")
-                {
-                    val pictureByteArray = Base64.decode(resultGerente.foto_funcionario, Base64.DEFAULT)
-                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-                    imageView.setImageBitmap(bitmap)
-                }
+            if(resultGerente != null && resultGerente.foto_funcionario.toString() != "null"){
+                val pictureByteArray = Base64.decode(resultGerente.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                imageView.setImageBitmap(bitmap)
             }
         }
 
@@ -112,19 +108,23 @@ class Activity_Gerente_Funcionario_Edit : AppCompatActivity() {
         }
 
         val funcionario_editado_image_view = findViewById<ImageView>(R.id.profile_funcionario_pic)
-        if (foto_funcionario  != null && foto_funcionario != "null")
-        {
-            val pictureByteArray = Base64.decode(foto_funcionario, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-            funcionario_editado_image_view.setImageBitmap(bitmap)
+
+        FuncionarioRequests.GetByID(lifecycleScope, sessionToken, id_funcionario){
+            if (it != null && it.foto_funcionario.toString() != "null")
+            {
+                val pictureByteArray = Base64.decode(it.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                funcionario_editado_image_view.setImageBitmap(bitmap)
+            }
         }
+
 
         val editNomeFuncionario = findViewById<TextView>(R.id.editTextNomeFuncionario)
         editNomeFuncionario.hint = nome
         val editCodigoFuncionario = findViewById<TextView>(R.id.editTextCodigoFuncionario)
         editCodigoFuncionario.hint = codigo.toString()
         val editIsAdmin = findViewById<CheckBox>(R.id.checkBoxIsAdminEdit)
-        if(is_admin == true) editIsAdmin.isChecked = true
+        if(is_admin) editIsAdmin.isChecked = true
 
         findViewById<ImageButton>(R.id.buttonImportPhoto).setOnClickListener{
             if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
@@ -140,9 +140,13 @@ class Activity_Gerente_Funcionario_Edit : AppCompatActivity() {
         findViewById<Button>(R.id.buttonSave).setOnClickListener {
             val intent = Intent(this@Activity_Gerente_Funcionario_Edit, Activity_Gerente_Funcionarios_List::class.java)
 
-            val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
-            val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
-            val aux2 = aux.replace("\n", "")
+            var stringPhoto : String? = null
+
+            if(imageBitmapped != null){
+                val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
+                val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
+                stringPhoto = aux.replace("\n", "")
+            }
 
             if (!findViewById<EditText>(R.id.editTextNomeFuncionario).text.isEmpty())
             {
@@ -154,9 +158,8 @@ class Activity_Gerente_Funcionario_Edit : AppCompatActivity() {
             }
             is_admin = editIsAdmin.isChecked
 
-            if(aux2.isNotEmpty()) foto_funcionario = aux2
 
-            val funcionarioEditado = Funcionario(id_funcionario,id_ginasio,nome,is_admin,codigo,pass_salt,pass_hash,estado, foto_funcionario)
+            val funcionarioEditado = Funcionario(id_funcionario,id_ginasio,nome,is_admin,codigo,pass_salt,pass_hash,estado, stringPhoto)
             FuncionarioRequests.Patch(lifecycleScope,sessionToken,id_funcionario,funcionarioEditado){ resultEditFuncionario ->
                 if (resultEditFuncionario == "Error: Patch Employee fails")
                 {

@@ -13,7 +13,7 @@ class Pedido {
     constructor(
         id_pedido: Int?,
         id_cliente: Int?,
-        data_pedido: LocalDateTime,
+        data_pedido: LocalDateTime?,
         estado_pedido: String?
 
     ) {

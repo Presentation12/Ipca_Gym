@@ -733,9 +733,7 @@ namespace LayerDAL.Services
                 if (horarioFuncionario.Count != 0)
                 {
                     foreach (HorarioFuncionario dia in horarioFuncionario)
-                    {
                         HorarioFuncionarioService.DeleteService(sqlDataSource, dia.id_funcionario_horario);
-                    }
                 }
                 
                 // Inativar funcionário
@@ -744,7 +742,7 @@ namespace LayerDAL.Services
                 if (funcionario == null || funcionario.is_admin == true) return false;
 
                 funcionario.estado = "Inativo";
-                Console.WriteLine("boas");
+                
                 return await PatchService(sqlDataSource, funcionario, targetID);
             }
             catch (InvalidOperationException ex)

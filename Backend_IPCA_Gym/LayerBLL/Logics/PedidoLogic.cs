@@ -586,7 +586,7 @@ namespace LayerBLL.Logics
             {
                 List<Pedido> pedidos = await PedidoService.GetAllByGinasioIDService(sqlDataSource, targetID);
 
-                if (pedidos.Count != 0)
+                if (pedidos != null && pedidos.Count != 0)
                 {
                     response.StatusCode = StatusCodes.SUCCESS;
                     response.Message = "Lista de pedidos obtida com sucesso!";

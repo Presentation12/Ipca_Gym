@@ -2,9 +2,11 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -43,26 +45,28 @@ class Activity_Funcionario_Loja_Pedido_Details : AppCompatActivity() {
         val data_pedido = intent.getStringExtra("data_pedido")
         var estado_pedido = intent.getStringExtra("estado_pedido")
 
-        var data_pedido_formatado = LocalDateTime.parse(data_pedido, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        var data_pedido_formatado = LocalDateTime.parse(data_pedido, date_time_formatter)
 
         val imageView = findViewById<ImageView>(R.id.profile_pic)
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultFuncionario ->
             if (resultFuncionario != null)
             {
-                if (resultFuncionario.foto_funcionario != null)
+                if (resultFuncionario.foto_funcionario != null && resultFuncionario?.foto_funcionario.toString() != "null")
                 {
-                    val imageUri: Uri = Uri.parse(resultFuncionario.foto_funcionario)
-                    imageView.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultFuncionario.foto_funcionario, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
                 }
 
                 ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente){ resultCliente ->
 
                     var imageViewCliente = findViewById<ImageView>(R.id.profile_pic_user)
-                    if (resultCliente?.foto_perfil != null)
+                    if (resultCliente?.foto_perfil != null && resultCliente?.foto_perfil.toString() != "null")
                     {
-                        val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
-                        imageViewCliente.setImageURI(imageUri)
+                        val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                        imageViewCliente.setImageBitmap(bitmap)
                     }
                     findViewById<TextView>(R.id.textViewNomeUser).text =  resultCliente?.nome
                 }
@@ -77,6 +81,13 @@ class Activity_Funcionario_Loja_Pedido_Details : AppCompatActivity() {
                                 list_produtos_pedido.add(pedidoLoja)
                             }
                         }
+
+                        var total_price = 0.0
+                        for (produto in list_produtos_pedido) {
+                            total_price += produto.preco!!
+                        }
+                        findViewById<TextView>(R.id.textViewTotalPreco).text = String.format("%.2f", total_price) + " €"
+
                         produto_pedido_adapter.notifyDataSetChanged()
                     }
                 }
@@ -143,12 +154,6 @@ class Activity_Funcionario_Loja_Pedido_Details : AppCompatActivity() {
         val list_view_produtos_pedido = findViewById<ListView>(R.id.listviewProdutos)
         list_view_produtos_pedido.adapter = produto_pedido_adapter
 
-        var total_price = 0.0
-        for (produto in list_produtos_pedido) {
-            total_price += produto.preco!!
-        }
-        findViewById<TextView>(R.id.textViewTotalPreco).text = total_price.toString()
-
         var botao_entregar = findViewById<Button>(R.id.buttonEntregar)
         if(estado_pedido == "Ativo") botao_entregar.visibility = View.VISIBLE
         botao_entregar.setOnClickListener {
@@ -203,6 +208,7 @@ class Activity_Funcionario_Loja_Pedido_Details : AppCompatActivity() {
                 else -> false
             }
         }
+
     }
 
     inner class AdapterProdutoPedido : BaseAdapter(){
@@ -229,7 +235,7 @@ class Activity_Funcionario_Loja_Pedido_Details : AppCompatActivity() {
             pedido_tipo_view.text = list_produtos_pedido[position].tipo_produto
 
             val pedido_preco_view = root_view.findViewById<TextView>(R.id.PrecoPedido)
-            pedido_preco_view.text = list_produtos_pedido[position].preco.toString()
+            pedido_preco_view.text =  String.format("%.2f", list_produtos_pedido[position].preco) + " €"
 
             val pedido_descricao_view = root_view.findViewById<TextView>(R.id.DescricaoPedido)
             pedido_descricao_view.text = list_produtos_pedido[position].descricao

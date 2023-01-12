@@ -209,8 +209,8 @@ namespace LayerDAL.Services
         public static async Task<bool> PostService(string sqlDataSource, Loja newProduto)
         {
             string query = @"
-                            insert into dbo.Loja (id_ginasio, nome, tipo_produto, preco, descricao, estado, foto_produto, quantidade_produto)
-                            values (@id_ginasio, @nome, @tipo_produto, @preco, @descricao, @estado, @foto_produto, @quantidade_produto)";
+                            insert into dbo.Loja (id_ginasio, nome, tipo_produto, preco, descricao, estado_produto, foto_produto, quantidade_produto)
+                            values (@id_ginasio, @nome, @tipo_produto, @preco, @descricao, @estado_produto, @foto_produto, @quantidade_produto)";
 
             try
             {

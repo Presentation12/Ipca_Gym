@@ -36,16 +36,18 @@ class Activity_Funcionario_Marcacao_Remarcar : AppCompatActivity() {
         val data_marcacao = intent.getStringExtra("data_marcacao")
         val estado = intent.getStringExtra("estado")
         val descricao = intent.getStringExtra("descricao")
+        val imageView = findViewById<ImageView>(R.id.profile_pic_remarcacao_page)
+
+        var data_marcacao_formatado = LocalDateTime.parse(data_marcacao, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
             if(result != null) {
                 val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-                findViewById<ImageView>(R.id.profile_pic_activity).setImageBitmap(bitmap)
+                imageView.setImageBitmap(bitmap)
             }
         }
 
-        val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
 
         var counter = 0
         val spinner = findViewById<Spinner>(R.id.spinner)
@@ -96,11 +98,12 @@ class Activity_Funcionario_Marcacao_Remarcar : AppCompatActivity() {
         }
         imageView.setOnClickListener{ spinner.performClick() }
 
-        findViewById<TextView>(R.id.textViewOldDate).text = data_marcacao.toString().format(date_time_formatter)
+        findViewById<TextView>(R.id.textViewOldDate).text = data_marcacao_formatado?.format(date_time_formatter)
 
         findViewById<Button>(R.id.buttonMark).setOnClickListener{
+            val dataNew = findViewById<EditText>(R.id.editTextDate).text.toString()
 
-            val rescheduleMarcacao = Marcacao(id_marcacao, id_funcionario, id_cliente, LocalDateTime.parse(data_marcacao!! + ":00", DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")), descricao, estado)
+            val rescheduleMarcacao = Marcacao(id_marcacao, id_funcionario, id_cliente, LocalDateTime.parse(dataNew + ":00", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), descricao, estado)
             MarcacaoRequests.PatchRescheduleMarcacao(lifecycleScope, sessionToken, id_marcacao, rescheduleMarcacao) { result ->
                 if(result != "Error: Patch Cancel Marcacao Checked Product fails"){
                     finish()

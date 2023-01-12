@@ -222,8 +222,8 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val root_view = layoutInflater.inflate(R.layout.row_funcionario,parent,false)
 
-            val funcionario_image_view = findViewById<ImageView>(R.id.profile_pic)
-            if (list_funcionario[position].foto_funcionario  != null && list_funcionario[position].foto_funcionario != "null")
+            val funcionario_image_view = root_view.findViewById<ImageView>(R.id.profile_pic_activity)
+            if (list_funcionario[position].foto_funcionario.toString() != "null")
             {
                 val pictureByteArray = Base64.decode(list_funcionario[position].foto_funcionario, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
@@ -247,7 +247,6 @@ class Activity_Gerente_Funcionarios_List : AppCompatActivity() {
                 intent.putExtra("pass_salt", list_funcionario[position].pass_salt)
                 intent.putExtra("pass_hash", list_funcionario[position].pass_hash)
                 intent.putExtra("estado", list_funcionario[position].estado)
-                intent.putExtra("foto_funcionario", list_funcionario[position].foto_funcionario)
 
                 startActivity(intent)
             }

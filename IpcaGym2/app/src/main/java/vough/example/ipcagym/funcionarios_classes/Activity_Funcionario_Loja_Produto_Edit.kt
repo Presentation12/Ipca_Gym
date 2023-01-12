@@ -2,8 +2,10 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -28,14 +30,14 @@ class Activity_Funcionario_Loja_Produto_Edit : AppCompatActivity() {
         var preco = intent.getDoubleExtra("preco",0.0)
         var descricao = intent.getStringExtra("descricao")
         var estado_produto = intent.getStringExtra("estado_produto")
-        var foto_produto = intent.getStringExtra("foto_produto")
         var quantidade_produto = intent.getIntExtra("quantidade_produto",-1)
 
-        if (foto_produto != null)
-        {
-            val cliente_image_view = findViewById<ImageView>(R.id.profile_pic)
-            val imageUri: Uri = Uri.parse(foto_produto)
-            cliente_image_view.setImageURI(imageUri)
+        LojaRequests.GetByID(lifecycleScope, sessionToken, id_produto){
+            if(it != null && it.foto_produto.toString() != "null"){
+                val pictureByteArray = Base64.decode(it.foto_produto, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
+            }
         }
 
         // butao de guardar produto editado, e volta para a página dos detalhes desse
@@ -63,16 +65,20 @@ class Activity_Funcionario_Loja_Produto_Edit : AppCompatActivity() {
                 quantidade_produto = findViewById<EditText>(R.id.editTextQuantidadeProduto).text.toString().toInt()
             }
 
-            var editProduto = Loja(id_produto,id_ginasio,nome,tipo_produto,preco,descricao,estado_produto,foto_produto,quantidade_produto)
-            LojaRequests.Patch(lifecycleScope,sessionToken,id_produto,editProduto){ resultProdutoEditado ->
-                if (resultProdutoEditado == "Error: Patch Product fails")
-                {
-                    Toast.makeText(this@Activity_Funcionario_Loja_Produto_Edit, "Error: Edit fail", Toast.LENGTH_LONG).show()
-                }
-                else
-                {
-                    finish()
-                    startActivity(intent)
+            LojaRequests.GetByID(lifecycleScope, sessionToken, id_produto){
+                if(it != null){
+                    var editProduto = Loja(id_produto,id_ginasio,nome,tipo_produto,preco,descricao,estado_produto,it.foto_produto,quantidade_produto)
+                    LojaRequests.Patch(lifecycleScope,sessionToken,id_produto,editProduto){ resultProdutoEditado ->
+                        if (resultProdutoEditado == "Error: Patch Product fails")
+                        {
+                            Toast.makeText(this@Activity_Funcionario_Loja_Produto_Edit, "Error: Edit fail", Toast.LENGTH_LONG).show()
+                        }
+                        else
+                        {
+                            setResult(RESULT_OK, intent);
+                            finish()
+                        }
+                    }
                 }
             }
         }

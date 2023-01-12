@@ -2,8 +2,10 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -21,26 +23,30 @@ class Activity_Funcionario_Loja_Produtos : AppCompatActivity() {
     var produtos_list = arrayListOf<Loja>()
     var produtos_adapter = AdapterProduto()
 
-    val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-    val sessionToken = preferences.getString("session_token", null)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_loja_produtos_list)
 
+        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val sessionToken = preferences.getString("session_token", null)
+
         val imageView = findViewById<ImageView>(R.id.profile_pic)
+
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken) { resultFuncionario ->
             if(resultFuncionario != null)
             {
-                if (resultFuncionario?.foto_funcionario != null)
+                if (resultFuncionario.foto_funcionario.toString() != "null")
                 {
-                    val imageUri: Uri = Uri.parse(resultFuncionario.foto_funcionario)
-                    imageView.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultFuncionario.foto_funcionario, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
                 }
 
-                LojaRequests.GetAllByGinasioID(lifecycleScope,sessionToken,resultFuncionario.id_funcionario){ resultProdutosGinasio ->
-                    produtos_list = resultProdutosGinasio
-                    produtos_adapter.notifyDataSetChanged()
+                LojaRequests.GetAllByGinasioID(lifecycleScope,sessionToken,resultFuncionario.id_ginasio){ resultProdutosGinasio ->
+                    if(resultProdutosGinasio.isNotEmpty()){
+                        produtos_list = resultProdutosGinasio
+                        produtos_adapter.notifyDataSetChanged()
+                    }
                 }
             }
         }
@@ -92,6 +98,7 @@ class Activity_Funcionario_Loja_Produtos : AppCompatActivity() {
                 spinner.setSelection(3)
             }
         }
+
         imageView.setOnClickListener {
             spinner.performClick()
         }
@@ -162,11 +169,11 @@ class Activity_Funcionario_Loja_Produtos : AppCompatActivity() {
             val nome_produto_view = root_view.findViewById<TextView>(R.id.text_view_nome)
             nome_produto_view.text = produtos_list[position].nome
 
-            if (produtos_list[position].foto_produto != null)
+            if (produtos_list[position].foto_produto.toString() != "null")
             {
-                val produto_image_view = root_view.findViewById<ImageView>(R.id.profile_pic)
-                val imageUri: Uri = Uri.parse(produtos_list[position].foto_produto)
-                produto_image_view.setImageURI(imageUri)
+                val pictureByteArray = Base64.decode(produtos_list[position].foto_produto, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                root_view.findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
             }
 
             //Clicar num rootView abre os detalhes do produto
@@ -180,7 +187,6 @@ class Activity_Funcionario_Loja_Produtos : AppCompatActivity() {
                 intent.putExtra("preco", produtos_list[position].preco)
                 intent.putExtra("descricao", produtos_list[position].descricao)
                 intent.putExtra("estado_produto", produtos_list[position].estado_produto)
-                intent.putExtra("foto_produto", produtos_list[position].foto_produto)
                 intent.putExtra("quantidade_produto", produtos_list[position].quantidade_produto)
 
                 startActivity(intent)

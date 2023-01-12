@@ -2,12 +2,15 @@ package vough.example.ipcagym.funcionarios_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
@@ -30,6 +33,7 @@ class Activity_Funcionario_Loja_Pedidos : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_loja_pedidos_list)
+        findViewById<TextView>(R.id.textView22).isInvisible = true
 
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         sessionToken = preferences.getString("session_token", null)
@@ -41,18 +45,22 @@ class Activity_Funcionario_Loja_Pedidos : AppCompatActivity() {
             {
                 if (resultFuncionario.foto_funcionario != null)
                 {
-                    val imageUri: Uri = Uri.parse(resultFuncionario.foto_funcionario)
-                    imageView.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultFuncionario.foto_funcionario, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
                 }
 
                 PedidoRequests.GetAllByGinasioID(lifecycleScope, sessionToken, resultFuncionario.id_ginasio){ resultPedidos ->
-                    if (resultPedidos.count() > 0)
+                    if (resultPedidos.isNotEmpty())
                     {
                         list_pedidos = resultPedidos
                         pedidos_adapter.notifyDataSetChanged()
                     }
+                    else{
+                        findViewById<TextView>(R.id.textView22).isInvisible = false
+                        findViewById<TextView>(R.id.textView22).text = "There are no requests!"
+                    }
                 }
-
             }
         }
 
@@ -103,6 +111,8 @@ class Activity_Funcionario_Loja_Pedidos : AppCompatActivity() {
                 spinner.setSelection(3)
             }
         }
+
+        imageView.setOnClickListener{ spinner.performClick() }
 
         val list_view_pedidos = findViewById<ListView>(R.id.listviewPedidos)
         list_view_pedidos.adapter = pedidos_adapter
@@ -161,10 +171,11 @@ class Activity_Funcionario_Loja_Pedidos : AppCompatActivity() {
 
             val image_cliente_view = root_view.findViewById<ImageView>(R.id.profile_pic_activity)
             ClienteRequests.GetByID(lifecycleScope, sessionToken, list_pedidos[position].id_cliente){ resultCliente ->
-                if (resultCliente != null && resultCliente.foto_perfil != null)
+                if (resultCliente != null && resultCliente.foto_perfil.toString() != "null" )
                 {
-                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
-                    image_cliente_view.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    image_cliente_view.setImageBitmap(bitmap)
                 }
             }
 

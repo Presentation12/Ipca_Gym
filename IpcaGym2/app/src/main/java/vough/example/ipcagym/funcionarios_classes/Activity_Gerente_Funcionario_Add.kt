@@ -146,12 +146,14 @@ class Activity_Gerente_Funcionario_Add : AppCompatActivity() {
         // butao de adicionar funcionario novo, e volta a página ida lista de funcionários
         findViewById<Button>(R.id.buttonAddFuncionario).setOnClickListener {
             val intent = Intent(this@Activity_Gerente_Funcionario_Add, Activity_Gerente_Funcionarios_List::class.java)
-
-            val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
-            val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
-            val aux2 = aux.replace("\n", "")
             var foto_perfil : String? = null
-            if(aux2.isNotEmpty()) foto_perfil = aux2
+
+            if(imageBitmapped != null){
+                val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
+                val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
+                foto_perfil = aux.replace("\n", "")
+            }
+
 
             var emptyFields = false
             var nome = ""

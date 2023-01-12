@@ -567,7 +567,9 @@ namespace LayerDAL.Services
         public static async Task<List<Pedido>> GetAllByGinasioIDService(string sqlDataSource, int targetID)
 
         {
-            string query = @"select * from dbo.Pedido where id_ginasio = @targetID";
+            string query = @"SELECT * FROM Pedido
+                            INNER JOIN Cliente ON Pedido.id_cliente = Cliente.id_cliente
+                            WHERE Cliente.id_ginasio = @id_ginasio";
 
             try
             {
@@ -580,7 +582,7 @@ namespace LayerDAL.Services
                     using (SqlCommand myCommand = new SqlCommand(query, databaseConnection))
                     {
                         myCommand.Parameters.AddWithValue("id_ginasio", targetID);
-                        myCommand.Parameters.AddWithValue("targetID", targetID);
+
                         dataReader = myCommand.ExecuteReader();
                         while (dataReader.Read())
                         {

@@ -21,6 +21,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class Activity_Funcionario_Marcacoes_Details: AppCompatActivity() {
+    val date_time_formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_funcionario_marcacoes_details)
@@ -31,6 +33,7 @@ class Activity_Funcionario_Marcacoes_Details: AppCompatActivity() {
         val id_funcionario = intent.getIntExtra("id_funcionario", -1)
         val id_cliente = intent.getIntExtra("id_cliente", -1)
         val data_marcacao = intent.getStringExtra("data_marcacao")
+
         val estado = intent.getStringExtra("estado")
         val descricao = intent.getStringExtra("descricao")
 
@@ -105,7 +108,7 @@ class Activity_Funcionario_Marcacoes_Details: AppCompatActivity() {
         }
         imageView.setOnClickListener{ spinner.performClick() }
 
-        findViewById<TextView>(R.id.marcacaodatavalue).text = data_marcacao
+        findViewById<TextView>(R.id.marcacaodatavalue).text = data_marcacao_formatado?.format(date_time_formatter)
         findViewById<TextView>(R.id.marcacaodescricaovalue).text = descricao
         findViewById<TextView>(R.id.marcacaoestadovalue).text = estado
 
@@ -123,7 +126,7 @@ class Activity_Funcionario_Marcacoes_Details: AppCompatActivity() {
                 id_marcacao,
                 id_funcionario,
                 id_cliente,
-                LocalDateTime.parse(data_marcacao!! + ":00", DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")),
+                data_marcacao_formatado,
                 descricao,
                 estado)){ result ->
                if(result != "Error: Patch Cancel Marcacao Checked Product fails"){
@@ -141,7 +144,7 @@ class Activity_Funcionario_Marcacoes_Details: AppCompatActivity() {
             intent.putExtra("id_marcacao", id_marcacao)
             intent.putExtra("id_funcionario", id_funcionario)
             intent.putExtra("id_cliente", id_cliente)
-            intent.putExtra("data_marcacao", data_marcacao_formatado)
+            intent.putExtra("data_marcacao", data_marcacao_formatado.toString())
             intent.putExtra("estado", estado)
             intent.putExtra("descricao", descricao)
 

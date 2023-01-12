@@ -1,18 +1,25 @@
 package vough.example.ipcagym.funcionarios_classes
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
+import vough.example.ipcagym.requests.FuncionarioRequests
 import vough.example.ipcagym.requests.LojaRequests
 
 class Activity_Funcionario_Loja_Produto_Details : AppCompatActivity() {
+
+    var receiverEditData : ActivityResultLauncher<Intent>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,16 +35,24 @@ class Activity_Funcionario_Loja_Produto_Details : AppCompatActivity() {
         var preco = intent.getDoubleExtra("preco",0.0)
         var descricao = intent.getStringExtra("descricao")
         var estado_produto = intent.getStringExtra("estado_produto")
-        var foto_produto = intent.getStringExtra("foto_produto")
         var quantidade_produto = intent.getIntExtra("quantidade_produto",-1)
 
         val imageView = findViewById<ImageView>(R.id.profile_pic_activity)
 
-        if (foto_produto != null)
-        {
-            val cliente_image_view = findViewById<ImageView>(R.id.imageViewProduto)
-            val imageUri: Uri = Uri.parse(foto_produto)
-            cliente_image_view.setImageURI(imageUri)
+        LojaRequests.GetByID(lifecycleScope, sessionToken, id_produto){
+            if(it != null && it.foto_produto.toString() != "null"){
+                val pictureByteArray = Base64.decode(it.foto_produto, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.imageViewProduto).setImageBitmap(bitmap)
+            }
+        }
+
+        FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
+            if(it != null){
+                val pictureByteArray = Base64.decode(it.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.profile_pic_activity).setImageBitmap(bitmap)
+            }
         }
 
         val nomeProduto = findViewById<TextView>(R.id.nomeProduto)
@@ -45,7 +60,7 @@ class Activity_Funcionario_Loja_Produto_Details : AppCompatActivity() {
         val tipoProduto = findViewById<TextView>(R.id.Tipo)
         tipoProduto.text = tipo_produto
         val precoProduto = findViewById<TextView>(R.id.Preco)
-        precoProduto.text = preco.toString()
+        precoProduto.text = String.format("%.2f", preco) + " €"
         val descricaoProduto = findViewById<TextView>(R.id.Descricao)
         descricaoProduto.text = descricao.toString()
         val estadoProduto = findViewById<TextView>(R.id.Estado)
@@ -53,17 +68,43 @@ class Activity_Funcionario_Loja_Produto_Details : AppCompatActivity() {
         val quantidadeProduto = findViewById<TextView>(R.id.Quantidade)
         quantidadeProduto.text = quantidade_produto.toString()
 
-        findViewById<Button>(R.id.buttonRemover).setOnClickListener{
+        findViewById<Button>(R.id.buttonRemoverBtn).setOnClickListener{
             val intent = Intent(this@Activity_Funcionario_Loja_Produto_Details, Activity_Funcionario_Loja_Produtos::class.java)
             LojaRequests.Delete(lifecycleScope,sessionToken,id_produto){ resultProdutoRemove ->
+                //TODO: ESTA A REMOVER TOTALMENTE, CONFLITO COM FK DE PEDIDOS
                 if (resultProdutoRemove == "Error: Delete Product fails")
-                {
                     Toast.makeText(this@Activity_Funcionario_Loja_Produto_Details, "Error: Remove fail", Toast.LENGTH_LONG).show()
-                }
                 else
                 {
                     finish()
+
+                    //TODO: INTENT PARA APAGAR, COMEÇAR NO ROOTVIEW.ONCLICKLISTENER{}
                     startActivity(intent)
+                }
+            }
+        }
+
+        receiverEditData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if(it.resultCode == Activity.RESULT_OK){
+                LojaRequests.GetByID(lifecycleScope, sessionToken, id_produto){
+                    if(it != null && it.foto_produto.toString() != "null"){
+                        val pictureByteArray = Base64.decode(it.foto_produto, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                        findViewById<ImageView>(R.id.imageViewProduto).setImageBitmap(bitmap)
+
+                        val nomeProduto = findViewById<TextView>(R.id.nomeProduto)
+                        nomeProduto.text = it.nome
+                        val tipoProduto = findViewById<TextView>(R.id.Tipo)
+                        tipoProduto.text = it.tipo_produto
+                        val precoProduto = findViewById<TextView>(R.id.Preco)
+                        precoProduto.text = String.format("%.2f", it.preco) + " €"
+                        val descricaoProduto = findViewById<TextView>(R.id.Descricao)
+                        descricaoProduto.text = it.descricao
+                        val estadoProduto = findViewById<TextView>(R.id.Estado)
+                        estadoProduto.text = it.estado_produto
+                        val quantidadeProduto = findViewById<TextView>(R.id.Quantidade)
+                        quantidadeProduto.text = it.quantidade_produto.toString()
+                    }
                 }
             }
         }
@@ -78,10 +119,9 @@ class Activity_Funcionario_Loja_Produto_Details : AppCompatActivity() {
             intent.putExtra("preco", preco)
             intent.putExtra("descricao", descricao)
             intent.putExtra("estado_produto", estado_produto)
-            intent.putExtra("foto_produto", foto_produto)
             intent.putExtra("quantidade_produto", quantidade_produto)
 
-            startActivity(intent)
+            receiverEditData?.launch(intent)
         }
 
         var counter = 0

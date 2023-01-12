@@ -56,10 +56,10 @@
 
     <TextView
         android:id="@+id/textViewDescricao"
-        android:layout_width="110dp"
+        android:layout_width="90dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
         android:background="#2D2D2D"
         android:elevation="10dp"
         android:text="Descrição"
@@ -68,10 +68,10 @@
 
     <TextView
         android:id="@+id/textViewEstado"
-        android:layout_width="110dp"
+        android:layout_width="90dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
         android:background="#2D2D2D"
         android:elevation="10dp"
         android:text="Estado"
@@ -80,10 +80,10 @@
 
     <TextView
         android:id="@+id/textViewPreco"
-        android:layout_width="110dp"
+        android:layout_width="90dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
         android:background="#2D2D2D"
         android:elevation="10dp"
         android:text="Preco"
@@ -127,10 +127,10 @@
 
     <TextView
         android:id="@+id/textViewTipo"
-        android:layout_width="110dp"
+        android:layout_width="90dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="30dp"
         android:background="#2D2D2D"
         android:elevation="10dp"
         android:text="Tipo"
@@ -178,7 +178,7 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <Button
-        android:id="@+id/buttonRemover"
+        android:id="@+id/buttonRemoverBtn"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/transparent"
@@ -218,10 +218,10 @@
 
     <TextView
         android:id="@+id/textViewQuantidade"
-        android:layout_width="110dp"
+        android:layout_width="90dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
         android:background="#2D2D2D"
         android:elevation="10dp"
         android:text="Quantidade"

@@ -602,7 +602,7 @@ object FuncionarioRequests {
                 }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback("Error: Delete Emnployee fails")
+                        callback("Error: Delete Employee fails")
                     }
             }
         }

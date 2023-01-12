@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -41,7 +42,7 @@ class Activity_Funcionario_Marcacoes : AppCompatActivity() {
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                 findViewById<ImageView>(R.id.profile_pic_activity).setImageBitmap(bitmap)
 
-                MarcacaoRequests.GetAllByFuncionarioID(lifecycleScope, sessionToken, result?.id_funcionario!!){
+                MarcacaoRequests.GetAllByFuncionarioID(lifecycleScope, sessionToken, result.id_funcionario!!){
                     if(!it.isEmpty()) {
                         marcacoesList = it
                         marcacao_adapter.notifyDataSetChanged()
@@ -167,7 +168,7 @@ class Activity_Funcionario_Marcacoes : AppCompatActivity() {
                 intent.putExtra("id_marcacao", marcacoesList[position].id_marcacao)
                 intent.putExtra("id_funcionario", marcacoesList[position].id_funcionario)
                 intent.putExtra("id_cliente", marcacoesList[position].id_cliente)
-                intent.putExtra("data_marcacao", marcacoesList[position].data_marcacao?.format(date_formatter_compact) + " " + marcacoesList[position].data_marcacao?.format(time_formatter))
+                intent.putExtra("data_marcacao", marcacoesList[position].data_marcacao?.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                 intent.putExtra("estado", marcacoesList[position].estado)
                 intent.putExtra("descricao", marcacoesList[position].descricao)
 

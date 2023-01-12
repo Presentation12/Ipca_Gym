@@ -19,7 +19,25 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".funcionarios_classes.Activity_Funcionario_Marcacao_Remarcar"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity android:name=".cliente_classes.Activity_Cliente_Marcacao_Remarcar"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity android:name=".cliente_classes.Activity_Cliente_Activity_Details"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity android:name=".funcionarios_classes.Activity_Funcionario_Loja_Produto_Details"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

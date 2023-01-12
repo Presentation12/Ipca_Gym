@@ -3,13 +3,13 @@ package vough.example.ipcagym.funcionarios_classes
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
@@ -37,8 +37,6 @@ class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
         val pass_salt = intent.getStringExtra("pass_salt")
         val pass_hash = intent.getStringExtra("pass_hash")
         val estado = intent.getStringExtra("estado")
-        val foto_funcionario = intent.getStringExtra("foto_funcionario")
-
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultGerente ->
             if(resultGerente != null)
@@ -65,22 +63,25 @@ class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
         val estadoFuncionario = findViewById<TextView>(R.id.Estado)
         estadoFuncionario.text = estado
 
+        if(is_admin) findViewById<Button>(R.id.buttonRemoverBtn).isVisible = false
+
         val funcionario_editado_image_view = findViewById<ImageView>(R.id.imageView6)
-        if (foto_funcionario  != null && foto_funcionario != "null")
-        {
-            val pictureByteArray = Base64.decode(foto_funcionario, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-            funcionario_editado_image_view.setImageBitmap(bitmap)
+
+        FuncionarioRequests.GetByID(lifecycleScope, sessionToken, id_funcionario){
+            if(it != null && it.foto_funcionario.toString() != "null"){
+                val pictureByteArray = Base64.decode(it.foto_funcionario, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                funcionario_editado_image_view.setImageBitmap(bitmap)
+            }
         }
 
-
         // TODO: quando houver linkagem alterar aqui para remover funcionario
-        findViewById<Button>(R.id.buttonRemover).setOnClickListener {
+        findViewById<Button>(R.id.buttonRemoverBtn).setOnClickListener {
             val intent = Intent(this@Activity_Gerente_Funcionario_Details, Activity_Gerente_Funcionarios_List::class.java)
             // ele altera o estado no backend
             FuncionarioRequests.DeleteFuncionario(lifecycleScope,sessionToken,id_funcionario){ resultRemoveFuncionario ->
-                if (resultRemoveFuncionario == "Error: Delete Emnployee fails")
-                    Toast.makeText(this@Activity_Gerente_Funcionario_Details, "Error on remove an employee", Toast.LENGTH_LONG).show()
+                if (resultRemoveFuncionario == "Error: Delete Employee fails")
+                    Toast.makeText(this@Activity_Gerente_Funcionario_Details, "Cannot remove admins", Toast.LENGTH_LONG).show()
                 else
                 {
                     finish()
@@ -91,9 +92,6 @@ class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-
-        // TODO: linkagem
         findViewById<Button>(R.id.buttonEditar).setOnClickListener {
             val intent = Intent(this@Activity_Gerente_Funcionario_Details, Activity_Gerente_Funcionario_Edit::class.java)
 
@@ -105,7 +103,6 @@ class Activity_Gerente_Funcionario_Details : AppCompatActivity() {
             intent.putExtra("pass_salt", pass_salt)
             intent.putExtra("pass_hash", pass_hash)
             intent.putExtra("estado", estado)
-            intent.putExtra("foto_funcionario", foto_funcionario)
 
             startActivity(intent)
         }
