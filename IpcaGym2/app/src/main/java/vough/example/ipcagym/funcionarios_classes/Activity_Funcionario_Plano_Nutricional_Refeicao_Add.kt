@@ -139,15 +139,15 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Add : AppCompatActivity() 
 
         //TODO: Verificar as horas nao passam dos limites
         findViewById<Button>(R.id.addNewMealButton).setOnClickListener {
-            val newIntent = Intent()
+            val newIntent = Intent(this@Activity_Funcionario_Plano_Nutricional_Refeicao_Add, Activity_Funcionario_Plano_Nutricional_Refeicoes::class.java)
 
             var stringFoto : String? = null
 
-            /*if(imageBitmapped != null){
-                    val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
-                    val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
-                    stringFoto = aux.replace("\n", "")
-                }*/
+            if(imageBitmapped != null){
+                val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
+                val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
+                stringFoto = aux.replace("\n", "")
+            }
 
             var minAuxInt = findViewById<TextView>(R.id.refeicaoHourHourValue).text.toString().toInt()
             var secAuxInt = findViewById<TextView>(R.id.refeicaoHourMinuteValue).text.toString().toInt()
@@ -183,8 +183,11 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Add : AppCompatActivity() 
                     Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicao_Add, "Error on adding meal", Toast.LENGTH_LONG).show()
             }
 
-            setResult(RESULT_OK, newIntent)
+            newIntent.putExtra("id_plano_nutricional", intent.getIntExtra("id_plano_nutricional", -1))
+
+            //setResult(RESULT_OK, newIntent)
             finish()
+            startActivity(newIntent)
         }
 
         image_view.setOnClickListener {
