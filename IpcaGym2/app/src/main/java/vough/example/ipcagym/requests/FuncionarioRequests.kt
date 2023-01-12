@@ -248,7 +248,7 @@ object FuncionarioRequests {
                 if (!response.isSuccessful) throw IOException("Unexpected code $response")
 
                 val statusCode = response.code
-                var resultLogin : LoginReceiverModel? = null
+                var resultLogin = LoginReceiverModel("", "")
 
                 if(statusCode == 200) {
                     val result = response.body!!.string()
@@ -263,9 +263,17 @@ object FuncionarioRequests {
                         callback(resultLogin)
                     }
                 }
+                else if(statusCode == 204){
+                    resultLogin.token = ""
+                    resultLogin.role = "Wrong"
+
+                    scope.launch(Dispatchers.Main){
+                        callback(resultLogin)
+                    }
+                }
                 else
                     scope.launch(Dispatchers.Main){
-                        callback(resultLogin!!)
+                        callback(resultLogin)
                     }
             }
         }

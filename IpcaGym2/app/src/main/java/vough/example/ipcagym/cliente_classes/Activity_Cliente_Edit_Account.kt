@@ -52,15 +52,16 @@ class Activity_Cliente_Edit_Account : AppCompatActivity() {
         var peso : Double? = intent.getDoubleExtra("peso",0.0)
         var altura : Int?  = intent.getIntExtra("altura",-1)
         var gordura : Double?  = intent.getDoubleExtra("gordura",0.0)
-        var foto_perfil = intent.getStringExtra("foto_perfil")
         var estado = intent.getStringExtra("estado")
 
         val cliente_image_view = findViewById<ImageView>(R.id.profile_pic)
-        if (foto_perfil != null && foto_perfil != "null")
-        {
-            val pictureByteArray = Base64.decode(foto_perfil, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-            cliente_image_view.setImageBitmap(bitmap)
+
+        ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente){
+            if(it != null && it.foto_perfil.toString() != "null"){
+                val pictureByteArray = Base64.decode(it.foto_perfil, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                cliente_image_view.setImageBitmap(bitmap)
+            }
         }
 
         findViewById<TextView>(R.id.editTextNomeCliente).hint = nome
@@ -110,10 +111,6 @@ class Activity_Cliente_Edit_Account : AppCompatActivity() {
         findViewById<Button>(R.id.buttonSave).setOnClickListener {
             val intent = Intent(this@Activity_Cliente_Edit_Account, Activity_Cliente_Account::class.java)
 
-            val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
-            val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
-            val aux2 = aux.replace("\n", "")
-
             if (findViewById<EditText>(R.id.editTextNomeCliente).text.isEmpty() == false)
             {
                 nome = findViewById<EditText>(R.id.editTextNomeCliente).text.toString()
@@ -138,20 +135,49 @@ class Activity_Cliente_Edit_Account : AppCompatActivity() {
             if(altura == 0) altura = null
             if(gordura.toString() == "NaN") gordura = null
 
-            if (aux2.isNotEmpty()) foto_perfil = aux2
+            var stringPhoto : String? = null
 
-            var editCliente = Cliente(id_cliente,id_ginasio,id_plano_nutricional,nome,mail,telemovel,pass_salt,pass_hash,peso,altura,gordura,foto_perfil,estado)
-            ClienteRequests.Patch(lifecycleScope,sessionToken,id_cliente, editCliente) { resultEditcliente ->
-                if (resultEditcliente == "Error: Patch Client fails")
-                {
-                    Toast.makeText(this@Activity_Cliente_Edit_Account, "Error on editting client account", Toast.LENGTH_LONG).show()
-                }
-                else
-                {
-                    finish()
-                    startActivity(intent)
+            if(imageBitmapped != null){
+                val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
+                val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
+                stringPhoto = aux.replace("\n", "")
+
+                var editCliente = Cliente(id_cliente,id_ginasio,id_plano_nutricional,nome,mail,telemovel,pass_salt,pass_hash,peso,altura,gordura,stringPhoto,estado)
+                ClienteRequests.Patch(lifecycleScope,sessionToken,id_cliente, editCliente) { resultEditcliente ->
+                    if (resultEditcliente == "Error: Patch Client fails")
+                    {
+                        Toast.makeText(this@Activity_Cliente_Edit_Account, "Error on editting client account", Toast.LENGTH_LONG).show()
+                    }
+                    else
+                    {
+                        finish()
+                        startActivity(intent)
+                    }
                 }
             }
+            else{
+                ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente){
+                    if(it != null){
+                        if(it.foto_perfil != "null" && it.foto_perfil != null)
+                            stringPhoto = it.foto_perfil
+                        else
+                            stringPhoto = null
+
+                        var editCliente = Cliente(id_cliente,id_ginasio,id_plano_nutricional,nome,mail,telemovel,pass_salt,pass_hash,peso,altura,gordura,stringPhoto,estado)
+                        ClienteRequests.Patch(lifecycleScope,sessionToken,id_cliente, editCliente) { resultEditcliente ->
+                            if (resultEditcliente == "Error: Patch Client fails")
+                                Toast.makeText(this@Activity_Cliente_Edit_Account, "Error on editting client account", Toast.LENGTH_LONG).show()
+                            else
+                            {
+                                finish()
+                                startActivity(intent)
+                            }
+                        }
+                    }
+                }
+            }
+
+            //TODO VERIFICAR PASS
             if(newPass != null)
             {
                 ClienteRequests.recoverPasswordCliente(lifecycleScope, mail, newPass) { resultNewPassCliente ->

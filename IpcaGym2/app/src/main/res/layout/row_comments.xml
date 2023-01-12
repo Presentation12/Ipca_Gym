@@ -10,7 +10,9 @@
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/edittext"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon">
+            android:src="@drawable/defaultprofilepic">
 
         </ImageView>
     </androidx.cardview.widget.CardView>
@@ -66,6 +68,7 @@
         android:id="@+id/textView69"
         android:layout_width="84dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="Estrelas"
         android:textColor="#F1EAEA"
         app:layout_constraintBottom_toBottomOf="@+id/textView_stars_rating"

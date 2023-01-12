@@ -2,8 +2,10 @@ package vough.example.ipcagym.cliente_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -36,13 +38,10 @@ class Activity_Cliente_Loja_Produto_Details : AppCompatActivity() {
         var imageView = findViewById<ImageView>(R.id.profile_pic_produto_details)
 
         ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
-            if(resultCliente != null)
-            {
-                if (resultCliente.foto_perfil != null)
-                {
-                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
-                    imageView.setImageURI(imageUri)
-                }
+            if(resultCliente != null && resultCliente.foto_perfil.toString() != "null"){
+                val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                imageView.setImageBitmap(bitmap)
             }
         }
 
@@ -57,6 +56,14 @@ class Activity_Cliente_Loja_Produto_Details : AppCompatActivity() {
         findViewById<TextView>(R.id.Preco).text = preco.toString()
         findViewById<TextView>(R.id.Descricao).text = descricao
 
+        LojaRequests.GetByID(lifecycleScope, sessionToken, id_produto) {
+            if (it != null && it.foto_produto.toString() != "null") {
+                val pictureByteArray = Base64.decode(it.foto_produto, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                findViewById<ImageView>(R.id.imageViewProduto).setImageBitmap(bitmap)
+            }
+        }
+
         findViewById<Button>(R.id.buttonBuy).setOnClickListener {
             val newIntent = Intent(this@Activity_Cliente_Loja_Produto_Details, Activity_Cliente_Loja_Produtos::class.java)
 
@@ -70,7 +77,6 @@ class Activity_Cliente_Loja_Produto_Details : AppCompatActivity() {
             newIntent.putExtra("preco", preco)
             newIntent.putExtra("descricao", descricao)
             newIntent.putExtra("estado_produto", estado_produto)
-            newIntent.putExtra("foto_produto", foto_produto)
             newIntent.putExtra("quantidade_produto", quantidade_produto)
 
             setResult(RESULT_OK, newIntent)

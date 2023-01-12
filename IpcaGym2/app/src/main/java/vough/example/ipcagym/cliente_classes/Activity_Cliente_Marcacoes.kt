@@ -47,7 +47,7 @@ class Activity_Cliente_Marcacoes : AppCompatActivity() {
 
             MarcacaoRequests.GetAllByClienteID(lifecycleScope, sessionToken, resultCliente?.id_cliente) { resultMarcacoes ->
                 clienteRefresh = resultCliente
-                if (resultCliente?.foto_perfil != null)
+                if (resultCliente?.foto_perfil != null && resultCliente?.foto_perfil.toString() != "null")
                 {
                     val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
                     val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)

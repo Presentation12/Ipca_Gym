@@ -120,11 +120,12 @@
         android:id="@+id/buttonBuyCart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:backgroundTint="#000000"
         android:text="Buy"
         android:textColor="#A5A5A5"
         android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="@+id/spinnerCarrinho"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCarrinho"
         app:strokeColor="#A5A5A5"
         app:strokeWidth="2dp" />

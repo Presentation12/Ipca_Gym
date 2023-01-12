@@ -32,6 +32,7 @@
         android:id="@+id/buttonSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
         android:backgroundTint="@android:color/transparent"
         android:text="Save"
         android:textColor="#A5A5A5"
@@ -39,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordCliente"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordCliente2"
         app:strokeColor="#A5A5A5"
         app:strokeWidth="2dp" />
 
@@ -83,20 +84,20 @@
         android:id="@+id/editTextPasswordCliente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="New Password"
-        android:layout_marginTop="10dp"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/editTextContactoCliente"
+        app:layout_constraintStart_toStartOf="@+id/editTextContactoCliente"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <EditText
         android:id="@+id/editTextPasswordCliente2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
         android:layout_marginTop="10dp"
+        android:ems="10"
         android:hint="Confirm Password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/editTextPasswordCliente"

@@ -138,6 +138,46 @@
         app:layout_constraintTop_toTopOf="@+id/cardView3" />
 
     <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="61dp"
+        android:layout_marginBottom="10dp"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView3"
+        app:layout_constraintEnd_toEndOf="@+id/tableRow"
+        app:layout_constraintStart_toStartOf="@+id/tableRow">
+
+        <ImageView
+            android:id="@+id/empty3"
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/empty_star" />
+
+        <ImageView
+            android:id="@+id/empty4"
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/empty_star" />
+
+        <ImageView
+            android:id="@+id/empty2"
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/empty_star" />
+
+        <ImageView
+            android:id="@+id/empty5"
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/empty_star" />
+
+        <ImageView
+            android:id="@+id/empty1"
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/empty_star" />
+    </TableRow>
+
+    <TableRow
         android:id="@+id/tableRow"
         android:layout_width="210dp"
         android:layout_height="61dp"
@@ -152,34 +192,34 @@
         app:layout_constraintStart_toStartOf="@+id/cardView3">
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/full1"
             android:layout_width="42dp"
             android:layout_height="match_parent"
-            app:srcCompat="@android:drawable/btn_star" />
+            app:srcCompat="@drawable/star" />
 
         <ImageView
-            android:id="@+id/imageView9"
+            android:id="@+id/full2"
             android:layout_width="42dp"
             android:layout_height="match_parent"
-            app:srcCompat="@android:drawable/btn_star" />
+            app:srcCompat="@drawable/star" />
 
         <ImageView
-            android:id="@+id/imageView8"
+            android:id="@+id/full3"
             android:layout_width="42dp"
             android:layout_height="match_parent"
-            app:srcCompat="@android:drawable/btn_star" />
+            app:srcCompat="@drawable/star" />
 
         <ImageView
-            android:id="@+id/imageView10"
+            android:id="@+id/full4"
             android:layout_width="42dp"
             android:layout_height="match_parent"
-            app:srcCompat="@android:drawable/btn_star" />
+            app:srcCompat="@drawable/star" />
 
         <ImageView
-            android:id="@+id/imageView11"
+            android:id="@+id/full5"
             android:layout_width="42dp"
             android:layout_height="match_parent"
-            app:srcCompat="@android:drawable/btn_star" />
+            app:srcCompat="@drawable/star" />
     </TableRow>
 
     <ImageView
@@ -215,7 +255,6 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

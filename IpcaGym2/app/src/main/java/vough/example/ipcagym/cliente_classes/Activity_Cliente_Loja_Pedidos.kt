@@ -2,9 +2,11 @@ package vough.example.ipcagym.cliente_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -40,10 +42,11 @@ class Activity_Cliente_Loja_Pedidos : AppCompatActivity() {
         ClienteRequests.GetByToken(lifecycleScope,sessionToken){ resultCliente ->
             if (resultCliente != null)
             {
-                if (resultCliente?.foto_perfil != null)
+                if (resultCliente.foto_perfil != null && resultCliente.foto_perfil.toString() != "null")
                 {
-                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
-                    imageView.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    imageView.setImageBitmap(bitmap)
                 }
 
                 PedidoRequests.GetAllByClienteID(lifecycleScope, sessionToken, resultCliente.id_cliente){ resultPedidosCliente ->
@@ -198,14 +201,18 @@ class Activity_Cliente_Loja_Pedidos : AppCompatActivity() {
 
             //Clicar num rootView abre os detalhes do pedido
             root_view.setOnClickListener {
-                val intent = Intent(this@Activity_Cliente_Loja_Pedidos, Activity_Cliente_Loja_Pedido_Details::class.java)
+                if(list_pedidos[position].estado_pedido == "Ativo"){
+                    val intent = Intent(this@Activity_Cliente_Loja_Pedidos, Activity_Cliente_Loja_Pedido_Details::class.java)
 
-                intent.putExtra("id_pedido", list_pedidos[position].id_pedido)
-                intent.putExtra("id_cliente", list_pedidos[position].id_cliente)
-                intent.putExtra("data_pedido", list_pedidos[position].data_pedido?.format(date_time_formatter))
-                intent.putExtra("estado_pedido", list_pedidos[position].estado_pedido)
+                    intent.putExtra("id_pedido", list_pedidos[position].id_pedido)
+                    intent.putExtra("id_cliente", list_pedidos[position].id_cliente)
+                    intent.putExtra("data_pedido", list_pedidos[position].data_pedido?.format(date_time_formatter))
+                    intent.putExtra("estado_pedido", list_pedidos[position].estado_pedido)
 
-                startActivity(intent)
+                    startActivity(intent)
+                }
+                else
+                    Toast.makeText(this@Activity_Cliente_Loja_Pedidos, "Cannot open cancelled requests", Toast.LENGTH_SHORT).show()
             }
 
             return root_view

@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Loja
 import vough.example.ipcagym.funcionarios_classes.Activity_Funcionario_Login
 import vough.example.ipcagym.requests.ClienteRequests
 
@@ -26,7 +27,7 @@ class Activity_Cliente_Login : AppCompatActivity() {
 
         //Caso a token de sessão estiver ativa, passar login a frente
         if (sessionToken != "" && sessionRole == "Cliente") {
-            val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_Pagina_Inicial::class.java)
+            val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_Loja_Pedidos::class.java)
             finish()
             startActivity(intentStart)
         }
@@ -36,7 +37,7 @@ class Activity_Cliente_Login : AppCompatActivity() {
                 Toast.makeText(this@Activity_Cliente_Login, "Insert all fields!", Toast.LENGTH_SHORT).show()
             else{
                 ClienteRequests.login(lifecycleScope, mail.text.toString(), pass.text.toString()){ result ->
-                    if(result != null) {
+                    if(result != null && result.role != "Wrong") {
                         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
                         val editor = preferences.edit()
                         editor.putString("session_token", result.token)
@@ -45,9 +46,12 @@ class Activity_Cliente_Login : AppCompatActivity() {
                         editor.apply()
 
                         //val intentStart = Intent(this@Activity_Cliente_Login,Activity_Cliente_Pagina_Inicial::class.java)
-                        val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_Planos_Treino::class.java)
+                        val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_Marcacoes::class.java)
                         finish()
                         startActivity(intentStart)
+                    }
+                    else if(result.role == "Wrong"){
+                        Toast.makeText(this@Activity_Cliente_Login, "Wrong credentials", Toast.LENGTH_LONG).show()
                     }
                     else {
                         Toast.makeText(this@Activity_Cliente_Login, "Wrong credentials", Toast.LENGTH_LONG).show()

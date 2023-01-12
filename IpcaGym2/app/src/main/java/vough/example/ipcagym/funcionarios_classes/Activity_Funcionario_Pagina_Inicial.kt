@@ -2,6 +2,7 @@ package vough.example.ipcagym.funcionarios_classes
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.media.Image
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.w3c.dom.Text
@@ -35,8 +37,14 @@ class Activity_Funcionario_Pagina_Inicial: AppCompatActivity() {
         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val sessionToken = preferences.getString("session_token", null)
 
+        findViewById<ImageView>(R.id.full1).isInvisible = true
+        findViewById<ImageView>(R.id.full2).isInvisible = true
+        findViewById<ImageView>(R.id.full3).isInvisible = true
+        findViewById<ImageView>(R.id.full4).isInvisible = true
+        findViewById<ImageView>(R.id.full5).isInvisible = true
+
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
-            if(it != null){
+            if(it != null && it.foto_funcionario.toString() != "null"){
                 val pictureByteArray = Base64.decode(it.foto_funcionario, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                 findViewById<ImageView>(R.id.profile_pic_activity).setImageBitmap(bitmap)
@@ -49,7 +57,23 @@ class Activity_Funcionario_Pagina_Inicial: AppCompatActivity() {
                     classification_count_view.text = commentsList.count { it is Classificacao }.toString()
 
                     var classification_average = findViewById<TextView>(R.id.textView_medium_rating)
-                    classification_average.text = averagePrice(commentsList).toString()
+
+                    val media = averagePrice(commentsList)
+
+                    classification_average.text = media.toString()
+
+                    if(media < 2.0F){
+                        findViewById<ImageView>(R.id.full1).isInvisible = false
+                    }
+                    if(media >= 2.0F && media < 3.0F){
+                        findViewById<ImageView>(R.id.full1).isInvisible = false
+                    }
+                    if(media >= 3.0F && media < 4.0F){
+                        findViewById<ImageView>(R.id.full1).isInvisible = false
+                    }
+                    if(media >= 4.0F && media <= 5.0F){
+                        findViewById<ImageView>(R.id.full1).isInvisible = false
+                    }
                 }
             }
         }
@@ -153,7 +177,7 @@ class Activity_Funcionario_Pagina_Inicial: AppCompatActivity() {
         for (classificacao in commentsList) {
             total += classificacao.avaliacao!!
         }
-        Log.d("myTag",total.toString())
+
         return total / commentsList.size
     }
 
@@ -173,8 +197,20 @@ class Activity_Funcionario_Pagina_Inicial: AppCompatActivity() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val rootView = layoutInflater.inflate(R.layout.row_comments,parent,false)
 
+            val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+            val sessionToken = preferences.getString("session_token", null)
             rootView.findViewById<TextView>(R.id.textView_commnets_ginasio).text = commentsList[position].comentario
             rootView.findViewById<TextView>(R.id.textView_stars_rating).text = commentsList[position].avaliacao.toString()
+
+            ClienteRequests.GetByID(lifecycleScope, sessionToken, commentsList[position].id_cliente){
+                if(it != null && it.foto_perfil.toString() != "null"){
+                    val pictureByteArray = Base64.decode(it.foto_perfil
+                        , Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    rootView.findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
+                }
+            }
+
             return rootView
         }
     }

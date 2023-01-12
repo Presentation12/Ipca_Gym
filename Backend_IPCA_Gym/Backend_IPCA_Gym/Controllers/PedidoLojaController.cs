@@ -145,7 +145,7 @@ namespace Backend_IPCA_Gym.Controllers
         /// </summary>
         /// <param name="targetID">ID do pedido que é pretendido ser remover os produtos</param>
         /// <returns>Resposta do request que contém a sua mensagem e seu código em formato json</returns>
-        [HttpDelete("Pedido/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario")]
+        [HttpDelete("Pedido/{targetID}"), Authorize(Roles = "Admin, Gerente, Funcionario, Cliente")]
         public async Task<IActionResult> DeletePedidoLoja(int targetID)
         {
             string sqlDataSource = _configuration.GetConnectionString("DatabaseLink");

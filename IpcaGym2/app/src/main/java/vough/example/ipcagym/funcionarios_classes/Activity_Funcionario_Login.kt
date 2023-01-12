@@ -24,7 +24,7 @@ class Activity_Funcionario_Login : AppCompatActivity() {
 
         if(sessionToken != "" && sessionRole != "Cliente"){
             //val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Pagina_Inicial::class.java)
-            val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Planos_Nutricionais::class.java)
+            val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Pagina_Inicial::class.java)
             finish()
             startActivity(intentStart)
         }
@@ -42,7 +42,7 @@ class Activity_Funcionario_Login : AppCompatActivity() {
                 ).show()
             else {
                 FuncionarioRequests.loginFuncionario(lifecycleScope, code.toString(), pass.toString()) { result ->
-                    if (result != null) {
+                    if (result != null && result.role != "Wrong") {
                         val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
                         val editor = preferences.edit()
                         editor.putString("session_token", result.token)
@@ -50,10 +50,14 @@ class Activity_Funcionario_Login : AppCompatActivity() {
 
                         editor.apply()
 
-                        val intentStart = Intent(this@Activity_Funcionario_Login,Activity_Funcionario_Planos_Nutricionais::class.java)
+                        val intentStart = Intent(this@Activity_Funcionario_Login,Activity_Funcionario_Pagina_Inicial::class.java)
                         finish()
                         startActivity(intentStart)
-                    } else {
+                    }
+                    else if(result.role == "Wrong"){
+                        Toast.makeText(this@Activity_Funcionario_Login, "Wrong credentials", Toast.LENGTH_LONG).show()
+                    }
+                    else {
                         Toast.makeText(this@Activity_Funcionario_Login, "Wrong credentials", Toast.LENGTH_LONG).show()
                     }
                 }

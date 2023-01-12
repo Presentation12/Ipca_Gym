@@ -3,8 +3,10 @@ package vough.example.ipcagym.cliente_classes
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -46,10 +48,11 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
         ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
             if(resultCliente != null)
             {
-                if (resultCliente.foto_perfil != null)
+                if (resultCliente.foto_perfil != null && resultCliente.foto_perfil.toString() != "null")
                 {
-                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
-                    imageView.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    imageView.setImageBitmap(bitmap)
                 }
 
                 LojaRequests.GetAllByGinasioID(lifecycleScope, sessionToken,resultCliente.id_ginasio){ resultProdutosGinasio ->
@@ -64,29 +67,28 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
         val carrinho_view = findViewById<ImageView>(R.id.imageViewCarrinho)
         val spinner_carrinho = findViewById<Spinner>(R.id.spinnerCarrinho)
         spinner_carrinho.adapter = carrinho_adapter
+
         spinner_carrinho.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                //Toast.makeText(this@Activity_Cliente_Loja, carrinho[position], Toast.LENGTH_LONG).show()
+                // Do nothing
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Do nothing
             }
         }
+
         carrinho_view.setOnClickListener {
+
             spinner_carrinho.performClick()
-            if (carrinho.count() > 0)
-            {
-                findViewById<Button>(R.id.buttonBuyCart).visibility = View.VISIBLE
-                findViewById<TextView>(R.id.textViewTotalPrice).visibility = View.VISIBLE
-                findViewById<TextView>(R.id.buttonCancelCart).visibility = View.VISIBLE
-            }
         }
 
-        //TODO: Verify cancelar carrinho que remove tudo da lista
         findViewById<TextView>(R.id.buttonCancelCart).setOnClickListener {
             carrinho.clear()
             carrinho_adapter.notifyDataSetChanged()
+            findViewById<Button>(R.id.buttonBuyCart).visibility = View.INVISIBLE
+            findViewById<TextView>(R.id.textViewTotalPrice).visibility = View.INVISIBLE
+            findViewById<TextView>(R.id.buttonCancelCart).visibility = View.INVISIBLE
         }
 
         //TODO: Verify buy cart que da post de um peiddo novo e de todos os pedidos de produto
@@ -138,13 +140,6 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
             }
         }
 
-        //TODO: total preco
-        var total_price = 0.0
-        for (produto in carrinho) {
-              total_price += produto.preco!!
-        }
-        findViewById<TextView>(R.id.textViewTotalPrice).text = total_price.toString()
-
         receiverNewData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
 
                 if (it.resultCode == Activity.RESULT_OK) {
@@ -157,11 +152,30 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
                     var preco = it.data?.getDoubleExtra("preco", 0.0)
                     var descricao = it.data?.getStringExtra("descricao")
                     var estado_produto = it.data?.getStringExtra("estado_produto")
-                    var foto_produto = it.data?.getStringExtra("foto_produto")
                     var quantidade_produto = it.data?.getIntExtra("quantidade_produto", -1)
 
-                    carrinho.add(Pedido_Join(null, null, LocalDateTime.now(), "Ativo", id_produto, id_ginasio, nome, tipo_produto, preco, descricao, estado_produto, foto_produto, quantidade_produto, quantidadeComprada))
-                    carrinho_adapter.notifyDataSetChanged()
+                    LojaRequests.GetByID(lifecycleScope, sessionToken, id_produto){
+                        var foto_produto : String? = null
+                        if(it != null && it.foto_produto.toString() != "null"){
+                            carrinho.add(Pedido_Join(null, null, LocalDateTime.now(), "Ativo", id_produto, id_ginasio, nome, tipo_produto, preco, descricao, estado_produto, foto_produto, quantidade_produto, quantidadeComprada))
+                            carrinho_adapter.notifyDataSetChanged()
+
+                            //TODO: total preco
+                            var total_price = 0.0
+                            for (produto in carrinho) {
+                                total_price += (produto.preco?.times(produto.quantidade_pedido!!)!!)
+                            }
+
+                            findViewById<TextView>(R.id.textViewTotalPrice).text = String.format("%.2f", total_price) + " €"
+
+                            if (carrinho.count() > 0)
+                            {
+                                findViewById<Button>(R.id.buttonBuyCart).visibility = View.VISIBLE
+                                findViewById<TextView>(R.id.textViewTotalPrice).visibility = View.VISIBLE
+                                findViewById<TextView>(R.id.buttonCancelCart).visibility = View.VISIBLE
+                            }
+                        }
+                    }
                 }
             }
 
@@ -299,18 +313,17 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
             nomeProdutoView.text = produtos_list[position].nome
 
             val precoProdutoView = root_view.findViewById<TextView>(R.id.text_view_preco)
-            precoProdutoView.text = produtos_list[position].preco.toString()
+            precoProdutoView.text = String.format("%.2f", produtos_list[position].preco) + " €"
 
-            if (produtos_list[position].foto_produto != null)
+            if (produtos_list[position].foto_produto != null && produtos_list[position].foto_produto.toString() != "null")
             {
-                val produto_image_view = root_view.findViewById<ImageView>(R.id.profile_pic)
-                val imageUri: Uri = Uri.parse(produtos_list[position].foto_produto)
-                produto_image_view.setImageURI(imageUri)
+                val pictureByteArray = Base64.decode(produtos_list[position].foto_produto, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                root_view.findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
             }
 
             //Clicar num rootView abre os detalhes do produto
             root_view.setOnClickListener {
-
                 val intent = Intent(this@Activity_Cliente_Loja_Produtos, Activity_Cliente_Loja_Produto_Details::class.java)
 
                 intent.putExtra("id_produto", produtos_list[position].id_produto)
@@ -320,7 +333,6 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
                 intent.putExtra("preco", produtos_list[position].preco)
                 intent.putExtra("descricao", produtos_list[position].descricao)
                 intent.putExtra("estado_produto", produtos_list[position].estado_produto)
-                intent.putExtra("foto_produto", produtos_list[position].foto_produto)
                 intent.putExtra("quantidade_produto", produtos_list[position].quantidade_produto)
 
                 receiverNewData?.launch(intent)
@@ -351,15 +363,22 @@ class Activity_Cliente_Loja_Produtos : AppCompatActivity() {
             nomeProdutoView.text = carrinho[position].nome
 
             val precoProdutoView = root_view.findViewById<TextView>(R.id.text_view_preco)
-            precoProdutoView.text = carrinho[position].preco.toString()
+            precoProdutoView.text = String.format("%.2f", carrinho[position].preco)
 
             val quantityProdutoView = root_view.findViewById<TextView>(R.id.textViewQt)
             quantityProdutoView.text = carrinho[position].quantidade_pedido.toString()
 
             //TODO: remover artigos carrinho
-            findViewById<ImageButton>(R.id.imageButtonRemove).setOnClickListener{
+            root_view.findViewById<ImageButton>(R.id.imageButtonRemove).setOnClickListener{
                 carrinho.remove(carrinho[position])
                 carrinho_adapter.notifyDataSetChanged()
+                //TODO: total preco
+                var total_price = 0.0
+                for (produto in carrinho) {
+                    total_price += (produto.preco?.times(produto.quantidade_pedido!!)!!)
+                }
+
+                findViewById<TextView>(R.id.textViewTotalPrice).text = String.format("%.2f", total_price) + " €"
             }
             return root_view
         }

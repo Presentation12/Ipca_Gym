@@ -2,9 +2,11 @@ package vough.example.ipcagym.cliente_classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -46,15 +48,36 @@ class Activity_Cliente_Loja_Pedido_Details : AppCompatActivity() {
         ClienteRequests.GetByToken(lifecycleScope,sessionToken){ resultCliente ->
             if (resultCliente != null)
             {
-                if (resultCliente?.foto_perfil != null)
+                if (resultCliente.foto_perfil != null && resultCliente.foto_perfil.toString() != "null")
                 {
-                    val imageUri: Uri = Uri.parse(resultCliente.foto_perfil)
-                    imageView.setImageURI(imageUri)
+                    val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    imageView.setImageBitmap(bitmap)
                 }
 
-                PedidoRequests.GetAllConnectionClient(lifecycleScope,sessionToken,id_pedido){ resultJoin ->
-                    list_produtos_pedido = resultJoin
-                    produto_pedido_adapter.notifyDataSetChanged()
+                PedidoRequests.GetAllConnectionClient(lifecycleScope,sessionToken,id_cliente){ resultJoin ->
+                    if(resultJoin.isNotEmpty()){
+                        val list_produtos_pedido_result = arrayListOf<Pedido_Join>()
+
+                        for (i in resultJoin){
+                            if(i.id_pedido == id_pedido){
+                                list_produtos_pedido_result.add(i)
+                            }
+                        }
+
+                        list_produtos_pedido = list_produtos_pedido_result
+                        produto_pedido_adapter.notifyDataSetChanged()
+
+                        var total_price = 0.0
+                        for (produto in list_produtos_pedido) {
+                            total_price += (produto.preco?.times(produto.quantidade_pedido!!)!!)
+                        }
+                        findViewById<TextView>(R.id.textViewTotalPreco).text = String.format("%.2f", total_price) + " €"
+                    }
+                    else{
+                        Toast.makeText(this@Activity_Cliente_Loja_Pedido_Details, "Error: PedidoLoja", Toast.LENGTH_LONG).show()
+                    }
+
                 }
             }
         }
@@ -139,12 +162,6 @@ class Activity_Cliente_Loja_Pedido_Details : AppCompatActivity() {
 
         val list_view_produtos_pedido = findViewById<ListView>(R.id.listviewProdutosPedido)
         list_view_produtos_pedido.adapter = produto_pedido_adapter
-
-        var total_price = 0.0
-        for (produto in list_produtos_pedido) {
-              total_price += produto.preco!!
-        }
-        findViewById<TextView>(R.id.textViewTotalPreco).text = total_price.toString()
 
         findViewById<ListView>(R.id.listviewProdutosPedido)
 

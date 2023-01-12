@@ -69,12 +69,12 @@
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cardView">
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout5"
@@ -159,7 +159,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/defaultprofilepic"/>
+                    android:src="@drawable/defaultprofilepic" />
 
             </androidx.cardview.widget.CardView>
 
@@ -190,9 +190,9 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="end"
+                android:layout_marginStart="20dp"
                 android:elevation="10dp"
                 app:cardCornerRadius="20dp"
-                android:layout_marginStart="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView_numero_tres"
                 app:layout_constraintStart_toEndOf="@+id/cardView_numero_um"
                 app:layout_constraintTop_toTopOf="@+id/cardView_numero_tres">
@@ -202,7 +202,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/defaultprofilepic"/>
+                    android:src="@drawable/defaultprofilepic" />
 
             </androidx.cardview.widget.CardView>
 
@@ -213,11 +213,11 @@
                 android:layout_marginEnd="16dp"
                 android:background="@android:color/transparent"
                 android:elevation="10dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_add_circle_24"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView_team_members"
                 app:layout_constraintEnd_toEndOf="@+id/cardView_team_members"
-                app:layout_constraintTop_toTopOf="@+id/cardView_team_members"
-                android:scaleType="centerCrop" />
+                app:layout_constraintTop_toTopOf="@+id/cardView_team_members" />
 
             <TextView
                 android:id="@+id/textView_capacidade_atual"
@@ -294,9 +294,9 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="end"
+                android:layout_marginStart="20dp"
                 android:layout_marginEnd="10dp"
                 android:elevation="10dp"
-                android:layout_marginStart="20dp"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView_team_members"
                 app:layout_constraintStart_toEndOf="@+id/cardView_numero_dois"
