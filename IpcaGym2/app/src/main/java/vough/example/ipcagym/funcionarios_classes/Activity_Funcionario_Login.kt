@@ -23,7 +23,7 @@ class Activity_Funcionario_Login : AppCompatActivity() {
         val sessionRole = preferences.getString("session_role", null)
 
         if(sessionToken != "" && sessionRole != "Cliente"){
-            val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Planos_Nutricionais::class.java)
+            val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Pagina_Inicial::class.java)
             finish()
             startActivity(intentStart)
         }

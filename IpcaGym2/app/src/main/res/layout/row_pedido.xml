@@ -83,17 +83,4 @@
 
     </androidx.cardview.widget.CardView>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#66000000"
-        android:elevation="10dp"
-        android:text="+"
-        android:textColor="#FFFFFF"
-        android:textSize="30dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView6"
-        app:layout_constraintEnd_toEndOf="@+id/cardView6"
-        app:layout_constraintStart_toStartOf="@+id/cardView6"
-        app:layout_constraintTop_toTopOf="@+id/cardView6" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

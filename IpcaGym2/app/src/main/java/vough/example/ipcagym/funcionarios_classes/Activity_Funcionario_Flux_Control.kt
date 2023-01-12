@@ -47,7 +47,7 @@ class Activity_Funcionario_Flux_Control : AppCompatActivity() {
         var counter = 0
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ result ->
-            if(result != null){
+            if(result != null && result.foto_funcionario.toString() != "null"){
                 val pictureByteArray = Base64.decode(result.foto_funcionario, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                 findViewById<ImageView>(R.id.profile_pic_activity).setImageBitmap(bitmap)
@@ -58,18 +58,151 @@ class Activity_Funcionario_Flux_Control : AppCompatActivity() {
         val spinner = findViewById<Spinner>(R.id.spinner)
         val addButton = findViewById<Button>(R.id.buttonAddNewActivity)
 
-        val options = listOf("Account", "Settings", "Logout", "")
+        val sessionRole = preferences.getString("session_role", null)
+        var options: List<String>
+
+        if(sessionRole == "Funcionario"){
+            options = listOf("Account", "Settings", "Appointments", "Training Plans", "Diet Plans",
+                "Product Requests", "Products", "Logout", "")
+        }
+        else{
+            options = listOf("Account", "Settings", "Appointments", "Training Plans", "Diet Plans",
+                "Product Requests", "Products", "Employees" , "Gym Edit", "Logout", "")
+        }
 
         class MyAdapter(context: Context, items: List<String>) : ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, items) {
             override fun getCount(): Int {
-                return 3
+                return if(sessionRole == "Funcionario") {
+                    8
+                }else{
+                    10
+                }
             }
         }
 
         val adapter = MyAdapter(this@Activity_Funcionario_Flux_Control, options)
-
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                if(sessionRole == "Funcionario"){
+                    when (position) {
+                        0 -> {
+                            if(counter == 0){
+                                counter+=1
+                                spinner.setSelection(8)
+                            }
+                            else{
+                                startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Perfil_Edit::class.java))
+                                spinner.setSelection(8)
+                            }
+                        }
+                        1 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Settings::class.java))
+                            spinner.setSelection(8)
+                        }
+                        2 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Marcacoes::class.java))
+                            spinner.setSelection(8)
+                        }
+                        3 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Planos_Treino::class.java))
+                            spinner.setSelection(8)
+                        }
+                        4 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Planos_Nutricionais::class.java))
+                            spinner.setSelection(8)
+                        }
+                        5 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Loja_Pedidos::class.java))
+                            spinner.setSelection(8)
+                        }
+                        6 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Loja_Produtos::class.java))
+                            spinner.setSelection(8)
+                        }
+                        7 -> {
+                            val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+                            val editor = preferences.edit()
+                            editor.putString("session_token", "")
+                            editor.putString("session_role", "")
+
+                            editor.apply()
+                            finish()
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Login::class.java))
+                        }
+                    }
+                }
+                else{
+                    when (position) {
+                        0 -> {
+                            if(counter == 0){
+                                counter+=1
+                                spinner.setSelection(10)
+                            }
+                            else{
+                                startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Perfil_Edit::class.java))
+                                spinner.setSelection(10)
+                            }
+                        }
+                        1 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Settings::class.java))
+                            spinner.setSelection(10)
+                        }
+                        2 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Marcacoes::class.java))
+                            spinner.setSelection(10)
+                        }
+                        3 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Planos_Treino::class.java))
+                            spinner.setSelection(10)
+                        }
+                        4 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Planos_Nutricionais::class.java))
+                            spinner.setSelection(10)
+                        }
+                        5 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Loja_Pedidos::class.java))
+                            spinner.setSelection(10)
+                        }
+                        6 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Loja_Produtos::class.java))
+                            spinner.setSelection(10)
+                        }
+                        7 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Gerente_Funcionarios_List::class.java))
+                            spinner.setSelection(10)
+                        }
+                        8 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Gerente_Ginasio_Patch::class.java))
+                            spinner.setSelection(10)
+                        }
+                        9 -> {
+                            val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+                            val editor = preferences.edit()
+                            editor.putString("session_token", "")
+                            editor.putString("session_role", "")
+
+                            editor.apply()
+                            finish()
+                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Login::class.java))
+                        }
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                if(sessionRole == "Funcionario")
+                    spinner.setSelection(8)
+                else
+                    spinner.setSelection(10)
+            }
+        }
+
+        imageView.setOnClickListener {
+            spinner.performClick()
+        }
 
         val listViewActivities = findViewById<ListView>(R.id.listByDate)
         listViewActivities.adapter = client_adapter
@@ -79,45 +212,6 @@ class Activity_Funcionario_Flux_Control : AppCompatActivity() {
 
             client_adapter.notifyDataSetChanged()
         }
-
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                when (position) {
-                    0 -> {
-                        if(counter == 0){
-                            counter+=1
-                            spinner.setSelection(3)
-                        }
-                        else{
-                            startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Perfil_Edit::class.java))
-                            spinner.setSelection(3)
-                        }
-                    }
-                    1 -> {
-                        startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Settings::class.java))
-                        spinner.setSelection(3)
-                    }
-                    2 -> {
-                        val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-                        val editor = preferences.edit()
-                        editor.putString("session_token", "")
-
-                        editor.apply()
-                        finish()
-                        startActivity(Intent(this@Activity_Funcionario_Flux_Control, Activity_Funcionario_Login::class.java))
-                    }
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                spinner.setSelection(3)
-            }
-        }
-
-        imageView.setOnClickListener {
-            spinner.performClick()
-        }
-
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
 
         bottomNavigationView.setSelectedItemId(R.id.nav_history);

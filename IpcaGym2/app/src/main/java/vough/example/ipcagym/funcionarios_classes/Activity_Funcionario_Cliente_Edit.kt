@@ -40,7 +40,7 @@ class Activity_Funcionario_Cliente_Edit: AppCompatActivity() {
 
         var counter = 0
         val spinner = findViewById<Spinner>(R.id.spinner)
-        val options = listOf("Account", "Settings", "Logout", "")
+
         var imageView = findViewById<ImageView>(R.id.profile_pic_funcionario)
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultFuncionario ->
@@ -52,10 +52,25 @@ class Activity_Funcionario_Cliente_Edit: AppCompatActivity() {
             }
         }
 
-        class MyAdapter(context: Context, items: List<String>) :
-            ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, items) {
+        val sessionRole = preferences.getString("session_role", null)
+        var options: List<String>
+
+        if(sessionRole == "Funcionario"){
+            options = listOf("Account", "Settings", "Appointments", "Training Plans", "Diet Plans",
+                "Product Requests", "Products", "Logout", "")
+        }
+        else{
+            options = listOf("Account", "Settings", "Appointments", "Training Plans", "Diet Plans",
+                "Product Requests", "Products", "Employees" , "Gym Edit", "Logout", "")
+        }
+
+        class MyAdapter(context: Context, items: List<String>) : ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, items) {
             override fun getCount(): Int {
-                return 3
+                return if(sessionRole == "Funcionario") {
+                    8
+                }else{
+                    10
+                }
             }
         }
 
@@ -64,56 +79,118 @@ class Activity_Funcionario_Cliente_Edit: AppCompatActivity() {
         spinner.adapter = adapter
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                when (position) {
-                    0 -> {
-                        if (counter == 0) {
-                            counter += 1
-                            spinner.setSelection(3)
-                        } else {
-                            startActivity(
-                                Intent(
-                                    this@Activity_Funcionario_Cliente_Edit,
-                                    Activity_Funcionario_Perfil_Edit::class.java
-                                )
-                            )
-                            spinner.setSelection(3)
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                if(sessionRole == "Funcionario"){
+                    when (position) {
+                        0 -> {
+                            if(counter == 0){
+                                counter+=1
+                                spinner.setSelection(8)
+                            }
+                            else{
+                                startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Perfil_Edit::class.java))
+                                spinner.setSelection(8)
+                            }
+                        }
+                        1 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Settings::class.java))
+                            spinner.setSelection(8)
+                        }
+                        2 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Marcacoes::class.java))
+                            spinner.setSelection(8)
+                        }
+                        3 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Planos_Treino::class.java))
+                            spinner.setSelection(8)
+                        }
+                        4 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Planos_Nutricionais::class.java))
+                            spinner.setSelection(8)
+                        }
+                        5 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Loja_Pedidos::class.java))
+                            spinner.setSelection(8)
+                        }
+                        6 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Loja_Produtos::class.java))
+                            spinner.setSelection(8)
+                        }
+                        7 -> {
+                            val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+                            val editor = preferences.edit()
+                            editor.putString("session_token", "")
+                            editor.putString("session_role", "")
+
+                            editor.apply()
+                            finish()
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Login::class.java))
                         }
                     }
-                    1 -> {
-                        startActivity(
-                            Intent(
-                                this@Activity_Funcionario_Cliente_Edit,
-                                Activity_Funcionario_Settings::class.java
-                            )
-                        )
-                        spinner.setSelection(3)
-                    }
-                    2 -> {
-                        val preferences =
-                            getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-                        val editor = preferences.edit()
-                        editor.putString("session_token", "")
+                }
+                else{
+                    when (position) {
+                        0 -> {
+                            if(counter == 0){
+                                counter+=1
+                                spinner.setSelection(10)
+                            }
+                            else{
+                                startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Perfil_Edit::class.java))
+                                spinner.setSelection(10)
+                            }
+                        }
+                        1 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Settings::class.java))
+                            spinner.setSelection(10)
+                        }
+                        2 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Marcacoes::class.java))
+                            spinner.setSelection(10)
+                        }
+                        3 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Planos_Treino::class.java))
+                            spinner.setSelection(10)
+                        }
+                        4 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Planos_Nutricionais::class.java))
+                            spinner.setSelection(10)
+                        }
+                        5 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Loja_Pedidos::class.java))
+                            spinner.setSelection(10)
+                        }
+                        6 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Loja_Produtos::class.java))
+                            spinner.setSelection(10)
+                        }
+                        7 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Gerente_Funcionarios_List::class.java))
+                            spinner.setSelection(10)
+                        }
+                        8 -> {
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Gerente_Ginasio_Patch::class.java))
+                            spinner.setSelection(10)
+                        }
+                        9 -> {
+                            val preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+                            val editor = preferences.edit()
+                            editor.putString("session_token", "")
+                            editor.putString("session_role", "")
 
-                        editor.apply()
-                        finish()
-                        startActivity(
-                            Intent(
-                                this@Activity_Funcionario_Cliente_Edit,
-                                Activity_Funcionario_Login::class.java
-                            )
-                        )
+                            editor.apply()
+                            finish()
+                            startActivity(Intent(this@Activity_Funcionario_Cliente_Edit, Activity_Funcionario_Login::class.java))
+                        }
                     }
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
-                spinner.setSelection(3)
+                if(sessionRole == "Funcionario")
+                    spinner.setSelection(8)
+                else
+                    spinner.setSelection(10)
             }
         }
         imageView.setOnClickListener { spinner.performClick() }
@@ -155,6 +232,7 @@ class Activity_Funcionario_Cliente_Edit: AppCompatActivity() {
         if(gordura.toString() == "NaN") gordura = null
 
             ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente){ response ->
+
                 if(response != null){
                     val editCliente = Cliente(id_cliente,id_ginasio,id_plano_nutricional,nome,mail,telemovel,pass_salt,pass_hash,peso,altura,gordura,response.foto_perfil,estado)
                     ClienteRequests.Patch(lifecycleScope,sessionToken,id_cliente, editCliente) { resultEditcliente ->
