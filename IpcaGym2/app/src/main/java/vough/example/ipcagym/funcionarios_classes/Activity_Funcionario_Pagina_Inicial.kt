@@ -62,17 +62,30 @@ class Activity_Funcionario_Pagina_Inicial: AppCompatActivity() {
 
                     classification_average.text = media.toString()
 
-                    if(media < 2.0F){
+                    if(media < 2.0){
                         findViewById<ImageView>(R.id.full1).isInvisible = false
                     }
-                    if(media >= 2.0F && media < 3.0F){
+                    else if(media >= 2.0 && media < 3.0){
                         findViewById<ImageView>(R.id.full1).isInvisible = false
+                        findViewById<ImageView>(R.id.full2).isInvisible = false
                     }
-                    if(media >= 3.0F && media < 4.0F){
+                    else if(media >= 3.0 && media < 4.0){
                         findViewById<ImageView>(R.id.full1).isInvisible = false
+                        findViewById<ImageView>(R.id.full2).isInvisible = false
+                        findViewById<ImageView>(R.id.full3).isInvisible = false
                     }
-                    if(media >= 4.0F && media <= 5.0F){
+                    else if(media >= 4.0 && media < 5.0){
                         findViewById<ImageView>(R.id.full1).isInvisible = false
+                        findViewById<ImageView>(R.id.full2).isInvisible = false
+                        findViewById<ImageView>(R.id.full3).isInvisible = false
+                        findViewById<ImageView>(R.id.full4).isInvisible = false
+                    }
+                    else if(media <= 5.0){
+                        findViewById<ImageView>(R.id.full1).isInvisible = false
+                        findViewById<ImageView>(R.id.full2).isInvisible = false
+                        findViewById<ImageView>(R.id.full3).isInvisible = false
+                        findViewById<ImageView>(R.id.full4).isInvisible = false
+                        findViewById<ImageView>(R.id.full5).isInvisible = false
                     }
                 }
             }
