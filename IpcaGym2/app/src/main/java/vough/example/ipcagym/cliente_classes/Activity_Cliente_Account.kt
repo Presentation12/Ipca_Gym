@@ -136,7 +136,6 @@ class Activity_Cliente_Account : AppCompatActivity(){
                     intentNew.putExtra("mail", resultCliente?.mail!!)
                     intentNew.putExtra("pass_hash", resultCliente?.pass_hash!!)
                     intentNew.putExtra("pass_salt", resultCliente?.pass_salt!!)
-                    intentNew.putExtra("foto_perfil", resultCliente?.foto_perfil!!)
                     intentNew.putExtra("altura", resultCliente?.altura!!)
                     intentNew.putExtra("estado", resultCliente?.estado!!)
                     intentNew.putExtra("telemovel", resultCliente?.telemovel!!)
