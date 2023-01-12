@@ -18,6 +18,7 @@ import vough.example.ipcagym.requests.FuncionarioRequests
 import vough.example.ipcagym.requests.PlanoTreinoRequests
 import java.io.ByteArrayOutputStream
 import java.io.IOException
+import java.lang.reflect.Executable
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -142,14 +143,22 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
             //TODO: Tratar de foto
             ExercicioRequests.GetByID(lifecycleScope, sessionToken, intent.getIntExtra("id_exercicio", -1)){
                 if(it !== null){
-                    val pictureByteArray = Base64.decode(it.foto_exercicio, Base64.DEFAULT)
-                    val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                    //val pictureByteArray = Base64.decode(it.foto_exercicio, Base64.DEFAULT)
+                    //val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                     //Atualizar imagem
                     //findViewById<ImageView>(R.id.VIEW).setImageBitmap(bitmap)
 
-                    val imageAdd = convertBitmapToByteArray(bitmap!!)
-                    val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
-                    val aux2 = aux.replace("\n", "")
+                    //val imageAdd = convertBitmapToByteArray(bitmap!!)
+                    //val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
+                    //val aux2 = aux.replace("\n", "")
+
+                    var photoURL : String? = null
+
+                    ExercicioRequests.GetByID(lifecycleScope, sessionToken, intent.getIntExtra("id_exercicio", -1)){ exerciseResponse ->
+                        if(exerciseResponse != null && exerciseResponse.foto_exercicio.toString() != "null"){
+                            photoURL = exerciseResponse.foto_exercicio
+                        }
+                    }
 
                     //TODO: VERIFICAR QUE MIN < 60 e SEC < 60
                     if(isSet.isChecked){
@@ -171,7 +180,7 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
                       "series": ${intentEditIn.getIntExtra("series", -1)},
                       "tempo": null,
                       "repeticoes": ${intentEditIn.getIntExtra("repeticoes", -1)},
-                      "foto_exercicio": "${aux2}"
+                      "foto_exercicio": "${photoURL}"
                     }
                 """
 
@@ -212,7 +221,17 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
                         else
                             secAuxString = secAuxInt.toString()
 
-                        val tempoToPatch = LocalTime.parse("00:$minAuxString:$secAuxString", DateTimeFormatter.ofPattern("HH:mm:ss"))
+                        var tempoToPatch : LocalTime? = null
+                        var stringTime : String? = null
+
+                        if(secAuxInt == 0){
+                            tempoToPatch = LocalTime.parse("00:$minAuxString:00", DateTimeFormatter.ofPattern("HH:mm:ss"))
+                            stringTime = tempoToPatch.toString()+":00"
+                        }
+                        else {
+                            tempoToPatch = LocalTime.parse("00:$minAuxString:$secAuxString",DateTimeFormatter.ofPattern("HH:mm:ss"))
+                            stringTime = tempoToPatch.toString()
+                        }
 
                         val jsonBody = """
                     {
@@ -222,9 +241,9 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
                       "descricao": "${intentEditIn.getStringExtra("descricao")}",
                       "tipo": "${intentEditIn.getStringExtra("tipo")}",
                       "series": null,
-                      "tempo": "$tempoToPatch",
+                      "tempo": "$stringTime",
                       "repeticoes": null,
-                      "foto_exercicio": "${aux2}"
+                      "foto_exercicio": "${photoURL}"
                     }
                 """
 
@@ -308,22 +327,5 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Edit : AppCompatActivity() {
         }
     }
 
-    private fun convertBitmapToByteArray(bitmap: Bitmap) : ByteArray{
-        var byteArrayImage : ByteArrayOutputStream? = null
 
-        return try{
-            byteArrayImage = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayImage)
-            byteArrayImage.toByteArray()
-        }
-        finally{
-            if(byteArrayImage != null)
-                try{
-                    byteArrayImage.close()
-                }
-                catch (e: IOException) {
-                    Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Edit, "Error on image conversion", Toast.LENGTH_SHORT).show()
-                }
-        }
-    }
 }

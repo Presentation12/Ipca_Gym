@@ -113,7 +113,7 @@ class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
         val listPlanosNutricionaisView = findViewById<ListView>(R.id.listViewPlanosNutricionais)
         listPlanosNutricionaisView.adapter = adapter_nutri
 
-        newPlanReceiver = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        /*newPlanReceiver = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if(it.resultCode == RESULT_OK){
                 FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ tokenResult ->
                     lifecycleScope.launch {
@@ -129,9 +129,9 @@ class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
                     }
                 }
             }
-        }
+        }*/
 
-        deletePlanReceiver = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        /*deletePlanReceiver = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if(it.resultCode == RESULT_OK){
                 FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
                     lifecycleScope.launch {
@@ -146,10 +146,11 @@ class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
                     }
                 }
             }
-        }
+        }*/
 
         findViewById<Button>(R.id.buttonAddNutriPlan).setOnClickListener{
-            newPlanReceiver?.launch(Intent(this@Activity_Funcionario_Planos_Nutricionais, Activity_Funcionario_Planos_Nutricionais_Add::class.java))
+            //newPlanReceiver?.launch(Intent(this@Activity_Funcionario_Planos_Nutricionais, Activity_Funcionario_Planos_Nutricionais_Add::class.java))
+            startActivity(Intent(this@Activity_Funcionario_Planos_Nutricionais, Activity_Funcionario_Planos_Nutricionais_Add::class.java))
         }
 
         image_view.setOnClickListener {
@@ -211,9 +212,11 @@ class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
 
             rootView.findViewById<TextView>(R.id.textViewPlanoNutricional).text = listPlanosNutricionais[position].tipo
 
-            val pictureByteArray = Base64.decode(listPlanosNutricionais[position].foto_plano_nutricional, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-            rootView.findViewById<ImageView>(R.id.imageViewPlanoNutricional).setImageBitmap(bitmap)
+            if(listPlanosNutricionais[position].foto_plano_nutricional.toString() != "null"){
+                val pictureByteArray = Base64.decode(listPlanosNutricionais[position].foto_plano_nutricional, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                rootView.findViewById<ImageView>(R.id.imageViewPlanoNutricional).setImageBitmap(bitmap)
+            }
 
             rootView.setOnClickListener{
                 val intent = Intent(this@Activity_Funcionario_Planos_Nutricionais, Activity_Funcionario_Plano_Nutricional_Refeicoes::class.java)
@@ -223,7 +226,8 @@ class Activity_Funcionario_Planos_Nutricionais : AppCompatActivity() {
                 intent.putExtra("tipo", listPlanosNutricionais[position].tipo)
                 intent.putExtra("calorias", listPlanosNutricionais[position].calorias)
 
-                deletePlanReceiver?.launch(intent)
+                //deletePlanReceiver?.launch(intent)
+                startActivity(intent)
             }
 
             return rootView

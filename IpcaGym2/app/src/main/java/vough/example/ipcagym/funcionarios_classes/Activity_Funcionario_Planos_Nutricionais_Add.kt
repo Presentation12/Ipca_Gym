@@ -125,12 +125,11 @@ class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
             else{
                 var stringFoto : String? = null
 
-                /*if(imageBitmapped != null){
+                if(imageBitmapped != null){
                     val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
                     val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
                     stringFoto = aux.replace("\n", "")
-                }*/
-
+                }
                 FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){ resultFunc ->
 
                     if(resultFunc != null){
@@ -163,8 +162,8 @@ class Activity_Funcionario_Planos_Nutricionais_Add : AppCompatActivity() {
                         Toast.makeText(this@Activity_Funcionario_Planos_Nutricionais_Add, "Error on adding plan (Wrong token)", Toast.LENGTH_SHORT).show()
                 }
 
-                setResult(RESULT_OK, intent);
                 finish()
+                startActivity(Intent(this@Activity_Funcionario_Planos_Nutricionais_Add, Activity_Funcionario_Planos_Nutricionais::class.java))
             }
 
         }

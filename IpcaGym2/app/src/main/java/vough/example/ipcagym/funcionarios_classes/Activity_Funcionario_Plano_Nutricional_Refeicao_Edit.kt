@@ -115,18 +115,18 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Edit: AppCompatActivity() 
         }
 
         findViewById<Button>(R.id.editMealButton).setOnClickListener{
-            val editIntent = Intent()
+            val editIntent = Intent(Intent(this@Activity_Funcionario_Plano_Nutricional_Refeicao_Edit, Activity_Funcionario_Plano_Nutricional_Refeicoes::class.java))
 
             var minAuxInt = findViewById<TextView>(R.id.refeicaoEditHourHourValue).text.toString().toInt()
             var secAuxInt = findViewById<TextView>(R.id.refeicaoEditHourMinuteValue).text.toString().toInt()
 
             var stringFoto : String? = null
 
-            /*if(imageBitmapped != null){
-                    val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
-                    val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
-                    stringFoto = aux.replace("\n", "")
-                }*/
+            if(imageBitmapped != null){
+                val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
+                val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
+                stringFoto = aux.replace("\n", "")
+            }
 
             var minAuxString : String?
             var secAuxString : String?
@@ -160,8 +160,11 @@ class Activity_Funcionario_Plano_Nutricional_Refeicao_Edit: AppCompatActivity() 
                     Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicao_Edit, "Error on adding meal", Toast.LENGTH_LONG).show()
             }
 
-            setResult(RESULT_OK, editIntent)
+
+            editIntent.putExtra("id_plano_nutricional", intent.getIntExtra("id_plano_nutricional", -1))
+
             finish()
+            startActivity(editIntent)
         }
 
         image_view.setOnClickListener {

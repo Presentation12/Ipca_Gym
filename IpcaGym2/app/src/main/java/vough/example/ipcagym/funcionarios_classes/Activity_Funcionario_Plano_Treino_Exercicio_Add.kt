@@ -14,6 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
 import vough.example.ipcagym.requests.ExercicioRequests
 import vough.example.ipcagym.requests.FuncionarioRequests
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -128,7 +129,7 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Add : AppCompatActivity() {
                       "series": ${intentAddIn.getIntExtra("series", -1)},
                       "tempo": null,
                       "repeticoes": ${intentAddIn.getIntExtra("repeticoes", -1)},
-                      "foto_exercicio": "${intentAddIn.getStringExtra("foto_exercicio")}"
+                      "foto_exercicio": null
                     }
                 """
                 Toast.makeText(this@Activity_Funcionario_Plano_Treino_Exercicio_Add, intent.getIntExtra("id_plano_treino", -1).toString(), Toast.LENGTH_SHORT).show()
@@ -169,7 +170,17 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Add : AppCompatActivity() {
                 else
                     secAuxString = secAuxInt.toString()
 
-                val tempoToPatch = LocalTime.parse("00:$minAuxString:$secAuxString", DateTimeFormatter.ofPattern("HH:mm:ss"))
+                var tempoToPatch : LocalTime? = null
+                var stringTime : String? = null
+
+                if(secAuxInt == 0){
+                    tempoToPatch = LocalTime.parse("00:$minAuxString:00", DateTimeFormatter.ofPattern("HH:mm:ss"))
+                    stringTime = tempoToPatch.toString()+":00"
+                }
+                else {
+                    tempoToPatch = LocalTime.parse("00:$minAuxString:$secAuxString",DateTimeFormatter.ofPattern("HH:mm:ss"))
+                    stringTime = tempoToPatch.toString()
+                }
 
                 val jsonBody = """
                     {
@@ -178,9 +189,9 @@ class Activity_Funcionario_Plano_Treino_Exercicio_Add : AppCompatActivity() {
                       "descricao": "${intentAddIn.getStringExtra("descricao")}",
                       "tipo": "${intentAddIn.getStringExtra("tipo")}",
                       "series": null,
-                      "tempo": "$tempoToPatch",
+                      "tempo": "$stringTime",
                       "repeticoes": null,
-                      "foto_exercicio": "${intentAddIn.getStringExtra("foto_exercicio")}"
+                      "foto_exercicio": null
                     }
                 """
 

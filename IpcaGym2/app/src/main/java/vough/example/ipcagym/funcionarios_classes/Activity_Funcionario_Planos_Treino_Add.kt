@@ -108,29 +108,26 @@ class Activity_Funcionario_Planos_Treino_Add : AppCompatActivity() {
 
             var stringFoto : String? = null
 
-            /*if(imageBitmapped != null){
+            if(imageBitmapped != null){
                 val imageAdd = convertBitmapToByteArray(imageBitmapped!!)
                 val aux = Base64.encodeToString(imageAdd, Base64.DEFAULT)
                 stringFoto = aux.replace("\n", "")
-            }*/
+            }
 
             FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
                 if(it != null){
-                    lifecycleScope.launch {
-                        delay(100000L)
-                        PlanoTreinoRequests.Post(lifecycleScope, sessionToken, Plano_Treino(
-                            null,
-                            it?.id_ginasio!!,
-                            findViewById<EditText>(R.id.typePlanoValue).text.toString(),
-                            stringFoto
-                        )){
-                        }
+                    PlanoTreinoRequests.Post(lifecycleScope, sessionToken, Plano_Treino(
+                        null,
+                        it.id_ginasio!!,
+                        findViewById<EditText>(R.id.typePlanoValue).text.toString(),
+                        stringFoto
+                    )){
                     }
                 }
             }
 
-            setResult(RESULT_OK, intent);
             finish()
+            startActivity(Intent(this@Activity_Funcionario_Planos_Treino_Add, Activity_Funcionario_Planos_Treino::class.java))
         }
 
         findViewById<Button>(R.id.CancelAddNewPlanButton).setOnClickListener{

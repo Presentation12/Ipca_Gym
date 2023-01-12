@@ -229,9 +229,13 @@ class Activity_Funcionario_Plano_Treino_Exercicios : AppCompatActivity() {
             val exercicio_quantity_view = rootView.findViewById<TextView>(R.id.textViewSetsExercicio)
             val exercicio_image = rootView.findViewById<ImageView>(R.id.imageViewPlanoTreino)
 
-            val pictureByteArray = Base64.decode(listExercicios[position].foto_exercicio, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-            exercicio_image.setImageBitmap(bitmap)
+            if(listExercicios[position].foto_exercicio.toString() != "null") {
+                val pictureByteArray =
+                    Base64.decode(listExercicios[position].foto_exercicio, Base64.DEFAULT)
+                val bitmap =
+                    BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                exercicio_image.setImageBitmap(bitmap)
+            }
 
             //Adicionar os textos
             exercicio_nome_view.text = listExercicios[position].nome

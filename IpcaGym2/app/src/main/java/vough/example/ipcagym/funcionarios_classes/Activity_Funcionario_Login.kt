@@ -24,7 +24,7 @@ class Activity_Funcionario_Login : AppCompatActivity() {
 
         if(sessionToken != "" && sessionRole != "Cliente"){
             //val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Pagina_Inicial::class.java)
-            val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Marcacoes::class.java)
+            val intentStart = Intent(this@Activity_Funcionario_Login, Activity_Funcionario_Planos_Nutricionais::class.java)
             finish()
             startActivity(intentStart)
         }

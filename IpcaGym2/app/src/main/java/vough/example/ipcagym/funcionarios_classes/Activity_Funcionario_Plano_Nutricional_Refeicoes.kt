@@ -22,6 +22,7 @@ import vough.example.ipcagym.R
 import vough.example.ipcagym.data_classes.Refeicao
 import vough.example.ipcagym.requests.FuncionarioRequests
 import vough.example.ipcagym.requests.PlanoNutricionalRequests
+import vough.example.ipcagym.requests.PlanoTreinoRequests
 import vough.example.ipcagym.requests.RefeicaoRequests
 import java.time.format.DateTimeFormatter
 
@@ -95,9 +96,9 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
             }
         }
 
-        lifecycleScope.launch {
-            delay(10000L)
-        }
+        val listView = findViewById<ListView>(R.id.listViewRefeicoes)
+        listView.adapter = refeicaoAdapter
+
         RefeicaoRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_nutricional", -1)){
             if(it.isNotEmpty()){
                 listRefeicoes = it
@@ -109,15 +110,15 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
             }
         }
 
+        PlanoNutricionalRequests.GetByID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_nutricional", -1)){
+            if(it != null){
+                findViewById<TextView>(R.id.planoNutriTipoTitle).text = it.tipo
+                findViewById<TextView>(R.id.planoNutriCaloriasTitle).text = it.calorias.toString() + " KCal"
+            }
+        }
 
 
-        findViewById<TextView>(R.id.planoNutriTipoTitle).text = intent.getStringExtra("tipo")
-        findViewById<TextView>(R.id.planoNutriCaloriasTitle).text = intent.getIntExtra("calorias", -1).toString() + " KCal"
-
-        val listView = findViewById<ListView>(R.id.listViewRefeicoes)
-        listView.adapter = refeicaoAdapter
-
-        receiverNewData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        /*receiverNewData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if(it.resultCode == Activity.RESULT_OK){
                 RefeicaoRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_nutricional", -1)){
                     if(it.isNotEmpty()){
@@ -130,9 +131,9 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
                     }
                 }
             }
-        }
+        }*/
 
-        receiverEditData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        /*receiverEditData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if(it.resultCode == Activity.RESULT_OK){
                 RefeicaoRequests.GetAllByPlanoID(lifecycleScope, sessionToken, intent.getIntExtra("id_plano_nutricional", -1)){
                     if(it.isNotEmpty()){
@@ -145,7 +146,7 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
                     }
                 }
             }
-        }
+        }*/
 
         findViewById<Button>(R.id.removePlanButton).setOnClickListener {
             val deleteIntent = Intent()
@@ -157,8 +158,8 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
                     Toast.makeText(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, "Error on removing plan", Toast.LENGTH_LONG).show()
             }
 
-            setResult(RESULT_OK, deleteIntent)
             finish()
+            startActivity(Intent(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, Activity_Funcionario_Planos_Nutricionais::class.java))
         }
 
         findViewById<Button>(R.id.addNewRefeicaoButton).setOnClickListener{
@@ -166,7 +167,8 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
 
             intentAdd.putExtra("id_plano_nutricional", intent.getIntExtra("id_plano_nutricional", -1))
 
-            receiverNewData?.launch(intentAdd)
+            //receiverNewData?.launch(intentAdd)
+            startActivity(intentAdd)
         }
 
         image_view.setOnClickListener {
@@ -233,16 +235,17 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
             rootView.findViewById<TextView>(R.id.textViewHoraRefeicao).text = listRefeicoes[position].hora?.format(
                 DateTimeFormatter.ofPattern("HH:mm"))
 
-            val pictureByteArray = Base64.decode(listRefeicoes[position].foto_refeicao, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-            rootView.findViewById<ImageView>(R.id.imageViewRefeicao).setImageBitmap(bitmap)
+            if(listRefeicoes[position].foto_refeicao.toString() != "null"){
+                val pictureByteArray = Base64.decode(listRefeicoes[position].foto_refeicao, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                rootView.findViewById<ImageView>(R.id.imageViewRefeicao).setImageBitmap(bitmap)
+            }
 
             rootView.setOnClickListener{
                 val intent2 = Intent(this@Activity_Funcionario_Plano_Nutricional_Refeicoes, Activity_Funcionario_Plano_Nutricional_Refeicao_Details::class.java)
 
                 intent2.putExtra("calorias", intent.getIntExtra("calorias", -1))
                 intent2.putExtra("tipo", intent.getStringExtra("tipo"))
-
                 intent2.putExtra("id_plano_nutricional", listRefeicoes[position].id_plano_nutricional)
                 intent2.putExtra("id_refeicao", listRefeicoes[position].id_refeicao)
                 intent2.putExtra("descricao", listRefeicoes[position].descricao)
@@ -277,7 +280,8 @@ class Activity_Funcionario_Plano_Nutricional_Refeicoes : AppCompatActivity() {
                 intentEdit.putExtra("hora_hora", listRefeicoes[position].hora?.hour)
                 intentEdit.putExtra("hora_minute", listRefeicoes[position].hora?.minute)
 
-                receiverEditData?.launch(intentEdit)
+               // receiverEditData?.launch(intentEdit)
+                startActivity(intentEdit)
             }
 
             return rootView

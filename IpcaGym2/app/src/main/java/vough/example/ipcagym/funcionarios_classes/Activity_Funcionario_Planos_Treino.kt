@@ -104,7 +104,7 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
         val list_view_planos_treino = findViewById<ListView>(R.id.listviewPlanosTreino)
         list_view_planos_treino.adapter = plano_adapter
 
-        receiverNewData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        /*receiverNewData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if(it.resultCode == Activity.RESULT_OK){
                 FuncionarioRequests.GetByToken(lifecycleScope, sessionToken){
                     if(it != null){
@@ -117,7 +117,7 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
                     }
                 }
             }
-        }
+        }*/
 
         receiverDeleteData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if(it.resultCode == Activity.RESULT_OK){
@@ -139,7 +139,8 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.addPlanButton).setOnClickListener{
-            receiverNewData?.launch(Intent(this@Activity_Funcionario_Planos_Treino, Activity_Funcionario_Planos_Treino_Add::class.java))
+            //receiverNewData?.launch(Intent(this@Activity_Funcionario_Planos_Treino, Activity_Funcionario_Planos_Treino_Add::class.java))
+            startActivity(Intent(this@Activity_Funcionario_Planos_Treino, Activity_Funcionario_Planos_Treino_Add::class.java))
         }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navbar)
@@ -206,9 +207,11 @@ class Activity_Funcionario_Planos_Treino : AppCompatActivity() {
             //Adicionar os textos
             plano_treino_view.text = planos_treino_list[position].tipo
 
-            val pictureByteArray = Base64.decode(planos_treino_list[position].foto_plano_treino, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-            plano_treino_image.setImageBitmap(bitmap)
+            if(planos_treino_list[position].foto_plano_treino.toString() != "null"){
+                val pictureByteArray = Base64.decode(planos_treino_list[position].foto_plano_treino, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                plano_treino_image.setImageBitmap(bitmap)
+            }
 
             //Clicar num rootView abre o plano de treino
             rootView.setOnClickListener {

@@ -86,6 +86,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
+        android:elevation="10dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonAddNutriPlan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
