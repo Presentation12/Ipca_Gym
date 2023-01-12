@@ -27,7 +27,7 @@ class Activity_Cliente_Login : AppCompatActivity() {
 
         //Caso a token de sessão estiver ativa, passar login a frente
         if (sessionToken != "" && sessionRole == "Cliente") {
-            val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_Pagina_Inicial::class.java)
+            val intentStart = Intent(this@Activity_Cliente_Login, Activity_Cliente_Marcacao_Consulta::class.java)
             finish()
             startActivity(intentStart)
         }
