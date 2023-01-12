@@ -16,6 +16,7 @@ import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import vough.example.ipcagym.R
+import vough.example.ipcagym.data_classes.Funcionario
 import vough.example.ipcagym.data_classes.Plano_Treino
 import vough.example.ipcagym.data_classes.Refeicao
 import vough.example.ipcagym.requests.ClienteRequests
@@ -36,14 +37,14 @@ class Activity_Cliente_Pagina_Inicial : AppCompatActivity() {
 
             if (resultCliente != null)
             {
-                if (resultCliente?.foto_perfil  != null && resultCliente.foto_perfil != "null")
+                if (resultCliente.foto_perfil  != null && resultCliente.foto_perfil != "null")
                 {
                     val pictureByteArray = Base64.decode(resultCliente.foto_perfil, Base64.DEFAULT)
                     val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                     imageView.setImageBitmap(bitmap)
                 }
 
-                GinasioRequests.GetByID(lifecycleScope, sessionToken, resultCliente?.id_ginasio) { resultGym ->
+                GinasioRequests.GetByID(lifecycleScope, sessionToken, resultCliente.id_ginasio) { resultGym ->
                     if (resultGym != null) {
                         if(resultGym.lotacao == resultGym.lotacaoMax){
                             findViewById<TextView>(R.id.textView_capacidade_atual).setTextColor(Color.RED)
@@ -57,29 +58,41 @@ class Activity_Cliente_Pagina_Inicial : AppCompatActivity() {
                 var imageFunc3 = findViewById<ImageView>(R.id.profile_pic_activity_team_tres)
                 FuncionarioRequests.GetAllByGym(lifecycleScope, sessionToken, resultCliente.id_ginasio) { resultFuncionarios ->
 
-                    if (resultFuncionarios.count() > 0)
+                    if(resultFuncionarios.isNotEmpty())
                     {
-                        if (resultFuncionarios[0].foto_funcionario  != null && resultFuncionarios[0].foto_funcionario != "null")
+                        var funcionariosAtivos = ArrayList<Funcionario>()
+                        for(func in resultFuncionarios)
                         {
-                            val pictureByteArray = Base64.decode(resultFuncionarios[0].foto_funcionario, Base64.DEFAULT)
-                            val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-                            imageFunc1.setImageBitmap(bitmap)
+                            if(func.estado == "Ativo")
+                            {
+                                funcionariosAtivos.add(func)
+                            }
                         }
-                        if (resultFuncionarios.count() > 1)
+
+                        if (funcionariosAtivos.isNotEmpty())
                         {
-                            if (resultFuncionarios[1].foto_funcionario  != null && resultFuncionarios[0].foto_funcionario != "null")
+                            if (resultFuncionarios[0].foto_funcionario  != null && resultFuncionarios[0].foto_funcionario != "null")
                             {
                                 val pictureByteArray = Base64.decode(resultFuncionarios[0].foto_funcionario, Base64.DEFAULT)
                                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-                                imageFunc2.setImageBitmap(bitmap)
+                                imageFunc1.setImageBitmap(bitmap)
                             }
-                            if (resultFuncionarios.count() > 2)
+                            if (resultFuncionarios.count() > 1)
                             {
-                                if (resultFuncionarios[2].foto_funcionario  != null && resultFuncionarios[0].foto_funcionario != "null")
+                                if (resultFuncionarios[1].foto_funcionario  != null && resultFuncionarios[0].foto_funcionario != "null")
                                 {
                                     val pictureByteArray = Base64.decode(resultFuncionarios[0].foto_funcionario, Base64.DEFAULT)
                                     val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
-                                    imageFunc3.setImageBitmap(bitmap)
+                                    imageFunc2.setImageBitmap(bitmap)
+                                }
+                                if (resultFuncionarios.count() > 2)
+                                {
+                                    if (resultFuncionarios[2].foto_funcionario  != null && resultFuncionarios[0].foto_funcionario != "null")
+                                    {
+                                        val pictureByteArray = Base64.decode(resultFuncionarios[0].foto_funcionario, Base64.DEFAULT)
+                                        val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
+                                        imageFunc3.setImageBitmap(bitmap)
+                                    }
                                 }
                             }
                         }

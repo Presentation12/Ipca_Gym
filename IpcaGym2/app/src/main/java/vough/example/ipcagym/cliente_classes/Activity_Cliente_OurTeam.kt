@@ -85,7 +85,16 @@ class Activity_Cliente_OurTeam : AppCompatActivity() {
 
         ClienteRequests.GetByToken(lifecycleScope, sessionToken){
             FuncionarioRequests.GetAllByGym(lifecycleScope, sessionToken, it?.id_ginasio){
-                if(!it.isEmpty()) ourTeamList = it
+                if(!it.isEmpty())
+                {
+                    for(func in it)
+                    {
+                        if(func.estado == "Ativo")
+                        {
+                            ourTeamList.add(func)
+                        }
+                    }
+                }
                 adapterTeam.notifyDataSetChanged()
             }
         }

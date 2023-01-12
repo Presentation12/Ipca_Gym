@@ -36,11 +36,14 @@ class Activity_Cliente_Marcacao_Consulta : AppCompatActivity() {
         ClienteRequests.GetByToken(lifecycleScope, sessionToken){ resultCliente ->
             if(resultCliente != null){
 
-                FuncionarioRequests.GetAllByGym(lifecycleScope, sessionToken, resultCliente?.id_ginasio) { resultFuncionario ->
+                FuncionarioRequests.GetAllByGym(lifecycleScope, sessionToken, resultCliente.id_ginasio) { resultFuncionario ->
                     if(resultFuncionario.isNotEmpty()){
-                        for (x in resultFuncionario)
+                        for (func in resultFuncionario)
                         {
-                            idsFuncionariosGinasio.add(x.id_funcionario)
+                            if(func.estado == "Ativo")
+                            {
+                                idsFuncionariosGinasio.add(func.id_funcionario)
+                            }
                         }
 
                         if (resultCliente.foto_perfil != null)
