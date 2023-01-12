@@ -84,12 +84,12 @@ class Activity_Cliente_Loja_Pedido_Details : AppCompatActivity() {
 
         val spinner = findViewById<Spinner>(R.id.spinner)
         var counter = 0
-        val options = listOf("Account", "Settings", "Logout", "")
+        val options = listOf("Account", "Settings", "Appointments", "Product Requests", "Rate", "Logout", "")
 
         class MyAdapter(context: Context, items: List<String>) :
             ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, items) {
             override fun getCount(): Int {
-                return 3
+                return 6
             }
         }
 
@@ -109,7 +109,7 @@ class Activity_Cliente_Loja_Pedido_Details : AppCompatActivity() {
                     0 -> {
                         if (counter == 0) {
                             counter += 1
-                            spinner.setSelection(3)
+                            spinner.setSelection(6)
                         } else {
                             startActivity(
                                 Intent(
@@ -117,7 +117,7 @@ class Activity_Cliente_Loja_Pedido_Details : AppCompatActivity() {
                                     Activity_Cliente_Account::class.java
                                 )
                             )
-                            spinner.setSelection(3)
+                            spinner.setSelection(6)
                         }
                     }
                     1 -> {
@@ -127,9 +127,36 @@ class Activity_Cliente_Loja_Pedido_Details : AppCompatActivity() {
                                 Activity_Cliente_Definitions::class.java
                             )
                         )
-                        spinner.setSelection(3)
+                        spinner.setSelection(6)
                     }
                     2 -> {
+                        startActivity(
+                            Intent(
+                                this@Activity_Cliente_Loja_Pedido_Details,
+                                Activity_Cliente_Marcacoes::class.java
+                            )
+                        )
+                        spinner.setSelection(6)
+                    }
+                    3 -> {
+                        startActivity(
+                            Intent(
+                                this@Activity_Cliente_Loja_Pedido_Details,
+                                Activity_Cliente_Loja_Pedidos::class.java
+                            )
+                        )
+                        spinner.setSelection(6)
+                    }
+                    4 -> {
+                        startActivity(
+                            Intent(
+                                this@Activity_Cliente_Loja_Pedido_Details,
+                           Activity_Cliente_Avaliar::class.java
+                            )
+                        )
+                        spinner.setSelection(6)
+                    }
+                    5 -> {
                         val preferences =
                             getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
                         val editor = preferences.edit()
@@ -151,6 +178,7 @@ class Activity_Cliente_Loja_Pedido_Details : AppCompatActivity() {
                 spinner.setSelection(3)
             }
         }
+
         imageView.setOnClickListener {
             spinner.performClick()
         }
