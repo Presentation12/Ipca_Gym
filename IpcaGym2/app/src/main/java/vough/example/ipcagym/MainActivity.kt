@@ -8,6 +8,5 @@ import android.widget.Toast
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //TODO: NAO CRASHAR QUANDO O TELE É INCLINADO
     }
 }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "577762541385",
+    "project_id": "ipcagympushnotification",
+    "storage_bucket": "ipcagympushnotification.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577762541385:android:2402896d395dbec1982498",
+        "android_client_info": {
+          "package_name": "vough.example.ipcagym"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577762541385-5tg6urs7bv46d9gifptodu12hk1101ad.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7jqa2010BHcdYfLrJADmyvrb2MgoQBBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577762541385-5tg6urs7bv46d9gifptodu12hk1101ad.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
