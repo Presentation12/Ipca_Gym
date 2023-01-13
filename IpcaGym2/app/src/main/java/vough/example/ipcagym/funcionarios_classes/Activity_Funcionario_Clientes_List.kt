@@ -42,8 +42,10 @@ class Activity_Funcionario_Clientes_List : AppCompatActivity() {
             }
 
             ClienteRequests.GetAllByGymID(lifecycleScope, sessionToken, resultFuncionario?.id_ginasio) {resultClientes ->
-                list_clientes = resultClientes
-                clientes_adapter.notifyDataSetChanged()
+                if(resultClientes.isNotEmpty()){
+                    list_clientes = resultClientes
+                    clientes_adapter.notifyDataSetChanged()
+                }
             }
         }
 
@@ -256,8 +258,8 @@ class Activity_Funcionario_Clientes_List : AppCompatActivity() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val root_view = layoutInflater.inflate(R.layout.row_cliente,parent,false)
 
-            var imageClienteView = findViewById<ImageView>(R.id.profile_pic_cliente)
-            if (list_clientes[position].foto_perfil  != null && list_clientes[position].foto_perfil != "null")
+            var imageClienteView = root_view.findViewById<ImageView>(R.id.profile_pic_cliente)
+            if (list_clientes[position].foto_perfil  != null && list_clientes[position].foto_perfil.toString() != "null")
             {
                 val pictureByteArray = Base64.decode(list_clientes[position].foto_perfil, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)

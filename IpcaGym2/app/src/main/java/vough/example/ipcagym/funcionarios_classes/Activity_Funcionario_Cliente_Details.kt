@@ -50,54 +50,53 @@ class Activity_Funcionario_Cliente_Details : AppCompatActivity() {
 
         FuncionarioRequests.GetByToken(lifecycleScope, sessionToken) { resultFuncionario ->
             if(resultFuncionario != null){
-
-                if(resultFuncionario.foto_funcionario != null && resultFuncionario.foto_funcionario.toString() == "null"){
+                if(resultFuncionario.foto_funcionario != null && resultFuncionario.foto_funcionario.toString() != "null"){
                     val pictureByteArray = Base64.decode(resultFuncionario.foto_funcionario, Base64.DEFAULT)
                     val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                     imageView.setImageBitmap(bitmap)
                 }
-
-                AtividadeRequests.GetAllByClienteID(lifecycleScope,sessionToken,id_cliente){ resultAtividades ->
-                    if(resultAtividades.isNotEmpty()){
-                        val mes_atual_view = findViewById<TextView>(R.id.textView_month)
-
-                        mes_atual_view.text = LocalDate.now().month.getDisplayName(TextStyle.FULL, Locale.getDefault()).toString()
-
-                        val media_entradas_anual_view = findViewById<TextView>(R.id.textViewMediaEntradasAnuais)
-                        val media_entradas_mensal_view = findViewById<TextView>(R.id.textViewMediaEntradasMensais)
-                        val entradas_mes_atual_view = findViewById<TextView>(R.id.textView_mes_dias)
-
-                        var countEntradasMesAtual = 0
-                        for (x in resultAtividades)
-                        {
-                            if (x.data_entrada?.month == LocalDate.now().month)
-                            {
-                                countEntradasMesAtual++
-                            }
-                        }
-
-                        entradas_mes_atual_view.text = countEntradasMesAtual.toString()
-
-                        val diffAux = Period.between(resultAtividades.first().data_entrada?.toLocalDate(), LocalDate.now())
-                        val diffDaysMonths = diffAux.toTotalMonths()
-                        var countMesesDesdeEntrada = diffDaysMonths / 30.44
-                        var countAnosDesdeEntrada = countMesesDesdeEntrada / 365
-
-                        if(countMesesDesdeEntrada < 1) countMesesDesdeEntrada++
-                        if(countAnosDesdeEntrada < 1) countAnosDesdeEntrada++
-
-                        media_entradas_anual_view.text = (resultAtividades.count()/countAnosDesdeEntrada).toString()
-                        media_entradas_mensal_view.text = (resultAtividades.count()/countMesesDesdeEntrada).toString()
-                    }
-                }
-            }
         }
 
         ClienteRequests.GetByID(lifecycleScope, sessionToken, id_cliente){ clientResponse ->
-            if(clientResponse != null && clientResponse.toString() == "null"){
+            if(clientResponse != null && clientResponse.foto_perfil.toString() != "null"){
                 val pictureByteArray = Base64.decode(clientResponse.foto_perfil, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.size)
                 findViewById<ImageView>(R.id.profile_pic).setImageBitmap(bitmap)
+            }
+        }
+
+            AtividadeRequests.GetAllByClienteID(lifecycleScope,sessionToken,id_cliente){ resultAtividades ->
+                if(resultAtividades.isNotEmpty()){
+                    val mes_atual_view = findViewById<TextView>(R.id.textView_month)
+
+                    mes_atual_view.text = LocalDate.now().month.getDisplayName(TextStyle.FULL, Locale.getDefault()).toString()
+
+                    val media_entradas_anual_view = findViewById<TextView>(R.id.textViewMediaEntradasAnuais)
+                    val media_entradas_mensal_view = findViewById<TextView>(R.id.textViewMediaEntradasMensais)
+                    val entradas_mes_atual_view = findViewById<TextView>(R.id.textView_mes_dias)
+
+                    var countEntradasMesAtual = 0
+                    for (x in resultAtividades)
+                    {
+                        if (x.data_entrada?.month == LocalDate.now().month)
+                        {
+                            countEntradasMesAtual++
+                        }
+                    }
+
+                    entradas_mes_atual_view.text = countEntradasMesAtual.toString()
+
+                    val diffAux = Period.between(resultAtividades.first().data_entrada?.toLocalDate(), LocalDate.now())
+                    val diffDaysMonths = diffAux.toTotalMonths()
+                    var countMesesDesdeEntrada = diffDaysMonths / 30.44
+                    var countAnosDesdeEntrada = countMesesDesdeEntrada / 365
+
+                    if(countMesesDesdeEntrada < 1) countMesesDesdeEntrada++
+                    if(countAnosDesdeEntrada < 1) countAnosDesdeEntrada++
+
+                    media_entradas_anual_view.text = (resultAtividades.count()/countAnosDesdeEntrada).toString()
+                    media_entradas_mensal_view.text = (resultAtividades.count()/countMesesDesdeEntrada).toString()
+                }
             }
         }
 
