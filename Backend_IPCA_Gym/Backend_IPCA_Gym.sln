@@ -5,11 +5,13 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend_IPCA_Gym", "Backend_IPCA_Gym\Backend_IPCA_Gym.csproj", "{CA305BB6-DC05-46BA-84C5-DAD77DAFA118}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayerBOL", "LayerBOL\LayerBOL.csproj", "{FCA67D58-6596-4362-9360-07F9A216984C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LayerBOL", "LayerBOL\LayerBOL.csproj", "{FCA67D58-6596-4362-9360-07F9A216984C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayerDAL", "LayerDAL\LayerDAL.csproj", "{3DA2A84C-DB7F-43F3-8EFA-B73FAF31DABA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LayerDAL", "LayerDAL\LayerDAL.csproj", "{3DA2A84C-DB7F-43F3-8EFA-B73FAF31DABA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayerBLL", "LayerBLL\LayerBLL.csproj", "{B1618B0E-243C-47FC-BECE-EC476B2D1A6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LayerBLL", "LayerBLL\LayerBLL.csproj", "{B1618B0E-243C-47FC-BECE-EC476B2D1A6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{9B1855BA-F2E6-4D12-A6FF-EEB4115B796B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{B1618B0E-243C-47FC-BECE-EC476B2D1A6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1618B0E-243C-47FC-BECE-EC476B2D1A6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1618B0E-243C-47FC-BECE-EC476B2D1A6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B1855BA-F2E6-4D12-A6FF-EEB4115B796B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B1855BA-F2E6-4D12-A6FF-EEB4115B796B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B1855BA-F2E6-4D12-A6FF-EEB4115B796B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B1855BA-F2E6-4D12-A6FF-EEB4115B796B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
-using Microsoft.Extensions.Configuration;
 using FluentAssertions;
-using Backend_IPCA_Gym.Controllers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
+using Backend_IPCA_Gym.Controllers;
 using LayerBLL.Utils;
 using LayerBOL.Models;
 
@@ -77,7 +77,7 @@ namespace UnitTests
             var clienteController = new ClienteController(config);
 
             LoginCliente modelTest = new LoginCliente();
-            
+
             modelTest.mail = mail;
             modelTest.password = password;
 

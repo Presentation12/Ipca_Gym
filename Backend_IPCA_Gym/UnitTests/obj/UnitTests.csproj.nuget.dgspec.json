@@ -380,27 +380,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "FluentAssert": {
-              "target": "Package",
-              "version": "[1.0.0.11, )"
-            },
             "FluentAssertions": {
               "target": "Package",
-              "version": "[6.8.0, )"
-            },
-            "Microsoft.AspNetCore.Mvc": {
-              "target": "Package",
-              "version": "[2.2.0, )"
+              "version": "[6.9.0, )"
             },
             "Microsoft.Extensions.Configuration": {
-              "target": "Package",
-              "version": "[7.0.0, )"
-            },
-            "Microsoft.Extensions.Configuration.EnvironmentVariables": {
-              "target": "Package",
-              "version": "[7.0.0, )"
-            },
-            "Microsoft.Extensions.Configuration.Json": {
               "target": "Package",
               "version": "[7.0.0, )"
             },
