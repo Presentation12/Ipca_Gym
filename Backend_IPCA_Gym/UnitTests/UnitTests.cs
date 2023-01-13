@@ -69,7 +69,7 @@ namespace UnitTests
         /// </summary>
         [Theory]
         [InlineData("email_incorreto", "dm")]
-        [InlineData("user@gmail.com", "password")]
+        [InlineData("user@gmail.com", "pass")]
         [InlineData("user@gmail.com", "pass_incorreta")]
         public async void LoginClienteTest(string mail, string password)
         {
