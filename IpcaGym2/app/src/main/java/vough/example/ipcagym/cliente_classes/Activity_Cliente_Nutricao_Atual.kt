@@ -58,7 +58,7 @@ class Activity_Cliente_Nutricao_Atual : AppCompatActivity() {
                 {
                     PlanoNutricionalRequests.GetByID(lifecycleScope, sessionToken, resultCliente?.id_plano_nutricional) { resultPlanoAtual ->
 
-                        findViewById<TextView>(R.id.textViewCalorias).text = resultPlanoAtual?.calorias.toString()
+                        findViewById<TextView>(R.id.textViewCalorias).text = resultPlanoAtual?.calorias.toString() + " kcal"
                         findViewById<TextView>(R.id.textViewTipoNutricao).text = resultPlanoAtual?.tipo
 
                         RefeicaoRequests.GetAllByPlanoID(lifecycleScope,sessionToken,resultPlanoAtual?.id_plano_nutricional){ resultRefeicoes ->
